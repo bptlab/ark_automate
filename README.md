@@ -5,7 +5,7 @@ An open source RPA tool which uses BPMN to create bots.
 
 Please try running the latest version of:
 - Node.js and npm
-- React (`node install react`)
+- React (`npm install react`)
 - nodemon (`npm install nodemon -g`)
 - yarn (`npm install yarn`)
 
