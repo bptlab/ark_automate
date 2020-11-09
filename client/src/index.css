@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.Button {
+  position: absolute;
+  top: 50%;
+}
+
+.wrapper {
+  text-align: center;
+}

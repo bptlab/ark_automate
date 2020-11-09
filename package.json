@@ -2,15 +2,19 @@
     "name": "ark-automate",
     "version": "1.0.0",
     "scripts": {
-      "client": "cd client && yarn start",
-      "server": "nodemon server.js",
-      "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+        "client": "cd client && yarn start",
+        "server": "nodemon server.js",
+        "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
     },
     "dependencies": {
-      "body-parser": "^1.18.3",
-      "express": "^4.16.4"
+        "antd": "^4.8.0",
+        "body-parser": "^1.18.3",
+        "express": "^4.16.4",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
-      "concurrently": "^4.0.1"
+        "concurrently": "^4.0.1"
     }
-  }
+}
