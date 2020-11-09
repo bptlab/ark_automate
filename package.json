@@ -12,7 +12,8 @@
         "express": "^4.16.4",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "react-router-dom": "^5.2.0"
+        "react-router-dom": "^5.2.0",
+        "yarn": "^1.22.10"
     },
     "devDependencies": {
         "concurrently": "^4.0.1",
