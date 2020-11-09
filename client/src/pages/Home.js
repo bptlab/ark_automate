@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Typography, Row } from 'antd';
+import {Link} from 'react-router-dom';
+import {Button, Typography} from 'antd';
 
-const { Title } = Typography;
+const {Title} = Typography;
 
- 
+
 const Home = () => {
     return (
         <div>
@@ -16,5 +16,5 @@ const Home = () => {
         </div>
     );
 }
- 
+
 export default Home;
