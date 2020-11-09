@@ -21,6 +21,7 @@ Then install all the yarn dependencies by running `yarn install` twice:
 2. in the client folder
 
 Then install the following tools inside the client directory:
+
 1. React Router DOM (`yarn add react-router-dom`)
 2. AntDesign (`yarn add antd`)
 
@@ -32,8 +33,6 @@ Go to the root directory and install the following packages with `yarn add`:
 - bpmn-font
 - bpmn-js-properties-panel
 - camunda-bpmn-moddle
-
-Additionally install webpack with `npm install webpack`
 
 ## Run the application
 
