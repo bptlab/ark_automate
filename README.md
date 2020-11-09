@@ -17,5 +17,9 @@ Then install all the yarn dependencies by running `yarn install` twice:
 1. in the root directory
 2. in the client folder
 
+Then install the following tools inside the client directory:
+1. React Router DOM (`yarn add react-router-dom`)
+2. AntDesign (`yarn add antd`)
+
 To run a development preview of the app, navigate to the root directory and run `yarn dev`.  
 The server should run on http://localhost:3000/
