@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { NavLink } from 'react-router-dom';
+import { Button } from 'antd';
 
 const gotoHome = () => {
     return (
        <div>
           <NavLink to="/">
-            <button>Go to Home</button>
+            <Button type="primary">Go to Home</Button>
           </NavLink>
        </div>
     );
