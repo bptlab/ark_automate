@@ -9,17 +9,16 @@
     "dependencies": {
         "antd": "^4.8.0",
         "body-parser": "^1.18.3",
+        "bpmn-font": "^0.10.0",
+        "bpmn-js": "^7.4.0",
+        "bpmn-js-properties-panel": "^0.37.5",
+        "camunda-bpmn-moddle": "^4.4.1",
         "express": "^4.16.4",
         "react": "^17.0.1",
+        "react-bpmn": "^0.2.0",
         "react-dom": "^17.0.1",
-    "bpmn-font": "^0.10.0",
-    "bpmn-js": "^7.4.0",
-    "bpmn-js-properties-panel": "^0.37.5",
-    "camunda-bpmn-moddle": "^4.4.1",
-    "express": "^4.16.4",
-    "react-bpmn": "^0.2.0",
-    "webpack": "^5.4.0",
-        "react-router-dom": "^5.2.0"
+        "react-router-dom": "^5.2.0",
+        "webpack": "^5.4.0"
     },
     "devDependencies": {
         "concurrently": "^4.0.1",

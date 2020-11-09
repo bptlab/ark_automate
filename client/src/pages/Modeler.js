@@ -1,16 +1,19 @@
 import React from 'react';
 import BtnGotoHome from '../components/BtnGotoHome';
-import bpmn_example from '../bpmn_example.png'
 import {Typography} from 'antd';
+import BpmnModelerComponent from "../components/bpmn.modeler.component";
+
 
 const {Title} = Typography;
 
 const Modeler = () => {
     return (
         <div>
-            <Title>Seite unseres Modelers</Title>
-            <img src={bpmn_example} alt="Logo" width="300px"/>
-            <BtnGotoHome/>
+            {/*<Title>Seite unseres Modelers</Title>*/}
+            <React.StrictMode>
+                <BpmnModelerComponent/>
+            </React.StrictMode>
+            {/*<BtnGotoHome/>*/}
         </div>
     );
 }
