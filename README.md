@@ -33,6 +33,8 @@ Go to the root directory and install the following packages with `yarn add`:
 - bpmn-js-properties-panel
 - camunda-bpmn-moddle
 
+Additionally install webpack with `npm install webpack`
+
 ## Run the application
 
 To run a development preview of the app, navigate to the root directory and run `yarn dev`.  
