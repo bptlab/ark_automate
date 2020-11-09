@@ -13,7 +13,7 @@ Please try running the latest version of:
 - nodemon (`npm install nodemon -g`)
 - yarn (`npm install yarn`)
 
-Then install all the yarn dependencies by running `yarn install` two times:
+Then install all the yarn dependencies by running `yarn install` twice:
 1. in the root directory
 2. in the client folder
 
