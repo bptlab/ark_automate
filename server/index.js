@@ -16,9 +16,10 @@ if (!isDev && cluster.isMaster) {
   }
 
   cluster.on('exit', (worker, code, signal) => {
-    console.error(`Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`);
+    console.error(
+      `Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`
+    );
   });
-
 } else {
   const app = express();
 
@@ -28,7 +29,12 @@ if (!isDev && cluster.isMaster) {
   // Answer API requests.
   app.get('/api', function (req, res) {
     res.set('Content-Type', 'application/json');
-    res.send('{"message":"Hello from the custom server!"}');
+    res.send('{"message":"Hello, server Test"}');
+  });
+
+  app.get('/test', function (req, res) {
+    res.set('Content-Type', 'application/json');
+    res.send('{"message":"Testantwort vom Server"}');
   });
 
   // All remaining requests return the React app, so it can handle routing.
@@ -37,6 +43,10 @@ if (!isDev && cluster.isMaster) {
   });
 
   app.listen(PORT, function () {
-    console.error(`Node ${isDev ? 'dev server' : 'cluster worker ' + process.pid}: listening on port ${PORT}`);
+    console.error(
+      `Node ${
+        isDev ? 'dev server' : 'cluster worker ' + process.pid
+      }: listening on port ${PORT}`
+    );
   });
 }

@@ -10,11 +10,10 @@ const Modeler = () => {
   return (
     <div>
       {/*<Title>Seite unseres Modelers</Title>*/}
-      <BtnGotoHome/>
+      <BtnGotoHome />
       <React.StrictMode>
         <BpmnModelerComponent />
       </React.StrictMode>
-
     </div>
   );
 };
