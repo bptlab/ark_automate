@@ -10,8 +10,8 @@ const Home = () => {
         <div>
             <Title style={{alignItems: 'center'}}>Startseite</Title>
             <Title level={3}>Das ist unsere Startseite - GEIL!</Title>
-            <Link to="/modeler">
-                <Button type="primary">Go to Modeler</Button>
+            <Link to='/modeler'>
+                <Button type='primary'>Go to Modeler</Button>
             </Link>
         </div>
     );
