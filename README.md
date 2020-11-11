@@ -3,7 +3,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/bptlab/ark_automate)](https://github.com/bptlab/ark_automate)
 ![GitHub repo size](https://img.shields.io/github/repo-size/bptlab/ark_automate)
 [![GitHub issues](https://img.shields.io/github/issues/bptlab/ark_automate)](https://github.com/bptlab/ark_automate/issues)
-[![heroku](heroku-badge.herokuapp.com/?app=ark-automate)]
+[![heroku](heroku-badge.herokuapp.com/?app=ark-automate)](ark-automate.herokuapp.com)
 
 An open source RPA tool which uses BPMN to create bots.
 
