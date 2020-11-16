@@ -31,7 +31,21 @@ Go to the root directory and install the following packages with `npm install`:
 - bpmn-js-properties-panel
 - camunda-bpmn-moddle
 
-## Run the application
+### Set up Heroku
+
+1. Run in the root directory `npm install -g heroku`
+2. Login to Heroku by running `heroku login` and than login to your heroku account
+3. Create a new .env file in the root directory
+4. Add the MongoDb URI to your .env file by running the following command in the root directory `heroku config:get MONGODB_URI -s -a ark-automate >> .env`
+
+## Run application
+
 Before running, please always make sure to have the most recent module versions installed using `npm install` in the root, as well as the client directory.
-To run a development preview of the app, navigate to the root directory and run `npm start` to start the API server, navigate into the client folder and run `npm start` again to also start the frontend.  
-The server should run on http://localhost:3000/
+To run a development preview of the app, navigate to the root directory and run `heroku local` to start the API server, navigate into the client folder and run `npm start` again to also start the frontend.  
+Now check http://localhost:3000/ to have a look at the app.
+
+## Deploy application on heroku
+
+1. Add and commit changes to git with the usual git commands.
+2. Run `git push heroku master`
+3. (optional) Have a look at the deployed app by running `heroku open`
