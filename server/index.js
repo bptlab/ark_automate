@@ -1,3 +1,4 @@
+const activityDataRetrieval = require('./ActivityDataRetrieval');
 const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
@@ -43,6 +44,45 @@ if (!isDev && cluster.isMaster) {
     res.send(req.body);
   });
 
+  app.get('/get-available-applications', async (req, res) => {
+    console.log(process.env.MONGODB_URI);
+    /*
+    try {
+      let listOfDistinctApplications = await activityDataRetrieval.getDistinctApplicationsFromDB();
+      res.set('Content-Type', 'application/json');
+      res.send(listOfDistinctApplications);
+    } catch (err) {
+      console.log(err);
+    }*/
+  });
+
+  // GET /get-available-tasks-for-application?application=Browser
+  app.get('/get-available-tasks-for-application', async (req, res) => {
+    try {
+      let application = req.query.application; //TODO filter empty application
+      let listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(application);
+      res.set('Content-Type', 'application/json');
+      res.send(listOfDistinctApplications);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  // GET /get-id-for-task?application=Browser&task=Open+Browser
+  app.get('/get-id-for-task', async (req, res) => {
+    try {
+      let application = req.query.application;
+      console.log(application);
+      let task = req.query.task;
+      console.log(task); //TODO filter when both empty
+      let listOfDistinctApplications = await activityDataRetrieval.getIdForSelectedTask(application, task);
+      res.set('Content-Type', 'application/json');
+      res.send(listOfDistinctApplications);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
@@ -50,8 +90,7 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, function () {
     console.error(
-      `Node ${
-        isDev ? 'dev server' : 'cluster worker ' + process.pid
+      `Node ${isDev ? 'dev server' : 'cluster worker ' + process.pid
       }: listening on port ${PORT}`
     );
   });
