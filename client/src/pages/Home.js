@@ -50,10 +50,6 @@ const Home = () => {
     return response.json(); // parses JSON response into native JavaScript objects
   }
 
-  postData('/post-test', { name: 'Daniel' }).then((response) => {
-    setMessage(response.name); // JSON data parsed by `data.json()` call
-  });
-
   return (
     <div>
       <Title style={{ alignItems: 'center' }}>Startseite</Title>

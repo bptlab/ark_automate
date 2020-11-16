@@ -27,24 +27,8 @@ if (!isDev && cluster.isMaster) {
   app.use(express.static(path.resolve(__dirname, '../client/build')));
   app.use(express.json());
 
-  // Answer API requests.
-  app.get('/api', function (req, res) {
-    res.set('Content-Type', 'application/json');
-    res.send('{"message":"Hello, server Test"}');
-  });
-
-  app.get('/test', function (req, res) {
-    res.set('Content-Type', 'application/json');
-    res.send('{"message":"Testantwort vom Server"}');
-  });
-
-  //Incoming API requests
-  app.post('/post-test', (req, res) => {
-    console.log('Got body:', req.body);
-    res.send(req.body);
-  });
-
   app.get('/get-available-applications', async (req, res) => {
+    console.log('TestSTring: ' + process.env.TEST);
     console.log(process.env.MONGODB_URI);
     /*
     try {

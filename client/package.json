@@ -18,8 +18,7 @@
     "bpmn-js": "^7.4.0",
     "bpmn-js-properties-panel": "^0.37.5",
     "camunda-bpmn-moddle": "^4.4.1",
-    "express": "^4.16.4",
-    "yarn": "^1.22.10"
+    "express": "^4.16.4"
   },
   "scripts": {
     "start": "react-scripts start",
