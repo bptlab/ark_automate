@@ -119,13 +119,25 @@ function ElementProperties(props) {
         });
     }
 
+
+
     function makeMessageEvent() {
 
         const bpmnReplace = modeler.get('bpmnReplace');
 
         bpmnReplace.replaceElement(element, {
             type: element.businessObject.$type,
-            eventDefinitionType: 'bpmn:MessageEventDefinition'
+            eventDefinitionType: 'bpmn:TimerEventDefinition'
+        });
+    }
+
+    function makeNoMessageEvent() {
+
+        const bpmnReplace = modeler.get('bpmnReplace');
+
+        bpmnReplace.replaceElement(element, {
+            type: element.businessObject.$type,
+            eventDefinitionType: 'bpmn:MessageDefinition'
         });
     }
 
@@ -177,6 +189,19 @@ function ElementProperties(props) {
         return autoPlace.append(element, shape);
     };
 
+    //Test-Application-Array
+    const applications = ["Word", "Excel", "Chrome", "PDF"];
+    //finally mapped HTML-Selector-Option-Code
+    const applicationsOptions = applications.map((app) => <option>{app}</option>);
+
+    //maybe interesting Stuff for JSON-Testing
+    const applicationsJSON = {
+        "applications":[
+            {"appID":"word", "appLabel":"Microsoft Word"},
+            {"appID":"excel", "appLabel":"Microsoft EXCEL"},
+        ]
+    };
+
     return (
         <div className="element-properties" key={ element.id }>
             <fieldset>
@@ -205,18 +230,22 @@ function ElementProperties(props) {
                 <label>actions</label>
 
                 {
-                    is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask') &&
-                    <button onClick={ makeServiceTask }>Make Service Task</button>
+                    is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask')                }
+
+                {
+                    //currently ... 
+                    is(element, 'bpmn:Task') &&
+                    <>
+                        <button onClick={ makeMessageEvent }>Make RPA Task</button>
+                        <select>
+                            {applicationsOptions}
+                        </select>
+                    </>
                 }
 
                 {
-                    is(element, 'bpmn:Event') && !hasDefinition(element, 'bpmn:MessageEventDefinition') &&
-                    <button onClick={ makeMessageEvent }>Make Message Event</button>
-                }
-
-                {
-                    is(element, 'bpmn:Task') && !isTimeoutConfigured(element) &&
-                    <button onClick={ attachTimeout }>Attach Timeout</button>
+                    /* is(element, 'bpmn:Task') && !isTimeoutConfigured(element) &&
+                    <button onClick={ attachTimeout }>Attach Timeout</button> */
                 }
             </fieldset>
         </div>
