@@ -28,7 +28,6 @@ if (!isDev && cluster.isMaster) {
   app.use(express.json());
 
   app.get('/get-available-applications', async (req, res) => {
-    console.log('TestSTring: ' + process.env.TEST);
     console.log(process.env.MONGODB_URI);
     /*
     try {
@@ -44,7 +43,9 @@ if (!isDev && cluster.isMaster) {
   app.get('/get-available-tasks-for-application', async (req, res) => {
     try {
       let application = req.query.application; //TODO filter empty application
-      let listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(application);
+      let listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(
+        application
+      );
       res.set('Content-Type', 'application/json');
       res.send(listOfDistinctApplications);
     } catch (err) {
@@ -59,7 +60,10 @@ if (!isDev && cluster.isMaster) {
       console.log(application);
       let task = req.query.task;
       console.log(task); //TODO filter when both empty
-      let listOfDistinctApplications = await activityDataRetrieval.getIdForSelectedTask(application, task);
+      let listOfDistinctApplications = await activityDataRetrieval.getIdForSelectedTask(
+        application,
+        task
+      );
       res.set('Content-Type', 'application/json');
       res.send(listOfDistinctApplications);
     } catch (err) {
@@ -74,7 +78,8 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, function () {
     console.error(
-      `Node ${isDev ? 'dev server' : 'cluster worker ' + process.pid
+      `Node ${
+        isDev ? 'dev server' : 'cluster worker ' + process.pid
       }: listening on port ${PORT}`
     );
   });
