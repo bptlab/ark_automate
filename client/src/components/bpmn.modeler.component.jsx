@@ -19,7 +19,7 @@ class BpmnModelerComponent extends Component {
             propertiesPanel: {
                 parent: "#propview",
             },
-            additionalModules: [propertiesPanelModule, propertiesProviderModule],
+            additionalModules: [propertiesProviderModule],
             moddleExtensions: {
                 camunda: camundaModdleDescriptor,
             },
@@ -50,7 +50,7 @@ class BpmnModelerComponent extends Component {
                 <div
                     id="propview"
                     style={{
-                        width: "25%",
+                        width: "5%",
                         height: "98vh",
                         float: "right",
                         maxHeight: "98vh",
@@ -59,7 +59,7 @@ class BpmnModelerComponent extends Component {
                 ></div>
                 <div
                     id="bpmnview"
-                    style={{width: "75%", height: "98vh", float: "left"}}
+                    style={{width: "95%", height: "98vh", float: "left"}}
                 ></div>
             </div>
         );
