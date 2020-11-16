@@ -28,26 +28,29 @@ if (!isDev && cluster.isMaster) {
   app.use(express.json());
 
   app.get('/get-available-applications', async (req, res) => {
-    console.log(process.env.MONGODB_URI);
-    /*
     try {
       let listOfDistinctApplications = await activityDataRetrieval.getDistinctApplicationsFromDB();
       res.set('Content-Type', 'application/json');
       res.send(listOfDistinctApplications);
     } catch (err) {
       console.log(err);
-    }*/
+    }
   });
 
   // GET /get-available-tasks-for-application?application=Browser
   app.get('/get-available-tasks-for-application', async (req, res) => {
     try {
-      let application = req.query.application; //TODO filter empty application
-      let listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(
-        application
-      );
+      let application = req.query.application;
       res.set('Content-Type', 'application/json');
-      res.send(listOfDistinctApplications);
+      if (application != null) {
+        let listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(
+          application
+        );
+        res.send(listOfDistinctApplications);
+      } else {
+        res.send('Please set a valid application parameter.');
+      }
+      
     } catch (err) {
       console.log(err);
     }
@@ -57,15 +60,18 @@ if (!isDev && cluster.isMaster) {
   app.get('/get-id-for-task', async (req, res) => {
     try {
       let application = req.query.application;
-      console.log(application);
       let task = req.query.task;
-      console.log(task); //TODO filter when both empty
-      let listOfDistinctApplications = await activityDataRetrieval.getIdForSelectedTask(
-        application,
-        task
-      );
       res.set('Content-Type', 'application/json');
-      res.send(listOfDistinctApplications);
+
+      if (application != null && task != null) {
+        let listOfDistinctApplications = await activityDataRetrieval.getIdForSelectedTask(
+          application,
+          task
+        );
+        res.send(listOfDistinctApplications);
+      } else {
+        res.send('Please set valid application and task parameters.');
+      }
     } catch (err) {
       console.log(err);
     }
