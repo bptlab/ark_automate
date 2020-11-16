@@ -9,7 +9,7 @@ import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
 import PropertiesView from '../components/properties-panel/PropertiesView';
 
 class BpmnModelerComponent extends Component {
-    modeler = null;
+  modeler = null;
 
     componentDidMount = () => {
         const modeler = new BpmnModeler({
@@ -31,21 +31,21 @@ class BpmnModelerComponent extends Component {
         this.forceUpdate()
     };
 
-    newBpmnDiagram = () => {
-        this.openBpmnDiagram(emptyBpmn);
-    };
+  newBpmnDiagram = () => {
+    this.openBpmnDiagram(emptyBpmn);
+  };
 
-    openBpmnDiagram = (xml) => {
-        this.modeler.importXML(xml, (error) => {
-            if (error) {
-                return console.log("fail import xml");
-            }
+  openBpmnDiagram = (xml) => {
+    this.modeler.importXML(xml, (error) => {
+      if (error) {
+        return console.log('fail import xml');
+      }
 
-            var canvas = this.modeler.get("canvas");
+      var canvas = this.modeler.get('canvas');
 
-            canvas.zoom("fit-viewport");
-        });
-    };
+      canvas.zoom('fit-viewport');
+    });
+  };
 
     render = () => {
         return (
