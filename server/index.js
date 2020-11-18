@@ -50,7 +50,6 @@ if (!isDev && cluster.isMaster) {
       } else {
         res.send('Please set a valid application parameter.');
       }
-      
     } catch (err) {
       console.log(err);
     }
