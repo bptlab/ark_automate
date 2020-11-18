@@ -4,18 +4,40 @@ import React, { Component, componentDidMount } from 'react';
 
 import './PropertiesView.css';
 
+var applicationsOptions;
+/* var taskOptions; */
+
 export default class PropertiesView extends Component {
   constructor(props) {
     super(props);
-
+    this.applicationDropdownRef = React.createRef();
     this.state = {
       selectedElements: [],
       element: null,
     };
   }
 
+  /* getApplication() {
+    let dropdown = this.applicationDropdownRef.current;
+    console.log(dropdown);
+    let app = dropdown.options[dropdown.selectedIndex].value;
+    console.log(app);
+    return app;
+  } */
+
   componentDidMount() {
-    const { modeler } = this.props;
+    fetch('/get-available-applications')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        let applications = data;
+        applicationsOptions = applications.map((app) => (
+          <option value={app}>{app}</option>
+        ));
+        console.log(applicationsOptions);
+      });
+    /* this.getApplication(); */
+    const { modeler, application } = this.props;
 
     modeler.on('selection.changed', (e) => {
       const { element } = this.state;
@@ -45,7 +67,7 @@ export default class PropertiesView extends Component {
   }
 
   render() {
-    const { modeler } = this.props;
+    const { modeler, application } = this.props;
 
     const { selectedElements, element } = this.state;
 
@@ -154,19 +176,17 @@ function ElementProperties(props) {
 
     return autoPlace.append(element, shape);
   }
-
-  //Test-Application-Array
-  //const applications = ['Word', 'Excel', 'Chrome', 'PDF'];
-  // get application array
-
-  //finally mapped HTML-Selector-Option-Code
-
-  //const applicationsOptions = <option>{applications}</option>;
-  let applicationsOptions = {};
-  console.log(applications);
-  /* applicationsOptions.push(
-    ...this.applications.map((app) => <option>{app}</option>)
-  ); */
+  /* function fetchTasks() {
+    let url =
+      '/get-available-tasks-for-application?application=' +
+      application.replace(' ', '+');
+    fetch(url)
+      .then((response) => response.json())
+      .then((tasks) => {
+        taskOptions = tasks.map((task) => <option value={task}>{task}</option>);
+        console.log(taskOptions);
+      });
+  } */
 
   //maybe interesting Stuff for JSON-Testing
   /* const applicationsJSON = {
@@ -215,7 +235,12 @@ function ElementProperties(props) {
           is(element, 'bpmn:Task') && (
             <>
               <button onClick={makeMessageEvent}>Make RPA Task</button>
-              <select>{applicationsOptions}</select>
+              <select>
+                <option value='' disabled selected>
+                  Please Select
+                </option>
+                {applicationsOptions}
+              </select>
             </>
           )
         }
