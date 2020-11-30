@@ -1,11 +1,20 @@
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 
-import React, { Component, componentDidMount } from 'react';
+import React, { Component } from 'react';
 
 import './PropertiesView.css';
 
-var applicationsOptions;
-/* var taskOptions; */
+var applicationsOptions, taskOptions;
+
+function setListener() {
+  console.log('Listener landed')
+  let sel = document.getElementById('applicationSelector');
+  sel.addEventListener("change", function () {
+    console.log("Listener triggered");
+    //let show = document.getElementById('show');
+    //show.innerHTML = this.value;
+  });
+}
 
 export default class PropertiesView extends Component {
   constructor(props) {
@@ -26,18 +35,35 @@ export default class PropertiesView extends Component {
   } */
 
   componentDidMount() {
-    fetch('/get-available-applications')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        let applications = data;
-        applicationsOptions = applications.map((app) => (
-          <option value={app}>{app}</option>
-        ));
-        console.log(applicationsOptions);
-      });
-    /* this.getApplication(); */
-    const { modeler, application } = this.props;
+    async function fetchApplicationsFromDatabase() {
+      return await fetch('/get-available-applications')
+        .then((response) => response.json())
+        .then(data => {
+          return data;
+        })
+    };
+
+    async function fetchTasksForApplication() {
+      return await fetch('get-available-tasks-for-application?application=MS+Excel')
+        .then((response) => response.json())
+        .then(data => {
+          return data;
+        })
+    };
+
+    (async () => {
+      let myFetch = await fetchApplicationsFromDatabase();
+      applicationsOptions = myFetch.map((app) => (
+        <option value={app}>{app}</option>
+      ));
+
+      myFetch = await fetchTasksForApplication();
+      taskOptions = myFetch.map((task) => (
+        <option value={task}>{task}</option>
+      ));
+    })()
+
+    const { modeler } = this.props;
 
     modeler.on('selection.changed', (e) => {
       const { element } = this.state;
@@ -74,7 +100,7 @@ export default class PropertiesView extends Component {
     return (
       <div>
         {selectedElements.length === 1 && (
-          <ElementProperties modeler={modeler} element={element} />
+          <PropertyPanelBuilder modeler={modeler} element={element} />
         )}
 
         {selectedElements.length === 0 && (
@@ -89,7 +115,7 @@ export default class PropertiesView extends Component {
   }
 }
 
-function ElementProperties(props) {
+function PropertyPanelBuilder(props) {
   let { element, modeler } = props;
 
   if (element.labelTarget) {
@@ -110,23 +136,15 @@ function ElementProperties(props) {
     });
   }
 
-  function makeMessageEvent() {
-    const bpmnReplace = modeler.get('bpmnReplace');
+  /*   function makeMessageEvent() {
+      const bpmnReplace = modeler.get('bpmnReplace');
+  
+      bpmnReplace.replaceElement(element, {
+        type: element.businessObject.$type,
+        eventDefinitionType: 'bpmn:TimerEventDefinition',
+      });
+    } */
 
-    bpmnReplace.replaceElement(element, {
-      type: element.businessObject.$type,
-      eventDefinitionType: 'bpmn:TimerEventDefinition',
-    });
-  }
-
-  function makeNoMessageEvent() {
-    const bpmnReplace = modeler.get('bpmnReplace');
-
-    bpmnReplace.replaceElement(element, {
-      type: element.businessObject.$type,
-      eventDefinitionType: 'bpmn:MessageDefinition',
-    });
-  }
 
   function makeServiceTask(name) {
     const bpmnReplace = modeler.get('bpmnReplace');
@@ -176,17 +194,6 @@ function ElementProperties(props) {
 
     return autoPlace.append(element, shape);
   }
-  /* function fetchTasks() {
-    let url =
-      '/get-available-tasks-for-application?application=' +
-      application.replace(' ', '+');
-    fetch(url)
-      .then((response) => response.json())
-      .then((tasks) => {
-        taskOptions = tasks.map((task) => <option value={task}>{task}</option>);
-        console.log(taskOptions);
-      });
-  } */
 
   //maybe interesting Stuff for JSON-Testing
   /* const applicationsJSON = {
@@ -231,15 +238,21 @@ function ElementProperties(props) {
         {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask')}
 
         {
-          //currently ...
           is(element, 'bpmn:Task') && (
             <>
-              <button onClick={makeMessageEvent}>Make RPA Task</button>
-              <select>
+              <button onClick={makeServiceTask}>Make RPA Task</button>
+              <select id="applicationSelector">
                 <option value='' disabled selected>
                   Please Select
                 </option>
                 {applicationsOptions}
+              </select>
+
+              <select>
+                <option value='' disabled selected>
+                  Please Select
+                </option>
+                {taskOptions}
               </select>
             </>
           )
@@ -248,7 +261,7 @@ function ElementProperties(props) {
         {/* is(element, 'bpmn:Task') && !isTimeoutConfigured(element) &&
                     <button onClick={ attachTimeout }>Attach Timeout</button> */}
       </fieldset>
-    </div>
+    </div >
   );
 }
 
