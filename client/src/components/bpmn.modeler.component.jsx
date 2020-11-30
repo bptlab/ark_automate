@@ -6,6 +6,7 @@ import { emptyBpmn } from '../assets/empty.bpmn';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
+var convert = require('xml-js');
 
 class BpmnModelerComponent extends Component {
   modeler = null;
@@ -44,7 +45,15 @@ class BpmnModelerComponent extends Component {
   };
 
   getBpmnDiagramXML = () => {
-    this.modeler.saveXML().then((json) => console.log(json.xml));
+    this.modeler.saveXML().then((json) => {
+      console.log(json.xml);
+      var xml = json.xml;
+      this.xmlToJson(xml);
+    });
+  };
+  xmlToJson = (xml) => {
+    var result = convert.xml2json(xml, { compact: true, spaces: 4 });
+    console.log(result);
   };
 
   render = () => {
