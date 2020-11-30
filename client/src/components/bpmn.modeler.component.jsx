@@ -9,7 +9,6 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 
 class BpmnModelerComponent extends Component {
   modeler = null;
-
   componentDidMount = () => {
     this.modeler = new BpmnModeler({
       container: '#bpmnview',
@@ -43,8 +42,9 @@ class BpmnModelerComponent extends Component {
       canvas.zoom('fit-viewport');
     });
   };
+
   getBpmnDiagramXML = () => {
-    this.modeler.saveXML().then((xml) => console.log(xml));
+    this.modeler.saveXML().then((json) => console.log(json.xml));
   };
 
   render = () => {
