@@ -52,8 +52,13 @@ class BpmnModelerComponent extends Component {
     });
   };
   xmlToJson = (xml) => {
-    var result = convert.xml2json(xml, { compact: true, spaces: 4 });
-    console.log(result);
+    var body = convert.xml2json(xml, { compact: true, spaces: 4 });
+    console.log(body);
+    fetch('/parse-xml', {
+      method: 'POST',
+      body,
+      headers: { 'Content-Type': 'application/json' },
+    });
   };
 
   render = () => {
