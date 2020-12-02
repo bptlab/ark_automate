@@ -1,4 +1,4 @@
-const parser = require('./parsing/parser');
+const XYZparser = require('./parsing/parser.js');
 const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
@@ -25,17 +25,13 @@ if (!isDev && cluster.isMaster) {
   const app = express();
 
   // Priority serve any static files.
-  app.use(
-    bodyParser.urlencoded({
-      extended: true,
-    })
-  );
-  app.use(bodyParser.json());
+  app.use(express.static(path.resolve(__dirname, '../client/build')));
+  app.use(express.json());
 
   app.post('/parse-xml', (req, res) => {
-    //parser.parseXML(req.body);
-    console.log(req.body);
-    res.send(req.body);
+    XYZparser.parseXML(req.body);
+    //console.log(req.body);
+    //res.send(req.body);
   });
 
   app.listen(PORT, function () {
