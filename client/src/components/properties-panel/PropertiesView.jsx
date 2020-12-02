@@ -16,8 +16,8 @@ function applicationSelected(event) {
     ));
   })()
 
-  async function fetchTasksForApplication() {
-    return await fetch('get-available-tasks-for-application?application=Browser')
+  async function fetchTasksForApplication(value) {
+    return await fetch('get-available-tasks-for-application?application=' + value.replace(' ', '+'))
       .then((response) => response.json())
       .then(data => {
         return data;
