@@ -1,37 +1,31 @@
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 
 import React, { Component } from 'react';
+import PropertiesPanelTaskDropdown from './PropertiesPanelTaskDropdown.jsx'
 
 import './PropertiesView.css';
 
-var applicationsOptions, taskOptions;
+var applicationsOptions, taskList = [];
 var applicationToTaskMap = new Map();
 
 function updateTaskListForSelectedApplication(event) {
   let selectedApplication = event.target.value;
   console.log(selectedApplication);
   if (applicationToTaskMap.has(selectedApplication)) {
-    let taskList = applicationToTaskMap.get(selectedApplication);
-    taskOptions = returnHTMLElementsForTaskList(taskList);
+    taskList = applicationToTaskMap.get(selectedApplication);
   } else {
     (async () => {
-      taskOptions = await fetchTasksForApplication(selectedApplication);
+      taskList = await fetchTasksForApplication(selectedApplication);
     })()
-  }
-
-  function returnHTMLElementsForTaskList(list) {
-    return list.map((task) => (
-      <option value={task}>{task}</option>
-    ));
   }
 
   async function fetchTasksForApplication(value) {
     return await fetch('get-available-tasks-for-application?application=' + value.replace(' ', '+'))
       .then((response) => response.json())
       .then(data => {
-        console.log(data);
+        console.log('fetched data: ' + data);
         applicationToTaskMap.set(value, data);
-        return returnHTMLElementsForTaskList(data);
+        return data;
       })
   };
 }
@@ -46,25 +40,18 @@ export default class PropertiesView extends Component {
     };
   }
 
-  /* getApplication() {
-    let dropdown = this.applicationDropdownRef.current;
-    console.log(dropdown);
-    let app = dropdown.options[dropdown.selectedIndex].value;
-    console.log(app);
-    return app;
-  } */
+  async fetchApplicationsFromDatabase() {
+    return await fetch('/get-available-applications')
+      .then((response) => response.json())
+      .then(data => {
+        return data;
+      })
+  };
+
 
   componentDidMount() {
-    async function fetchApplicationsFromDatabase() {
-      return await fetch('/get-available-applications')
-        .then((response) => response.json())
-        .then(data => {
-          return data;
-        })
-    };
-
     (async () => {
-      let myFetch = await fetchApplicationsFromDatabase();
+      let myFetch = await this.fetchApplicationsFromDatabase();
       applicationsOptions = myFetch.map((app) => (
         <option value={app}>{app}</option>
       ));
@@ -254,13 +241,8 @@ function PropertyPanelBuilder(props) {
                 </option>
                 {applicationsOptions}
               </select>
-
-              <select>
-                <option value='' disabled selected>
-                  Please Select
-                </option>
-                {taskOptions}
-              </select>
+              <PropertiesPanelTaskDropdown list={taskList} />
+              {/* <PropertyPanelTasksDropdown list={"Das wird mal ne Liste"} /> */}
             </>
           )
         }
