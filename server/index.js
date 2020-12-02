@@ -1,4 +1,4 @@
-const XYZparser = require('./parsing/parser.js');
+const parser = require('./parsing/parser.js');
 const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
@@ -28,10 +28,9 @@ if (!isDev && cluster.isMaster) {
   app.use(express.static(path.resolve(__dirname, '../client/build')));
   app.use(express.json());
 
-  app.post('/parse-xml', (req, res) => {
-    XYZparser.parseXML(req.body);
-    //console.log(req.body);
-    //res.send(req.body);
+  app.post('/parse-diagram-to-robot', (req, res) => {
+    let result = parser.parseDiagramJson(req.body);
+    res.send(result);
   });
 
   app.listen(PORT, function () {

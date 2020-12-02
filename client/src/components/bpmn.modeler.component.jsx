@@ -44,21 +44,45 @@ class BpmnModelerComponent extends Component {
     });
   };
 
+  downloadString = (text, fileType, fileName) => {
+    var blob = new Blob([text], { type: fileType });
+
+    var a = document.createElement('a');
+    a.download = fileName;
+    a.href = URL.createObjectURL(blob);
+    a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () {
+      URL.revokeObjectURL(a.href);
+    }, 1500);
+  };
+
   getBpmnDiagramXML = () => {
     this.modeler.saveXML().then((json) => {
       console.log(json.xml);
       var xml = json.xml;
-      this.xmlToJson(xml);
+      this.downloadRobotFile(xml);
     });
   };
-  xmlToJson = (xml) => {
+
+  downloadRobotFile = (xml) => {
     var body = convert.xml2json(xml, { compact: true, spaces: 4 });
     console.log(body);
-    fetch('/parse-xml', {
+    fetch('/parse-diagram-to-robot', {
       method: 'POST',
       body,
       headers: { 'Content-Type': 'application/json' },
-    });
+    })
+      .then((res) => {
+        let robot = res.text();
+        return robot;
+      })
+      .then((robot) => {
+        this.downloadString(robot, 'text/robot', 'testRobot.robot');
+      });
   };
 
   render = () => {
@@ -78,7 +102,7 @@ class BpmnModelerComponent extends Component {
           id='bpmnview'
           style={{ width: '75%', height: '98vh', float: 'left' }}
         >
-          <button onClick={this.getBpmnDiagramXML}>XMLButton</button>
+          <button onClick={this.getBpmnDiagramXML}>Get Robot file</button>
         </div>
       </div>
     );
