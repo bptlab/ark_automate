@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
+import updateTaskListForSelectedApplication from './PropertiesView.jsx'
+
 export default class PropertiesPanelTaskDropdown extends Component {
     render() {
         let dropdownOptions = this.props.list;
-        console.log("Render with Options: " + dropdownOptions);
 
-        return (
-            <select>
+        return <>
+            <select onChange={updateTaskListForSelectedApplication}>
                 <option value='' disabled selected>
                     Please Select
                 </option>{
@@ -15,6 +16,6 @@ export default class PropertiesPanelTaskDropdown extends Component {
                         <option value={task}>{task}</option>
                     ))}
             </select>
-        )
+        </>
     }
 }

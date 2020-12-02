@@ -2,33 +2,15 @@ import { is } from 'bpmn-js/lib/util/ModelUtil';
 
 import React, { Component } from 'react';
 import PropertiesPanelTaskDropdown from './PropertiesPanelTaskDropdown.jsx'
+import PropertiesPanelApplicationDropdown from './PropertiesPanelApplicationDropdown.jsx'
+
 
 import './PropertiesView.css';
 
-var applicationsOptions, taskList = [];
+var applicationsList = [], taskList = [];
 var applicationToTaskMap = new Map();
 
-function updateTaskListForSelectedApplication(event) {
-  let selectedApplication = event.target.value;
-  console.log(selectedApplication);
-  if (applicationToTaskMap.has(selectedApplication)) {
-    taskList = applicationToTaskMap.get(selectedApplication);
-  } else {
-    (async () => {
-      taskList = await fetchTasksForApplication(selectedApplication);
-    })()
-  }
 
-  async function fetchTasksForApplication(value) {
-    return await fetch('get-available-tasks-for-application?application=' + value.replace(' ', '+'))
-      .then((response) => response.json())
-      .then(data => {
-        console.log('fetched data: ' + data);
-        applicationToTaskMap.set(value, data);
-        return data;
-      })
-  };
-}
 
 export default class PropertiesView extends Component {
   constructor(props) {
@@ -37,6 +19,28 @@ export default class PropertiesView extends Component {
     this.state = {
       selectedElements: [],
       element: null,
+    };
+  }
+
+  updateTaskListForSelectedApplication(event) {
+    let selectedApplication = event.target.value;
+    console.log(selectedApplication);
+    if (applicationToTaskMap.has(selectedApplication)) {
+      taskList = applicationToTaskMap.get(selectedApplication);
+    } else {
+      (async () => {
+        taskList = await fetchTasksForApplication(selectedApplication);
+      })()
+    }
+
+    async function fetchTasksForApplication(value) {
+      return await fetch('get-available-tasks-for-application?application=' + value.replace(' ', '+'))
+        .then((response) => response.json())
+        .then(data => {
+          console.log('fetched data: ' + data);
+          applicationToTaskMap.set(value, data);
+          return data;
+        })
     };
   }
 
@@ -51,10 +55,7 @@ export default class PropertiesView extends Component {
 
   componentDidMount() {
     (async () => {
-      let myFetch = await this.fetchApplicationsFromDatabase();
-      applicationsOptions = myFetch.map((app) => (
-        <option value={app}>{app}</option>
-      ));
+      applicationsList = await this.fetchApplicationsFromDatabase();
     })()
 
     const { modeler } = this.props;
@@ -235,14 +236,8 @@ function PropertyPanelBuilder(props) {
           is(element, 'bpmn:Task') && (
             <>
               <button onClick={makeServiceTask}>Make RPA Task</button>
-              <select onChange={updateTaskListForSelectedApplication} id="applicationSelector">
-                <option value='' disabled selected>
-                  Please Select
-                </option>
-                {applicationsOptions}
-              </select>
+              <PropertiesPanelApplicationDropdown list={applicationsList} />
               <PropertiesPanelTaskDropdown list={taskList} />
-              {/* <PropertyPanelTasksDropdown list={"Das wird mal ne Liste"} /> */}
             </>
           )
         }
