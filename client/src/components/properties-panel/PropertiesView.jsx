@@ -6,14 +6,23 @@ import './PropertiesView.css';
 
 var applicationsOptions, taskOptions;
 
-function setListener() {
-  console.log('Listener landed')
-  let sel = document.getElementById('applicationSelector');
-  sel.addEventListener("change", function () {
-    console.log("Listener triggered");
-    //let show = document.getElementById('show');
-    //show.innerHTML = this.value;
-  });
+function applicationSelected(event) {
+  console.log(event.target.value);
+  (async () => {
+    let myFetch = await /*this.*/fetchTasksForApplication(event.target.value);
+    console.log(myFetch);
+    taskOptions = myFetch.map((task) => (
+      <option value={task}>{task}</option>
+    ));
+  })()
+
+  async function fetchTasksForApplication() {
+    return await fetch('get-available-tasks-for-application?application=Browser')
+      .then((response) => response.json())
+      .then(data => {
+        return data;
+      })
+  };
 }
 
 export default class PropertiesView extends Component {
@@ -43,23 +52,10 @@ export default class PropertiesView extends Component {
         })
     };
 
-    async function fetchTasksForApplication() {
-      return await fetch('get-available-tasks-for-application?application=MS+Excel')
-        .then((response) => response.json())
-        .then(data => {
-          return data;
-        })
-    };
-
     (async () => {
       let myFetch = await fetchApplicationsFromDatabase();
       applicationsOptions = myFetch.map((app) => (
         <option value={app}>{app}</option>
-      ));
-
-      myFetch = await fetchTasksForApplication();
-      taskOptions = myFetch.map((task) => (
-        <option value={task}>{task}</option>
       ));
     })()
 
@@ -241,7 +237,7 @@ function PropertyPanelBuilder(props) {
           is(element, 'bpmn:Task') && (
             <>
               <button onClick={makeServiceTask}>Make RPA Task</button>
-              <select id="applicationSelector">
+              <select onChange={applicationSelected /*this.applicationSelected.bind(this)*/} id="applicationSelector">
                 <option value='' disabled selected>
                   Please Select
                 </option>
