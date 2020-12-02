@@ -5,22 +5,33 @@ import React, { Component } from 'react';
 import './PropertiesView.css';
 
 var applicationsOptions, taskOptions;
+var applicationToTaskMap = new Map();
 
-function applicationSelected(event) {
-  console.log(event.target.value);
-  (async () => {
-    let myFetch = await /*this.*/fetchTasksForApplication(event.target.value);
-    console.log(myFetch);
-    taskOptions = myFetch.map((task) => (
+function updateTaskListForSelectedApplication(event) {
+  let selectedApplication = event.target.value;
+  console.log(selectedApplication);
+  if (applicationToTaskMap.has(selectedApplication)) {
+    let taskList = applicationToTaskMap.get(selectedApplication);
+    taskOptions = returnHTMLElementsForTaskList(taskList);
+  } else {
+    (async () => {
+      taskOptions = await fetchTasksForApplication(selectedApplication);
+    })()
+  }
+
+  function returnHTMLElementsForTaskList(list) {
+    return list.map((task) => (
       <option value={task}>{task}</option>
     ));
-  })()
+  }
 
   async function fetchTasksForApplication(value) {
     return await fetch('get-available-tasks-for-application?application=' + value.replace(' ', '+'))
       .then((response) => response.json())
       .then(data => {
-        return data;
+        console.log(data);
+        applicationToTaskMap.set(value, data);
+        return returnHTMLElementsForTaskList(data);
       })
   };
 }
@@ -237,7 +248,7 @@ function PropertyPanelBuilder(props) {
           is(element, 'bpmn:Task') && (
             <>
               <button onClick={makeServiceTask}>Make RPA Task</button>
-              <select onChange={applicationSelected /*this.applicationSelected.bind(this)*/} id="applicationSelector">
+              <select onChange={updateTaskListForSelectedApplication} id="applicationSelector">
                 <option value='' disabled selected>
                   Please Select
                 </option>
