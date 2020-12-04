@@ -8,9 +8,6 @@ import PropertiesPanelApplicationDropdown from './PropertiesPanelApplicationDrop
 import './PropertiesView.css';
 
 var applicationsList = [], taskList = [];
-var applicationToTaskMap = new Map();
-
-
 
 export default class PropertiesView extends Component {
   constructor(props) {
@@ -19,28 +16,6 @@ export default class PropertiesView extends Component {
     this.state = {
       selectedElements: [],
       element: null,
-    };
-  }
-
-  updateTaskListForSelectedApplication(event) {
-    let selectedApplication = event.target.value;
-    console.log(selectedApplication);
-    if (applicationToTaskMap.has(selectedApplication)) {
-      taskList = applicationToTaskMap.get(selectedApplication);
-    } else {
-      (async () => {
-        taskList = await fetchTasksForApplication(selectedApplication);
-      })()
-    }
-
-    async function fetchTasksForApplication(value) {
-      return await fetch('get-available-tasks-for-application?application=' + value.replace(' ', '+'))
-        .then((response) => response.json())
-        .then(data => {
-          console.log('fetched data: ' + data);
-          applicationToTaskMap.set(value, data);
-          return data;
-        })
     };
   }
 
