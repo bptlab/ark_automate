@@ -1,46 +1,17 @@
 import React, { Component } from 'react';
+import PropertiesPanelTaskDropdown from './PropertiesPanelTaskDropdown.jsx'
 
-/*  ToDo: actually the tasklist ist not passed to the parents component 
-*/
-
-var applicationToTaskMap = new Map();
-var taskList = [];
-
-export default class PropertiesPanelTaskDropdown extends Component {
-    updateTaskListForSelectedApplication(event) {
-        console.log("triggered00");
-        let selectedApplication = event.target.value;
-        console.log(selectedApplication);
-        if (applicationToTaskMap.has(selectedApplication)) {
-            taskList = applicationToTaskMap.get(selectedApplication);
-        } else {
-            (async () => {
-                taskList = await fetchTasksForApplication(selectedApplication);
-            })()
-        }
-
-        async function fetchTasksForApplication(value) {
-            return await fetch('get-available-tasks-for-application?application=' + value.replace(' ', '+'))
-                .then((response) => response.json())
-                .then(data => {
-                    console.log('fetched data: ' + data);
-                    applicationToTaskMap.set(value, data);
-                    return data;
-                })
-        };
-    }
-
+export default class PropertiesPanelApplicationDropdown extends Component {
+    
     render() {
-        let dropdownOptions = this.props.list;
-
         return <>
-            <select onChange={this.updateTaskListForSelectedApplication}>
+            <select onChange={this.props.onApplicationSelection}>
                 <option value='' disabled selected>
                     Please Select
                 </option>{
                     //create <option> entries from props-list
-                    dropdownOptions.map((task) => (
-                        <option value={task}>{task}</option>
+                    this.props.applications.map((application) => (
+                        <option value={application}>{application}</option>
                     ))}
             </select>
         </>
