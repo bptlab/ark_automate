@@ -3,10 +3,7 @@
  * - there are problems which happen with the element and modeler. I tried fixing it, but couldn't manage it yet.
  *    please use with care and refactor!
  * - https://react-select.com/home could be a consideration going forward because of the additional functionality it offers of typing into the field i.e.
- * - when updating the list of tasks available there is an issue with the state as it seems to be one step behind and not have the current selected Application
- * - If possible the map functionality should be back-introduced as it could save valuable seconds when switching back and forth between apps so that
- *    the tasks do not need to be refreshed every time
- * - the previous todo could be one step to achieve this, but currently the selection of tasks is ready too slow for my taste after selecting the application
+ * - currently the selection of tasks is really too slow for my taste after selecting the application
  * - research if there is any better way than binding the 'this' keyword for the callback functions for the child components
  * - use a consistent naming scheme i.e. use of the plural of property throughout names
  */
@@ -18,9 +15,6 @@ import PropertiesPanelTaskDropdown from './PropertiesPanelTaskDropdown'
 
 import './PropertiesView.css';
 
-var applicationsList = [], taskList = [];
-var applicationToTaskMap = new Map();
-
 export default class PropertyPanelBuilder extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +23,6 @@ export default class PropertyPanelBuilder extends Component {
       selectedElements: [],
       element: props.element,
       modeler : props.modeler,
-      availableApplications : [''],
       selectedApplication : '',
       tasksForSelectedApplication : [''],
       disableTaskSelection : true
@@ -41,23 +34,27 @@ export default class PropertyPanelBuilder extends Component {
         element : element.labelTarget
       });
     }
+
+    this.initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
+    this.initSessionStorage('AvailableApplications', []);
+  }
+
+  initSessionStorage (itemToCheckFor, valueToInitTo) {
+    if(sessionStorage.getItem(itemToCheckFor) === null) sessionStorage.setItem(itemToCheckFor, valueToInitTo);
   }
 
   componentDidMount() {
-    this.getAvailableApplications();
-    console.log(this.state['availableApplications']);
+    let applicationList = sessionStorage.getItem('AvailableApplications');
+    if(applicationList.length < 1) this.saveAvailableApplicationsToSessionStorage(); //typeof image_array !== 'undefined' && image_array.length > 0
   }
 
-  async getAvailableApplications() {
+  async saveAvailableApplicationsToSessionStorage() {
     await fetch('/get-available-applications')
           .then((response) => response.json())
           .then(data => {
             console.log(data);
-            this.setState({
-              availableApplications : data
-            });
+            sessionStorage.setItem('AvailableApplications', data);
         })
-    console.log('Set State to App List');
   }
 
   updateName(name) {
@@ -76,31 +73,41 @@ export default class PropertyPanelBuilder extends Component {
   }
 
   updateSelectedApplication(event) {
-    this.getTasksForApplication(event.target.value); 
-
     this.setState({
       selectedApplication : event.target.value
-    }, () => console.log('New state: ', this.state));
-    console.log('New Application selected: ' + event.target.value);
+    }, () => this.getTasksForApplication());
   }
 
-  async getTasksForApplication(application) { //this should later be done through the state, but caused problems doing so for now
-    await fetch('get-available-tasks-for-application?application=' + application.replace(' ', '+'))
+  async getTasksForApplication() {
+    let currentApplicationSelection = this.state['selectedApplication'];
+    let currentSavedTasksObject = JSON.parse(sessionStorage.getItem('TaskToApplicationCache'));
+    
+    if (currentApplicationSelection in currentSavedTasksObject) {
+      console.log('Saved in cache: ' + currentSavedTasksObject[currentApplicationSelection]);
+      this.setState({
+        tasksForSelectedApplication : currentSavedTasksObject[currentApplicationSelection],
+        disableTaskSelection : false
+      });
+    } else {
+      await fetch('get-available-tasks-for-application?application=' + currentApplicationSelection.replace(' ', '+'))
       .then((response) => response.json())
       .then(data => {
-        console.log('list of returned tasks for app: ', data);
+        currentSavedTasksObject[currentApplicationSelection] = data;
+        sessionStorage.setItem('TaskToApplicationCache', JSON.stringify(currentSavedTasksObject));
+
         this.setState({
           tasksForSelectedApplication : data,
           disableTaskSelection : false
         });
-    }, () => console.log('Updated Parent State:', this.state));
+      })
+    }
   }
 
   updateSelectedTask(event) {
     this.setState({
       selectedTask : event.target.value
     });
-    console.log('New Task selected: ' + event.target.value + ' for Application ' + this.state['selectedApplication']);
+    console.log('New Task selected: ' + event.target.value + ' for Application: ' + this.state['selectedApplication']);
   }
 
   /*   function makeMessageEvent() {
@@ -213,7 +220,7 @@ export default class PropertyPanelBuilder extends Component {
           is(element, 'bpmn:Task') && (
             <>
               <button onClick={this.makeServiceTask}>Make RPA Task</button>
-              <PropertiesPanelApplicationDropdown onApplicationSelection={this.updateSelectedApplication.bind(this)} applications={this.state['availableApplications']}/>
+              <PropertiesPanelApplicationDropdown onApplicationSelection={this.updateSelectedApplication.bind(this)} applications={sessionStorage.getItem('AvailableApplications').split(',')}/>
               <PropertiesPanelTaskDropdown listOfTasks={this.state['tasksForSelectedApplication']} onTaskSelection={this.updateSelectedTask.bind(this)} disabled={this.state['disableTaskSelection']}/>
             </>
           )
