@@ -1,4 +1,3 @@
-const parser = require('./parsing/parser.js');
 const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
@@ -27,11 +26,6 @@ if (!isDev && cluster.isMaster) {
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, '../client/build')));
   app.use(express.json());
-
-  app.post('/parse-diagram-to-robot', (req, res) => {
-    let result = parser.parseDiagramJson(req.body);
-    res.send(result);
-  });
 
   app.listen(PORT, function () {
     console.error(

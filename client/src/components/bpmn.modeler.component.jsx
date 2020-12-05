@@ -6,6 +6,7 @@ import { emptyBpmn } from '../assets/empty.bpmn';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
+const parser = require('../parser.js');
 var convert = require('xml-js');
 
 class BpmnModelerComponent extends Component {
@@ -70,19 +71,10 @@ class BpmnModelerComponent extends Component {
 
   downloadRobotFile = (xml) => {
     var body = convert.xml2json(xml, { compact: true, spaces: 4 });
-    console.log(body);
-    fetch('/parse-diagram-to-robot', {
-      method: 'POST',
-      body,
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((res) => {
-        let robot = res.text();
-        return robot;
-      })
-      .then((robot) => {
-        this.downloadString(robot, 'text/robot', 'testRobot.robot');
-      });
+    let jsonBody = JSON.parse(body);
+    console.log(jsonBody['bpmn2:definitions']);
+    let robot = parser.parseDiagramJson(jsonBody);
+    this.downloadString(robot, 'text/robot', 'testRobot.robot');
   };
 
   render = () => {
