@@ -1,12 +1,10 @@
-import { is } from 'bpmn-js/lib/util/ModelUtil';
-
 import React, { Component } from 'react';
-import PropertyPanelBuilder from './PropertyPanelBuilder'
+import PropertyPanelBuilder from './PropertiesPanelBuilder'
 
 
 import './PropertiesView.css';
 
-var applicationsList = [], taskList = [];
+var applicationsList = [];
 
 export default class PropertiesView extends Component {
   constructor(props) {
@@ -28,11 +26,6 @@ export default class PropertiesView extends Component {
 
 
   componentDidMount() {
-    (async () => {
-      applicationsList = await this.fetchApplicationsFromDatabase();
-    })()
-    console.log('PropertiesView was mounted');
-
     const { modeler } = this.props;
 
     modeler.on('selection.changed', (e) => {
