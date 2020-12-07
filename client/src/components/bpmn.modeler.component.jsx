@@ -6,7 +6,7 @@ import { emptyBpmn } from '../assets/empty.bpmn';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-const parser = require('../parser.js');
+const parser = require('../parser/parser.js');
 var convert = require('xml-js');
 
 class BpmnModelerComponent extends Component {

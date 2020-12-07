@@ -1,0 +1,183 @@
+{
+  "_attributes": {
+    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+    "xmlns:bpmn2": "http://www.omg.org/spec/BPMN/20100524/MODEL",
+    "xmlns:bpmndi": "http://www.omg.org/spec/BPMN/20100524/DI",
+    "xmlns:dc": "http://www.omg.org/spec/DD/20100524/DC",
+    "xmlns:camunda": "http://camunda.org/schema/1.0/bpmn",
+    "xmlns:di": "http://www.omg.org/spec/DD/20100524/DI",
+    "id": "sample-diagram",
+    "targetNamespace": "http://bpmn.io/schema/bpmn",
+    "xsi:schemaLocation": "http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+  },
+  "bpmn2:process": {
+    "_attributes": {
+      "id": "Process_0aq2sg6"
+    },
+    "bpmn2:startEvent": {
+      "_attributes": {
+        "id": "Event_0red1wg"
+      },
+      "bpmn2:outgoing": {
+        "_text": "Flow_1l1qwc2"
+      }
+    },
+    "bpmn2:task": {
+      "_attributes": {
+        "id": "Activity_16dbcoa",
+        "name": "Open Google"
+      },
+      "bpmn2:extensionElements": {
+        "camunda:properties": {
+          "camunda:property": [
+            {
+              "_attributes": {
+                "name": "App",
+                "value": "Browser"
+              }
+            },
+            {
+              "_attributes": {
+                "name": "Task",
+                "value": "Open Browser"
+              }
+            },
+            {
+              "_attributes": {
+                "name": "url",
+                "value": "google.com"
+              }
+            }
+          ]
+        }
+      },
+      "bpmn2:incoming": {
+        "_text": "Flow_1l1qwc2"
+      },
+      "bpmn2:outgoing": {
+        "_text": "Flow_0chwnzo"
+      }
+    },
+    "bpmn2:sequenceFlow": [
+      {
+        "_attributes": {
+          "id": "Flow_1l1qwc2",
+          "sourceRef": "Event_0red1wg",
+          "targetRef": "Activity_16dbcoa"
+        }
+      },
+      {
+        "_attributes": {
+          "id": "Flow_0chwnzo",
+          "sourceRef": "Activity_16dbcoa",
+          "targetRef": "Event_0ntx0b7"
+        }
+      }
+    ],
+    "bpmn2:endEvent": {
+      "_attributes": {
+        "id": "Event_0ntx0b7"
+      },
+      "bpmn2:incoming": {
+        "_text": "Flow_0chwnzo"
+      }
+    }
+  },
+  "bpmndi:BPMNDiagram": {
+    "_attributes": {
+      "id": "BPMNDiagram_1"
+    },
+    "bpmndi:BPMNPlane": {
+      "_attributes": {
+        "id": "BPMNPlane_1",
+        "bpmnElement": "Process_0aq2sg6"
+      },
+      "bpmndi:BPMNEdge": [
+        {
+          "_attributes": {
+            "id": "Flow_1l1qwc2_di",
+            "bpmnElement": "Flow_1l1qwc2"
+          },
+          "di:waypoint": [
+            {
+              "_attributes": {
+                "x": "378",
+                "y": "270"
+              }
+            },
+            {
+              "_attributes": {
+                "x": "430",
+                "y": "270"
+              }
+            }
+          ]
+        },
+        {
+          "_attributes": {
+            "id": "Flow_0chwnzo_di",
+            "bpmnElement": "Flow_0chwnzo"
+          },
+          "di:waypoint": [
+            {
+              "_attributes": {
+                "x": "530",
+                "y": "270"
+              }
+            },
+            {
+              "_attributes": {
+                "x": "582",
+                "y": "270"
+              }
+            }
+          ]
+        }
+      ],
+      "bpmndi:BPMNShape": [
+        {
+          "_attributes": {
+            "id": "Event_0red1wg_di",
+            "bpmnElement": "Event_0red1wg"
+          },
+          "dc:Bounds": {
+            "_attributes": {
+              "x": "342",
+              "y": "252",
+              "width": "36",
+              "height": "36"
+            }
+          }
+        },
+        {
+          "_attributes": {
+            "id": "Activity_16dbcoa_di",
+            "bpmnElement": "Activity_16dbcoa"
+          },
+          "dc:Bounds": {
+            "_attributes": {
+              "x": "430",
+              "y": "230",
+              "width": "100",
+              "height": "80"
+            }
+          }
+        },
+        {
+          "_attributes": {
+            "id": "Event_0ntx0b7_di",
+            "bpmnElement": "Event_0ntx0b7"
+          },
+          "dc:Bounds": {
+            "_attributes": {
+              "x": "582",
+              "y": "252",
+              "width": "36",
+              "height": "36"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
