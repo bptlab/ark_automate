@@ -1,10 +1,10 @@
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 
 import React, { Component } from 'react';
-import PropertiesPanelApplicationDropdown from './PropertiesPanelApplicationDropdown'
-import PropertiesPanelTaskDropdown from './PropertiesPanelTaskDropdown'
+import PropertiesPanelApplicationDropdown from '../propertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown'
+import PropertiesPanelTaskDropdown from '../propertiesPanelTaskDropdown/PropertiesPanelTaskDropdown'
 
-import './PropertiesView.css';
+import '../propertiesView/PropertiesView.css';
 
 /**
  * @class

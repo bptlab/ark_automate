@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import PropertyPanelBuilder from './PropertiesPanelBuilder'
+import PropertyPanelBuilder from '../propertiesPanelBuilder/PropertiesPanelBuilder'
 import './PropertiesView.css';
+
 
 /**
  * @class
