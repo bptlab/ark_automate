@@ -35,6 +35,9 @@ export default class PropertyPanelBuilder extends Component {
       });
     }
 
+    this.updateSelectedApplication = this.updateSelectedApplication.bind(this);
+    this.updateSelectedTask = this.updateSelectedTask.bind(this);
+
     this.initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
     this.initSessionStorage('AvailableApplications', []);
   }
@@ -220,8 +223,8 @@ export default class PropertyPanelBuilder extends Component {
           is(element, 'bpmn:Task') && (
             <>
               <button onClick={this.makeServiceTask}>Make RPA Task</button>
-              <PropertiesPanelApplicationDropdown onApplicationSelection={this.updateSelectedApplication.bind(this)} applications={sessionStorage.getItem('AvailableApplications').split(',')}/>
-              <PropertiesPanelTaskDropdown listOfTasks={this.state['tasksForSelectedApplication']} onTaskSelection={this.updateSelectedTask.bind(this)} disabled={this.state['disableTaskSelection']}/>
+              <PropertiesPanelApplicationDropdown onApplicationSelection={this.updateSelectedApplication} applications={sessionStorage.getItem('AvailableApplications').split(',')}/>
+              <PropertiesPanelTaskDropdown listOfTasks={this.state['tasksForSelectedApplication']} onTaskSelection={this.updateSelectedTask} disabled={this.state['disableTaskSelection']}/>
             </>
           )
         }

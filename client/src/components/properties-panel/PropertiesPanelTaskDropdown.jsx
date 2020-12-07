@@ -1,27 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-var applicationToTaskMap = new Map(); //TODO reimplement map to save time + ressources
-
-export default class PropertiesPanelTaskDropdown extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedApplication : props.application,
-            taskList : [],
-            taskMap : {}
-        };
-    }
-
-    render() {
-        return (
-            <select onChange={this.props.onTaskSelection} disabled={this.props.disabled ? true : null}>
-                <option value='' disabled selected>
-                    Please Select
-                </option>{
-                    this.props.listOfTasks.map((task) => (
-                        <option value={task}>{task}</option>
-                    ))}
-            </select>
-        )
-    }
+export default function PropertiesPanelTaskDropdown (props) {
+    return <>
+        <select onChange={props.onTaskSelection} disabled={props.disabled ? true : null}>
+            <option value='' disabled selected>
+                Please Select
+            </option>{
+                props.listOfTasks.map((task) => (
+                    <option value={task}>{task}</option>
+                ))}
+        </select>
+    </>
 }
