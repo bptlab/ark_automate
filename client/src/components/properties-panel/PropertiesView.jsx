@@ -1,30 +1,30 @@
 import React, { Component } from 'react';
 import PropertyPanelBuilder from './PropertiesPanelBuilder'
-
-
 import './PropertiesView.css';
 
-var applicationsList = [];
+/**
+ * @class
+ * @component
+ * @classdesc This class decides which sidebar is displayed. It updates itself depending on the number of selected BPMN elements.
+ * @example return (<PropertiesView />)
+ * 
+ * @description Initializes state based on properties. 
+ */
 
 export default class PropertiesView extends Component {
   constructor(props) {
     super(props);
-    this.applicationDropdownRef = React.createRef();
     this.state = {
       selectedElements: [],
       element: null,
     };
   }
 
-  async fetchApplicationsFromDatabase() {
-    return await fetch('/get-available-applications')
-      .then((response) => response.json())
-      .then(data => {
-        return data;
-      })
-  };
-
-
+  /** 
+   * @description
+   * On a changed selection, the selected element changed in the components state.
+   * We also update panel via .setState, if currently selected element changed.
+   */
   componentDidMount() {
     const { modeler } = this.props;
 
@@ -39,14 +39,12 @@ export default class PropertiesView extends Component {
 
     modeler.on('element.changed', (e) => {
       const { element } = e;
-
       const { element: currentElement } = this.state;
 
       if (!currentElement) {
         return;
       }
 
-      // update panel, if currently selected element changed
       if (element.id === currentElement.id) {
         this.setState({
           element,
@@ -56,8 +54,7 @@ export default class PropertiesView extends Component {
   }
 
   render() {
-    const { modeler, application } = this.props;
-
+    const { modeler } = this.props;
     const { selectedElements, element } = this.state;
 
     return (

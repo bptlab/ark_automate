@@ -1,11 +1,3 @@
-/**
- * List of TODOs (order does NOT represent urgency)
- * - there are problems which happen with the element and modeler. I tried fixing it, but couldn't manage it yet.
- *    please use with care and refactor!
- * - https://react-select.com/home could be a consideration going forward because of the additional functionality it offers of typing into the field i.e.
- * - currently the selection of tasks is really too slow for my taste after selecting the application
- * - use a consistent naming scheme i.e. use of the plural of property throughout names
- */
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 
 import React, { Component } from 'react';
