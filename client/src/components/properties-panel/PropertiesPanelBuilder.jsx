@@ -6,12 +6,18 @@ import PropertiesPanelTaskDropdown from './PropertiesPanelTaskDropdown'
 
 import './PropertiesView.css';
 
+/**
+ * @class
+ * @component
+ * @classdesc Builds PropertiesPanel for one selected BPMN-Element.
+ * @example return (<PropertiesPanelBuilder />)
+ * 
+ * @description Initializes state based on properties; initializes session storage. Binds all state-methods.
+ */
 export default class PropertiesPanelBuilder extends Component {
   constructor(props) {
     super(props);
-    this.applicationDropdownRef = React.createRef();
     this.state = {
-      selectedElements: [],
       element: props.element,
       modeler: props.modeler,
       selectedApplication: '',
@@ -34,21 +40,72 @@ export default class PropertiesPanelBuilder extends Component {
     this.initSessionStorage('AvailableApplications', []);
   }
 
+  /**
+   * @description Checks if passed item already exists in session storage and initializes with given value if not existing.
+   * @param {*} itemToCheckFor - The selected item to check for in the session storage.
+   * @param {*} valueToInitTo - The value to init to if the item is not existing in session storage yet.
+   */
   initSessionStorage(itemToCheckFor, valueToInitTo) {
     if (sessionStorage.getItem(itemToCheckFor) === null) sessionStorage.setItem(itemToCheckFor, valueToInitTo);
   }
 
+  /**
+   * @description
+   * Checks if available application list hast just been initialized 
+   * or already populated with values and does so if not done yet.
+   */
   componentDidMount() {
     let applicationList = sessionStorage.getItem('AvailableApplications');
-    if (applicationList.length < 1) this.saveAvailableApplicationsToSessionStorage(); //typeof image_array !== 'undefined' && image_array.length > 0
+    if (applicationList.length < 1) this.saveAvailableApplicationsToSessionStorage();
   }
 
+  /**
+   * @description Fetch all applications from MongoBD and save in session storage.
+   */
   async saveAvailableApplicationsToSessionStorage() {
     await fetch('/get-available-applications')
       .then((response) => response.json())
       .then(data => {
         console.log(data);
         sessionStorage.setItem('AvailableApplications', data);
+      })
+  }
+
+  /**
+   * @description 
+   * Checks if tasks for selected application are already stored in session storage.
+   * Otherwise, fetch tasklist from MongoDB.
+   */
+  async getTasksForApplication() {
+    let selectedApplication = this.state['selectedApplication'];
+    let currentSavedTasksObject = JSON.parse(sessionStorage.getItem('TaskToApplicationCache'));
+
+    if (selectedApplication in currentSavedTasksObject) {
+      this.setState({
+        tasksForSelectedApplication: currentSavedTasksObject[selectedApplication],
+        disableTaskSelection: false
+      });
+    } else {
+      this.fetchTasksFromDB(selectedApplication, currentSavedTasksObject);
+    }
+  }
+
+  /**
+   * @description Fetch tasklist from Mongo-DB and set state to force rerendering.
+   * @param {String} selectedApplication - String with currently selected application from Dropdown
+   * @param {Object} currentSavedTasksObject - Object with all applications and tasks as attributes
+   */
+  async fetchTasksFromDB(selectedApplication, currentSavedTasksObject) {
+    await fetch('get-available-tasks-for-application?application=' + selectedApplication.replace(' ', '+'))
+      .then((response) => response.json())
+      .then(data => {
+        currentSavedTasksObject[selectedApplication] = data;
+        sessionStorage.setItem('TaskToApplicationCache', JSON.stringify(currentSavedTasksObject));
+
+        this.setState({
+          tasksForSelectedApplication: data,
+          disableTaskSelection: false
+        });
       })
   }
 
@@ -73,31 +130,6 @@ export default class PropertiesPanelBuilder extends Component {
     }, () => this.getTasksForApplication());
   }
 
-  async getTasksForApplication() {
-    let currentApplicationSelection = this.state['selectedApplication'];
-    let currentSavedTasksObject = JSON.parse(sessionStorage.getItem('TaskToApplicationCache'));
-
-    if (currentApplicationSelection in currentSavedTasksObject) {
-      console.log('Saved in cache: ' + currentSavedTasksObject[currentApplicationSelection]);
-      this.setState({
-        tasksForSelectedApplication: currentSavedTasksObject[currentApplicationSelection],
-        disableTaskSelection: false
-      });
-    } else {
-      await fetch('get-available-tasks-for-application?application=' + currentApplicationSelection.replace(' ', '+'))
-        .then((response) => response.json())
-        .then(data => {
-          currentSavedTasksObject[currentApplicationSelection] = data;
-          sessionStorage.setItem('TaskToApplicationCache', JSON.stringify(currentSavedTasksObject));
-
-          this.setState({
-            tasksForSelectedApplication: data,
-            disableTaskSelection: false
-          });
-        })
-    }
-  }
-
   updateSelectedTask(event) {
     this.setState({
       selectedTask: event.target.value
@@ -105,18 +137,7 @@ export default class PropertiesPanelBuilder extends Component {
     console.log('New Task selected: ' + event.target.value + ' for Application: ' + this.state['selectedApplication']);
   }
 
-  /*   function makeMessageEvent() {
-      const bpmnReplace = modeler.get('bpmnReplace');
-  
-      bpmnReplace.replaceElement(element, {
-        type: element.businessObject.$type,
-        eventDefinitionType: 'bpmn:TimerEventDefinition',
-      });
-    } */
-
-
   makeServiceTask(name) {
-    console.log(this.state);
     const bpmnReplace = this.state['modeler'].get('bpmnReplace');
 
     let { element } = this.state;
@@ -125,9 +146,18 @@ export default class PropertiesPanelBuilder extends Component {
     });
   }
 
+  /*  function makeMessageEvent() {
+      const bpmnReplace = modeler.get('bpmnReplace');
+  
+      bpmnReplace.replaceElement(element, {
+        type: element.businessObject.$type,
+        eventDefinitionType: 'bpmn:TimerEventDefinition',
+      });
+    } */
+
   attachTimeout() {
     const modeling = this.state['modeler'].get('modeling');
-    const autoPlace = this.state['modeler'].get('autoPlace');
+    //  const autoPlace = this.state['modeler'].get('autoPlace');
     const selection = this.state['modeler'].get('selection');
 
     let { element } = this.state;
@@ -167,14 +197,6 @@ export default class PropertiesPanelBuilder extends Component {
     return autoPlace.append(element, shape);
   }
 
-  //maybe interesting Stuff for JSON-Testing
-  /* const applicationsJSON = {
-    applications: [
-      { appID: 'word', appLabel: 'Microsoft Word' },
-      { appID: 'excel', appLabel: 'Microsoft EXCEL' },
-    ],
-  }; */
-
   render() {
     let { element } = this.state;
 
@@ -211,13 +233,17 @@ export default class PropertiesPanelBuilder extends Component {
           <label>actions</label>
 
           {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask')}
-
           {
             is(element, 'bpmn:Task') && (
               <>
                 <button onClick={this.makeServiceTask}>Make RPA Task</button>
-                <PropertiesPanelApplicationDropdown onApplicationSelection={this.updateSelectedApplication} applications={sessionStorage.getItem('AvailableApplications').split(',')} />
-                <PropertiesPanelTaskDropdown listOfTasks={this.state['tasksForSelectedApplication']} onTaskSelection={this.updateSelectedTask} disabled={this.state['disableTaskSelection']} />
+                <PropertiesPanelApplicationDropdown
+                  onApplicationSelection={this.updateSelectedApplication}
+                  applications={sessionStorage.getItem('AvailableApplications').split(',')} />
+                <PropertiesPanelTaskDropdown
+                  listOfTasks={this.state['tasksForSelectedApplication']}
+                  onTaskSelection={this.updateSelectedTask}
+                  disabled={this.state['disableTaskSelection']} />
               </>
             )
           }
@@ -227,7 +253,7 @@ export default class PropertiesPanelBuilder extends Component {
   }
 }
 
-// helpers ///////////////////
+// helpers ~ legacy ///////////////////
 
 function hasDefinition(event, definitionType) {
   const definitions = event.businessObject.eventDefinitions || [];
