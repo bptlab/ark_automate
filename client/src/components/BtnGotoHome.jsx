@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {NavLink} from 'react-router-dom';
-import {Button} from 'antd';
+import { NavLink } from 'react-router-dom';
+import { Button } from 'antd';
 
 const gotoHome = () => {
     return (
@@ -14,5 +14,5 @@ const gotoHome = () => {
 }
 
 export default gotoHome;
- 
- 
+
+

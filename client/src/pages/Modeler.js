@@ -1,16 +1,31 @@
 import React from 'react';
-import BtnGotoHome from '../components/BtnGotoHome';
-import {Typography} from 'antd';
 import BpmnModelerComponent from '../components/bpmn.modeler.component';
+import { Layout } from 'antd';
+import { Link } from 'react-router-dom';
+import HeaderNavbar from '../components/headerNavbar/HeaderNavbar';
 
-const {Title} = Typography;
+
+const { Footer, Sider, Content } = Layout;
+
 
 const Modeler = () => {
     return (
         <div>
-            <BtnGotoHome/>
+            <Layout>
+                <HeaderNavbar />
+                <Layout>
+                    <Content>
+                        <BpmnModelerComponent />
+                    </Content>
+                    <Sider>Sider</Sider>
+                </Layout>
+                <Footer>
+                    Fußzeile
+                </Footer>
+            </Layout>
+
+
             <React.StrictMode>
-                <BpmnModelerComponent/>
             </React.StrictMode>
         </div>
     );
