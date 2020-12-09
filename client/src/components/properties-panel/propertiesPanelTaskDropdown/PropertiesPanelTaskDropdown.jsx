@@ -23,7 +23,7 @@ export default function PropertiesPanelTaskDropdown(props) {
                 Please Select
             </option>{
                 props.listOfTasks.map((task) => (
-                    <option value={task}>{task}</option>
+                    <option value={task} selected={(task === props.currentSelection)}>{task}</option>
                 ))}
         </select>
     </>

@@ -51,12 +51,14 @@ async function getTasksForApplicationFromDB(application) {
 }
 
 /**
- * @description Will send out request to externel MongoDB Database to retrieve the Id of a specified combination of Application and Task
+ * @description Will send out request to external MongoDB Database 
+ * to retrieve input and output variables for the selected application, task tuple
  * @param {string} application Application to search in
  * @param {string} task Task of that Application to search for
- * @returns {String} Id of the MongoDB Document corresponding to the specified Application and Task
+ * @returns {Object} Object with inputVars and outputVars as properties, each containing 
+ * another Object with the retrieved values
  */
-async function getIdForSelectedTask(application, task) {
+async function getInputOutputForSelectedTask(application, task) {
   const client = new MongoClient(uri, { useUnifiedTopology: true });
   try {
     await client.connect();
@@ -67,10 +69,15 @@ async function getIdForSelectedTask(application, task) {
     const listOfApplications = await collection.findOne({
       Application: application,
       Task: task,
-    }); //test out to set parameter to get only the id here already
+    }, {
+      projection: {
+        'inputVars': 1,
+        'outputVars': 1
+      }
+    }); 
     console.log(listOfApplications);
 
-    return listOfApplications._id;
+    return listOfApplications;
   } catch (err) {
     console.log(err);
   } finally {
@@ -81,5 +88,5 @@ async function getIdForSelectedTask(application, task) {
 module.exports = {
   getDistinctApplicationsFromDB,
   getTasksForApplicationFromDB,
-  getIdForSelectedTask,
+  getInputOutputForSelectedTask,
 };

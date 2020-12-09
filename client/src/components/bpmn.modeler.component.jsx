@@ -7,6 +7,7 @@ import propertiesPanelModule from "bpmn-js-properties-panel";
 import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
 import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
 import PropertiesView from '../components/properties-panel/propertiesView/PropertiesView';
+import arkRPA_ModdleDescriptor from '../assets/modelerPropertiesExtensionRPA/ark-rpa';
 
 class BpmnModelerComponent extends Component {
   modeler = null;
@@ -23,6 +24,7 @@ class BpmnModelerComponent extends Component {
       additionalModules: [propertiesProviderModule],
       moddleExtensions: {
         camunda: camundaModdleDescriptor,
+        arkRPA: arkRPA_ModdleDescriptor
       },
     });
     this.modeler = modeler

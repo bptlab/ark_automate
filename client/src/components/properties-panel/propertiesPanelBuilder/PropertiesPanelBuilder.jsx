@@ -6,6 +6,8 @@ import PropertiesPanelTaskDropdown from '../propertiesPanelTaskDropdown/Properti
 
 import '../propertiesView/PropertiesView.css';
 
+const activityDataRetrieval = require('../../../assets/xmlUtils');
+
 /**
  * @class
  * @component
@@ -57,6 +59,23 @@ export default class PropertiesPanelBuilder extends Component {
   componentDidMount() {
     let applicationList = sessionStorage.getItem('AvailableApplications');
     if (applicationList.length < 1) this.saveAvailableApplicationsToSessionStorage();
+
+    this.checkForExistingRPAAttributes();
+  }
+
+  /**
+   * @description gets called each time the Component is mounted to ensure that if an
+   * element already has an app and Task selected, those will be displayed
+   */
+  checkForExistingRPAAttributes() {
+    let {element} = this.state;
+    if (element.businessObject['$attrs']['arkRPA:application']) this.getTasksForApplication(element.businessObject['$attrs']['arkRPA:application']);
+
+    if (!(element.businessObject['$attrs']['arkRPA:application']) && this.state['disableTaskSelection']) {
+      this.setState({disableTaskSelection: true});
+    } else  {
+      this.setState({disableTaskSelection: false});
+    }
   }
 
   /**
@@ -76,12 +95,12 @@ export default class PropertiesPanelBuilder extends Component {
    * Checks if tasks for selected application are already stored in session storage.
    * Otherwise, fetch tasklist from MongoDB.
    */
-  async getTasksForApplication() {
-    let selectedApplication = this.state['selectedApplication'];
+  async getTasksForApplication(selectedApplication) {
     let currentSavedTasksObject = JSON.parse(sessionStorage.getItem('TaskToApplicationCache'));
 
     if (selectedApplication in currentSavedTasksObject) {
       this.setState({
+        selectedApplication: selectedApplication,
         tasksForSelectedApplication: currentSavedTasksObject[selectedApplication],
         disableTaskSelection: false
       });
@@ -96,7 +115,7 @@ export default class PropertiesPanelBuilder extends Component {
    * @param {Object} currentSavedTasksObject - Object with all applications and tasks as attributes
    */
   async fetchTasksFromDB(selectedApplication, currentSavedTasksObject) {
-    await fetch('get-available-tasks-for-application?application=' + selectedApplication.replace(' ', '+'))
+    await fetch('get-available-tasks-for-application?application=' + selectedApplication.replaceAll(' ', '+'))
       .then((response) => response.json())
       .then(data => {
         currentSavedTasksObject[selectedApplication] = data;
@@ -127,14 +146,17 @@ export default class PropertiesPanelBuilder extends Component {
   updateSelectedApplication(event) {
     this.setState({
       selectedApplication: event.target.value
-    }, () => this.getTasksForApplication());
+    }, () => this.getTasksForApplication(event.target.value));
   }
 
   updateSelectedTask(event) {
     this.setState({
       selectedTask: event.target.value
-    });
-    console.log('New Task selected: ' + event.target.value + ' for Application: ' + this.state['selectedApplication']);
+    }, () => {
+      const modeling = this.state['modeler'].get('modeling');
+      let { element } = this.state;
+      activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], event.target.value, modeling, element, this.state['modeler']);
+    })
   }
 
   makeServiceTask(name) {
@@ -145,15 +167,6 @@ export default class PropertiesPanelBuilder extends Component {
       type: 'bpmn:ServiceTask',
     });
   }
-
-  /*  function makeMessageEvent() {
-      const bpmnReplace = modeler.get('bpmnReplace');
-  
-      bpmnReplace.replaceElement(element, {
-        type: element.businessObject.$type,
-        eventDefinitionType: 'bpmn:TimerEventDefinition',
-      });
-    } */
 
   attachTimeout() {
     const modeling = this.state['modeler'].get('modeling');
@@ -239,11 +252,13 @@ export default class PropertiesPanelBuilder extends Component {
                 <button onClick={this.makeServiceTask}>Make RPA Task</button>
                 <PropertiesPanelApplicationDropdown
                   onApplicationSelection={this.updateSelectedApplication}
-                  applications={sessionStorage.getItem('AvailableApplications').split(',')} />
+                  applications={sessionStorage.getItem('AvailableApplications').split(',')}
+                  currentSelection={element.businessObject['$attrs']['arkRPA:application']} />
                 <PropertiesPanelTaskDropdown
                   listOfTasks={this.state['tasksForSelectedApplication']}
                   onTaskSelection={this.updateSelectedTask}
-                  disabled={this.state['disableTaskSelection']} />
+                  disabled={this.state['disableTaskSelection']} 
+                  currentSelection={element.businessObject['$attrs']['arkRPA:task']} />
               </>
             )
           }

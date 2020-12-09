@@ -21,7 +21,7 @@ export default function PropertiesPanelApplicationDropdown(props) {
                 Please Select
             </option>{
                 props.applications.map((application) => (
-                    <option value={application}>{application}</option>
+                    <option value={application} selected={(application === props.currentSelection)}>{application}</option>
                 ))}
         </select>
     </>
