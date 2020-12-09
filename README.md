@@ -1,5 +1,9 @@
 # ark_automate
 
+[![GitHub stars](https://img.shields.io/github/stars/bptlab/ark_automate)](https://github.com/bptlab/ark_automate)
+![GitHub repo size](https://img.shields.io/github/repo-size/bptlab/ark_automate)
+[![GitHub issues](https://img.shields.io/github/issues/bptlab/ark_automate)](https://github.com/bptlab/ark_automate/issues)
+
 An open source RPA tool which uses BPMN to create bots.
 
 ## Installation & Setup

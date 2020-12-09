@@ -6,8 +6,8 @@ import { emptyBpmn } from '../assets/empty.bpmn';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-const parser = require('../parser.js');
-var convert = require('xml-js');
+import parser from '../parser.js';
+import convert from 'xml-js';
 
 class BpmnModelerComponent extends Component {
   modeler = null;
@@ -48,22 +48,25 @@ class BpmnModelerComponent extends Component {
   downloadString = (text, fileType, fileName) => {
     var blob = new Blob([text], { type: fileType });
 
-    var a = document.createElement('a');
-    a.download = fileName;
-    a.href = URL.createObjectURL(blob);
-    a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    var element = document.createElement('a');
+    element.download = fileName;
+    element.href = URL.createObjectURL(blob);
+    element.dataset.downloadurl = [
+      fileType,
+      element.download,
+      element.href,
+    ].join(':');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
     setTimeout(function () {
-      URL.revokeObjectURL(a.href);
+      URL.revokeObjectURL(element.href);
     }, 1500);
   };
 
-  getBpmnDiagramXML = () => {
+  getBpmnDiagramRobot = () => {
     this.modeler.saveXML().then((json) => {
-      console.log(json.xml);
       var xml = json.xml;
       this.downloadRobotFile(xml);
     });
@@ -72,7 +75,6 @@ class BpmnModelerComponent extends Component {
   downloadRobotFile = (xml) => {
     var body = convert.xml2json(xml, { compact: true, spaces: 4 });
     let jsonBody = JSON.parse(body);
-    console.log(jsonBody['bpmn2:definitions']);
     let robot = parser.parseDiagramJson(jsonBody);
     this.downloadString(robot, 'text/robot', 'testRobot.robot');
   };
@@ -94,7 +96,7 @@ class BpmnModelerComponent extends Component {
           id='bpmnview'
           style={{ width: '75%', height: '98vh', float: 'left' }}
         >
-          <button onClick={this.getBpmnDiagramXML}>Get Robot file</button>
+          <button onClick={this.getBpmnDiagramRobot}>Get Robot file</button>
         </div>
       </div>
     );
