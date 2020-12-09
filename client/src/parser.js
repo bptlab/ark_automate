@@ -73,7 +73,6 @@ function collectUsedApplications(bpmnTasks) {
  */
 function parseDiagramJson(json_data) {
   let parsedCode = '';
-  json_data = require("./parser/convertedModelForTesting1Activity.json")
   var bpmnTasks = json_data['bpmn2:definitions']['bpmn2:process']['bpmn2:task'];
 
   parsedCode += '*** Settings ***\n';
