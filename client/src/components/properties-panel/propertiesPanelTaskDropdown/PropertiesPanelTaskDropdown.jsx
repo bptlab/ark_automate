@@ -1,4 +1,7 @@
 import React from 'react';
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 /**
  * @class
@@ -18,13 +21,16 @@ import React from 'react';
 
 export default function PropertiesPanelTaskDropdown(props) {
     return <>
-        <select onChange={props.onTaskSelection} disabled={props.disabled ? true : null}>
-            <option value='' disabled selected>
-                Please Select
-            </option>{
-                props.listOfTasks.map((task) => (
-                    <option value={task}>{task}</option>
-                ))}
-        </select>
+        <Select
+            showSearch
+            style={{ width: 200 }}
+            placeholder="Please select task"
+            onChange={value => props.onTaskSelection(value)}
+            disabled={props.disabled ? true : null}
+        >
+            {props.listOfTasks.map((task) => (
+                <Option value={task}>{task}</Option>
+            ))}
+        </Select>
     </>
 }

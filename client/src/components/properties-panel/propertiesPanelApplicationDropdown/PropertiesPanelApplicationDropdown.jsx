@@ -1,4 +1,7 @@
 import React from 'react';
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 /**
  * @class
@@ -16,13 +19,15 @@ import React from 'react';
 
 export default function PropertiesPanelApplicationDropdown(props) {
     return <>
-        <select onChange={props.onApplicationSelection}>
-            <option value='' disabled selected>
-                Please Select
-            </option>{
-                props.applications.map((application) => (
-                    <option value={application}>{application}</option>
-                ))}
-        </select>
+        <Select
+            showSearch
+            style={{ width: 200 }}
+            placeholder="Please select application"
+            onChange={value => props.onApplicationSelection(value)}
+        >
+            {props.applications.map((application) => (
+                <Option value={application}>{application}</Option>
+            ))}
+        </Select>
     </>
 }

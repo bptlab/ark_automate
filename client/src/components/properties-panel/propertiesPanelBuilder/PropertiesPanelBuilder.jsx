@@ -124,17 +124,17 @@ export default class PropertiesPanelBuilder extends Component {
     });
   }
 
-  updateSelectedApplication(event) {
+  updateSelectedApplication(value, event) {
     this.setState({
-      selectedApplication: event.target.value
+      selectedApplication: value
     }, () => this.getTasksForApplication());
   }
 
-  updateSelectedTask(event) {
+  updateSelectedTask(value, event) {
     this.setState({
-      selectedTask: event.target.value
+      selectedTask: value
     });
-    console.log('New Task selected: ' + event.target.value + ' for Application: ' + this.state['selectedApplication']);
+    // console.log('New Task selected: ' + value + ' for Application: ' + this.state['selectedApplication']);
   }
 
   makeServiceTask(name) {
