@@ -4,6 +4,10 @@ import React, { Component } from 'react';
 import PropertiesPanelApplicationDropdown from '../propertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown'
 import PropertiesPanelTaskDropdown from '../propertiesPanelTaskDropdown/PropertiesPanelTaskDropdown'
 
+import { Button } from 'antd';
+import { RobotOutlined } from '@ant-design/icons';
+
+
 import '../propertiesView/PropertiesView.css';
 
 /**
@@ -236,7 +240,7 @@ export default class PropertiesPanelBuilder extends Component {
           {
             is(element, 'bpmn:Task') && (
               <>
-                <button onClick={this.makeServiceTask}>Make RPA Task</button>
+                <Button type="primary" onClick={this.makeServiceTask} icon={<RobotOutlined />}>Make RPA Task</Button>
                 <PropertiesPanelApplicationDropdown
                   onApplicationSelection={this.updateSelectedApplication}
                   applications={sessionStorage.getItem('AvailableApplications').split(',')} />
