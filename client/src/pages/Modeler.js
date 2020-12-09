@@ -1,5 +1,5 @@
 import React from 'react';
-import BpmnModelerComponent from '../components/bpmn.modeler.component';
+import BpmnModelerComponent from '../components/BpmnModeler';
 import { Layout } from 'antd';
 import { Link } from 'react-router-dom';
 import HeaderNavbar from '../components/headerNavbar/HeaderNavbar';

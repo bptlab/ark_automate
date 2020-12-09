@@ -6,7 +6,7 @@ import { emptyBpmn } from "../assets/empty.bpmn";
 import propertiesPanelModule from "bpmn-js-properties-panel";
 import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
 import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
-import PropertiesView from '../components/properties-panel/propertiesView/PropertiesView';
+import PropertiesView from './properties-panel/propertiesView/PropertiesView';
 
 class BpmnModelerComponent extends Component {
   modeler = null;

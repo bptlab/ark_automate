@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 
+import './HeaderNavbar.css';
 
 const { Header, Footer, Sider, Content } = Layout;
 
