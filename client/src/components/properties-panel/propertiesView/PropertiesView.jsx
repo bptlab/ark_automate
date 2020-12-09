@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropertyPanelBuilder from '../propertiesPanelBuilder/PropertiesPanelBuilder'
 import './PropertiesView.css';
 
+import { Typography } from 'antd';
+
+const { Title } = Typography;
 
 /**
  * @class
@@ -65,7 +68,9 @@ export default class PropertiesView extends Component {
         )}
 
         {selectedElements.length === 0 && (
-          <span>Please select an element.</span>
+          <span>
+            Please select an element.
+          </span>
         )}
 
         {selectedElements.length > 1 && (

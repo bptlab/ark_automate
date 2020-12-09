@@ -9,3 +9,7 @@
 .element-properties button + button {
     margin-left: 10px;
 }
+
+Title{
+    color : red;
+}

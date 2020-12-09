@@ -7,6 +7,9 @@ import PropertiesPanelTaskDropdown from '../propertiesPanelTaskDropdown/Properti
 import { Button } from 'antd';
 import { RobotOutlined } from '@ant-design/icons';
 
+import { Input, Tooltip } from 'antd';
+import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons'
+
 
 import '../propertiesView/PropertiesView.css';
 
@@ -207,13 +210,24 @@ export default class PropertiesPanelBuilder extends Component {
     return (<>
       <div className='element-properties' key={element.id}>
         <fieldset>
+          {is(element, 'bpmn:Task') && (<label>Activity</label>)}
+        </fieldset>
+
+        <fieldset>
           <label>id</label>
           <span>{element.id}</span>
         </fieldset>
 
         <fieldset>
           <label>name</label>
-          <input
+          <Input
+            placeholder="name"
+            /*prefix={<UserOutlined className="site-form-item-icon" />}*/
+            suffix={
+              <Tooltip title="the name of your task, gateway or event">
+                <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+              </Tooltip>
+            }
             value={element.businessObject.name || ''}
             onChange={(event) => {
               this.updateName(event.target.value);
@@ -244,6 +258,7 @@ export default class PropertiesPanelBuilder extends Component {
                 <PropertiesPanelApplicationDropdown
                   onApplicationSelection={this.updateSelectedApplication}
                   applications={sessionStorage.getItem('AvailableApplications').split(',')} />
+                <br />
                 <PropertiesPanelTaskDropdown
                   listOfTasks={this.state['tasksForSelectedApplication']}
                   onTaskSelection={this.updateSelectedTask}

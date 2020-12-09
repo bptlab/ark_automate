@@ -3,7 +3,10 @@ import BpmnModelerComponent from '../components/BpmnModeler';
 import { Layout } from 'antd';
 import { Link } from 'react-router-dom';
 import HeaderNavbar from '../components/headerNavbar/HeaderNavbar';
+import PropertiesView from '../components/properties-panel/propertiesView/PropertiesView';
 
+import { Button } from 'antd';
+import { RobotOutlined } from '@ant-design/icons';
 
 const { Footer, Sider, Content } = Layout;
 
@@ -14,10 +17,13 @@ const Modeler = () => {
             <Layout>
                 <HeaderNavbar />
                 <Layout>
-                    <Content>
+                    <BpmnModelerComponent />
+                    {/* <Content>
                         <BpmnModelerComponent />
                     </Content>
-                    <Sider>Sider</Sider>
+                    <Sider>
+                        <Button type="primary" icon={<RobotOutlined />}>Make RPA Task</Button>
+                    </Sider> */}
                 </Layout>
                 <Footer>
                     Fußzeile

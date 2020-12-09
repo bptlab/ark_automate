@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import './HeaderNavbar.css';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header } = Layout;
 
 export default class HeaderNavbar extends Component {
     render() {

@@ -8,6 +8,13 @@ import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camu
 import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
 import PropertiesView from './properties-panel/propertiesView/PropertiesView';
 
+import { Button } from 'antd';
+import { RobotOutlined } from '@ant-design/icons';
+
+import { Layout } from 'antd';
+
+const { Content, Sider } = Layout;
+
 class BpmnModelerComponent extends Component {
   modeler = null;
 
@@ -49,13 +56,20 @@ class BpmnModelerComponent extends Component {
 
   render = () => {
     return (
-      <div id="bpmncontainer">
-        <div
-          id="bpmnview"
-          style={{ width: "85%", height: "98vh", float: "left" }}
-        ></div>
-        {this.modeler && <PropertiesView modeler={this.modeler} />}
-      </div>
+      <Layout>
+        <Content>
+          <div id="bpmncontainer">
+            <div
+              id="bpmnview"
+              style={{ width: "85%", height: "98vh", float: "left" }}
+            ></div>
+            {this.modeler && <PropertiesView modeler={this.modeler} />}
+          </div>
+        </Content>
+        <Sider>
+          {this.modeler && <PropertiesView modeler={this.modeler} />}
+        </Sider>
+      </Layout>
     );
   };
 }
