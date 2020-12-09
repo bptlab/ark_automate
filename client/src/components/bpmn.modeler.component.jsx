@@ -8,6 +8,7 @@ import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camu
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import parser from '../parser.js';
 import convert from 'xml-js';
+import { Button } from 'antd';
 
 class BpmnModelerComponent extends Component {
   modeler = null;
@@ -45,9 +46,15 @@ class BpmnModelerComponent extends Component {
     });
   };
 
+  /**
+   * @description Will download a given string as a file
+   * @param {string} text String that will be the content of the downloaded file
+   * @param {string} fileType String that sets the file type of the downloaded file; Use form text/filetype
+   * @param {string} fileName String that sets the name of the downloaded file; Use the same filetype as given in the fileType parameter e.g. name.filetype
+   * @returns {undefined} The return is not defined
+   */
   downloadString = (text, fileType, fileName) => {
     var blob = new Blob([text], { type: fileType });
-
     var element = document.createElement('a');
     element.download = fileName;
     element.href = URL.createObjectURL(blob);
@@ -65,6 +72,10 @@ class BpmnModelerComponent extends Component {
     }, 1500);
   };
 
+  /**
+   * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it
+   * @returns {undefined} The return is not defined
+   */
   getBpmnDiagramRobot = () => {
     this.modeler.saveXML().then((json) => {
       var xml = json.xml;
@@ -72,6 +83,11 @@ class BpmnModelerComponent extends Component {
     });
   };
 
+  /**
+   * @description Will parse a given xml file into a .robot file and download it
+   * @param {string} xml String that sets the xml to be parsed
+   * @returns {undefined} The return is not defined
+   */
   downloadRobotFile = (xml) => {
     var body = convert.xml2json(xml, { compact: true, spaces: 4 });
     let jsonBody = JSON.parse(body);
@@ -96,7 +112,7 @@ class BpmnModelerComponent extends Component {
           id='bpmnview'
           style={{ width: '75%', height: '98vh', float: 'left' }}
         >
-          <button onClick={this.getBpmnDiagramRobot}>Get Robot file</button>
+          <Button onClick={this.getBpmnDiagramRobot}>Get Robot file</Button>
         </div>
       </div>
     );
