@@ -12,7 +12,8 @@ export default class HeaderNavbar extends Component {
             <>
                 <Header style={{ background: '#363636' }}>
                     <div className="logo" />
-                    <Menu theme="dark" style={{ background: '#363636' }} mode="horizontal" defaultSelectedKeys={['2']}>
+                    {console.log(this.props.selectedKey)}
+                    <Menu theme="dark" style={{ background: '#363636' }} mode="horizontal" defaultSelectedKeys={[this.props.selectedKey.toString()]}>
                         <Menu.Item key="1">
                             Home
                             <Link to="/" />

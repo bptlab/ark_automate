@@ -15,7 +15,7 @@ const Modeler = () => {
     return (
         <div>
             <Layout>
-                <HeaderNavbar />
+                <HeaderNavbar selectedKey={2} />
                 <Layout>
                     <BpmnModelerComponent />
                     {/* <Content>
