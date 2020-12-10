@@ -18,8 +18,14 @@ export default class HeaderNavbar extends Component {
                             Home
                             <Link to="/" />
                         </Menu.Item>
-                        <Menu.Item key="2">Modeler</Menu.Item>
-                        <Menu.Item key="3">Robot File</Menu.Item>
+                        <Menu.Item key="2">
+                            Modeler
+                            <Link to="/modeler" />
+                        </Menu.Item>
+                        <Menu.Item key="3">
+                            Robot File
+                            <Link to="/robotfile" />
+                        </Menu.Item>
                     </Menu>
                 </Header >
             </>
