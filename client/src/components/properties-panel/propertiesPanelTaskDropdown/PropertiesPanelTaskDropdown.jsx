@@ -23,7 +23,7 @@ export default function PropertiesPanelTaskDropdown(props) {
     return <>
         <Select
             showSearch
-            style={{ width: 200 }}
+            style={{ width: '100%', marginTop: '10px' }}
             placeholder="Please select task"
             onChange={value => props.onTaskSelection(value)}
             disabled={props.disabled ? true : null}

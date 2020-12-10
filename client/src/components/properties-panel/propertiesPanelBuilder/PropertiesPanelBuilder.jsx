@@ -4,18 +4,12 @@ import React, { Component } from 'react';
 import PropertiesPanelApplicationDropdown from '../propertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown'
 import PropertiesPanelTaskDropdown from '../propertiesPanelTaskDropdown/PropertiesPanelTaskDropdown'
 
-import { Button } from 'antd';
-import { RobotOutlined } from '@ant-design/icons';
-
-import { Input, Tooltip } from 'antd';
-import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons'
-
-import { Typography } from 'antd';
-
+import { Button, Input, Tooltip, Typography } from 'antd';
+import { InfoCircleOutlined, RobotOutlined } from '@ant-design/icons'
 
 import '../propertiesView/PropertiesView.css';
 
-const { Title, Paragraph, Text } = Typography;
+const { Text } = Typography;
 
 /**
  * @class
@@ -212,59 +206,57 @@ export default class PropertiesPanelBuilder extends Component {
     let { element } = this.state;
 
     return (<>
-      <div class="sidebarWrapper">
-        <div class="sidebarWrapper" className='element-properties' key={element.id}>
-          <fieldset>
-            {is(element, 'bpmn:Task') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Activity</Text>)}
-          </fieldset>
-          <fieldset>
-            {is(element, 'bpmn:Event') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Event</Text>)}
-          </fieldset>
-          <fieldset>
-            {is(element, 'bpmn:Gateway') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Gateway</Text>)}
-          </fieldset>
+      <div className='element-properties' key={element.id}>
+        <fieldset Heading>
+          {is(element, 'bpmn:Task') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Activity</Text>)}
+          {is(element, 'bpmn:Event') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Event</Text>)}
+          {is(element, 'bpmn:Gateway') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Gateway</Text>)}
+        </fieldset>
 
-          <fieldset>
-            <Text class="label-on-dark-background">ID: </Text>
-            <Text class="label-on-dark-background">{element.id}</Text>
-          </fieldset>
+        <fieldset ID>
+          <Text class="label-on-dark-background">ID: </Text>
+          <Text class="label-on-dark-background">{element.id}</Text>
+        </fieldset>
 
-          <fieldset>
-            <Text class="label-on-dark-background">Name:</Text>
-            <Input
-              placeholder="name"
-              /*prefix={<UserOutlined className="site-form-item-icon" />}*/
-              suffix={
-                <Tooltip title="the name of your task, gateway or event">
-                  <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                </Tooltip>
-              }
-              value={element.businessObject.name || ''}
-              onChange={(event) => {
-                this.updateName(event.target.value);
-              }}
-            />
-          </fieldset>
+        <fieldset NameInput>
+          <Text class="label-on-dark-background">Name:</Text>
+          <Input
+            placeholder="name"
+            style={{ marginBottom: '10px' }}
+            /*prefix={<UserOutlined className="site-form-item-icon" />}*/
+            suffix={
+              <Tooltip title="the name of your task, gateway or event">
+                <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+              </Tooltip>
+            }
+            value={element.businessObject.name || ''}
+            onChange={(event) => {
+              this.updateName(event.target.value);
+            }}
+          />
+        </fieldset>
 
-          <fieldset>
-            {is(element, 'bpmn:Task') && (
-              <>
-                <Text class="label-on-dark-background">Actions: </Text>
-                <br />
-                <Button type="primary" onClick={this.makeServiceTask} icon={<RobotOutlined />}>Make RPA Task</Button>
-                <PropertiesPanelApplicationDropdown
-                  onApplicationSelection={this.updateSelectedApplication}
-                  applications={sessionStorage.getItem('AvailableApplications').split(',')} />
-                <br />
-                <PropertiesPanelTaskDropdown
-                  listOfTasks={this.state['tasksForSelectedApplication']}
-                  onTaskSelection={this.updateSelectedTask}
-                  disabled={this.state['disableTaskSelection']} />
-              </>
-            )}
-          </fieldset>
+        <fieldset RPA-Actions>
+          {is(element, 'bpmn:Task') && (
+            <>
+              <Text class="label-on-dark-background">Actions: </Text>
+              <br />
+              <Button type="primary" onClick={this.makeServiceTask} icon={<RobotOutlined />} style={{ width: '80%', marginTop: '10px', marginLeft: '30px', marginRight: '30px' }}>
+                Make RPA Task
+              </Button>
+              <PropertiesPanelApplicationDropdown
+                onApplicationSelection={this.updateSelectedApplication}
+                applications={sessionStorage.getItem('AvailableApplications').split(',')} />
+              <br />
+              <PropertiesPanelTaskDropdown
+                listOfTasks={this.state['tasksForSelectedApplication']}
+                onTaskSelection={this.updateSelectedTask}
+                disabled={this.state['disableTaskSelection']} />
+            </>
+          )}
+        </fieldset>
 
-          {/*These lines are non-violate - contain important commands related to existing BPMN components 
+        {/*These lines are non-violate - contain important commands related to existing BPMN components 
           {is(element, 'custom:TopicHolder') && (
             <fieldset>
               <Text class="label-on-dark-background">Topic (custom)</Text>
@@ -277,9 +269,8 @@ export default class PropertiesPanelBuilder extends Component {
             </fieldset>
           )}
               {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask') */
-          }
-        </div >
-      </div>
+        }
+      </div >
     </>);
   }
 }

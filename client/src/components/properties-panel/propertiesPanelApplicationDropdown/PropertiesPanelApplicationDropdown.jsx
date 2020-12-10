@@ -1,5 +1,6 @@
 import React from 'react';
 import { Select } from 'antd';
+import '../propertiesView/PropertiesView.css'
 
 const { Option } = Select;
 
@@ -21,7 +22,7 @@ export default function PropertiesPanelApplicationDropdown(props) {
     return <>
         <Select
             showSearch
-            style={{ width: 200 }}
+            style={{ width: '100%', marginTop: '10px' }}
             placeholder="Please select application"
             onChange={value => props.onApplicationSelection(value)}
         >
