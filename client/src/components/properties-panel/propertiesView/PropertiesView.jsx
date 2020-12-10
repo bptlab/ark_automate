@@ -69,12 +69,14 @@ export default class PropertiesView extends Component {
 
         {selectedElements.length === 0 && (
           <span>
-            Please select an element.
+            <Title class="label-on-dark-background">Please select an element.</Title>
           </span>
         )}
 
         {selectedElements.length > 1 && (
-          <span>Please select a single element.</span>
+          <span>
+            <Title class="label-on-dark-background">Please select a single element.</Title>
+          </span>
         )}
       </div>
     );

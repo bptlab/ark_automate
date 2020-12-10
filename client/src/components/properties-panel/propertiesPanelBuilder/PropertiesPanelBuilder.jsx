@@ -10,8 +10,12 @@ import { RobotOutlined } from '@ant-design/icons';
 import { Input, Tooltip } from 'antd';
 import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons'
 
+import { Typography } from 'antd';
+
 
 import '../propertiesView/PropertiesView.css';
+
+const { Title, Paragraph, Text } = Typography;
 
 /**
  * @class
@@ -208,66 +212,68 @@ export default class PropertiesPanelBuilder extends Component {
     let { element } = this.state;
 
     return (<>
-      <div className='element-properties' key={element.id}>
-        <fieldset>
-          {is(element, 'bpmn:Task') && (<label>Activity</label>)}
-        </fieldset>
-
-        <fieldset>
-          <label>id</label>
-          <span>{element.id}</span>
-        </fieldset>
-
-        <fieldset>
-          <label>name</label>
-          <Input
-            placeholder="name"
-            /*prefix={<UserOutlined className="site-form-item-icon" />}*/
-            suffix={
-              <Tooltip title="the name of your task, gateway or event">
-                <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-              </Tooltip>
-            }
-            value={element.businessObject.name || ''}
-            onChange={(event) => {
-              this.updateName(event.target.value);
-            }}
-          />
-        </fieldset>
-
-        {is(element, 'custom:TopicHolder') && (
+      <div class="sidebarWrapper">
+        <div class="sidebarWrapper" className='element-properties' key={element.id}>
           <fieldset>
-            <label>topic (custom)</label>
-            <input
-              value={element.businessObject.get('custom:topic')}
+            {is(element, 'bpmn:Task') && (<Text class="label-on-dark-background">Activity</Text>)}
+          </fieldset>
+
+          <fieldset>
+            <Text class="label-on-dark-background">ID: </Text>
+            <Text class="label-on-dark-background">{element.id}</Text>
+          </fieldset>
+
+          <fieldset>
+            <Text class="label-on-dark-background">Name:</Text>
+            <Input
+              placeholder="name"
+              /*prefix={<UserOutlined className="site-form-item-icon" />}*/
+              suffix={
+                <Tooltip title="the name of your task, gateway or event">
+                  <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+                </Tooltip>
+              }
+              value={element.businessObject.name || ''}
               onChange={(event) => {
-                this.updateTopic(event.target.value);
+                this.updateName(event.target.value);
               }}
             />
           </fieldset>
-        )}
 
-        <fieldset>
-          <label>actions</label>
+          {is(element, 'custom:TopicHolder') && (
+            <fieldset>
+              <Text class="label-on-dark-background">Topic (custom)</Text>
+              <input
+                value={element.businessObject.get('custom:topic')}
+                onChange={(event) => {
+                  this.updateTopic(event.target.value);
+                }}
+              />
+            </fieldset>
+          )}
 
-          {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask')}
-          {
-            is(element, 'bpmn:Task') && (
-              <>
-                <Button type="primary" onClick={this.makeServiceTask} icon={<RobotOutlined />}>Make RPA Task</Button>
-                <PropertiesPanelApplicationDropdown
-                  onApplicationSelection={this.updateSelectedApplication}
-                  applications={sessionStorage.getItem('AvailableApplications').split(',')} />
-                <br />
-                <PropertiesPanelTaskDropdown
-                  listOfTasks={this.state['tasksForSelectedApplication']}
-                  onTaskSelection={this.updateSelectedTask}
-                  disabled={this.state['disableTaskSelection']} />
-              </>
-            )
-          }
-        </fieldset>
-      </div >
+          <fieldset>
+            <Text class="label-on-dark-background">Actions: </Text>
+
+            {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask')}
+            {
+              is(element, 'bpmn:Task') && (
+                <>
+                  <Button type="primary" onClick={this.makeServiceTask} icon={<RobotOutlined />}>Make RPA Task</Button>
+                  <PropertiesPanelApplicationDropdown
+                    onApplicationSelection={this.updateSelectedApplication}
+                    applications={sessionStorage.getItem('AvailableApplications').split(',')} />
+                  <br />
+                  <PropertiesPanelTaskDropdown
+                    listOfTasks={this.state['tasksForSelectedApplication']}
+                    onTaskSelection={this.updateSelectedTask}
+                    disabled={this.state['disableTaskSelection']} />
+                </>
+              )
+            }
+          </fieldset>
+        </div >
+      </div>
     </>);
   }
 }

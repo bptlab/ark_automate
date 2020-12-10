@@ -10,18 +10,17 @@ export default class HeaderNavbar extends Component {
     render() {
         return (
             <>
-                <Header>
+                <Header style={{ background: '#363636' }}>
                     <div className="logo" />
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+                    <Menu theme="dark" style={{ background: '#363636' }} mode="horizontal" defaultSelectedKeys={['2']}>
                         <Menu.Item key="1">
                             Home
-            <Link to="/" />
+                            <Link to="/" />
                         </Menu.Item>
                         <Menu.Item key="2">Modeler</Menu.Item>
-                        <Menu.Item key="3">Option 3</Menu.Item>
+                        <Menu.Item key="3">Robot File</Menu.Item>
                     </Menu>
-    Das wird mal unser Modeler - Header
-</Header >
+                </Header >
             </>
         );
     }
