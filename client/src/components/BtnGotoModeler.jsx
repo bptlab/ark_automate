@@ -4,11 +4,9 @@ import { Button } from 'antd';
 
 const gotoModeler = () => {
     return (
-        <div>
-            <NavLink to="/modeler">
-                <Button type="primary">Go to Modeler</Button>
-            </NavLink>
-        </div>
+        <NavLink to="/modeler">
+            <Button style={{ marginLeft: '30px' }} type="primary">Go to Modeler</Button>
+        </NavLink>
     );
 }
 

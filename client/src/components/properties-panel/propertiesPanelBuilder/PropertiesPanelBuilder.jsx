@@ -215,7 +215,13 @@ export default class PropertiesPanelBuilder extends Component {
       <div class="sidebarWrapper">
         <div class="sidebarWrapper" className='element-properties' key={element.id}>
           <fieldset>
-            {is(element, 'bpmn:Task') && (<Text class="label-on-dark-background">Activity</Text>)}
+            {is(element, 'bpmn:Task') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Activity</Text>)}
+          </fieldset>
+          <fieldset>
+            {is(element, 'bpmn:Event') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Event</Text>)}
+          </fieldset>
+          <fieldset>
+            {is(element, 'bpmn:Gateway') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Gateway</Text>)}
           </fieldset>
 
           <fieldset>
@@ -240,6 +246,25 @@ export default class PropertiesPanelBuilder extends Component {
             />
           </fieldset>
 
+          <fieldset>
+            {is(element, 'bpmn:Task') && (
+              <>
+                <Text class="label-on-dark-background">Actions: </Text>
+                <br />
+                <Button type="primary" onClick={this.makeServiceTask} icon={<RobotOutlined />}>Make RPA Task</Button>
+                <PropertiesPanelApplicationDropdown
+                  onApplicationSelection={this.updateSelectedApplication}
+                  applications={sessionStorage.getItem('AvailableApplications').split(',')} />
+                <br />
+                <PropertiesPanelTaskDropdown
+                  listOfTasks={this.state['tasksForSelectedApplication']}
+                  onTaskSelection={this.updateSelectedTask}
+                  disabled={this.state['disableTaskSelection']} />
+              </>
+            )}
+          </fieldset>
+
+          {/*These lines are non-violate - contain important commands related to existing BPMN components 
           {is(element, 'custom:TopicHolder') && (
             <fieldset>
               <Text class="label-on-dark-background">Topic (custom)</Text>
@@ -251,27 +276,8 @@ export default class PropertiesPanelBuilder extends Component {
               />
             </fieldset>
           )}
-
-          <fieldset>
-            <Text class="label-on-dark-background">Actions: </Text>
-
-            {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask')}
-            {
-              is(element, 'bpmn:Task') && (
-                <>
-                  <Button type="primary" onClick={this.makeServiceTask} icon={<RobotOutlined />}>Make RPA Task</Button>
-                  <PropertiesPanelApplicationDropdown
-                    onApplicationSelection={this.updateSelectedApplication}
-                    applications={sessionStorage.getItem('AvailableApplications').split(',')} />
-                  <br />
-                  <PropertiesPanelTaskDropdown
-                    listOfTasks={this.state['tasksForSelectedApplication']}
-                    onTaskSelection={this.updateSelectedTask}
-                    disabled={this.state['disableTaskSelection']} />
-                </>
-              )
-            }
-          </fieldset>
+              {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask') */
+          }
         </div >
       </div>
     </>);

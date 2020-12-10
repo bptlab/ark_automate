@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import BpmnModeler from "bpmn-js/lib/Modeler";
-import "bpmn-js/dist/assets/diagram-js.css";
-import "bpmn-font/dist/css/bpmn-embedded.css";
 import { emptyBpmn } from "../assets/empty.bpmn";
-import propertiesPanelModule from "bpmn-js-properties-panel";
 import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
 import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
 import PropertiesView from './properties-panel/propertiesView/PropertiesView';
-import './BpmnModeler.css'
 
-import { Button } from 'antd';
-import { RobotOutlined } from '@ant-design/icons';
+import './BpmnModeler.css'
+import "bpmn-js/dist/assets/diagram-js.css";
+import "bpmn-font/dist/css/bpmn-embedded.css";
 
 import { Layout } from 'antd';
 
@@ -68,7 +65,7 @@ class BpmnModelerComponent extends Component {
         </Content>
         <Sider
           class="sider"
-          width={300}>
+          width={350}>
           {this.modeler && <PropertiesView modeler={this.modeler} />}
         </Sider>
       </Layout>
