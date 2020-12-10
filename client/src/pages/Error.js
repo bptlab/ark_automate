@@ -10,7 +10,7 @@ const Error = () => {
     return (
         <div>
             <Layout>
-                <HeaderNavbar selectedKey={3} />
+                <HeaderNavbar selectedKey={0} />
                 <br />
                 <Title style={{ paddingLeft: '30px' }}>Error: Page does not exist!</Title>
                 <div className='rowC'>
