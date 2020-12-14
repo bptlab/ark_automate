@@ -7,20 +7,18 @@ function generateCodeForMultiple(bpmnTasks) {
   let codeToAppend = "";
   for (let task in bpmnTasks) {
     let bpmnTaskProps;
-    bpmnTaskProps =
-      bpmnTasks[task]['bpmn2:extensionElements']['camunda:properties'][
-      'camunda:property'
-      ];
+    let currentTask = bpmnTasks[task]
+    bpmnTaskProps = currentTask['_attributes']['arkRPA:inputVars'];
+    console.log(bpmnTaskProps)
     for (let propsIndex in bpmnTaskProps) {
-      if (propsIndex == 0) {
-        let currentApplication = bpmnTaskProps[0]._attributes.value
-        if (currentApplication !== lastApplication) {
-          codeToAppend += bpmnTasks[task]['_attributes']['name'] + '\n';
-          lastApplication = bpmnTaskProps[propsIndex]._attributes.value;
-        }
-      } else if (propsIndex > 0) {
-        codeToAppend += '  ' + bpmnTaskProps[propsIndex]._attributes.value;
+
+      let currentApplication = currentTask["_attributes"]['arkRPA:application'];
+      if (currentApplication !== lastApplication) {
+        codeToAppend += currentTask['_attributes']['name'] + '\n';
+        lastApplication = currentApplication;
+
       }
+        codeToAppend += '  ' + bpmnTaskProps[propsIndex]    
     }
     codeToAppend += '\n';
   }
@@ -31,18 +29,14 @@ function generateCodeForMultiple(bpmnTasks) {
  * @description Receives a single bmpnTask and generates the .robot code for the tasks sections
  * @returns {string} Generated .robot code for the tasks section
  */
-function generateCodeForSingle(bpmnTasks) {
+function generateCodeForSingle(bpmnTask) {
   let codeToAppend = "";
-  let taskExtensions = bpmnTasks['bpmn2:extensionElements'];
 
-  let bpmnTask = bpmnTasks;
   codeToAppend += bpmnTask['_attributes']['name'] + '\n';
   let bpmnTaskProps;
-  bpmnTaskProps = taskExtensions['camunda:properties']['camunda:property'];
+  bpmnTaskProps = bpmnTask['_attributes']['arkRPA:inputVars'];
   for (let propsIndex in bpmnTaskProps) {
-    if (propsIndex > 0) {
-      codeToAppend += '  ' + bpmnTaskProps[propsIndex]._attributes.value;
-    }
+    codeToAppend += '  ' + bpmnTaskProps[propsIndex];
   }
   return codeToAppend;
 }
@@ -54,11 +48,9 @@ function generateCodeForSingle(bpmnTasks) {
 function collectUsedApplications(bpmnTasks) {
   let applications = []
   for (let task in bpmnTasks) {
-    if (bpmnTasks[task]['bpmn2:extensionElements'] !== undefined) {
+    if (bpmnTasks[task]["_attributes"] !== undefined) {
       const rpaApp =
-        bpmnTasks[task]['bpmn2:extensionElements']['camunda:properties'][
-          'camunda:property'
-        ][0]._attributes.value;
+        bpmnTasks[task]["_attributes"]['arkRPA:application'];
       if (!applications.includes(rpaApp)) {
         applications.push(rpaApp);
       }
@@ -73,8 +65,8 @@ function collectUsedApplications(bpmnTasks) {
  */
 function parseDiagramJson(json_data) {
   let parsedCode = '';
+  json_data = require("./newConvertedModelForTesting1Act.json")
   var bpmnTasks = json_data['bpmn2:definitions']['bpmn2:process']['bpmn2:task'];
-
   parsedCode += '*** Settings ***\n';
   parsedCode += 'Documentation  Our first parsed RPA\n';
 
@@ -91,11 +83,8 @@ function parseDiagramJson(json_data) {
       parsedCode += '\n*** Tasks ***\n';
       codeToAppend += generateCodeForMultiple(bpmnTasks)
     } else {
-      let taskExtensions = bpmnTasks['bpmn2:extensionElements'];
-
       var application =
-        taskExtensions['camunda:properties']['camunda:property'][0]._attributes
-          .value;
+        bpmnTasks['_attributes']['arkRPA:application'];
       codeToAppend += 'Library    ' + "RPA." + application + '\n';
 
       codeToAppend += '\n*** Tasks ***\n';
@@ -103,7 +92,8 @@ function parseDiagramJson(json_data) {
     }
     parsedCode += codeToAppend;
   }
+  console.log(parsedCode)
   return parsedCode;
 }
-
+parseDiagramJson("");
 module.exports = { parseDiagramJson };
