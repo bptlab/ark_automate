@@ -13,6 +13,13 @@ import { Layout } from 'antd';
 
 const { Content, Sider } = Layout;
 
+/**
+ * @class
+ * @component
+ * @classdesc This class renders the modeling interface as well as the sidebar.
+ * @example return <BpmnModelerComponent />
+ */
+
 class BpmnModelerComponent extends Component {
   modeler = null;
 

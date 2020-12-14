@@ -1,6 +1,4 @@
 import React from 'react';
-import BtnGotoHome from '../components/BtnGotoHome.jsx';
-import BtnGotoModeler from '../components/BtnGotoModeler.jsx';
 import HeaderNavbar from '../components/headerNavbar/HeaderNavbar';
 import { Layout, Typography } from 'antd';
 
@@ -13,10 +11,6 @@ const Error = () => {
                 <HeaderNavbar selectedKey={0} />
                 <br />
                 <Title style={{ paddingLeft: '30px' }}>Error: Page does not exist!</Title>
-                <div className='rowC'>
-                    <BtnGotoHome />
-                    <BtnGotoModeler />
-                </div>
             </Layout>
         </div>
     );

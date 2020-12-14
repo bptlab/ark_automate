@@ -2,9 +2,17 @@ import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import './HeaderNavbar.css';
-import logo_black from '../../resources/logo_black.png'
+//import logo_black from '../../resources/logo_black.png'
 
 const { Header } = Layout;
+
+/**
+ * @class
+ * @component
+ * @classdesc Renders the header navbar for all pages and initially selects the passed key-element.
+ * @example 
+ * return <HeaderNavbar selectedKey={2} />
+ */
 
 export default class HeaderNavbar extends Component {
     render() {
