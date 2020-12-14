@@ -21,15 +21,16 @@ const { Option } = Select;
 
 export default function PropertiesPanelTaskDropdown(props) {
     return <>
+ 
         <Select
             showSearch
             style={{ width: '100%', marginTop: '10px' }}
             placeholder="Please select task"
-            onChange={value => props.onTaskSelection(value)}
+            onChange={props.onTaskSelection}
             disabled={props.disabled ? true : null}
         >
             {props.listOfTasks.map((task) => (
-                <Option value={task}>{task}</Option>
+                <Option value={task} selected={(task === props.currentSelection)}>{task}</Option>
             ))}
         </Select>
     </>

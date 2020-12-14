@@ -24,10 +24,10 @@ export default function PropertiesPanelApplicationDropdown(props) {
             showSearch
             style={{ width: '100%', marginTop: '10px' }}
             placeholder="Please select application"
-            onChange={value => props.onApplicationSelection(value)}
+            onChange={props.onApplicationSelection}
         >
             {props.applications.map((application) => (
-                <Option value={application}>{application}</Option>
+                <Option value={application} selected={(application === props.currentSelection)}>{application}</Option>
             ))}
         </Select>
     </>

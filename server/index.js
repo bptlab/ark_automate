@@ -55,15 +55,15 @@ if (!isDev && cluster.isMaster) {
     }
   });
 
-  // GET /get-id-for-task?application=Browser&task=Open+Browser
-  app.get('/get-id-for-task', async (req, res) => {
+  // GET /get-vars-for-task?application=Browser&task=Open+Browser
+  app.get('/get-vars-for-task', async (req, res) => {
     try {
       let application = req.query.application;
       let task = req.query.task;
       res.set('Content-Type', 'application/json');
 
       if (application != null && task != null) {
-        let listOfDistinctApplications = await activityDataRetrieval.getIdForSelectedTask(
+        let listOfDistinctApplications = await activityDataRetrieval.getInputOutputForSelectedTask(
           application,
           task
         );
