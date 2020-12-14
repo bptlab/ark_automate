@@ -85,7 +85,6 @@ export default class PropertiesPanelBuilder extends Component {
     await fetch('/get-available-applications')
       .then((response) => response.json())
       .then(data => {
-        console.log(data);
         sessionStorage.setItem('AvailableApplications', data);
       })
   }
@@ -170,7 +169,6 @@ export default class PropertiesPanelBuilder extends Component {
 
   attachTimeout() {
     const modeling = this.state['modeler'].get('modeling');
-    //  const autoPlace = this.state['modeler'].get('autoPlace');
     const selection = this.state['modeler'].get('selection');
 
     let { element } = this.state;

@@ -11,7 +11,7 @@ var element;
 async function fetchAndUpdateRPAProperties(applicationName, taskName, passedModeling, passedElement) {
     modeling = passedModeling;
     element = passedElement;
-    await fetchIOForTask(applicationName, taskName, element, modeling);
+    await fetchParametersForTask(applicationName, taskName, element, modeling);
 }
 
 /**
@@ -19,7 +19,7 @@ async function fetchAndUpdateRPAProperties(applicationName, taskName, passedMode
 * @param {String} selectedApplication the selected application
 * @param {String} selectedTask the selected task
 */
-async function fetchIOForTask(selectedApplication, selectedTask) {
+async function fetchParametersForTask(selectedApplication, selectedTask) {
     await fetch('/get-vars-for-task?application='+ selectedApplication.replaceAll(' ', '+') + '&task=' + selectedTask.replaceAll(' ', '+'))
       .then((response) => response.json())
       .then(data => {
@@ -40,8 +40,8 @@ function updateXML(data, selectedApplication, selectedTask) {
         'arkRPA:inputVars': '',
         'arkRPA:outputVars': ''
     };
-    if (data.inputVars) propertiesObject['arkRPA:inputVars'] = populateIOobjectWithValues(data.inputVars);
-    if (data.outputVars) propertiesObject['arkRPA:outputVars'] = populateIOobjectWithValues(data.outputVars);
+    if (data.inputVars) propertiesObject['arkRPA:inputVars'] = populateIOObjectWithMockValues(data.inputVars);
+    if (data.outputVars) propertiesObject['arkRPA:outputVars'] = populateIOObjectWithMockValues(data.outputVars);
     modeling.updateProperties(element, propertiesObject);
 }
 
@@ -50,7 +50,7 @@ function updateXML(data, selectedApplication, selectedTask) {
 * @param {Object} IOobject input or output variable object retrieved from MongoDB
 * @returns {Object} object where the fields have been set with values of that specific type
 */
-function populateIOobjectWithValues(IOobject) {
+function populateIOObjectWithMockValues(IOobject) {
     if (!IOobject) return null;
     let returnObject = {};
     for (let prop in IOobject) {

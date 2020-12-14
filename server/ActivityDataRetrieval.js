@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 const uri = process.env.MONGODB_URI;
 
 /**
- * @description Will send out request to externel MongoDB Database to retrieve all distinct Applications available
+ * @description Will send out request to external MongoDB Database to retrieve all distinct Applications available
  * @returns {List} List of Application Names found in MongoDB
  */
 async function getDistinctApplicationsFromDB() {
@@ -12,9 +12,7 @@ async function getDistinctApplicationsFromDB() {
 
     const database = client.db('rpaFrameworkCommands');
     const collection = database.collection('completeCollection');
-
     const listOfApplications = await collection.distinct('Application');
-    console.log(listOfApplications);
 
     return listOfApplications;
   } catch (err) {
@@ -40,7 +38,6 @@ async function getTasksForApplicationFromDB(application) {
     const listOfTasks = await collection.distinct('Task', {
       Application: application,
     });
-    console.log(listOfTasks);
 
     return listOfTasks;
   } catch (err) {
@@ -75,7 +72,6 @@ async function getInputOutputForSelectedTask(application, task) {
         'outputVars': 1
       }
     }); 
-    console.log(listOfApplications);
 
     return listOfApplications;
   } catch (err) {
