@@ -1,33 +1,39 @@
-import React, { Component } from 'react';
-import BpmnModeler from 'bpmn-js/lib/Modeler';
-import 'bpmn-js/dist/assets/diagram-js.css';
-import 'bpmn-font/dist/css/bpmn-embedded.css';
-import { emptyBpmn } from '../assets/empty.bpmn';
-import propertiesPanelModule from 'bpmn-js-properties-panel';
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
-import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
+import React, { Component } from "react";
+import BpmnModeler from "bpmn-js/lib/Modeler";
+import "bpmn-js/dist/assets/diagram-js.css";
+import "bpmn-font/dist/css/bpmn-embedded.css";
+import { emptyBpmn } from "../assets/empty.bpmn";
+import propertiesPanelModule from "bpmn-js-properties-panel";
+import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
+import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
+import PropertiesView from '../components/properties-panel/propertiesView/PropertiesView';
+import arkRPA_ModdleDescriptor from '../assets/modelerPropertiesExtensionRPA/ark-rpa';
 import parser from '../parser.js';
 import convert from 'xml-js';
 import { Button } from 'antd';
 
 class BpmnModelerComponent extends Component {
   modeler = null;
+
   componentDidMount = () => {
-    this.modeler = new BpmnModeler({
+    const modeler = new BpmnModeler({
       container: '#bpmnview',
       keyboard: {
         bindTo: window,
       },
       propertiesPanel: {
-        parent: '#propview',
+        parent: "#propview",
       },
-      additionalModules: [propertiesPanelModule, propertiesProviderModule],
+      additionalModules: [propertiesProviderModule],
       moddleExtensions: {
         camunda: camundaModdleDescriptor,
+        arkRPA: arkRPA_ModdleDescriptor
       },
     });
+    this.modeler = modeler
 
     this.newBpmnDiagram();
+    this.forceUpdate()
   };
 
   newBpmnDiagram = () => {
@@ -45,7 +51,7 @@ class BpmnModelerComponent extends Component {
       canvas.zoom('fit-viewport');
     });
   };
-
+  
   /**
    * @description Will download a given string as a file
    * @param {string} text String that will be the content of the downloaded file
@@ -108,6 +114,7 @@ class BpmnModelerComponent extends Component {
             overflowX: 'auto',
           }}
         ></div>
+        {this.modeler && <PropertiesView modeler={this.modeler} />}
         <div
           id='bpmnview'
           style={{ width: '75%', height: '98vh', float: 'left' }}
