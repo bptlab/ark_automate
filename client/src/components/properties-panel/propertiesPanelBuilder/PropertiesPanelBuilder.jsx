@@ -151,8 +151,6 @@ export default class PropertiesPanelBuilder extends Component {
     this.setState({
       selectedApplication: event.target.value
     }, () => this.getTasksForApplication(event.target.value));
-      selectedApplication: value
-    }, () => this.getTasksForApplication());
   }
 
   updateSelectedTask(value, event) {
@@ -163,8 +161,6 @@ export default class PropertiesPanelBuilder extends Component {
       let { element } = this.state;
       activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], event.target.value, modeling, element, this.state['modeler']);
     })
-      selectedTask: value
-    });
     // console.log('New Task selected: ' + value + ' for Application: ' + this.state['selectedApplication']);
   }
 
