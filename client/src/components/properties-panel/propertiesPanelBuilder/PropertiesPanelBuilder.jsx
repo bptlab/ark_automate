@@ -73,13 +73,13 @@ export default class PropertiesPanelBuilder extends Component {
    * element already has an app and Task selected, those will be displayed
    */
   checkForExistingRPAAttributes() {
-    let {element} = this.state;
+    let { element } = this.state;
     if (element.businessObject['$attrs']['arkRPA:application']) this.getTasksForApplication(element.businessObject['$attrs']['arkRPA:application']);
 
     if (!(element.businessObject['$attrs']['arkRPA:application']) && this.state['disableTaskSelection']) {
-      this.setState({disableTaskSelection: true});
-    } else  {
-      this.setState({disableTaskSelection: false});
+      this.setState({ disableTaskSelection: true });
+    } else {
+      this.setState({ disableTaskSelection: false });
     }
   }
 
@@ -147,19 +147,19 @@ export default class PropertiesPanelBuilder extends Component {
     });
   }
 
-  updateSelectedApplication(value, event) {
+  updateSelectedApplication(value) {
     this.setState({
-      selectedApplication: event.target.value
-    }, () => this.getTasksForApplication(event.target.value));
+      selectedApplication: value
+    }, () => this.getTasksForApplication(value));
   }
 
-  updateSelectedTask(value, event) {
+  updateSelectedTask(value) {
     this.setState({
-      selectedTask: event.target.value
+      selectedTask: value
     }, () => {
       const modeling = this.state['modeler'].get('modeling');
       let { element } = this.state;
-      activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], event.target.value, modeling, element, this.state['modeler']);
+      activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], value, modeling, element, this.state['modeler']);
     })
     // console.log('New Task selected: ' + value + ' for Application: ' + this.state['selectedApplication']);
   }
@@ -258,14 +258,13 @@ export default class PropertiesPanelBuilder extends Component {
               </Button>
               <PropertiesPanelApplicationDropdown
                 onApplicationSelection={this.updateSelectedApplication}
-                applications={sessionStorage.getItem('AvailableApplications').split(',')} 
-                 currentSelection={element.businessObject['$attrs']['arkRPA:application']} />
-                />
+                applications={sessionStorage.getItem('AvailableApplications').split(',')}
+                currentSelection={element.businessObject['$attrs']['arkRPA:application']} />
               <br />
               <PropertiesPanelTaskDropdown
                 listOfTasks={this.state['tasksForSelectedApplication']}
                 onTaskSelection={this.updateSelectedTask}
-                disabled={this.state['disableTaskSelection']} 
+                disabled={this.state['disableTaskSelection']}
                 currentSelection={element.businessObject['$attrs']['arkRPA:task']} />
             </>
           )}
