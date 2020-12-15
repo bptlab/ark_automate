@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
-import 'bpmn-js/dist/assets/diagram-js.css';
-import 'bpmn-font/dist/css/bpmn-embedded.css';
 import { emptyBpmn } from '../../assets/empty.bpmn';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
@@ -9,7 +7,11 @@ import PropertiesView from '../properties-panel/propertiesView/PropertiesView';
 import arkRPA_ModdleDescriptor from '../../assets/modelerPropertiesExtensionRPA/ark-rpa';
 import parser from '../../parser.js';
 import convert from 'xml-js';
+
 import './BpmnModeler.css';
+import 'bpmn-js/dist/assets/diagram-js.css';
+import 'bpmn-font/dist/css/bpmn-embedded.css';
+
 import { Layout, Button } from 'antd';
 
 const { Content, Sider } = Layout;
