@@ -159,7 +159,7 @@ export default class PropertiesPanelBuilder extends Component {
     }, () => {
       const modeling = this.state['modeler'].get('modeling');
       let { element } = this.state;
-      activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], value, modeling, element, this.state['modeler']);
+      activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], value, modeling, element);
     })
     // console.log('New Task selected: ' + value + ' for Application: ' + this.state['selectedApplication']);
   }
@@ -269,22 +269,6 @@ export default class PropertiesPanelBuilder extends Component {
             </>
           )}
         </fieldset>
-
-
-        {/*These lines are non-violate - contain important commands related to existing BPMN components 
-          {is(element, 'custom:TopicHolder') && (
-            <fieldset>
-              <Text class="label-on-dark-background">Topic (custom)</Text>
-              <input
-                value={element.businessObject.get('custom:topic')}
-                onChange={(event) => {
-                  this.updateTopic(event.target.value);
-                }}
-              />
-            </fieldset>
-          )}
-              {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask') */
-        }
       </div >
     </>);
   }

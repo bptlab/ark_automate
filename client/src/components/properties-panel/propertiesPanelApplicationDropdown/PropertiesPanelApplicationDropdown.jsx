@@ -25,9 +25,10 @@ export default function PropertiesPanelApplicationDropdown(props) {
             style={{ width: '100%', marginTop: '10px' }}
             placeholder="Please select application"
             onChange={props.onApplicationSelection}
+            defaultValue={props.currentSelection}
         >
             {props.applications.map((application) => (
-                <Option value={application} selected={(application === props.currentSelection)}>{application}</Option>
+                <Option value={application}>{application}</Option>
             ))}
         </Select>
     </>

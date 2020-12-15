@@ -28,9 +28,10 @@ export default function PropertiesPanelTaskDropdown(props) {
             placeholder="Please select task"
             onChange={props.onTaskSelection}
             disabled={props.disabled ? true : null}
+            defaultValue={props.currentSelection}
         >
             {props.listOfTasks.map((task) => (
-                <Option value={task} selected={(task === props.currentSelection)}>{task}</Option>
+                <Option value={task}>{task}</Option>
             ))}
         </Select>
     </>
