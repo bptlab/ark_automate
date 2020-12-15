@@ -5,7 +5,6 @@ const numCPUs = require('os').cpus().length;
 const activityDataRetrieval = require('./ActivityDataRetrieval');
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
-var bodyParser = require('body-parser');
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
