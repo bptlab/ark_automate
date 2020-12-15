@@ -10,7 +10,8 @@ const Home = () => {
   return (
     <div>
       <Title style={{ alignItems: 'center' }}>Startseite</Title>
-      <Title level={3}>Das ist unsere Startseite - GEIL!</Title>
+      <Title level={3}>Das ist unsere Startseite - TOLL!</Title>
+      {/* <p>{isFetching ? 'Fetching message from API' : message}</p> */}
       <p>{message}</p>
       <Link to='/modeler'>
         <Button type='primary'>Go to Modeler</Button>

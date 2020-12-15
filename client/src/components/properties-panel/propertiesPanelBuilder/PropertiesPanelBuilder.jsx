@@ -4,9 +4,14 @@ import React, { Component } from 'react';
 import PropertiesPanelApplicationDropdown from '../propertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown'
 import PropertiesPanelTaskDropdown from '../propertiesPanelTaskDropdown/PropertiesPanelTaskDropdown'
 
+import { Button, Input, Tooltip, Typography } from 'antd';
+import { InfoCircleOutlined, RobotOutlined } from '@ant-design/icons'
+
 import '../propertiesView/PropertiesView.css';
 
 const activityDataRetrieval = require('../../../assets/xmlUtils');
+
+const { Text } = Typography;
 
 /**
  * @class
@@ -44,8 +49,8 @@ export default class PropertiesPanelBuilder extends Component {
 
   /**
    * @description Checks if passed item already exists in session storage and initializes with given value if not existing.
-   * @param {*} itemToCheckFor - The selected item to check for in the session storage.
-   * @param {*} valueToInitTo - The value to init to if the item is not existing in session storage yet.
+   * @param {*} itemToCheckFor The selected item to check for in the session storage.
+   * @param {*} valueToInitTo The value to init to if the item is not existing in session storage yet.
    */
   initSessionStorage(itemToCheckFor, valueToInitTo) {
     if (sessionStorage.getItem(itemToCheckFor) === null) sessionStorage.setItem(itemToCheckFor, valueToInitTo);
@@ -68,18 +73,18 @@ export default class PropertiesPanelBuilder extends Component {
    * element already has an app and Task selected, those will be displayed
    */
   checkForExistingRPAAttributes() {
-    let {element} = this.state;
+    let { element } = this.state;
     if (element.businessObject['$attrs']['arkRPA:application']) this.getTasksForApplication(element.businessObject['$attrs']['arkRPA:application']);
 
     if (!(element.businessObject['$attrs']['arkRPA:application']) && this.state['disableTaskSelection']) {
-      this.setState({disableTaskSelection: true});
-    } else  {
-      this.setState({disableTaskSelection: false});
+      this.setState({ disableTaskSelection: true });
+    } else {
+      this.setState({ disableTaskSelection: false });
     }
   }
 
   /**
-   * @description Fetch all applications from MongoBD and save in session storage.
+   * @description Fetch all applications from MongoDB and save in session storage.
    */
   async saveAvailableApplicationsToSessionStorage() {
     await fetch('/get-available-applications')
@@ -93,6 +98,7 @@ export default class PropertiesPanelBuilder extends Component {
    * @description 
    * Checks if tasks for selected application are already stored in session storage.
    * Otherwise, fetch tasklist from MongoDB.
+   * @param {*} selectedApplication Application for which to get the tasks for.
    */
   async getTasksForApplication(selectedApplication) {
     let currentSavedTasksObject = JSON.parse(sessionStorage.getItem('TaskToApplicationCache'));
@@ -142,19 +148,19 @@ export default class PropertiesPanelBuilder extends Component {
     });
   }
 
-  updateSelectedApplication(event) {
+  updateSelectedApplication(value) {
     this.setState({
-      selectedApplication: event.target.value
-    }, () => this.getTasksForApplication(event.target.value));
+      selectedApplication: value
+    }, () => this.getTasksForApplication(value));
   }
 
-  updateSelectedTask(event) {
+  updateSelectedTask(value) {
     this.setState({
-      selectedTask: event.target.value
+      selectedTask: value
     }, () => {
       const modeling = this.state['modeler'].get('modeling');
       let { element } = this.state;
-      activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], event.target.value, modeling, element, this.state['modeler']);
+      activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], value, modeling, element);
     })
   }
 
@@ -213,14 +219,28 @@ export default class PropertiesPanelBuilder extends Component {
 
     return (<>
       <div className='element-properties' key={element.id}>
-        <fieldset>
-          <label>id</label>
-          <span>{element.id}</span>
+        <fieldset Heading>
+          {is(element, 'bpmn:Task') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Activity</Text>)}
+          {is(element, 'bpmn:Event') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Event</Text>)}
+          {is(element, 'bpmn:Gateway') && (<Text class="label-on-dark-background" style={{ fontSize: '24pt' }}>Gateway</Text>)}
         </fieldset>
 
-        <fieldset>
-          <label>name</label>
-          <input
+        <fieldset ID>
+          <Text class="label-on-dark-background">ID: </Text>
+          <Text class="label-on-dark-background">{element.id}</Text>
+        </fieldset>
+
+        <fieldset NameInput>
+          <Text class="label-on-dark-background">Name:</Text>
+          <Input
+            placeholder="name"
+            style={{ marginBottom: '10px' }}
+            /*prefix={<UserOutlined className="site-form-item-icon" />}*/
+            suffix={
+              <Tooltip title="the name of your task, gateway or event">
+                <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+              </Tooltip>
+            }
             value={element.businessObject.name || ''}
             onChange={(event) => {
               this.updateName(event.target.value);
@@ -228,38 +248,26 @@ export default class PropertiesPanelBuilder extends Component {
           />
         </fieldset>
 
-        {is(element, 'custom:TopicHolder') && (
-          <fieldset>
-            <label>topic (custom)</label>
-            <input
-              value={element.businessObject.get('custom:topic')}
-              onChange={(event) => {
-                this.updateTopic(event.target.value);
-              }}
-            />
-          </fieldset>
-        )}
-
-        <fieldset>
-          <label>actions</label>
-
-          {is(element, 'bpmn:Task') && !is(element, 'bpmn:ServiceTask')}
-          {
-            is(element, 'bpmn:Task') && (
-              <>
-                <button onClick={this.makeServiceTask}>Make RPA Task</button>
-                <PropertiesPanelApplicationDropdown
-                  onApplicationSelection={this.updateSelectedApplication}
-                  applications={sessionStorage.getItem('AvailableApplications').split(',')}
-                  currentSelection={element.businessObject['$attrs']['arkRPA:application']} />
-                <PropertiesPanelTaskDropdown
-                  listOfTasks={this.state['tasksForSelectedApplication']}
-                  onTaskSelection={this.updateSelectedTask}
-                  disabled={this.state['disableTaskSelection']} 
-                  currentSelection={element.businessObject['$attrs']['arkRPA:task']} />
-              </>
-            )
-          }
+        <fieldset RPA-Actions>
+          {is(element, 'bpmn:Task') && (
+            <>
+              <Text class="label-on-dark-background">Actions: </Text>
+              <br />
+              <Button type="primary" onClick={this.makeServiceTask} icon={<RobotOutlined />} style={{ width: '80%', marginTop: '10px', marginLeft: '30px', marginRight: '30px' }}>
+                Make RPA Task
+              </Button>
+              <PropertiesPanelApplicationDropdown
+                onApplicationSelection={this.updateSelectedApplication}
+                applications={sessionStorage.getItem('AvailableApplications').split(',')}
+                currentSelection={element.businessObject['$attrs']['arkRPA:application']} />
+              <br />
+              <PropertiesPanelTaskDropdown
+                listOfTasks={this.state['tasksForSelectedApplication']}
+                onTaskSelection={this.updateSelectedTask}
+                disabled={this.state['disableTaskSelection']}
+                currentSelection={element.businessObject['$attrs']['arkRPA:task']} />
+            </>
+          )}
         </fieldset>
       </div >
     </>);
@@ -267,7 +275,6 @@ export default class PropertiesPanelBuilder extends Component {
 }
 
 // helpers ~ legacy ///////////////////
-
 function hasDefinition(event, definitionType) {
   const definitions = event.businessObject.eventDefinitions || [];
 
