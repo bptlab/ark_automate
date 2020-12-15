@@ -4,25 +4,30 @@
  */
 function generateCodeForMultiple(bpmnTasks) {
   let lastApplication = 'None';
-  let codeToAppend = "";
+  let codeToAppend = '';
   for (let task in bpmnTasks) {
-    let bpmnTaskProps;
-    let currentTask = bpmnTasks[task]
-    bpmnTaskProps = currentTask['_attributes']['arkRPA:inputVars'];
-    console.log(bpmnTaskProps)
-    for (let propsIndex in bpmnTaskProps) {
-
-      let currentApplication = currentTask["_attributes"]['arkRPA:application'];
+    let currentTask = bpmnTasks[task];
+    let rpaTaskName = currentTask['_attributes']['arkRPA:task'];
+    let rpaTaskInputString = currentTask['_attributes']['arkRPA:inputVars'];
+    let rpaTaskInput = rpaTaskInputString.replaceAll('/', '');
+    rpaTaskInput = JSON.parse(rpaTaskInput);
+    let counter = 0;
+    for (let propsIndex in rpaTaskInput) {
+      let currentApplication = currentTask['_attributes']['arkRPA:application'];
       if (currentApplication !== lastApplication) {
         codeToAppend += currentTask['_attributes']['name'] + '\n';
         lastApplication = currentApplication;
-
       }
-        codeToAppend += '  ' + bpmnTaskProps[propsIndex]    
+      if (counter === 0) {
+        codeToAppend += '  ' + rpaTaskName;
+      }
+      counter++;
+      codeToAppend += '  ' + rpaTaskInput[propsIndex];
     }
+    counter = 0;
     codeToAppend += '\n';
   }
-  return codeToAppend
+  return codeToAppend;
 }
 
 /**
@@ -30,14 +35,22 @@ function generateCodeForMultiple(bpmnTasks) {
  * @returns {string} Generated .robot code for the tasks section
  */
 function generateCodeForSingle(bpmnTask) {
-  let codeToAppend = "";
+  let codeToAppend = '';
 
   codeToAppend += bpmnTask['_attributes']['name'] + '\n';
-  let bpmnTaskProps;
-  bpmnTaskProps = bpmnTask['_attributes']['arkRPA:inputVars'];
-  for (let propsIndex in bpmnTaskProps) {
-    codeToAppend += '  ' + bpmnTaskProps[propsIndex];
+  let rpaTaskName = bpmnTask['_attributes']['arkRPA:task'];
+  let rpaTaskInputString = bpmnTask['_attributes']['arkRPA:inputVars'];
+  let rpaTaskInput = rpaTaskInputString.replaceAll('/', '');
+  rpaTaskInput = JSON.parse(rpaTaskInput);
+  let counter = 0;
+  for (let propsIndex in rpaTaskInput) {
+    if (counter === 0) {
+      codeToAppend += '  ' + rpaTaskName;
+    }
+    counter++;
+    codeToAppend += '  ' + rpaTaskInput[propsIndex];
   }
+  counter = 0;
   return codeToAppend;
 }
 
@@ -46,17 +59,16 @@ function generateCodeForSingle(bpmnTask) {
  * @returns {array} List of applications as string
  */
 function collectUsedApplications(bpmnTasks) {
-  let applications = []
+  let applications = [];
   for (let task in bpmnTasks) {
-    if (bpmnTasks[task]["_attributes"] !== undefined) {
-      const rpaApp =
-        bpmnTasks[task]["_attributes"]['arkRPA:application'];
+    if (bpmnTasks[task]['_attributes'] !== undefined) {
+      const rpaApp = bpmnTasks[task]['_attributes']['arkRPA:application'];
       if (!applications.includes(rpaApp)) {
         applications.push(rpaApp);
       }
     }
   }
-  return applications
+  return applications;
 }
 
 /**
@@ -73,26 +85,24 @@ function parseDiagramJson(json_data) {
   if (bpmnTasks !== undefined) {
     let codeToAppend = '';
     if (Array.isArray(bpmnTasks)) {
-      const applications = collectUsedApplications(bpmnTasks)
+      const applications = collectUsedApplications(bpmnTasks);
 
       for (let app in applications) {
-        parsedCode += 'Library    ' + "RPA." + applications[app] + '\n';
+        parsedCode += 'Library    ' + 'RPA.' + applications[app] + '\n';
       }
 
       // idealy we use the keyword statement for each task, currently not working out of the box
       parsedCode += '\n*** Tasks ***\n';
-      codeToAppend += generateCodeForMultiple(bpmnTasks)
+      codeToAppend += generateCodeForMultiple(bpmnTasks);
     } else {
-      var application =
-        bpmnTasks['_attributes']['arkRPA:application'];
-      codeToAppend += 'Library    ' + "RPA." + application + '\n';
+      var application = bpmnTasks['_attributes']['arkRPA:application'];
+      codeToAppend += 'Library    ' + 'RPA.' + application + '\n';
 
       codeToAppend += '\n*** Tasks ***\n';
-      codeToAppend += generateCodeForSingle(bpmnTasks)
+      codeToAppend += generateCodeForSingle(bpmnTasks);
     }
     parsedCode += codeToAppend;
   }
-  console.log(parsedCode)
   return parsedCode;
 }
 module.exports = { parseDiagramJson };

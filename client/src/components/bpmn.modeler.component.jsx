@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import BpmnModeler from "bpmn-js/lib/Modeler";
-import "bpmn-js/dist/assets/diagram-js.css";
-import "bpmn-font/dist/css/bpmn-embedded.css";
-import { emptyBpmn } from "../assets/empty.bpmn";
-import propertiesPanelModule from "bpmn-js-properties-panel";
-import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
-import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
+import React, { Component } from 'react';
+import BpmnModeler from 'bpmn-js/lib/Modeler';
+import 'bpmn-js/dist/assets/diagram-js.css';
+import 'bpmn-font/dist/css/bpmn-embedded.css';
+import { emptyBpmn } from '../assets/empty.bpmn';
+import propertiesPanelModule from 'bpmn-js-properties-panel';
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import PropertiesView from '../components/properties-panel/propertiesView/PropertiesView';
 import arkRPA_ModdleDescriptor from '../assets/modelerPropertiesExtensionRPA/ark-rpa';
 import parser from '../parser.js';
@@ -22,18 +22,18 @@ class BpmnModelerComponent extends Component {
         bindTo: window,
       },
       propertiesPanel: {
-        parent: "#propview",
+        parent: '#propview',
       },
       additionalModules: [propertiesProviderModule],
       moddleExtensions: {
         camunda: camundaModdleDescriptor,
-        arkRPA: arkRPA_ModdleDescriptor
+        arkRPA: arkRPA_ModdleDescriptor,
       },
     });
-    this.modeler = modeler
+    this.modeler = modeler;
 
     this.newBpmnDiagram();
-    this.forceUpdate()
+    this.forceUpdate();
   };
 
   newBpmnDiagram = () => {
@@ -51,7 +51,7 @@ class BpmnModelerComponent extends Component {
       canvas.zoom('fit-viewport');
     });
   };
-  
+
   /**
    * @description Will download a given string as a file
    * @param {string} text String that will be the content of the downloaded file
