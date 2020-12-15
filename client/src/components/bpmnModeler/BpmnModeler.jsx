@@ -2,16 +2,24 @@ import React, { Component } from 'react';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
-import { emptyBpmn } from '../assets/empty.bpmn';
-import propertiesPanelModule from 'bpmn-js-properties-panel';
+import { emptyBpmn } from '../../assets/empty.bpmn';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-import PropertiesView from '../components/properties-panel/propertiesView/PropertiesView';
-import arkRPA_ModdleDescriptor from '../assets/modelerPropertiesExtensionRPA/ark-rpa';
+import PropertiesView from '../properties-panel/propertiesView/PropertiesView';
+import arkRPA_ModdleDescriptor from '../../assets/modelerPropertiesExtensionRPA/ark-rpa';
 import parser from '../parser.js';
 import convert from 'xml-js';
-import { Button } from 'antd';
+import './BpmnModeler.css';
+import { Layout, Button } from 'antd';
 
+const { Content, Sider } = Layout;
+
+/**
+ * @class
+ * @component
+ * @classdesc This class renders the modeling interface as well as the sidebar.
+ * @example return <BpmnModelerComponent />
+ */
 class BpmnModelerComponent extends Component {
   modeler = null;
 
@@ -103,25 +111,20 @@ class BpmnModelerComponent extends Component {
 
   render = () => {
     return (
-      <div id='bpmncontainer'>
-        <div
-          id='propview'
-          style={{
-            width: '25%',
-            height: '98vh',
-            float: 'right',
-            maxHeight: '98vh',
-            overflowX: 'auto',
-          }}
-        ></div>
-        {this.modeler && <PropertiesView modeler={this.modeler} />}
-        <div
-          id='bpmnview'
-          style={{ width: '75%', height: '98vh', float: 'left' }}
-        >
+      <Layout>
+        <Content>
           <Button onClick={this.getBpmnDiagramRobot}>Get Robot file</Button>
-        </div>
-      </div>
+          <div id='bpmncontainer'>
+            <div
+              id='bpmnview'
+              style={{ width: '85%', height: '98vh', float: 'left' }}
+            ></div>
+          </div>
+        </Content>
+        <Sider class='sider' width={350}>
+          {this.modeler && <PropertiesView modeler={this.modeler} />}
+        </Sider>
+      </Layout>
     );
   };
 }

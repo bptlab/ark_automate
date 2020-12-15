@@ -1,14 +1,17 @@
 import React from 'react';
-import BtnGotoHome from '../components/BtnGotoHome';
-import {Typography} from 'antd';
+import HeaderNavbar from '../components/headerNavbar/HeaderNavbar';
+import { Layout, Typography } from 'antd';
 
-const {Title} = Typography;
+const { Title } = Typography;
 
 const Error = () => {
     return (
         <div>
-            <Title>Error: Page does not exist!</Title>
-            <BtnGotoHome/>
+            <Layout>
+                <HeaderNavbar selectedKey={0} />
+                <br />
+                <Title style={{ paddingLeft: '30px' }}>Error: Page does not exist!</Title>
+            </Layout>
         </div>
     );
 }

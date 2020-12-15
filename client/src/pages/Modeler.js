@@ -1,17 +1,20 @@
 import React from 'react';
-import BtnGotoHome from '../components/BtnGotoHome';
-import {Typography} from 'antd';
-import BpmnModelerComponent from '../components/bpmn.modeler.component';
+import BpmnModelerComponent from '../components/bpmnModeler/BpmnModeler';
+import { Layout } from 'antd';
+import HeaderNavbar from '../components/headerNavbar/HeaderNavbar';
 
-const {Title} = Typography;
+const { Footer } = Layout;
 
 const Modeler = () => {
     return (
         <div>
-            <BtnGotoHome/>
-            <React.StrictMode>
-                <BpmnModelerComponent/>
-            </React.StrictMode>
+            <Layout>
+                <HeaderNavbar selectedKey={2} />
+                <BpmnModelerComponent />
+                <Footer>
+                    Fußzeile
+                </Footer>
+            </Layout>
         </div>
     );
 };

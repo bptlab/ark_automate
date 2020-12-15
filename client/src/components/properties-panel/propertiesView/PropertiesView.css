@@ -1,11 +1,16 @@
-.element-properties label {
+.element-properties button + button {
+    margin-left: 10px;
+}
+
+.label-on-dark-background {
+    color:black;
     font-weight: bold;
 }
 
-.element-properties label:after {
-    content: ': ';
-}
-
-.element-properties button + button {
-    margin-left: 10px;
+.sidebarWrapper {
+    margin-left: 100;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
