@@ -19,7 +19,6 @@ export default class HeaderNavbar extends Component {
         return (
             <Header style={{ background: '#363636' }}>
                 {/* <img className="logo" src={logo_black} style={{ height: '50px' }} alt="Logo" /> */}
-                {console.log(this.props.selectedKey)}
                 <Menu
                     theme="dark"
                     style={{ background: '#363636' }}

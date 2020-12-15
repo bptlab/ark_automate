@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropertyPanelBuilder from '../propertiesPanelBuilder/PropertiesPanelBuilder'
+import PropertiesPanelBuilder from '../propertiesPanelBuilder/PropertiesPanelBuilder'
 import './PropertiesView.css';
 
 import { Typography } from 'antd';
@@ -32,17 +32,15 @@ export default class PropertiesView extends Component {
   componentDidMount() {
     const { modeler } = this.props;
 
-    modeler.on('selection.changed', (e) => {
-      const { element } = this.state;
-
+    modeler.on('selection.changed', (event) => {
       this.setState({
-        selectedElements: e.newSelection,
-        element: e.newSelection[0],
+        selectedElements: event.newSelection,
+        element: event.newSelection[0],
       });
     });
 
-    modeler.on('element.changed', (e) => {
-      const { element } = e;
+    modeler.on('element.changed', (event) => {
+      const { element } = event;
       const { element: currentElement } = this.state;
 
       if (!currentElement) {
@@ -64,7 +62,7 @@ export default class PropertiesView extends Component {
     return (
       <div class="sidebarWrapper">
         {selectedElements.length === 1 && (
-          <PropertyPanelBuilder modeler={modeler} element={element} />
+          <PropertiesPanelBuilder modeler={modeler} element={element} />
         )}
 
         {selectedElements.length === 0 && (

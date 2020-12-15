@@ -49,8 +49,8 @@ export default class PropertiesPanelBuilder extends Component {
 
   /**
    * @description Checks if passed item already exists in session storage and initializes with given value if not existing.
-   * @param {*} itemToCheckFor - The selected item to check for in the session storage.
-   * @param {*} valueToInitTo - The value to init to if the item is not existing in session storage yet.
+   * @param {*} itemToCheckFor The selected item to check for in the session storage.
+   * @param {*} valueToInitTo The value to init to if the item is not existing in session storage yet.
    */
   initSessionStorage(itemToCheckFor, valueToInitTo) {
     if (sessionStorage.getItem(itemToCheckFor) === null) sessionStorage.setItem(itemToCheckFor, valueToInitTo);
@@ -84,7 +84,7 @@ export default class PropertiesPanelBuilder extends Component {
   }
 
   /**
-   * @description Fetch all applications from MongoBD and save in session storage.
+   * @description Fetch all applications from MongoDB and save in session storage.
    */
   async saveAvailableApplicationsToSessionStorage() {
     await fetch('/get-available-applications')
@@ -98,6 +98,7 @@ export default class PropertiesPanelBuilder extends Component {
    * @description 
    * Checks if tasks for selected application are already stored in session storage.
    * Otherwise, fetch tasklist from MongoDB.
+   * @param {*} selectedApplication Application for which to get the tasks for.
    */
   async getTasksForApplication(selectedApplication) {
     let currentSavedTasksObject = JSON.parse(sessionStorage.getItem('TaskToApplicationCache'));
@@ -161,7 +162,6 @@ export default class PropertiesPanelBuilder extends Component {
       let { element } = this.state;
       activityDataRetrieval.fetchAndUpdateRPAProperties(this.state['selectedApplication'], value, modeling, element);
     })
-    // console.log('New Task selected: ' + value + ' for Application: ' + this.state['selectedApplication']);
   }
 
   makeServiceTask(name) {
@@ -275,7 +275,6 @@ export default class PropertiesPanelBuilder extends Component {
 }
 
 // helpers ~ legacy ///////////////////
-
 function hasDefinition(event, definitionType) {
   const definitions = event.businessObject.eventDefinitions || [];
 

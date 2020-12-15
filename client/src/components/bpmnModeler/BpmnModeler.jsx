@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import BpmnModeler from "bpmn-js/lib/Modeler";
-import { emptyBpmn } from "../assets/empty.bpmn";
+import { emptyBpmn } from "../../assets/empty.bpmn";
 import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
 import camundaModdleDescriptor from "camunda-bpmn-moddle/resources/camunda";
-import PropertiesView from './properties-panel/propertiesView/PropertiesView';
-import arkRPA_ModdleDescriptor from '../assets/modelerPropertiesExtensionRPA/ark-rpa';
+import PropertiesView from '../properties-panel/propertiesView/PropertiesView';
+import arkRPA_ModdleDescriptor from '../../assets/modelerPropertiesExtensionRPA/ark-rpa';
 
 import './BpmnModeler.css'
 import "bpmn-js/dist/assets/diagram-js.css";

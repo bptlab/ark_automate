@@ -15,13 +15,14 @@ const { Option } = Select;
  *  <PropertiesPanelTaskDropdown
  *      listOfTasks={this.taskList}
  *      onTaskSelection={this.handleTaskSelection}
- *      disabled={this.disableTaskSelection} />
+ *      disabled={this.disableTaskSelection} 
+ *      currentSelection={'Element 1'} />
  * )
  */
 
 export default function PropertiesPanelTaskDropdown(props) {
     return <>
- 
+
         <Select
             showSearch
             style={{ width: '100%', marginTop: '10px' }}

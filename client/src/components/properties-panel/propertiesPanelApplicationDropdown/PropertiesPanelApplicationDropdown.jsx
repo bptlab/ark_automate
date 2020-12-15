@@ -14,7 +14,8 @@ const { Option } = Select;
  * return (
  *  <PropertiesPanelApplicationDropdown
  *      onApplicationSelection={this.handleApplicationSelection}
- *      applications={this.applicationList} />
+ *      applications={this.applicationList}
+ *      currentSelection={'Element 1'} />
  * )
  */
 
