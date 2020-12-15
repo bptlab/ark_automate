@@ -1,8 +1,8 @@
-const activityDataRetrieval = require('./ActivityDataRetrieval');
 const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
+const activityDataRetrieval = require('./ActivityDataRetrieval');
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
 
