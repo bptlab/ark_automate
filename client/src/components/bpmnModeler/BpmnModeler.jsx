@@ -7,7 +7,7 @@ import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camu
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import PropertiesView from '../properties-panel/propertiesView/PropertiesView';
 import arkRPA_ModdleDescriptor from '../../assets/modelerPropertiesExtensionRPA/ark-rpa';
-import parser from '../parser.js';
+import parser from '../../parser.js';
 import convert from 'xml-js';
 import './BpmnModeler.css';
 import { Layout, Button } from 'antd';
@@ -113,7 +113,6 @@ class BpmnModelerComponent extends Component {
     return (
       <Layout>
         <Content>
-          <Button onClick={this.getBpmnDiagramRobot}>Get Robot file</Button>
           <div id='bpmncontainer'>
             <div
               id='bpmnview'
@@ -123,6 +122,18 @@ class BpmnModelerComponent extends Component {
         </Content>
         <Sider class='sider' width={350}>
           {this.modeler && <PropertiesView modeler={this.modeler} />}
+          <Button
+            type='primary'
+            style={{
+              width: '80%',
+              marginTop: '10px',
+              marginLeft: '30px',
+              marginRight: '30px',
+            }}
+            onClick={this.getBpmnDiagramRobot}
+          >
+            Get Robot file
+          </Button>
         </Sider>
       </Layout>
     );
