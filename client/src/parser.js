@@ -65,7 +65,7 @@ function collectUsedApplications(bpmnTasks) {
  */
 function parseDiagramJson(json_data) {
   let parsedCode = '';
-  json_data = require("./newConvertedModelForTesting1Act.json")
+  // json_data = require("./newConvertedModelForTesting1Act.json")
   var bpmnTasks = json_data['bpmn2:definitions']['bpmn2:process']['bpmn2:task'];
   parsedCode += '*** Settings ***\n';
   parsedCode += 'Documentation  Our first parsed RPA\n';
@@ -95,5 +95,4 @@ function parseDiagramJson(json_data) {
   console.log(parsedCode)
   return parsedCode;
 }
-parseDiagramJson("");
 module.exports = { parseDiagramJson };
