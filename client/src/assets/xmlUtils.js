@@ -78,7 +78,7 @@ function populateIOObjectWithMockValues(IOobject) {
         returnObject[prop] = 'TestString';
         break;
       case 'Integer':
-        returnObject[prop] = 69;
+        returnObject[prop] = '69';
         break;
       default:
         console.log(

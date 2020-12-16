@@ -2,3 +2,8 @@
   background: #ffc9b9;
   padding: 1rem;
 }
+.sider > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

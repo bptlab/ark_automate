@@ -131,6 +131,7 @@ class BpmnModelerComponent extends Component {
               marginTop: '10px',
               marginLeft: '30px',
               marginRight: '30px',
+              marginBottom: '50px',
             }}
             onClick={this.getBpmnDiagramRobot}
           >
