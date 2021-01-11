@@ -51,6 +51,7 @@ The main contributors to the project are the four members of the [2020 Bachelor 
 * [Kay Erik Jenß](https://github.com/kej-jay)
 * [Sandro Speh](https://github.com/SanJSp)
 * [Daniel Woelki](https://github.com/WolfgangDaniel)
+
 These four participants will push the project forward as part of their bachelor's degree until the summer of 2021.  
 At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community.
 
