@@ -5,7 +5,7 @@ import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camu
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import PropertiesView from '../properties-panel/propertiesView/PropertiesView';
 import arkRPA_ModdleDescriptor from '../../assets/modelerPropertiesExtensionRPA/ark-rpa';
-import parser from '../../parser.js';
+import parser from '../../api/parser.js';
 import convert from 'xml-js';
 
 import './BpmnModeler.css';

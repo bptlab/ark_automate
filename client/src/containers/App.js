@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Modeler from './pages/Modeler';
-import Home from './pages/Home';
-import Error from './pages/Error';
-import RobotFile from './pages/RobotFile'
+import Modeler from '../components/Modeler';
+import Home from '../components/Home';
+import Error from '../components/Error';
+import RobotFile from '../components/RobotFile';
 import './App.css';
 
 class App extends Component {
