@@ -1,6 +1,6 @@
 # How to contribute
 
-## creating bugs
+## reporting bugs
 * Use the [bug template](.github/ISSUE_TEMPLATE/bug_report.md)
 * Be descriptive when creating an issue (what, where, when and how does a problem pop up)?
 * Attach steps to reproduce (if applicable)
