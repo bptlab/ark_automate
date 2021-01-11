@@ -9,8 +9,6 @@ An open source RPA tool which uses BPMN to create bots.
 
 ## Installation & Setup
 
-Please do not use yarn anymore to ease our development!
-
 Please try running the latest version of:
 
 - Node.js and npm
