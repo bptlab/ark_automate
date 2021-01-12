@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import HeaderNavbar from '../containers/headerNavbar/HeaderNavbar';
+import HeaderNavbar from '../content/HeaderNavbar/HeaderNavbar';
 import { Typography } from 'antd';
 
 const { Title } = Typography;

@@ -1,15 +1,15 @@
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 
 import React, { Component } from 'react';
-import PropertiesPanelApplicationDropdown from '../propertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown';
-import PropertiesPanelTaskDropdown from '../propertiesPanelTaskDropdown/PropertiesPanelTaskDropdown';
+import PropertiesPanelApplicationDropdown from '../PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown';
+import PropertiesPanelTaskDropdown from '../PropertiesPanelTaskDropdown/PropertiesPanelTaskDropdown';
 
 import { Button, Input, Tooltip, Typography } from 'antd';
 import { InfoCircleOutlined, RobotOutlined } from '@ant-design/icons';
 
-import '../propertiesView/PropertiesView.css';
+import '../PropertiesView/PropertiesView.css';
 
-const activityDataRetrieval = require('../../../assets/xmlUtils');
+const activityDataRetrieval = require('../../../../utils/xmlUtils');
 
 const { Text } = Typography;
 
@@ -95,7 +95,7 @@ export default class PropertiesPanelBuilder extends Component {
    * @description Fetch all applications from MongoDB and save in session storage.
    */
   async saveAvailableApplicationsToSessionStorage() {
-    await fetch('rpa-framework/commands/get-available-applications')
+    await fetch('/rpa-framework/commands/get-available-applications')
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('AvailableApplications', data);
@@ -132,7 +132,7 @@ export default class PropertiesPanelBuilder extends Component {
    */
   async fetchTasksFromDB(selectedApplication, currentSavedTasksObject) {
     await fetch(
-      'rpa-framework/commands/get-available-tasks-for-application?application=' +
+      '/rpa-framework/commands/get-available-tasks-for-application?application=' +
         selectedApplication.replaceAll(' ', '+')
     )
       .then((response) => response.json())

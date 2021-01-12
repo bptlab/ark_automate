@@ -1,7 +1,7 @@
 import React from 'react';
-import BpmnModelerComponent from '../containers/bpmnModeler/BpmnModeler';
+import BpmnModelerComponent from '../content/BpmnModeler/BpmnModeler';
 import { Layout } from 'antd';
-import HeaderNavbar from '../containers/headerNavbar/HeaderNavbar';
+import HeaderNavbar from '../content/HeaderNavbar/HeaderNavbar';
 
 const { Footer } = Layout;
 

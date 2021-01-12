@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
-import './containers/App.css';
-import App from './containers/App';
+import './components/App.css';
+import App from './components/App';
 //import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(<App />, document.getElementById('root'));

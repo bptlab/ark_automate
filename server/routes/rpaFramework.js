@@ -17,3 +17,5 @@ router.get(
 );
 
 router.get('/commands/get-vars-for-task', commandsController.getVarsForTask);
+
+module.exports = router;
