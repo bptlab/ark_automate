@@ -2,9 +2,9 @@ const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
-const activityDataRetrieval = require('./services/ActivityDataRetrieval');
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
+const rpaFrameworkRouter = require('./routes/rpaFramework');
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -27,54 +27,8 @@ if (!isDev && cluster.isMaster) {
   app.use(express.static(path.resolve(__dirname, '../client/build')));
   app.use(express.json());
 
-  app.get('/get-available-applications', async (req, res) => {
-    try {
-      let listOfDistinctApplications = await activityDataRetrieval.getDistinctApplicationsFromDB();
-      res.set('Content-Type', 'application/json');
-      res.send(listOfDistinctApplications);
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  // GET /get-available-tasks-for-application?application=Browser
-  app.get('/get-available-tasks-for-application', async (req, res) => {
-    try {
-      let application = req.query.application;
-      res.set('Content-Type', 'application/json');
-      if (application != null) {
-        let listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(
-          application
-        );
-        res.send(listOfDistinctApplications);
-      } else {
-        res.send('Please set a valid application parameter.');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  // GET /get-vars-for-task?application=Browser&task=Open+Browser
-  app.get('/get-vars-for-task', async (req, res) => {
-    try {
-      let application = req.query.application;
-      let task = req.query.task;
-      res.set('Content-Type', 'application/json');
-
-      if (application != null && task != null) {
-        let listOfDistinctApplications = await activityDataRetrieval.getInputOutputForSelectedTask(
-          application,
-          task
-        );
-        res.send(listOfDistinctApplications);
-      } else {
-        res.send('Please set valid application and task parameters.');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
+  // Main requests
+  app.use('/rpa-framework', rpaFrameworkRouter);
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function (request, response) {
