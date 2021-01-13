@@ -1,12 +1,10 @@
 # ark_automate
 
 [![GitHub stars](https://img.shields.io/github/stars/bptlab/ark_automate)](https://github.com/bptlab/ark_automate)
-![GitHub repo size](https://img.shields.io/github/repo-size/bptlab/ark_automate)
 [![GitHub open issues](https://img.shields.io/github/issues/bptlab/ark_automate)](https://github.com/bptlab/ark_automate/issues)
 [![GitHub open pull requests](https://img.shields.io/github/issues-closed/bptlab/ark_automate)](https://github.com/bptlab/ark_automate/issues)
 [![GitHub open pull requests](https://img.shields.io/github/issues-pr/bptlab/ark_automate)](https://github.com/bptlab/ark_automate/issues)
-
-<!-- [![heroku](heroku-badge.herokuapp.com/?app=ark-automate)](ark-automate.herokuapp.com) -->
+[![heroku](https://heroku-badge.herokuapp.com/?app=ark-automate&root=App.js)](https://heroku-badge.herokuapp.com/App.js)
 
 An open source RPA tool which uses BPMN to create bots.
 
@@ -33,6 +31,7 @@ Go to the root directory and install the following packages with `npm install`:
 - camunda-bpmn-moddle
 
 ### Set up Heroku
+For this step, an invitation to our Heroku project is necessary. Please create yourself a Heroku account, which you link to your Github profile. Then write a short mail to our team [mailing list](mailto:BP2020MW1-intern@hpi.de) to be added to the project.
 
 1. Run in the root directory `npm install -g heroku`
 2. Login to Heroku by running `heroku login` and than login to your heroku account
@@ -49,7 +48,7 @@ Now check http://localhost:3000/ to have a look at the app.
 Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](.github/CONTRIBUTING.md). By participating in this project, you agree to abide by its [Code of Conduct](.github/CODE_OF_CONDUCT.md) at all times.
 
 ## Contributors
-The main contributors to the project are the four members of the [2020 Bachelor Project](https://hpi.de/fileadmin/user_upload/hpi/dokumente/studiendokumente/bachelor/bachelorprojekte/2020_21/FG_Weske_RPA_meets_BPM.pdf) of Professor Weske's [BPT Chair](https://bpt.hpi.uni-potsdam.de) at the [Hasso Plattner Institute](https://hpi.de):
+The main contributors to the project are the four members of the [2020/21 Bachelor Project](https://hpi.de/fileadmin/user_upload/hpi/dokumente/studiendokumente/bachelor/bachelorprojekte/2020_21/FG_Weske_RPA_meets_BPM.pdf) of Professor Weske's [BPT Chair](https://bpt.hpi.uni-potsdam.de) at the [Hasso Plattner Institute](https://hpi.de):
 * [Lukas Hüller](https://github.com/lukashueller)
 * [Kay Erik Jenß](https://github.com/kej-jay)
 * [Sandro Speh](https://github.com/SanJSp)
