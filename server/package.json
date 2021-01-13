@@ -2,7 +2,7 @@
   "name": "ark-automate",
   "version": "1.0.0",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server",
     "build": "cd client/ && npm install && npm run build"
   },
   "cacheDirectories": [

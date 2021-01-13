@@ -27,7 +27,6 @@ if (!isDev && cluster.isMaster) {
   app.use(express.static(path.resolve(__dirname, '../client/build')));
   app.use(express.json());
 
-  // Main requests
   app.use('/rpa-framework', rpaFrameworkRouter);
 
   // All remaining requests return the React app, so it can handle routing.
