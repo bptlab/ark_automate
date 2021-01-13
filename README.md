@@ -16,11 +16,6 @@ Please try running the latest version of:
 - React (`npm install react`) in the root folder and in the client folder
 - nodemon (`npm install nodemon -g`)
 
-Then install the following tools inside the client directory:
-
-1. React Router DOM (`npm install react-router-dom`)
-2. AntDesign (`npm install antd`)
-
 ### Configure Modeler
 
 Go to the root directory and install the following packages with `npm install`:
