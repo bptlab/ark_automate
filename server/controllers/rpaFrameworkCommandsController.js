@@ -1,4 +1,3 @@
-const rpaFrameworkCommands = require('../models/rpaFrameworkCommands');
 const activityDataRetrieval = require('../services/activityDataRetrieval');
 
 exports.getAvailableApplications = async (req, res) => {
