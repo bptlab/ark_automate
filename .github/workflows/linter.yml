@@ -34,3 +34,4 @@ jobs:
         with:
           reporter: github-pr-review # Change reporter.
           eslint_flags: 'src/'
+          workdir: ../../
