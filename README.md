@@ -39,6 +39,10 @@ Go to the root directory and install the following packages with `npm install`:
 3. Create a new .env file in the root directory
 4. Add the MongoDb URI to your .env file by running the following command in the root directory `heroku config:get MONGODB_URI -s -a ark-automate >> .env`
 
+### Setup linter
+
+We use ESLint with the AirBnB Codestyle. Simply install the Plug-in ([VSCode](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)) for your IDE and it should recognize the config files. Otherwise follow [this guide](https://eslint.org/docs/user-guide/getting-started). 
+
 ## Run application
 
 Before running, please always make sure to have the most recent module versions installed using `npm install` in the root, as well as the client directory.
