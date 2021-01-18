@@ -44,6 +44,7 @@ class BpmnModelerComponent extends Component {
 
     this.newBpmnDiagram();
     this.forceUpdate();
+console.log("FIND ME");;
   };
 
   newBpmnDiagram = () => {
