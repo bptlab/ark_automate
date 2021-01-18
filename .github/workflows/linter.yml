@@ -32,4 +32,5 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: "14"
+      - run: npm ci
       - run: cd client && npm run lint
