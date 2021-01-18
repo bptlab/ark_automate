@@ -28,10 +28,8 @@ jobs:
     name: runner / eslint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: eslint
-        uses: reviewdog/action-eslint@v1
-        with:
-          reporter: github-pr-review # Change reporter.
-          eslint_flags: 'src/'
-          workdir: ../../
+      - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2-beta
+              with:
+                node-version: "14"
+      - run: npm run lint
