@@ -1,6 +1,7 @@
 import React from 'react';
-import HeaderNavbar from '../content/HeaderNavbar/HeaderNavbar';
+import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import { Layout, Typography } from 'antd';
+import styles from './Error.module.css';
 
 const { Title } = Typography;
 
@@ -10,9 +11,7 @@ const Error = () => {
       <Layout>
         <HeaderNavbar selectedKey={0} />
         <br />
-        <Title style={{ paddingLeft: '30px' }}>
-          Error: Page does not exist!
-        </Title>
+        <Title className={styles.title}>Error: Page does not exist!</Title>
       </Layout>
     </div>
   );

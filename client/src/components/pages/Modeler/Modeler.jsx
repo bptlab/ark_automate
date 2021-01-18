@@ -1,7 +1,7 @@
 import React from 'react';
-import BpmnModelerComponent from '../content/BpmnModeler/BpmnModeler';
+import BpmnRobotModeler from '../../content/BpmnRobotModeler/BpmnRobotModeler';
 import { Layout } from 'antd';
-import HeaderNavbar from '../content/HeaderNavbar/HeaderNavbar';
+import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 
 const { Footer } = Layout;
 
@@ -10,7 +10,7 @@ const Modeler = () => {
     <div>
       <Layout>
         <HeaderNavbar selectedKey={2} />
-        <BpmnModelerComponent />
+        <BpmnRobotModeler />
         <Footer>Fußzeile</Footer>
       </Layout>
     </div>
