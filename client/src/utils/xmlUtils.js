@@ -26,7 +26,7 @@ async function fetchAndUpdateRPAProperties(
  */
 async function fetchParametersForTask(selectedApplication, selectedTask) {
   await fetch(
-    '/get-vars-for-task?application=' +
+    'rpa-framework/commands/get-vars-for-task?application=' +
       selectedApplication.replaceAll(' ', '+') +
       '&task=' +
       selectedTask.replaceAll(' ', '+')

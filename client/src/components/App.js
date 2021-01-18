@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Modeler from './pages/Modeler';
 import Home from './pages/Home';
 import Error from './pages/Error';
-import RobotFile from './pages/RobotFile'
+import RobotFile from './pages/RobotFile';
 import './App.css';
 
 class App extends Component {
