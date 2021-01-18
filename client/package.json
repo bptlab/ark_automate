@@ -13,7 +13,6 @@
     "bpmn-js": "^7.4.0",
     "bpmn-js-properties-panel": "^0.37.5",
     "camunda-bpmn-moddle": "^4.4.1",
-    "express": "^4.16.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
