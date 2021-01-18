@@ -33,4 +33,11 @@ jobs:
         with:
           node-version: "14"
       - run: npm ci
-      - run: cd client && npm run lint
+        working-directory: client
+      - run: npm run lint
+        working-directory: client
+      - run: npm ci
+        working-directory: server
+      - run: npm run lint
+        working-directory: server
+
