@@ -52,7 +52,7 @@ jobs:
           # VALIDATE_ALL_CODEBASE: false
           LINTER_RULES_PATH: .github/linters
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
-          VALIDATE_JAVASCRIPT_STANDARD: false
+          VALIDATE_JAVASCRIPT_STANDARD: true
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_JSON: true
           VALIDATE_JSX: true
