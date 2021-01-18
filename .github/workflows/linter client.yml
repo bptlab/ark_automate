@@ -3,7 +3,7 @@
 ## Linter GitHub Actions ##
 ###########################
 ###########################
-name: Lint Code Base
+name: Lint Client Code Base
 
 #
 # Documentation:
@@ -36,8 +36,4 @@ jobs:
         working-directory: client
       - run: npm run lint
         working-directory: client
-      - run: npm ci
-        working-directory: server
-      - run: npm run lint
-        working-directory: server
 
