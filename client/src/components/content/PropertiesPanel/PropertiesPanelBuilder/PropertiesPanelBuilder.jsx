@@ -243,31 +243,29 @@ export default class PropertiesPanelBuilder extends Component {
   }
 
   render() {
-    let { element } = this.state;
-
     return (
       <>
-        <div className='element-properties' key={element.id}>
-          <fieldset Heading>
-            {is(element, 'bpmn:Task') && (
+        <div className='element-properties' key={this.props.element.id}>
+          <fieldset>
+            {is(this.props.element, 'bpmn:Task') && (
               <Text
-                class='label-on-dark-background'
+                className='label-on-dark-background'
                 style={{ fontSize: '24pt' }}
               >
                 Activity
               </Text>
             )}
-            {is(element, 'bpmn:Event') && (
+            {is(this.props.element, 'bpmn:Event') && (
               <Text
-                class='label-on-dark-background'
+                className='label-on-dark-background'
                 style={{ fontSize: '24pt' }}
               >
                 Event
               </Text>
             )}
-            {is(element, 'bpmn:Gateway') && (
+            {is(this.props.element, 'bpmn:Gateway') && (
               <Text
-                class='label-on-dark-background'
+                className='label-on-dark-background'
                 style={{ fontSize: '24pt' }}
               >
                 Gateway
@@ -275,13 +273,15 @@ export default class PropertiesPanelBuilder extends Component {
             )}
           </fieldset>
 
-          <fieldset ID>
-            <Text class='label-on-dark-background'>ID: </Text>
-            <Text class='label-on-dark-background'>{element.id}</Text>
+          <fieldset>
+            <Text className='label-on-dark-background'>ID: </Text>
+            <Text className='label-on-dark-background'>
+              {this.props.element.id}
+            </Text>
           </fieldset>
 
-          <fieldset NameInput>
-            <Text class='label-on-dark-background'>Name:</Text>
+          <fieldset>
+            <Text className='label-on-dark-background'>Name:</Text>
             <Input
               placeholder='name'
               style={{ marginBottom: '10px' }}
@@ -291,17 +291,17 @@ export default class PropertiesPanelBuilder extends Component {
                   <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
                 </Tooltip>
               }
-              value={element.businessObject.name || ''}
+              value={this.props.element.businessObject.name || ''}
               onChange={(event) => {
                 this.updateName(event.target.value);
               }}
             />
           </fieldset>
 
-          <fieldset RPA-Actions>
-            {is(element, 'bpmn:Task') && (
+          <fieldset>
+            {is(this.props.element, 'bpmn:Task') && (
               <>
-                <Text class='label-on-dark-background'>Actions: </Text>
+                <Text className='label-on-dark-background'>Actions: </Text>
                 <br />
                 <Button
                   type='primary'
@@ -322,7 +322,9 @@ export default class PropertiesPanelBuilder extends Component {
                     .getItem('AvailableApplications')
                     .split(',')}
                   currentSelection={
-                    element.businessObject['$attrs']['arkRPA:application']
+                    this.props.element.businessObject['$attrs'][
+                      'arkRPA:application'
+                    ]
                   }
                 />
                 <br />
@@ -331,7 +333,7 @@ export default class PropertiesPanelBuilder extends Component {
                   onTaskSelection={this.updateSelectedTask}
                   disabled={this.state['disableTaskSelection']}
                   currentSelection={
-                    element.businessObject['$attrs']['arkRPA:task']
+                    this.props.element.businessObject['$attrs']['arkRPA:task']
                   }
                 />
               </>
