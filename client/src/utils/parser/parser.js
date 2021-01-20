@@ -9,7 +9,7 @@ function generateCodeForMultiple(bpmnTasks) {
     let currentTask = bpmnTasks[task];
     let rpaTaskName = currentTask['_attributes']['arkRPA:task'];
     let rpaTaskInputString = currentTask['_attributes']['arkRPA:inputVars'];
-    let rpaTaskInput = rpaTaskInputString.replaceAll('/', '');
+    let rpaTaskInput = rpaTaskInputString.replace(/[\/]/g, '');
     rpaTaskInput = JSON.parse(rpaTaskInput);
     let counter = 0;
     for (let propsIndex in rpaTaskInput) {
