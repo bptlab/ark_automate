@@ -19,8 +19,9 @@ const { Content, Sider } = Layout;
 /**
  * @class
  * @component
+ * @category Client
  * @classdesc This class renders the modeling interface as well as the sidebar.
- * @example return <BpmnModelerComponent />
+ * @example return (<BpmnModelerComponent />)
  */
 class BpmnModelerComponent extends Component {
   modeler = null;

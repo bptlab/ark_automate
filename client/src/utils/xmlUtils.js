@@ -1,3 +1,7 @@
+/**
+ * @category Client
+ * @module
+ */
 var modeling;
 var element;
 

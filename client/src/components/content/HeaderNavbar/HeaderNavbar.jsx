@@ -9,12 +9,12 @@ const { Header } = Layout;
 /**
  * @class
  * @component
+ * @category Client
  * @classdesc Renders the header navbar for all pages and initially selects the passed key-element.
  * @example
  * return <HeaderNavbar selectedKey={2} />
  */
-
-export default class HeaderNavbar extends Component {
+class HeaderNavbar extends Component {
   render() {
     return (
       <Header style={{ background: '#363636' }}>
@@ -42,3 +42,5 @@ export default class HeaderNavbar extends Component {
     );
   }
 }
+
+export default HeaderNavbar;

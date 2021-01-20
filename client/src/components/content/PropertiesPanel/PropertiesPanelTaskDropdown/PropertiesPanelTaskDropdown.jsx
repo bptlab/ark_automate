@@ -6,6 +6,7 @@ const { Option } = Select;
 /**
  * @class
  * @component
+ * @category Client
  * @classdesc Renders the task-dropdown based on passed list of task.
  * @example 
  * let taskList = ['Open Browser', 'Close Browser'];
@@ -20,7 +21,7 @@ const { Option } = Select;
  * )
  */
 
-export default function PropertiesPanelTaskDropdown(props) {
+function PropertiesPanelTaskDropdown(props) {
     return <>
 
         <Select
@@ -37,3 +38,5 @@ export default function PropertiesPanelTaskDropdown(props) {
         </Select>
     </>
 }
+
+export default PropertiesPanelTaskDropdown;

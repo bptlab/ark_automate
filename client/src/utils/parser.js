@@ -1,4 +1,9 @@
 /**
+ * @category Client
+ * @module
+ */
+
+/**
  * @description Receives an array of bmpnTasks and generates the .robot code for the tasks sections
  * @returns {string} Generated .robot code for the tasks section
  */
