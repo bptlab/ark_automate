@@ -90,7 +90,7 @@ async function establishDbConnection(client, databaseName) {
 }
 
 /**
- * @description Utiliti method to provide a new client
+ * @description Utility method to provide a new client
  * @returns {Object} The mongodb client object
  */
 function createNewClient() {
