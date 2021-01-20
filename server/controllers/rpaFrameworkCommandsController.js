@@ -1,4 +1,4 @@
-const activityDataRetrieval = require('../services/ActivityDataRetrieval');
+const activityDataRetrieval = require('../services/ActivityDataRetrieval/ActivityDataRetrieval');
 
 exports.getAvailableApplications = async (req, res) => {
   try {
