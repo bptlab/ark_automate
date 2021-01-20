@@ -1,3 +1,7 @@
+/**
+ * @category Server
+ * @module
+ */
 const { MongoClient } = require('mongodb');
 
 /**

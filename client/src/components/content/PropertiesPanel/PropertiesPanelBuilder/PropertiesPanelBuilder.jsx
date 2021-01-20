@@ -16,12 +16,13 @@ const { Text } = Typography;
 /**
  * @class
  * @component
+ * @category Client
  * @classdesc Builds PropertiesPanel for one selected BPMN-Element.
  * @example return (<PropertiesPanelBuilder />)
  *
  * @description Initializes state based on properties; initializes session storage. Binds all state-methods.
  */
-export default class PropertiesPanelBuilder extends Component {
+class PropertiesPanelBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -351,3 +352,5 @@ function hasDefinition(event, definitionType) {
 
   return definitions.some((d) => is(d, definitionType));
 }
+
+export default PropertiesPanelBuilder;

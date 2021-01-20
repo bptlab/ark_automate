@@ -9,13 +9,14 @@ const { Title } = Typography;
 /**
  * @class
  * @component
+ * @category Client
  * @classdesc This class decides which sidebar is displayed. It updates itself depending on the number of selected BPMN elements.
  * @example return (<PropertiesView />)
  *
  * @description Initializes state based on properties.
  */
 
-export default class PropertiesView extends Component {
+class PropertiesView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -84,3 +85,5 @@ export default class PropertiesView extends Component {
     );
   }
 }
+
+export default PropertiesView;

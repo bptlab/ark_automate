@@ -7,6 +7,7 @@ const { Option } = Select;
 /**
  * @class
  * @component
+ * @category Client
  * @classdesc Renders the application-dropdown based on passed list of applications.
  * @example
  * let applicationList = ['MS Excel', 'Browser'];
@@ -19,7 +20,7 @@ const { Option } = Select;
  * )
  */
 
-export default function PropertiesPanelApplicationDropdown(props) {
+function PropertiesPanelApplicationDropdown(props) {
   return (
     <>
       <Select
@@ -36,3 +37,5 @@ export default function PropertiesPanelApplicationDropdown(props) {
     </>
   );
 }
+
+export default PropertiesPanelApplicationDropdown;
