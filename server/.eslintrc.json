@@ -17,7 +17,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "only-warn"
     ],
     "rules": {
         "no-console": ["error", { "allow": ["warn", "error"] }]
