@@ -60,7 +60,7 @@ export default class PropertiesView extends Component {
     const { selectedElements, element } = this.state;
 
     return (
-      <div class='sidebarWrapper'>
+      <div className='sidebarWrapper'>
         {selectedElements.length === 1 && (
           <PropertiesPanelBuilder modeler={modeler} element={element} />
         )}

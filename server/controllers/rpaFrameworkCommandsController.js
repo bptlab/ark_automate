@@ -2,7 +2,7 @@ const activityDataRetrieval = require('../services/ActivityDataRetrieval/Activit
 
 exports.getAvailableApplications = async (req, res) => {
   try {
-    let listOfDistinctApplications = await activityDataRetrieval.getDistinctApplicationsFromDB();
+    const listOfDistinctApplications = await activityDataRetrieval.getDistinctApplicationsFromDB();
     res.set('Content-Type', 'application/json');
     res.send(listOfDistinctApplications);
   } catch (err) {
@@ -13,10 +13,10 @@ exports.getAvailableApplications = async (req, res) => {
 // GET /get-available-tasks-for-application?application=Browser
 exports.getAvailableTasksForApplications = async (req, res) => {
   try {
-    let application = req.query.application;
+    const {application} = req.query;
     res.set('Content-Type', 'application/json');
     if (application != null) {
-      let listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(
+      const listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(
         application
       );
       res.send(listOfDistinctApplications);
@@ -31,12 +31,12 @@ exports.getAvailableTasksForApplications = async (req, res) => {
 // GET /get-vars-for-task?application=Browser&task=Open+Browser
 exports.getVarsForTask = async (req, res) => {
   try {
-    let application = req.query.application;
-    let task = req.query.task;
+    const {application} = req.query;
+    const {task} = req.query;
     res.set('Content-Type', 'application/json');
 
     if (application != null && task != null) {
-      let listOfDistinctApplications = await activityDataRetrieval.getInputOutputForSelectedTask(
+      const listOfDistinctApplications = await activityDataRetrieval.getInputOutputForSelectedTask(
         application,
         task
       );

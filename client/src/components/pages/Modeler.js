@@ -1,12 +1,11 @@
 import React from 'react';
-import BpmnModelerComponent from '../content/BpmnModeler/BpmnModeler';
 import { Layout } from 'antd';
+import BpmnModelerComponent from '../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../content/HeaderNavbar/HeaderNavbar';
 
 const { Footer } = Layout;
 
-const Modeler = () => {
-  return (
+const Modeler = () => (
     <div>
       <Layout>
         <HeaderNavbar selectedKey={2} />
@@ -15,6 +14,5 @@ const Modeler = () => {
       </Layout>
     </div>
   );
-};
 
 export default Modeler;

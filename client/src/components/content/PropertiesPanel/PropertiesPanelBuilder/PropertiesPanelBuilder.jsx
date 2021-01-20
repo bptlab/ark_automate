@@ -1,11 +1,11 @@
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 
 import React, { Component } from 'react';
+import { Button, Input, Tooltip, Typography } from 'antd';
+import { InfoCircleOutlined, RobotOutlined } from '@ant-design/icons';
 import PropertiesPanelApplicationDropdown from '../PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown';
 import PropertiesPanelTaskDropdown from '../PropertiesPanelTaskDropdown/PropertiesPanelTaskDropdown';
 
-import { Button, Input, Tooltip, Typography } from 'antd';
-import { InfoCircleOutlined, RobotOutlined } from '@ant-design/icons';
 
 import '../PropertiesView/PropertiesView.css';
 
@@ -32,7 +32,7 @@ export default class PropertiesPanelBuilder extends Component {
       disableTaskSelection: true,
     };
 
-    let { element } = this.state;
+    const { element } = this.state;
     if (element.labelTarget) {
       this.setState({
         element: element.labelTarget,
@@ -47,15 +47,7 @@ export default class PropertiesPanelBuilder extends Component {
     this.initSessionStorage('AvailableApplications', []);
   }
 
-  /**
-   * @description Checks if passed item already exists in session storage and initializes with given value if not existing.
-   * @param {*} itemToCheckFor The selected item to check for in the session storage.
-   * @param {*} valueToInitTo The value to init to if the item is not existing in session storage yet.
-   */
-  initSessionStorage(itemToCheckFor, valueToInitTo) {
-    if (sessionStorage.getItem(itemToCheckFor) === null)
-      sessionStorage.setItem(itemToCheckFor, valueToInitTo);
-  }
+
 
   /**
    * @description
@@ -63,32 +55,11 @@ export default class PropertiesPanelBuilder extends Component {
    * or already populated with values and does so if not done yet.
    */
   componentDidMount() {
-    let applicationList = sessionStorage.getItem('AvailableApplications');
+    const applicationList = sessionStorage.getItem('AvailableApplications');
     if (applicationList.length < 1)
       this.saveAvailableApplicationsToSessionStorage();
 
     this.checkForExistingRPAAttributes();
-  }
-
-  /**
-   * @description gets called each time the Component is mounted to ensure that if an
-   * element already has an app and Task selected, those will be displayed
-   */
-  checkForExistingRPAAttributes() {
-    let { element } = this.state;
-    if (element.businessObject['$attrs']['arkRPA:application'])
-      this.getTasksForApplication(
-        element.businessObject['$attrs']['arkRPA:application']
-      );
-
-    if (
-      !element.businessObject['$attrs']['arkRPA:application'] &&
-      this.state['disableTaskSelection']
-    ) {
-      this.setState({ disableTaskSelection: true });
-    } else {
-      this.setState({ disableTaskSelection: false });
-    }
   }
 
   /**
@@ -109,19 +80,50 @@ export default class PropertiesPanelBuilder extends Component {
    * @param {*} selectedApplication Application for which to get the tasks for.
    */
   async getTasksForApplication(selectedApplication) {
-    let currentSavedTasksObject = JSON.parse(
+    const currentSavedTasksObject = JSON.parse(
       sessionStorage.getItem('TaskToApplicationCache')
     );
 
     if (selectedApplication in currentSavedTasksObject) {
       this.setState({
-        selectedApplication: selectedApplication,
+        selectedApplication,
         tasksForSelectedApplication:
           currentSavedTasksObject[selectedApplication],
         disableTaskSelection: false,
       });
     } else {
       this.fetchTasksFromDB(selectedApplication, currentSavedTasksObject);
+    }
+  }
+
+    /**
+   * @description Checks if passed item already exists in session storage and initializes with given value if not existing.
+   * @param {*} itemToCheckFor The selected item to check for in the session storage.
+   * @param {*} valueToInitTo The value to init to if the item is not existing in session storage yet.
+   */
+  initSessionStorage(itemToCheckFor, valueToInitTo) {
+    if (sessionStorage.getItem(itemToCheckFor) === null)
+      sessionStorage.setItem(itemToCheckFor, valueToInitTo);
+  }
+
+  /**
+   * @description gets called each time the Component is mounted to ensure that if an
+   * element already has an app and Task selected, those will be displayed
+   */
+  checkForExistingRPAAttributes() {
+    const { element } = this.state;
+    if (element.businessObject.$attrs['arkRPA:application'])
+      this.getTasksForApplication(
+        element.businessObject.$attrs['arkRPA:application']
+      );
+
+    if (
+      !element.businessObject.$attrs['arkRPA:application'] &&
+      this.state.disableTaskSelection
+    ) {
+      this.setState({ disableTaskSelection: true });
+    } else {
+      this.setState({ disableTaskSelection: false });
     }
   }
 
@@ -132,8 +134,8 @@ export default class PropertiesPanelBuilder extends Component {
    */
   async fetchTasksFromDB(selectedApplication, currentSavedTasksObject) {
     await fetch(
-      '/rpa-framework/commands/get-available-tasks-for-application?application=' +
-        selectedApplication.replaceAll(' ', '+')
+      `/rpa-framework/commands/get-available-tasks-for-application?application=${ 
+        selectedApplication.replaceAll(' ', '+')}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -151,15 +153,15 @@ export default class PropertiesPanelBuilder extends Component {
   }
 
   updateName(name) {
-    const modeling = this.state['modeler'].get('modeling');
-    let { element } = this.state;
+    const modeling = this.state.modeler.get('modeling');
+    const { element } = this.state;
     modeling.updateLabel(element, name);
   }
 
   updateTopic(topic) {
-    const modeling = this.state['modeler'].get('modeling');
+    const modeling = this.state.modeler.get('modeling');
 
-    let { element } = this.state;
+    const { element } = this.state;
     modeling.updateProperties(element, {
       'custom:topic': topic,
     });
@@ -180,10 +182,10 @@ export default class PropertiesPanelBuilder extends Component {
         selectedTask: value,
       },
       () => {
-        const modeling = this.state['modeler'].get('modeling');
-        let { element } = this.state;
+        const modeling = this.state.modeler.get('modeling');
+        const { element } = this.state;
         activityDataRetrieval.fetchAndUpdateRPAProperties(
-          this.state['selectedApplication'],
+          this.state.selectedApplication,
           value,
           modeling,
           element
@@ -192,20 +194,20 @@ export default class PropertiesPanelBuilder extends Component {
     );
   }
 
-  makeServiceTask(name) {
-    const bpmnReplace = this.state['modeler'].get('bpmnReplace');
+  makeServiceTask() {
+    const bpmnReplace = this.state.modeler.get('bpmnReplace');
 
-    let { element } = this.state;
+    const { element } = this.state;
     bpmnReplace.replaceElement(element, {
       type: 'bpmn:ServiceTask',
     });
   }
 
   attachTimeout() {
-    const modeling = this.state['modeler'].get('modeling');
-    const selection = this.state['modeler'].get('selection');
+    const modeling = this.state.modeler.get('modeling');
+    const selection = this.state.modeler.get('selection');
 
-    let { element } = this.state;
+    const { element } = this.state;
     const attrs = {
       type: 'bpmn:BoundaryEvent',
       eventDefinitionType: 'bpmn:TimerEventDefinition',
@@ -234,16 +236,16 @@ export default class PropertiesPanelBuilder extends Component {
   }
 
   append(element, attrs) {
-    const autoPlace = this.state['modeler'].get('autoPlace');
-    const elementFactory = this.state['modeler'].get('elementFactory');
+    const autoPlace = this.state.modeler.get('autoPlace');
+    const elementFactory = this.state.modeler.get('elementFactory');
 
-    var shape = elementFactory.createShape(attrs);
+    const shape = elementFactory.createShape(attrs);
 
     return autoPlace.append(element, shape);
   }
 
   render() {
-    let { element } = this.state;
+    const { element } = this.state;
 
     return (
       <>
@@ -285,7 +287,7 @@ export default class PropertiesPanelBuilder extends Component {
             <Input
               placeholder='name'
               style={{ marginBottom: '10px' }}
-              /*prefix={<UserOutlined className="site-form-item-icon" />}*/
+              /* prefix={<UserOutlined className="site-form-item-icon" />} */
               suffix={
                 <Tooltip title='the name of your task, gateway or event'>
                   <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
@@ -322,16 +324,16 @@ export default class PropertiesPanelBuilder extends Component {
                     .getItem('AvailableApplications')
                     .split(',')}
                   currentSelection={
-                    element.businessObject['$attrs']['arkRPA:application']
+                    element.businessObject.$attrs['arkRPA:application']
                   }
                 />
                 <br />
                 <PropertiesPanelTaskDropdown
-                  listOfTasks={this.state['tasksForSelectedApplication']}
+                  listOfTasks={this.state.tasksForSelectedApplication}
                   onTaskSelection={this.updateSelectedTask}
-                  disabled={this.state['disableTaskSelection']}
+                  disabled={this.state.disableTaskSelection}
                   currentSelection={
-                    element.businessObject['$attrs']['arkRPA:task']
+                    element.businessObject.$attrs['arkRPA:task']
                   }
                 />
               </>
