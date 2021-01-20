@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> client/src/components/content/BpmnModeler/BpmnModeler.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Classes</h3><ul><li><a href="BpmnModelerComponent.html">BpmnModelerComponent</a></li><li><a href="HeaderNavbar.html">HeaderNavbar</a></li><li><a href="PropertiesPanelApplicationDropdown.html">PropertiesPanelApplicationDropdown</a></li><li><a href="PropertiesPanelBuilder.html">PropertiesPanelBuilder</a></li><li><a href="PropertiesPanelTaskDropdown.html">PropertiesPanelTaskDropdown</a></li><li><a href="PropertiesView.html">PropertiesView</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>client/src/components/content/BpmnModeler/BpmnModeler.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
+import BpmnModeler from 'bpmn-js/lib/Modeler';
+import { emptyBpmn } from '../../../assets/empty.bpmn';
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
+import PropertiesView from '../PropertiesPanel/PropertiesView/PropertiesView';
+import arkRPA_ModdleDescriptor from '../../../assets/modelerPropertiesExtensionRPA/ark-rpa';
+import parser from '../../../utils/parser/parser.js';
+import convert from 'xml-js';
+
+import './BpmnModeler.css';
+import 'bpmn-js/dist/assets/diagram-js.css';
+import 'bpmn-font/dist/css/bpmn-embedded.css';
+
+import { Layout, Button } from 'antd';
+
+const { Content, Sider } = Layout;
+
+/**
+ * @class
+ * @component
+ * @category Client
+ * @classdesc This class renders the modeling interface as well as the sidebar.
+ * @example return (&lt;BpmnModelerComponent />)
+ */
+class BpmnModelerComponent extends Component {
+  modeler = null;
+
+  componentDidMount = () => {
+    const modeler = new BpmnModeler({
+      container: '#bpmnview',
+      keyboard: {
+        bindTo: window,
+      },
+      propertiesPanel: {
+        parent: '#propview',
+      },
+      additionalModules: [propertiesProviderModule],
+      moddleExtensions: {
+        camunda: camundaModdleDescriptor,
+        arkRPA: arkRPA_ModdleDescriptor,
+      },
+    });
+    this.modeler = modeler;
+
+    this.newBpmnDiagram();
+    this.forceUpdate();
+  };
+
+  newBpmnDiagram = () => {
+    this.openBpmnDiagram(emptyBpmn);
+  };
+
+  openBpmnDiagram = (xml) => {
+    this.modeler.importXML(xml, (error) => {
+      if (error) {
+        return console.log('fail import xml');
+      }
+
+      var canvas = this.modeler.get('canvas');
+
+      canvas.zoom('fit-viewport');
+    });
+  };
+
+  /**
+   * @description Will download a given string as a file
+   * @param {string} text String that will be the content of the downloaded file
+   * @param {string} fileType String that sets the file type of the downloaded file; Use form text/filetype
+   * @param {string} fileName String that sets the name of the downloaded file; Use the same filetype as given in the fileType parameter e.g. name.filetype
+   * @returns {undefined} The return is not defined
+   */
+  downloadString = (text, fileType, fileName) => {
+    var blob = new Blob([text], { type: fileType });
+    var element = document.createElement('a');
+    element.download = fileName;
+    element.href = URL.createObjectURL(blob);
+    element.dataset.downloadurl = [
+      fileType,
+      element.download,
+      element.href,
+    ].join(':');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    setTimeout(function () {
+      URL.revokeObjectURL(element.href);
+    }, 1500);
+  };
+
+  /**
+   * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it
+   * @returns {undefined} The return is not defined
+   */
+  getBpmnDiagramRobot = () => {
+    this.modeler.saveXML().then((json) => {
+      var xml = json.xml;
+      this.downloadRobotFile(xml);
+    });
+  };
+
+  /**
+   * @description Will parse a given xml file into a .robot file and download it
+   * @param {string} xml String that sets the xml to be parsed
+   * @returns {undefined} The return is not defined
+   */
+  downloadRobotFile = (xml) => {
+    var body = convert.xml2json(xml, { compact: true, spaces: 4 });
+    let jsonBody = JSON.parse(body);
+    let robot = parser.parseDiagramJson(jsonBody);
+    this.downloadString(robot, 'text/robot', 'testRobot.robot');
+  };
+
+  render = () => {
+    return (
+      &lt;Layout>
+        &lt;Content>
+          &lt;div id='bpmncontainer'>
+            &lt;div
+              id='bpmnview'
+              style={{ width: '85%', height: '98vh', float: 'left' }}
+            >&lt;/div>
+          &lt;/div>
+        &lt;/Content>
+        &lt;Sider class='sider' width={350}>
+          {this.modeler &amp;&amp; &lt;PropertiesView modeler={this.modeler} />}
+          &lt;Button
+            type='primary'
+            style={{
+              width: '80%',
+              marginTop: '10px',
+              marginLeft: '30px',
+              marginRight: '30px',
+            }}
+            onClick={this.getBpmnDiagramRobot}
+          >
+            Get Robot file
+          &lt;/Button>
+        &lt;/Sider>
+      &lt;/Layout>
+    );
+  };
+}
+
+export default BpmnModelerComponent;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>
