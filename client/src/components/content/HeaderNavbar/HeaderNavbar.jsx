@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import './HeaderNavbar.css';
-<<<<<<< HEAD
-=======
-// import logo_black from '../../resources/logo_black.png'
->>>>>>> DEV
 
 const { Header } = Layout;
 
