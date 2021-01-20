@@ -1,30 +1,20 @@
 import React from 'react';
 import { Select } from 'antd';
-import '../PropertiesView/PropertiesView.css';
+import '../PropertiesPanel.css';
 
 const { Option } = Select;
 
 /**
- * @class
+ * @functional
  * @component
- * @classdesc Renders the application-dropdown based on passed list of applications.
- * @example
- * let applicationList = ['MS Excel', 'Browser'];
- * let handleApplicationSelection = (event) => return 'successfully handled application selection';
- * return (
- *  <PropertiesPanelApplicationDropdown
- *      onApplicationSelection={this.handleApplicationSelection}
- *      applications={this.applicationList}
- *      currentSelection={'Element 1'} />
- * )
+ * @description Renders the application-dropdown based on passed list of applications.
  */
-
-export default function PropertiesPanelApplicationDropdown(props) {
+const PropertiesPanelApplicationDropdown = (props) => {
   return (
     <>
       <Select
+        className='properties-panel-dropdown'
         showSearch
-        style={{ width: '100%', marginTop: '10px' }}
         placeholder='Please select application'
         onChange={props.onApplicationSelection}
         defaultValue={props.currentSelection}
@@ -35,4 +25,6 @@ export default function PropertiesPanelApplicationDropdown(props) {
       </Select>
     </>
   );
-}
+};
+
+export default PropertiesPanelApplicationDropdown;

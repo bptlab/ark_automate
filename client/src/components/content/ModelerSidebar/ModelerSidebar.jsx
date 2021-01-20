@@ -1,5 +1,5 @@
 import styles from './ModelerSidebar.module.css';
-import PropertiesView from '../PropertiesPanel/PropertiesView/PropertiesView';
+import PropertiesPanel from '../PropertiesPanel/PropertiesPanel';
 import { Layout, Button } from 'antd';
 
 const { Sider } = Layout;
@@ -7,7 +7,7 @@ const { Sider } = Layout;
 const ModelerSidebar = (props) => {
   return (
     <Sider className={styles.sider}>
-      {props.modeler && <PropertiesView modeler={props.modeler} />}
+      {props.modeler && <PropertiesPanel modeler={props.modeler} />}
       <Button
         type='primary'
         style={{
