@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
-import { emptyBpmn } from '../../../assets/empty.bpmn';
+import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-import arkRPA_ModdleDescriptor from '../../../assets/modelerPropertiesExtensionRPA/ark-rpa';
+import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa';
 import parser from '../../../utils/parser.js';
 import convert from 'xml-js';
 import { downloadString } from '../../../utils/downloadString.js';
