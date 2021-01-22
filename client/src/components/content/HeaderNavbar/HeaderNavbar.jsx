@@ -7,11 +7,9 @@ import logo_black from '../../../assets/images/logo_black.png';
 const { Header } = Layout;
 
 /**
- * @functional
  * @component
  * @description Renders the header navbar for all pages and initially selects the passed key-element.
- * @example
- * return <HeaderNavbar selectedKey={2} />
+ * @example return <HeaderNavbar selectedKey={2} />
  */
 const HeaderNavbar = (props) => {
   return (

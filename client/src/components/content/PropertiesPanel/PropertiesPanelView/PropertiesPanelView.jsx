@@ -10,7 +10,6 @@ import '../PropertiesPanel.css';
 const { Text } = Typography;
 
 /**
- * @functional
  * @component
  * @description Shows PropertiesPanel for one selected BPMN-Element.
  */

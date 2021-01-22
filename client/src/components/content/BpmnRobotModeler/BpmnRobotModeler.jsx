@@ -17,10 +17,8 @@ import { Layout } from 'antd';
 const { Content } = Layout;
 
 /**
- * @class
  * @component
- * @classdesc This class renders the modeling interface as well as the sidebar.
- * @example return <BpmnModelerComponent />
+ * @description This component renders the modeling interface as well as the sidebar.
  */
 const BpmnRobotModeler = () => {
   const [modeler, setModeler] = useState(null);

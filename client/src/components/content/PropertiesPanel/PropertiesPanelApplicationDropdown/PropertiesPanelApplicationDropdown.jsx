@@ -5,7 +5,6 @@ import '../PropertiesPanel.css';
 const { Option } = Select;
 
 /**
- * @functional
  * @component
  * @description Renders the application-dropdown based on passed list of applications.
  */
