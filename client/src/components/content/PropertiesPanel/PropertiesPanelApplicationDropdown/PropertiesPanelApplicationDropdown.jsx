@@ -19,7 +19,9 @@ const PropertiesPanelApplicationDropdown = (props) => {
         defaultValue={props.currentSelection}
       >
         {props.applications.map((application) => (
-          <Option value={application}>{application}</Option>
+          <Option key={application} value={application}>
+            {application}
+          </Option>
         ))}
       </Select>
     </>
