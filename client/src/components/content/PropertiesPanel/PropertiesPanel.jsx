@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import PropertiesPanelView from './PropertiesPanelView/PropertiesPanelView';
 import './PropertiesPanel.css';
 import { fetchTaskParametersAndUpdateRPAProperties } from '../../../utils/xmlUtils';
+import {
+  fetchTasksFromDB,
+  getAvailableApplications,
+} from '../../../api/rpaFramework';
 import { Typography } from 'antd';
 
 const { Title } = Typography;
@@ -38,6 +42,17 @@ const PropertiesPanel = (props) => {
       });
       elementState.selectedElements = event.newSelection;
       elementState.currentElement = event.newSelection[0];
+      if (
+        event.newSelection[0] &&
+        !event.newSelection[0].businessObject['$attrs']['arkRPA:application']
+      ) {
+        setDisableTaskSelection(true);
+      } else if (
+        event.newSelection[0] &&
+        event.newSelection[0].businessObject['$attrs']['arkRPA:application']
+      ) {
+        setDisableTaskSelection(false);
+      }
     });
 
     props.modeler.on('element.changed', (event) => {
@@ -62,6 +77,7 @@ const PropertiesPanel = (props) => {
     if (sessionStorage.getItem(itemToCheckFor) === null)
       sessionStorage.setItem(itemToCheckFor, valueToInitTo);
   };
+
   /**
    * @description Update name in modeler of currently selected element
    */
@@ -74,7 +90,7 @@ const PropertiesPanel = (props) => {
    * @description Fetch all applications from MongoDB and save in session storage.
    */
   const saveAvailableApplicationsToSessionStorage = async () => {
-    await fetch('/rpa-framework/commands/get-available-applications')
+    getAvailableApplications
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('AvailableApplications', data);
@@ -98,33 +114,18 @@ const PropertiesPanel = (props) => {
       );
       setDisableTaskSelection(false);
     } else {
-      fetchTasksFromDB(selectedApplication, currentSavedTasksObject);
+      fetchTasksFromDB(selectedApplication)
+        .then((response) => response.json())
+        .then((data) => {
+          currentSavedTasksObject[selectedApplication] = data;
+          sessionStorage.setItem(
+            'TaskToApplicationCache',
+            JSON.stringify(currentSavedTasksObject)
+          );
+          setTasksForSelectedApplication(data);
+          setDisableTaskSelection(false);
+        });
     }
-  };
-
-  /**
-   * @description Fetch tasklist from Mongo-DB and set state to force rerendering.
-   * @param {String} selectedApplication - String with currently selected application from Dropdown
-   * @param {Object} currentSavedTasksObject - Object with all applications and tasks as attributes
-   */
-  const fetchTasksFromDB = async (
-    selectedApplication,
-    currentSavedTasksObject
-  ) => {
-    await fetch(
-      '/rpa-framework/commands/get-available-tasks-for-application?application=' +
-        selectedApplication.replaceAll(' ', '+')
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        currentSavedTasksObject[selectedApplication] = data;
-        sessionStorage.setItem(
-          'TaskToApplicationCache',
-          JSON.stringify(currentSavedTasksObject)
-        );
-        setTasksForSelectedApplication(data);
-        setDisableTaskSelection(false);
-      });
   };
 
   //Handler functions

@@ -20,7 +20,9 @@ const PropertiesPanelTaskDropdown = (props) => {
         defaultValue={props.currentSelection}
       >
         {props.listOfTasks.map((task) => (
-          <Option value={task}>{task}</Option>
+          <Option key={task} value={task}>
+            {task}
+          </Option>
         ))}
       </Select>
     </>

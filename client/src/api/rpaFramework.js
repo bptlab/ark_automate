@@ -1,12 +1,8 @@
 /**
- * @description Fetch tasklist from Mongo-DB and set state to force rerendering.
+ * @description Fetch tasklist from Mongo-DB
  * @param {String} selectedApplication - String with currently selected application from Dropdown
- * @param {Object} currentSavedTasksObject - Object with all applications and tasks as attributes
  */
-const fetchTasksFromDB = async (
-  selectedApplication,
-  currentSavedTasksObject
-) => {
+const fetchTasksFromDB = async (selectedApplication) => {
   let result = await fetch(
     '/rpa-framework/commands/get-available-tasks-for-application?application=' +
       selectedApplication.replaceAll(' ', '+')
@@ -15,9 +11,9 @@ const fetchTasksFromDB = async (
 };
 
 /**
- * @description Fetch all applications from MongoDB and save in session storage.
+ * @description Fetch all applications from MongoDB
  */
-const saveAvailableApplicationsToSessionStorage = async () => {
+const getAvailableApplications = async () => {
   let result = await fetch(
     '/rpa-framework/commands/get-available-applications'
   );
@@ -26,5 +22,5 @@ const saveAvailableApplicationsToSessionStorage = async () => {
 
 module.exports = {
   fetchTasksFromDB,
-  saveAvailableApplicationsToSessionStorage,
+  getAvailableApplications,
 };
