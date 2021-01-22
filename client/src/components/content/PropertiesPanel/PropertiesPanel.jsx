@@ -1,123 +1,85 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropertiesPanelView from './PropertiesPanelView/PropertiesPanelView';
 import './PropertiesPanel.css';
-
+import { fetchTaskParametersAndUpdateRPAProperties } from '../../../utils/xmlUtils';
 import { Typography } from 'antd';
 
 const { Title } = Typography;
-const activityDataRetrieval = require('../../../utils/xmlUtils');
 
 /**
- * @functional
  * @component
  * @description This class decides which sidebar is displayed. It updates itself depending on the number of selected BPMN elements.
  * @description Initializes state based on properties; initializes session storage. Binds all state-methods.
  */
+const PropertiesPanel = (props) => {
+  const [elementState, setElementState] = useState({
+    selectedElements: [],
+    currentElement: null,
+  });
+  const [selectedApplication, setSelectedApplication] = useState('');
+  const [
+    tasksForSelectedApplication,
+    setTasksForSelectedApplication,
+  ] = useState(['']);
+  const [disableTaskSelection, setDisableTaskSelection] = useState(true);
 
-export default class PropertiesPanel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedElements: [],
-      element: null,
-      selectedApplication: '',
-      tasksForSelectedApplication: [''],
-      disableTaskSelection: true,
-    };
-    console.log('constructing...');
-    console.log('initialState: ', this.state);
-    this.initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
-    this.initSessionStorage('AvailableApplications', []);
-  }
-
-  /**
-   * @description
-   * On a changed selection, the selected element changed in the components state.
-   * We also update panel via .setState, if currently selected element changed.
-   */
-  componentDidMount() {
+  useEffect(() => {
+    initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
+    initSessionStorage('AvailableApplications', []);
     let applicationList = sessionStorage.getItem('AvailableApplications');
-    if (applicationList.length < 1)
-      this.saveAvailableApplicationsToSessionStorage();
-    this.checkForExistingRPAAttributes();
+    if (applicationList.length < 1) saveAvailableApplicationsToSessionStorage();
+  }, []);
 
-    const { modeler } = this.props;
-
-    modeler.on('selection.changed', (event) => {
-      console.log('Selection changed...');
-      console.log('newSelection', event.newSelection[0]);
-      this.setState({
+  useEffect(() => {
+    props.modeler.on('selection.changed', (event) => {
+      setElementState({
         selectedElements: event.newSelection,
-        element: event.newSelection[0],
+        currentElement: event.newSelection[0],
       });
-      console.log('thisState', this.state);
+      elementState.selectedElements = event.newSelection;
+      elementState.currentElement = event.newSelection[0];
     });
 
-    modeler.on('element.changed', (event) => {
-      const { element } = event;
-      const { element: currentElement } = this.state;
-      console.log(element);
-      console.log(this.state);
-      if (!currentElement) {
+    props.modeler.on('element.changed', (event) => {
+      if (!elementState.currentElement) {
         return;
       }
-      if (element.id === currentElement.id) {
-        this.setState({
-          element: element,
+      if (event.element.id === elementState.currentElement.id) {
+        setElementState({
+          selectedElements: elementState.selectedElements,
+          currentElement: event.element,
         });
       }
     });
-  }
-
-  /**
-   * @description gets called each time the Component is mounted to ensure that if an
-   * element already has an app and Task selected, those will be displayed
-   */
-  checkForExistingRPAAttributes() {
-    let { element } = this.state;
-    if (element) {
-      if (element.businessObject['$attrs']['arkRPA:application'])
-        this.getTasksForApplication(
-          element.businessObject['$attrs']['arkRPA:application']
-        );
-
-      if (
-        !element.businessObject['$attrs']['arkRPA:application'] &&
-        this.state['disableTaskSelection']
-      ) {
-        this.setState({ disableTaskSelection: true });
-      } else {
-        this.setState({ disableTaskSelection: false });
-      }
-    }
-  }
+  }, [props.modeler]);
 
   /**
    * @description Checks if passed item already exists in session storage and initializes with given value if not existing.
    * @param {*} itemToCheckFor The selected item to check for in the session storage.
    * @param {*} valueToInitTo The value to init to if the item is not existing in session storage yet.
    */
-  initSessionStorage(itemToCheckFor, valueToInitTo) {
+  const initSessionStorage = (itemToCheckFor, valueToInitTo) => {
     if (sessionStorage.getItem(itemToCheckFor) === null)
       sessionStorage.setItem(itemToCheckFor, valueToInitTo);
-  }
-
-  updateName(name) {
-    const modeling = this.props.modeler.get('modeling');
-    let { element } = this.state;
-    modeling.updateLabel(element, name);
-  }
+  };
+  /**
+   * @description Update name in modeler of currently selected element
+   */
+  const updateName = (name) => {
+    const modeling = props.modeler.get('modeling');
+    modeling.updateLabel(elementState.currentElement, name);
+  };
 
   /**
    * @description Fetch all applications from MongoDB and save in session storage.
    */
-  async saveAvailableApplicationsToSessionStorage() {
+  const saveAvailableApplicationsToSessionStorage = async () => {
     await fetch('/rpa-framework/commands/get-available-applications')
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('AvailableApplications', data);
       });
-  }
+  };
 
   /**
    * @description
@@ -125,27 +87,30 @@ export default class PropertiesPanel extends Component {
    * Otherwise, fetch tasklist from MongoDB.
    * @param {*} selectedApplication Application for which to get the tasks for.
    */
-  async getTasksForApplication(selectedApplication) {
+  const getTasksForApplication = async (selectedApplication) => {
     let currentSavedTasksObject = JSON.parse(
       sessionStorage.getItem('TaskToApplicationCache')
     );
 
     if (selectedApplication in currentSavedTasksObject) {
-      this.setState({
-        tasksForSelectedApplication:
-          currentSavedTasksObject[selectedApplication],
-        disableTaskSelection: false,
-      });
+      setTasksForSelectedApplication(
+        currentSavedTasksObject[selectedApplication]
+      );
+      setDisableTaskSelection(false);
     } else {
-      this.fetchTasksFromDB(selectedApplication, currentSavedTasksObject);
+      fetchTasksFromDB(selectedApplication, currentSavedTasksObject);
     }
-  }
+  };
+
   /**
    * @description Fetch tasklist from Mongo-DB and set state to force rerendering.
    * @param {String} selectedApplication - String with currently selected application from Dropdown
    * @param {Object} currentSavedTasksObject - Object with all applications and tasks as attributes
    */
-  async fetchTasksFromDB(selectedApplication, currentSavedTasksObject) {
+  const fetchTasksFromDB = async (
+    selectedApplication,
+    currentSavedTasksObject
+  ) => {
     await fetch(
       '/rpa-framework/commands/get-available-tasks-for-application?application=' +
         selectedApplication.replaceAll(' ', '+')
@@ -157,91 +122,82 @@ export default class PropertiesPanel extends Component {
           'TaskToApplicationCache',
           JSON.stringify(currentSavedTasksObject)
         );
-
-        this.setState({
-          tasksForSelectedApplication: data,
-          disableTaskSelection: false,
-        });
+        setTasksForSelectedApplication(data);
+        setDisableTaskSelection(false);
       });
-  }
+  };
 
   //Handler functions
-  nameChangedHandler(event) {
-    const element = this.state.element;
-    element.businessObject.name = event.target.value;
-    this.setState({ element: element });
-    this.updateName(element.businessObject.name);
-  }
-
-  selectApplicationUpdatedHandler(value) {
-    const element = this.state.element;
-    element.businessObject['$attrs']['arkRPA:application'] = value;
-    this.setState({
-      element: element,
-      selectedApplication: value,
+  const nameChangedHandler = (event) => {
+    elementState.currentElement.businessObject.name = event.target.value;
+    setElementState({
+      selectedElements: elementState.selectedElements,
+      currentElement: elementState.currentElement,
     });
-    this.getTasksForApplication(value);
-  }
+    updateName(elementState.currentElement.businessObject.name);
+  };
 
-  selectTaskUpdatedHandler(value) {
-    const element = this.state.element;
-    element.businessObject['$attrs']['arkRPA:task'] = value;
-    this.setState({ element: element, selectedTask: value }, () => {
-      const modeling = this.props.modeler.get('modeling');
-      let { element } = this.state;
-      activityDataRetrieval.fetchAndUpdateRPAProperties(
-        this.state['selectedApplication'],
-        value,
-        modeling,
-        element
-      );
+  const selectApplicationUpdatedHandler = (value) => {
+    elementState.currentElement.businessObject['$attrs'][
+      'arkRPA:application'
+    ] = value;
+    setElementState({
+      selectedElements: elementState.selectedElements,
+      currentElement: elementState.currentElement,
     });
-  }
-  updatedToServiceTaskHandler(name) {
-    const bpmnReplace = this.props.modeler.get('bpmnReplace');
+    setSelectedApplication(value);
+    getTasksForApplication(value);
+  };
 
-    let { element } = this.state;
-    bpmnReplace.replaceElement(element, {
+  const selectTaskUpdatedHandler = (value) => {
+    const modeling = props.modeler.get('modeling');
+    fetchTaskParametersAndUpdateRPAProperties(
+      selectedApplication,
+      value,
+      modeling,
+      elementState.currentElement
+    );
+  };
+
+  const updatedToServiceTaskHandler = (name) => {
+    const bpmnReplace = props.modeler.get('bpmnReplace');
+    bpmnReplace.replaceElement(elementState.currentElement, {
       type: 'bpmn:ServiceTask',
     });
-  }
+  };
 
-  render() {
-    const { modeler } = this.props;
-    const { selectedElements, element } = this.state;
+  return (
+    <div className='sidebarWrapper'>
+      {elementState.selectedElements.length === 1 && (
+        <PropertiesPanelView
+          nameChanged={nameChangedHandler.bind(this)}
+          applicationSelectionUpdated={selectApplicationUpdatedHandler.bind(
+            this
+          )}
+          taskSelectionUpdated={selectTaskUpdatedHandler.bind(this)}
+          updatedToServiceTask={updatedToServiceTaskHandler.bind(this)}
+          tasksForSelectedApplication={tasksForSelectedApplication}
+          disableTaskSelection={disableTaskSelection}
+          element={elementState.currentElement}
+        />
+      )}
 
-    return (
-      <div className='sidebarWrapper'>
-        {selectedElements.length === 1 && (
-          <PropertiesPanelView
-            nameChanged={this.nameChangedHandler.bind(this)}
-            applicationSelectionUpdated={this.selectApplicationUpdatedHandler.bind(
-              this
-            )}
-            taskSelectionUpdated={this.selectTaskUpdatedHandler.bind(this)}
-            updatedToServiceTask={this.updatedToServiceTaskHandler.bind(this)}
-            tasksForSelectedApplication={this.state.tasksForSelectedApplication}
-            disableTaskSelection={this.state.disableTaskSelection}
-            element={this.state.element}
-          />
-        )}
+      {elementState.selectedElements.length === 0 && (
+        <span>
+          <Title className='label-on-dark-background'>
+            Please select an element.
+          </Title>
+        </span>
+      )}
 
-        {selectedElements.length === 0 && (
-          <span>
-            <Title className='label-on-dark-background'>
-              Please select an element.
-            </Title>
-          </span>
-        )}
-
-        {selectedElements.length > 1 && (
-          <span>
-            <Title className='label-on-dark-background'>
-              Please select a single element.
-            </Title>
-          </span>
-        )}
-      </div>
-    );
-  }
-}
+      {elementState.selectedElements.length > 1 && (
+        <span>
+          <Title className='label-on-dark-background'>
+            Please select a single element.
+          </Title>
+        </span>
+      )}
+    </div>
+  );
+};
+export default PropertiesPanel;

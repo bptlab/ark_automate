@@ -1,6 +1,3 @@
-var modeling;
-var element;
-
 /**
  * @description Given the parameters this method will update the XML properties of the selected element
  * @param {String} selectedApplication the selected application
@@ -8,15 +5,13 @@ var element;
  * @param {Object} passedModeling the modeling component
  * @param {Object} passedElement the element currently selected and whos properties are supposed to be updated
  */
-async function fetchAndUpdateRPAProperties(
+async function fetchTaskParametersAndUpdateRPAProperties(
   applicationName,
   taskName,
-  passedModeling,
-  passedElement
+  modeling,
+  element
 ) {
-  modeling = passedModeling;
-  element = passedElement;
-  await fetchParametersForTask(applicationName, taskName, element, modeling);
+  await fetchParametersForTask(applicationName, taskName, modeling, element);
 }
 
 /**
@@ -24,7 +19,12 @@ async function fetchAndUpdateRPAProperties(
  * @param {String} selectedApplication the selected application
  * @param {String} selectedTask the selected task
  */
-async function fetchParametersForTask(selectedApplication, selectedTask) {
+async function fetchParametersForTask(
+  selectedApplication,
+  selectedTask,
+  selectedModeling,
+  selectedElement
+) {
   await fetch(
     'rpa-framework/commands/get-vars-for-task?application=' +
       selectedApplication.replaceAll(' ', '+') +
@@ -33,7 +33,13 @@ async function fetchParametersForTask(selectedApplication, selectedTask) {
   )
     .then((response) => response.json())
     .then((data) => {
-      updateXML(data, selectedApplication, selectedTask);
+      updateXML(
+        data,
+        selectedApplication,
+        selectedTask,
+        selectedModeling,
+        selectedElement
+      );
     });
 }
 
@@ -43,7 +49,13 @@ async function fetchParametersForTask(selectedApplication, selectedTask) {
  * @param {String} selectedApplication the selected application
  * @param {String} selectedTask the selected task
  */
-function updateXML(data, selectedApplication, selectedTask) {
+function updateXML(
+  data,
+  selectedApplication,
+  selectedTask,
+  selectedModeling,
+  selectedElement
+) {
   let propertiesObject = {
     'arkRPA:application': selectedApplication,
     'arkRPA:task': selectedTask,
@@ -58,7 +70,7 @@ function updateXML(data, selectedApplication, selectedTask) {
     propertiesObject['arkRPA:outputVars'] = populateIOObjectWithMockValues(
       data.outputVars
     );
-  modeling.updateProperties(element, propertiesObject);
+  selectedModeling.updateProperties(selectedElement, propertiesObject);
 }
 
 /**
@@ -91,5 +103,5 @@ function populateIOObjectWithMockValues(IOobject) {
 }
 
 module.exports = {
-  fetchAndUpdateRPAProperties,
+  fetchTaskParametersAndUpdateRPAProperties,
 };

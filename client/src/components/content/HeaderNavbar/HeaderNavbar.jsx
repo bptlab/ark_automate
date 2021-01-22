@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import styles from './HeaderNavbar.module.css';
-import logo_black from '../../../assets/images/logo_black.png';
+import logo_black from '../../../resources/assets/images/logo_black.png';
 
 const { Header } = Layout;
 
