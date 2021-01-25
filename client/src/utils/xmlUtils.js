@@ -1,64 +1,40 @@
-/**
- * @description Given the parameters this method will update the XML properties of the selected element
- * @param {String} selectedApplication the selected application
- * @param {String} selectedTask the selected task
- * @param {Object} passedModeling the modeling component
- * @param {Object} passedElement the element currently selected and whos properties are supposed to be updated
- */
-async function fetchTaskParametersAndUpdateRPAProperties(
-  applicationName,
-  taskName,
-  modeling,
-  element
-) {
-  await fetchParametersForTask(applicationName, taskName, modeling, element);
-}
+import { fetchParametersForApplicationAndTask } from '../api/rpaFramework';
 
 /**
- * @description Fetches input and output vars for the application, task tuple and calls the method to update the XML
- * @param {String} selectedApplication the selected application
- * @param {String} selectedTask the selected task
+ * @description Given the parameters this method will update the XML properties of the selected element
+ * @param {String} application the selected application
+ * @param {String} task the selected task
+ * @param {Object} modeling the modeling component
+ * @param {Object} element the element currently selected and whos properties are supposed to be updated
  */
-async function fetchParametersForTask(
-  selectedApplication,
-  selectedTask,
-  selectedModeling,
-  selectedElement
-) {
-  await fetch(
-    'rpa-framework/commands/get-vars-for-task?application=' +
-      selectedApplication.replaceAll(' ', '+') +
-      '&task=' +
-      selectedTask.replaceAll(' ', '+')
-  )
+const fetchTaskParametersAndUpdateRPAProperties = (
+  application,
+  task,
+  modeling,
+  element
+) => {
+  fetchParametersForApplicationAndTask(application, task)
     .then((response) => response.json())
     .then((data) => {
-      updateXML(
-        data,
-        selectedApplication,
-        selectedTask,
-        selectedModeling,
-        selectedElement
-      );
+      updateXML(data, application, task, modeling, element);
+    })
+    .catch((error) => {
+      console.error(error);
     });
-}
+};
 
 /**
  * @description Updates the XML of the selected element of the modeler
  * @param {Object} data the Object retrieved from MongoDB containing objects for input and output vars
- * @param {String} selectedApplication the selected application
- * @param {String} selectedTask the selected task
+ * @param {String} application the selected application
+ * @param {String} task the selected task
+ * @param {Object} modeling the modeling component
+ * @param {Object} element the element currently selected and whos properties are supposed to be updated
  */
-function updateXML(
-  data,
-  selectedApplication,
-  selectedTask,
-  selectedModeling,
-  selectedElement
-) {
+const updateXML = (data, application, task, modeling, element) => {
   let propertiesObject = {
-    'arkRPA:application': selectedApplication,
-    'arkRPA:task': selectedTask,
+    'arkRPA:application': application,
+    'arkRPA:task': task,
     'arkRPA:inputVars': '',
     'arkRPA:outputVars': '',
   };
@@ -70,15 +46,15 @@ function updateXML(
     propertiesObject['arkRPA:outputVars'] = populateIOObjectWithMockValues(
       data.outputVars
     );
-  selectedModeling.updateProperties(selectedElement, propertiesObject);
-}
+  modeling.updateProperties(element, propertiesObject);
+};
 
 /**
  * @description Sets variables for input or output variables in an object
  * @param {Object} IOobject input or output variable object retrieved from MongoDB
  * @returns {Object} object where the fields have been set with values of that specific type
  */
-function populateIOObjectWithMockValues(IOobject) {
+const populateIOObjectWithMockValues = (IOobject) => {
   if (!IOobject) return null;
   let returnObject = {};
   for (let prop in IOobject) {
@@ -100,8 +76,6 @@ function populateIOObjectWithMockValues(IOobject) {
     }
   }
   return JSON.stringify(returnObject);
-}
-
-module.exports = {
-  fetchTaskParametersAndUpdateRPAProperties,
 };
+
+export default fetchTaskParametersAndUpdateRPAProperties;

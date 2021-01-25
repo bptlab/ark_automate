@@ -6,7 +6,7 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa';
 import parser from '../../../utils/parser.js';
 import convert from 'xml-js';
-import { downloadString } from '../../../utils/downloadString.js';
+import downloadString from '../../../utils/downloadString.js';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
@@ -59,10 +59,15 @@ const BpmnRobotModeler = () => {
    * @returns {undefined} The return is not defined
    */
   const getBpmnDiagramRobot = () => {
-    modeler.saveXML().then((json) => {
-      const xml = json.xml;
-      downloadRobotFile(xml);
-    });
+    modeler
+      .saveXML()
+      .then((json) => {
+        const xml = json.xml;
+        downloadRobotFile(xml);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   /**

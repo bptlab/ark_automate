@@ -1,26 +1,42 @@
 /**
  * @description Fetch tasklist from Mongo-DB
- * @param {String} selectedApplication - String with currently selected application from Dropdown
+ * @param {String} application - String with currently selected application from ApplicationDropdown
  */
-const fetchTasksFromDB = async (selectedApplication) => {
-  let result = await fetch(
+const fetchTasksFromDB = async (application) => {
+  let response = await fetch(
     '/rpa-framework/commands/get-available-tasks-for-application?application=' +
-      selectedApplication.replaceAll(' ', '+')
+      application.replaceAll(' ', '+')
   );
-  return result;
+  return response;
 };
 
 /**
  * @description Fetch all applications from MongoDB
  */
 const getAvailableApplications = async () => {
-  let result = await fetch(
+  let response = await fetch(
     '/rpa-framework/commands/get-available-applications'
   );
-  return result;
+  return response;
 };
 
-module.exports = {
-  fetchTasksFromDB,
+/**
+ * @description Fetch parameters for a specific applicationa and task
+ * @param {String} application - String with currently selected application from ApplicationDropdown
+ * @param {String} task - String with currently selected task from TaskDropdown
+ */
+const fetchParametersForApplicationAndTask = async (application, task) => {
+  let response = await fetch(
+    'rpa-framework/commands/get-vars-for-task?application=' +
+      application.replaceAll(' ', '+') +
+      '&task=' +
+      task.replaceAll(' ', '+')
+  );
+  return response;
+};
+
+export {
+  fetchParametersForApplicationAndTask,
   getAvailableApplications,
+  fetchTasksFromDB,
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropertiesPanelView from './PropertiesPanelView/PropertiesPanelView';
 import './PropertiesPanel.css';
-import { fetchTaskParametersAndUpdateRPAProperties } from '../../../utils/xmlUtils';
+import fetchTaskParametersAndUpdateRPAProperties from '../../../utils/xmlUtils';
 import {
   fetchTasksFromDB,
   getAvailableApplications,
@@ -80,6 +80,7 @@ const PropertiesPanel = (props) => {
 
   /**
    * @description Update name in modeler of currently selected element
+   * @param {String} name new name for currently selected element
    */
   const updateName = (name) => {
     const modeling = props.modeler.get('modeling');
@@ -94,6 +95,9 @@ const PropertiesPanel = (props) => {
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('AvailableApplications', data);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -124,11 +128,17 @@ const PropertiesPanel = (props) => {
           );
           setTasksForSelectedApplication(data);
           setDisableTaskSelection(false);
+        })
+        .catch((error) => {
+          console.error(error);
         });
     }
   };
 
-  //Handler functions
+  /**
+   * @description Gets called when the name of the selected element got updated in the sidebar. Updates the state of the component.
+   * @param {Object} event changed value in input field
+   */
   const nameChangedHandler = (event) => {
     elementState.currentElement.businessObject.name = event.target.value;
     setElementState({
@@ -138,6 +148,11 @@ const PropertiesPanel = (props) => {
     updateName(elementState.currentElement.businessObject.name);
   };
 
+  /**
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar. Updates the state of the component
+   * and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
+   * @param {Object} value new value of the ApplicationDropdown
+   */
   const selectApplicationUpdatedHandler = (value) => {
     elementState.currentElement.businessObject['$attrs'][
       'arkRPA:application'
@@ -150,6 +165,11 @@ const PropertiesPanel = (props) => {
     getTasksForApplication(value);
   };
 
+  /**
+   * @description Gets called when a new task was selected in the dropwdown in the sidebar. Updates the state of the component
+   * and gets the parameters of the task and updates the XML RPA properties (adds the application and the task).
+   * @param {Object} value new value of the TaskDropdown
+   */
   const selectTaskUpdatedHandler = (value) => {
     const modeling = props.modeler.get('modeling');
     fetchTaskParametersAndUpdateRPAProperties(
