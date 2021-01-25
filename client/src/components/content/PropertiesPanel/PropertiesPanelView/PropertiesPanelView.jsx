@@ -2,8 +2,8 @@ import { is } from 'bpmn-js/lib/util/ModelUtil';
 import React from 'react';
 import PropertiesPanelApplicationDropdown from '../PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown';
 import PropertiesPanelTaskDropdown from '../PropertiesPanelTaskDropdown/PropertiesPanelTaskDropdown';
-import { Button, Input, Tooltip, Typography } from 'antd';
-import { InfoCircleOutlined, RobotOutlined } from '@ant-design/icons';
+import { Input, Tooltip, Typography } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import styles from './PropertiesPanelView.module.css';
 import '../PropertiesPanel.css';
 
@@ -53,14 +53,6 @@ const PropertiesPanelView = (props) => {
           <>
             <Text className='label-on-dark-background'>Actions: </Text>
             <br />
-            <Button
-              className={styles.button}
-              type='primary'
-              onClick={props.updatedToServiceTask}
-              icon={<RobotOutlined />}
-            >
-              Make RPA Task
-            </Button>
             <PropertiesPanelApplicationDropdown
               onApplicationSelection={props.applicationSelectionUpdated}
               applications={sessionStorage

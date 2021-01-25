@@ -90,7 +90,7 @@ const PropertiesPanel = (props) => {
    * @description Fetch all applications from MongoDB and save in session storage.
    */
   const saveAvailableApplicationsToSessionStorage = async () => {
-    getAvailableApplications
+    getAvailableApplications()
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('AvailableApplications', data);
@@ -160,13 +160,6 @@ const PropertiesPanel = (props) => {
     );
   };
 
-  const updatedToServiceTaskHandler = (name) => {
-    const bpmnReplace = props.modeler.get('bpmnReplace');
-    bpmnReplace.replaceElement(elementState.currentElement, {
-      type: 'bpmn:ServiceTask',
-    });
-  };
-
   return (
     <div className='sidebarWrapper'>
       {elementState.selectedElements.length === 1 && (
@@ -176,7 +169,6 @@ const PropertiesPanel = (props) => {
             this
           )}
           taskSelectionUpdated={selectTaskUpdatedHandler.bind(this)}
-          updatedToServiceTask={updatedToServiceTaskHandler.bind(this)}
           tasksForSelectedApplication={tasksForSelectedApplication}
           disableTaskSelection={disableTaskSelection}
           element={elementState.currentElement}
