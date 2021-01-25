@@ -12,17 +12,27 @@ function generateCodeForMultiple(bpmnTasks) {
     let rpaTaskInput = rpaTaskInputString.replaceAll('/', '');
     rpaTaskInput = JSON.parse(rpaTaskInput);
     let counter = 0;
-    for (let propsIndex in rpaTaskInput) {
+    if (Object.keys(rpaTaskInput).length == 0) {
       let currentApplication = currentTask['_attributes']['arkRPA:application'];
       if (currentApplication !== lastApplication) {
         codeToAppend += currentTask['_attributes']['name'] + '\n';
         lastApplication = currentApplication;
       }
-      if (counter === 0) {
-        codeToAppend += '  ' + rpaTaskName;
+      codeToAppend += '  ' + rpaTaskName;
+    } else {
+      for (let propsIndex in rpaTaskInput) {
+        let currentApplication =
+          currentTask['_attributes']['arkRPA:application'];
+        if (currentApplication !== lastApplication) {
+          codeToAppend += currentTask['_attributes']['name'] + '\n';
+          lastApplication = currentApplication;
+        }
+        if (counter === 0) {
+          codeToAppend += '  ' + rpaTaskName;
+        }
+        counter++;
+        codeToAppend += '  ' + rpaTaskInput[propsIndex];
       }
-      counter++;
-      codeToAppend += '  ' + rpaTaskInput[propsIndex];
     }
     counter = 0;
     codeToAppend += '\n';
@@ -43,12 +53,16 @@ function generateCodeForSingle(bpmnTask) {
   let rpaTaskInput = rpaTaskInputString.replaceAll('/', '');
   rpaTaskInput = JSON.parse(rpaTaskInput);
   let counter = 0;
-  for (let propsIndex in rpaTaskInput) {
-    if (counter === 0) {
-      codeToAppend += '  ' + rpaTaskName;
+  if (Object.keys(rpaTaskInput).length == 0) {
+    codeToAppend += '  ' + rpaTaskName;
+  } else {
+    for (let propsIndex in rpaTaskInput) {
+      if (counter === 0) {
+        codeToAppend += '  ' + rpaTaskName;
+      }
+      counter++;
+      codeToAppend += '  ' + rpaTaskInput[propsIndex];
     }
-    counter++;
-    codeToAppend += '  ' + rpaTaskInput[propsIndex];
   }
   counter = 0;
   return codeToAppend;
