@@ -4,7 +4,7 @@ import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa';
-import parser from '../../../utils/parser.js';
+import parseDiagramJson from '../../../utils/parser.js';
 import convert from 'xml-js';
 import downloadString from '../../../utils/downloadString.js';
 import 'bpmn-js/dist/assets/diagram-js.css';
@@ -78,7 +78,7 @@ const BpmnRobotModeler = () => {
   const downloadRobotFile = (xml) => {
     const body = convert.xml2json(xml, { compact: true, spaces: 4 });
     let jsonBody = JSON.parse(body);
-    let robot = parser.parseDiagramJson(jsonBody);
+    let robot = parseDiagramJson(jsonBody);
     downloadString(robot, 'text/robot', 'testRobot.robot');
   };
 

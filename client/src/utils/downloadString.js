@@ -22,4 +22,4 @@ const downloadString = (text, fileType, fileName) => {
   }, 1500);
 };
 
-module.exports = { downloadString };
+export default downloadString;
