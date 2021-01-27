@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Select } from 'antd';
 import '../PropertiesPanel.css';
@@ -9,24 +10,26 @@ const { Option } = Select;
  * @category Client
  * @component
  */
-const PropertiesPanelApplicationDropdown = (props) => {
-  return (
-    <>
-      <Select
-        className='properties-panel-dropdown'
-        showSearch
-        placeholder='Please select application'
-        onChange={props.onApplicationSelection}
-        defaultValue={props.currentSelection}
-      >
-        {props.applications.map((application) => (
-          <Option key={application} value={application}>
-            {application}
-          </Option>
-        ))}
-      </Select>
-    </>
-  );
-};
+const PropertiesPanelApplicationDropdown = ({
+  onApplicationSelection,
+  currentSelection,
+  applications,
+}) => (
+  <>
+    <Select
+      className='properties-panel-dropdown'
+      showSearch
+      placeholder='Please select application'
+      onChange={onApplicationSelection}
+      defaultValue={currentSelection}
+    >
+      {applications.map((application) => (
+        <Option key={application} value={application}>
+          {application}
+        </Option>
+      ))}
+    </Select>
+  </>
+);
 
 export default PropertiesPanelApplicationDropdown;

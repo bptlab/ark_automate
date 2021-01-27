@@ -11,16 +11,14 @@ const { Title } = Typography;
  * @category Client
  * @component
  */
-const RobotFile = () => {
-  return (
-    <Layout>
-      <HeaderNavbar selectedKey={3} />
-      <Title className={styles.title}>
-        In future versions, the Robot Framework code can also be edited directly
-        here.
-      </Title>
-    </Layout>
-  );
-};
+const RobotFile = () => (
+  <Layout>
+    <HeaderNavbar selectedKey={3} />
+    <Title className={styles.title}>
+      In future versions, the Robot Framework code can also be edited directly
+      here.
+    </Title>
+  </Layout>
+);
 
 export default RobotFile;

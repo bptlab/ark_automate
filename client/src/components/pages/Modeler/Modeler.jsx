@@ -10,15 +10,14 @@ const { Footer } = Layout;
  * @category Client
  * @component
  */
-const Modeler = () => {
-  return (
-    <div>
-      <Layout>
-        <HeaderNavbar selectedKey={2} />
-        <BpmnModeler />
-        <Footer>Fußzeile</Footer>
-      </Layout>
-    </div>
-  );
+const Modeler = () => (
+  <div>
+    <Layout>
+      <HeaderNavbar selectedKey={2} />
+      <BpmnModeler />
+      <Footer>Fußzeile</Footer>
+    </Layout>
+  </div>
+);
 
 export default Modeler;

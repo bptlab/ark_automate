@@ -4,7 +4,7 @@ import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa';
-import parseDiagramJson from '../../../utils/parser.js';
+import parseDiagramJson from '../../../utils/parser/parser.js';
 import convert from 'xml-js';
 import downloadString from '../../../utils/downloadString.js';
 import 'bpmn-js/dist/assets/diagram-js.css';
@@ -27,7 +27,7 @@ const BpmnModeler = () => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
-    const modeler = new CamundaBpmnModeler({
+    const newModeler = new CamundaBpmnModeler({
       container: '#bpmnview',
       keyboard: {
         bindTo: window,
@@ -41,15 +41,15 @@ const BpmnModeler = () => {
         arkRPA: arkRPA_ModdleDescriptor,
       },
     });
-
-    setModeler(modeler);
+    setModeler(newModeler);
 
     const openBpmnDiagram = (xml) => {
-      modeler.importXML(xml, (error) => {
+      newModeler.importXML(xml, (error) => {
         if (error) {
+          // eslint-disable-next-line no-console
           return console.log('fail import xml');
         }
-        let canvas = modeler.get('canvas');
+        const canvas = newModeler.get('canvas');
         canvas.zoom('fit-viewport');
       });
     };
@@ -58,13 +58,24 @@ const BpmnModeler = () => {
   }, []);
 
   /**
+   * @description Will parse a given xml file into a .robot file and download it
+   * @param {string} xml String that sets the xml to be parsed
+   */
+  const downloadRobotFile = (xml) => {
+    const body = convert.xml2json(xml, { compact: true, spaces: 4 });
+    const jsonBody = JSON.parse(body);
+    const robot = parseDiagramJson(jsonBody);
+    downloadString(robot, 'text/robot', 'testRobot.robot');
+  };
+
+  /**
    * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it.
    */
   const getRobotFile = () => {
     modeler
       .saveXML()
       .then((json) => {
-        const xml = json.xml;
+        const { xml } = json;
         downloadRobotFile(xml);
       })
       .catch((error) => {
@@ -72,28 +83,14 @@ const BpmnModeler = () => {
       });
   };
 
-  /**
-   * @description Will parse a given xml file into a .robot file and download it
-   * @param {string} xml String that sets the xml to be parsed
-   */
-  const downloadRobotFile = (xml) => {
-    const body = convert.xml2json(xml, { compact: true, spaces: 4 });
-    let jsonBody = JSON.parse(body);
-    let robot = parseDiagramJson(jsonBody);
-    downloadString(robot, 'text/robot', 'testRobot.robot');
-  };
-
   return (
     <Layout>
       <Content>
         <div id='bpmncontainer'>
-          <div className={styles['bpmn-modeler-container']} id='bpmnview'></div>
+          <div className={styles['bpmn-modeler-container']} id='bpmnview' />
         </div>
       </Content>
-      <ModelerSidebar
-        modeler={modeler}
-        getRobotFile={getRobotFile}
-      ></ModelerSidebar>
+      <ModelerSidebar modeler={modeler} getRobotFile={getRobotFile} />
     </Layout>
   );
 };

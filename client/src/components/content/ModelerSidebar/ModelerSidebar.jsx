@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
+import React from 'react';
+import { Layout, Button } from 'antd';
 import styles from './ModelerSidebar.module.css';
 import PropertiesPanel from '../PropertiesPanel/PropertiesPanel';
-import { Layout, Button } from 'antd';
 
 const { Sider } = Layout;
 
@@ -9,19 +11,13 @@ const { Sider } = Layout;
  * @category Client
  * @component
  */
-const ModelerSidebar = (props) => {
-  return (
-    <Sider className={styles.sider}>
-      {props.modeler && <PropertiesPanel modeler={props.modeler} />}
-      <Button
-        type='primary'
-        className={styles.button}
-        onClick={props.getRobotFile}
-      >
-        Get Robot file
-      </Button>
-    </Sider>
-  );
-};
+const ModelerSidebar = ({ modeler, getRobotFile }) => (
+  <Sider className={styles.sider}>
+    {modeler && <PropertiesPanel modeler={modeler} />}
+    <Button type='primary' className={styles.button} onClick={getRobotFile}>
+      Get Robot file
+    </Button>
+  </Sider>
+);
 
 export default ModelerSidebar;

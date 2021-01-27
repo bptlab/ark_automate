@@ -1,4 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable no-use-before-define */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
+import { Typography } from 'antd';
 import PropertiesPanelView from './PropertiesPanelView/PropertiesPanelView';
 import './PropertiesPanel.css';
 import fetchTaskParametersAndUpdateRPAProperties from '../../../utils/xmlUtils';
@@ -6,7 +10,6 @@ import {
   fetchTasksFromDB,
   getAvailableApplications,
 } from '../../../api/applicationAndTaskSelection';
-import { Typography } from 'antd';
 
 const { Title } = Typography;
 
@@ -16,7 +19,7 @@ const { Title } = Typography;
  * @category Client
  * @component
  */
-const PropertiesPanel = (props) => {
+const PropertiesPanel = ({ modeler }) => {
   const [elementState, setElementState] = useState({
     selectedElements: [],
     currentElement: null,
@@ -34,7 +37,7 @@ const PropertiesPanel = (props) => {
   useEffect(() => {
     initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
     initSessionStorage('AvailableApplications', []);
-    let applicationList = sessionStorage.getItem('AvailableApplications');
+    const applicationList = sessionStorage.getItem('AvailableApplications');
     if (applicationList.length < 1) saveAvailableApplicationsToSessionStorage();
   }, []);
 
@@ -42,27 +45,31 @@ const PropertiesPanel = (props) => {
    * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
    */
   useEffect(() => {
-    props.modeler.on('selection.changed', (event) => {
+    modeler.on('selection.changed', (event) => {
       setElementState({
         selectedElements: event.newSelection,
         currentElement: event.newSelection[0],
       });
+
+      // the updated elementState isn't automatically used in useEffect() therefore we need the following workaround
       elementState.selectedElements = event.newSelection;
-      elementState.currentElement = event.newSelection[0];
+      const currentElement = event.newSelection[0];
+      elementState.currentElement = currentElement;
+
       if (
         event.newSelection[0] &&
-        !event.newSelection[0].businessObject['$attrs']['arkRPA:application']
+        !event.newSelection[0].businessObject.$attrs['arkRPA:application']
       ) {
         setDisableTaskSelection(true);
       } else if (
         event.newSelection[0] &&
-        event.newSelection[0].businessObject['$attrs']['arkRPA:application']
+        event.newSelection[0].businessObject.$attrs['arkRPA:application']
       ) {
         setDisableTaskSelection(false);
       }
     });
 
-    props.modeler.on('element.changed', (event) => {
+    modeler.on('element.changed', (event) => {
       if (!elementState.currentElement) {
         return;
       }
@@ -73,7 +80,7 @@ const PropertiesPanel = (props) => {
         });
       }
     });
-  }, [props.modeler]);
+  }, [modeler]);
 
   /**
    * @description Checks if passed item already exists in session storage and initializes with given value if not existing.
@@ -90,7 +97,7 @@ const PropertiesPanel = (props) => {
    * @param {String} name new name for currently selected element
    */
   const updateName = (name) => {
-    const modeling = props.modeler.get('modeling');
+    const modeling = modeler.get('modeling');
     modeling.updateLabel(elementState.currentElement, name);
   };
 
@@ -111,23 +118,21 @@ const PropertiesPanel = (props) => {
   /**
    * @description Checks if tasks for selected application are already stored in session storage.
    * Otherwise, fetch tasklist from MongoDB.
-   * @param {*} selectedApplication Application for which to get the tasks for.
+   * @param {*} application Application for which to get the tasks for.
    */
-  const getTasksForApplication = async (selectedApplication) => {
-    let currentSavedTasksObject = JSON.parse(
+  const getTasksForApplication = async (application) => {
+    const currentSavedTasksObject = JSON.parse(
       sessionStorage.getItem('TaskToApplicationCache')
     );
 
-    if (selectedApplication in currentSavedTasksObject) {
-      setTasksForSelectedApplication(
-        currentSavedTasksObject[selectedApplication]
-      );
+    if (application in currentSavedTasksObject) {
+      setTasksForSelectedApplication(currentSavedTasksObject[application]);
       setDisableTaskSelection(false);
     } else {
-      fetchTasksFromDB(selectedApplication)
+      fetchTasksFromDB(application)
         .then((response) => response.json())
         .then((data) => {
-          currentSavedTasksObject[selectedApplication] = data;
+          currentSavedTasksObject[application] = data;
           sessionStorage.setItem(
             'TaskToApplicationCache',
             JSON.stringify(currentSavedTasksObject)
@@ -160,7 +165,7 @@ const PropertiesPanel = (props) => {
    * @param {Object} value new value of the ApplicationDropdown
    */
   const selectApplicationUpdatedHandler = (value) => {
-    elementState.currentElement.businessObject['$attrs'][
+    elementState.currentElement.businessObject.$attrs[
       'arkRPA:application'
     ] = value;
     setElementState({
@@ -177,7 +182,7 @@ const PropertiesPanel = (props) => {
    * @param {Object} value new value of the TaskDropdown
    */
   const selectTaskUpdatedHandler = (value) => {
-    const modeling = props.modeler.get('modeling');
+    const modeling = modeler.get('modeling');
     fetchTaskParametersAndUpdateRPAProperties(
       selectedApplication,
       value,

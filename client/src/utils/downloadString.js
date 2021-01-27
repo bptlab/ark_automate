@@ -22,7 +22,7 @@ const downloadString = (text, fileType, fileName) => {
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
-  setTimeout(function () {
+  setTimeout(() => {
     URL.revokeObjectURL(element.href);
   }, 1500);
 };

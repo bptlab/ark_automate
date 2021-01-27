@@ -10,15 +10,14 @@ const { Title } = Typography;
  * @category Client
  * @component
  */
-const Error = () => {
-  return (
-    <div>
-      <Layout>
-        <HeaderNavbar selectedKey={0} />
-        <br />
-        <Title className={styles.title}>Error: Page does not exist!</Title>
-      </Layout>
-    </div>
-  );
+const Error = () => (
+  <div>
+    <Layout>
+      <HeaderNavbar selectedKey={0} />
+      <br />
+      <Title className={styles.title}>Error: Page does not exist!</Title>
+    </Layout>
+  </div>
+);
 
 export default Error;

@@ -11,19 +11,17 @@ import './App.css';
  * @category Client
  * @component
  */
-const App = () => {
-  return (
-    <BrowserRouter>
-      <div>
-        <Switch>
-          <Route path='/' component={Home} exact />
-          <Route path='/modeler' component={Modeler} />
-          <Route path='/robotfile' component={RobotFile} />
-          <Route component={Error} />
-        </Switch>
-      </div>
-    </BrowserRouter>
-  );
-};
+const App = () => (
+  <BrowserRouter>
+    <div>
+      <Switch>
+        <Route path='/' component={Home} exact />
+        <Route path='/modeler' component={Modeler} />
+        <Route path='/robotfile' component={RobotFile} />
+        <Route component={Error} />
+      </Switch>
+    </div>
+  </BrowserRouter>
+);
 
 export default App;
