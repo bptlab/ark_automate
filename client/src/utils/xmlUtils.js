@@ -3,7 +3,7 @@
  * @module
  */
 
-import { fetchParametersForApplicationAndTask } from '../api/rpaFramework';
+import { fetchParametersForApplicationAndTask } from '../api/applicationAndTaskSelection';
 
 /**
  * @description Given the parameters this method will update the XML properties of the selected element

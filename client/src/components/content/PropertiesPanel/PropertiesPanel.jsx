@@ -5,7 +5,7 @@ import fetchTaskParametersAndUpdateRPAProperties from '../../../utils/xmlUtils';
 import {
   fetchTasksFromDB,
   getAvailableApplications,
-} from '../../../api/rpaFramework';
+} from '../../../api/applicationAndTaskSelection';
 import { Typography } from 'antd';
 
 const { Title } = Typography;
