@@ -1,4 +1,4 @@
-Fixes #[issue_no]
+!Please link the completed Issue to this Pull Request!
 
 ## Changes
 **What does this PR change? What was the problem? What is the solution?**
@@ -13,13 +13,9 @@ Fixes #[issue_no]
 ## Checklist before merge
 
 **Developer's responsibilities**
-* [ ] Approved by at least one developer: *enter reviewer here*
+* [ ] **Assign** one or two developers
+* [ ] **Change code** if reviewer(s) has/have requested it
 * [ ] **Pull request build** has passed
-* [ ] Production backend has been updated to reflect new features and fix bugs
-* [ ] tested locally (in all browsers if frontend)
-* [ ] updated the docs
-* [ ] added tests where necessary
-
-**Product Owner's responsibilities**
-* [ ] No issues have been found on staging environment
-* [ ] Product Owner has approved the release
+* [ ] **tested locally** (in at least chrome & firefox if frontend)
+* [ ] updated the **documentation**
+* [ ] added **tests** where necessary
