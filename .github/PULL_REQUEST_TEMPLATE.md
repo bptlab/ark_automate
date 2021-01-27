@@ -13,8 +13,9 @@
 ## Checklist before merge
 
 **Developer's responsibilities**
-* [ ] Approved by at least one developer
+* [ ] **Assign** one or two developers
+* [ ] **Change code** if reviewer(s) has/have requested it
 * [ ] **Pull request build** has passed
-* [ ] tested locally (in all browsers if frontend)
-* [ ] updated the docs
-* [ ] added tests where necessary
+* [ ] **tested locally** (in all browsers if frontend)
+* [ ] updated the **documentation**
+* [ ] added **tests** where necessary
