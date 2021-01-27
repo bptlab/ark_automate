@@ -20,6 +20,5 @@ const Modeler = () => {
       </Layout>
     </div>
   );
-};
 
 export default Modeler;

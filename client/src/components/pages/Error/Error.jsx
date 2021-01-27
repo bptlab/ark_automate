@@ -20,6 +20,5 @@ const Error = () => {
       </Layout>
     </div>
   );
-};
 
 export default Error;
