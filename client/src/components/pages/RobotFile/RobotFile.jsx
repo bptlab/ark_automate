@@ -6,6 +6,11 @@ import styles from './RobotFile.module.css';
 
 const { Title } = Typography;
 
+/**
+ * @description View of the robot file
+ * @category Client
+ * @component
+ */
 const RobotFile = () => {
   return (
     <Layout>

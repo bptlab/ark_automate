@@ -1,16 +1,21 @@
 import React from 'react';
-import BpmnRobotModeler from '../../content/BpmnRobotModeler/BpmnRobotModeler';
+import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import { Layout } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 
 const { Footer } = Layout;
 
+/**
+ * @description Modeler page that enables the user to build a robot
+ * @category Client
+ * @component
+ */
 const Modeler = () => {
   return (
     <div>
       <Layout>
         <HeaderNavbar selectedKey={2} />
-        <BpmnRobotModeler />
+        <BpmnModeler />
         <Footer>Fußzeile</Footer>
       </Layout>
     </div>

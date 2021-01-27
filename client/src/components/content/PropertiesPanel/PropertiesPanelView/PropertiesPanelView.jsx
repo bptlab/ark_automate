@@ -10,8 +10,9 @@ import '../PropertiesPanel.css';
 const { Text } = Typography;
 
 /**
- * @component
  * @description Shows PropertiesPanel for one selected BPMN-Element.
+ * @category Client
+ * @component
  */
 const PropertiesPanelView = (props) => {
   return (

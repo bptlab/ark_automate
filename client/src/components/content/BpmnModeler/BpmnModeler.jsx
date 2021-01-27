@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import BpmnModeler from 'bpmn-js/lib/Modeler';
+import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
@@ -10,21 +10,24 @@ import downloadString from '../../../utils/downloadString.js';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
-import styles from './BpmnRobotModeler.module.css';
-
+import styles from './BpmnModeler.module.css';
 import { Layout } from 'antd';
 
 const { Content } = Layout;
 
 /**
- * @component
  * @description This component renders the modeling interface as well as the sidebar.
+ * @category Client
+ * @component
  */
-const BpmnRobotModeler = () => {
+const BpmnModeler = () => {
   const [modeler, setModeler] = useState(null);
 
+  /**
+   * @description Equivalent to ComponentDidMount in class based components
+   */
   useEffect(() => {
-    const modeler = new BpmnModeler({
+    const modeler = new CamundaBpmnModeler({
       container: '#bpmnview',
       keyboard: {
         bindTo: window,
@@ -55,10 +58,9 @@ const BpmnRobotModeler = () => {
   }, []);
 
   /**
-   * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it
-   * @returns {undefined} The return is not defined
+   * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it.
    */
-  const getBpmnDiagramRobot = () => {
+  const getRobotFile = () => {
     modeler
       .saveXML()
       .then((json) => {
@@ -73,7 +75,6 @@ const BpmnRobotModeler = () => {
   /**
    * @description Will parse a given xml file into a .robot file and download it
    * @param {string} xml String that sets the xml to be parsed
-   * @returns {undefined} The return is not defined
    */
   const downloadRobotFile = (xml) => {
     const body = convert.xml2json(xml, { compact: true, spaces: 4 });
@@ -91,10 +92,10 @@ const BpmnRobotModeler = () => {
       </Content>
       <ModelerSidebar
         modeler={modeler}
-        getBpmnDiagramRobot={getBpmnDiagramRobot}
+        getRobotFile={getRobotFile}
       ></ModelerSidebar>
     </Layout>
   );
 };
 
-export default BpmnRobotModeler;
+export default BpmnModeler;

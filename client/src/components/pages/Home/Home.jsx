@@ -5,6 +5,11 @@ import styles from './Home.module.css';
 
 const { Title } = Typography;
 
+/**
+ * @description Homepage of the application
+ * @category Client
+ * @component
+ */
 const Home = () => {
   const [message] = useState(null);
 

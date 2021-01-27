@@ -1,4 +1,9 @@
 /**
+ * @category Client
+ * @module
+ */
+
+/**
  * @description Parses an JSON created from the .bpmn xml of the model to an executable .robot file
  * @returns {string} Code that has to be put in .robot file
  */

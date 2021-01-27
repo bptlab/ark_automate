@@ -11,9 +11,10 @@ import { Typography } from 'antd';
 const { Title } = Typography;
 
 /**
- * @component
  * @description This class decides which sidebar is displayed. It updates itself depending on the number of selected BPMN elements.
- * @description Initializes state based on properties; initializes session storage. Binds all state-methods.
+ * It initializes state based on properties and session storage. It binds all state-methods.
+ * @category Client
+ * @component
  */
 const PropertiesPanel = (props) => {
   const [elementState, setElementState] = useState({
@@ -27,6 +28,9 @@ const PropertiesPanel = (props) => {
   ] = useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
 
+  /**
+   * @description Equivalent to ComponentDidMount in class based components
+   */
   useEffect(() => {
     initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
     initSessionStorage('AvailableApplications', []);
@@ -34,6 +38,9 @@ const PropertiesPanel = (props) => {
     if (applicationList.length < 1) saveAvailableApplicationsToSessionStorage();
   }, []);
 
+  /**
+   * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
+   */
   useEffect(() => {
     props.modeler.on('selection.changed', (event) => {
       setElementState({
@@ -102,8 +109,7 @@ const PropertiesPanel = (props) => {
   };
 
   /**
-   * @description
-   * Checks if tasks for selected application are already stored in session storage.
+   * @description Checks if tasks for selected application are already stored in session storage.
    * Otherwise, fetch tasklist from MongoDB.
    * @param {*} selectedApplication Application for which to get the tasks for.
    */

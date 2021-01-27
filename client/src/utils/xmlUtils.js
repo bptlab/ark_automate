@@ -1,3 +1,8 @@
+/**
+ * @category Client
+ * @module
+ */
+
 import { fetchParametersForApplicationAndTask } from '../api/rpaFramework';
 
 /**

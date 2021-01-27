@@ -6,6 +6,11 @@ import Error from './pages/Error/Error';
 import RobotFile from './pages/RobotFile/RobotFile';
 import './App.css';
 
+/**
+ * @description route component of the application
+ * @category Client
+ * @component
+ */
 const App = () => {
   return (
     <BrowserRouter>

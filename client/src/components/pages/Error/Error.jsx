@@ -5,6 +5,11 @@ import styles from './Error.module.css';
 
 const { Title } = Typography;
 
+/**
+ * @description Error page of the application
+ * @category Client
+ * @component
+ */
 const Error = () => {
   return (
     <div>

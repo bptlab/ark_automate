@@ -1,4 +1,9 @@
 /**
+ * @category Client
+ * @module
+ */
+
+/**
  * @description Will download a given string as a file
  * @param {string} text String that will be the content of the downloaded file
  * @param {string} fileType String that sets the file type of the downloaded file; Use form text/filetype

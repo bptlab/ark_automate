@@ -4,19 +4,19 @@ import { Layout, Button } from 'antd';
 
 const { Sider } = Layout;
 
+/**
+ * @description This component renders the modeling sidebar.
+ * @category Client
+ * @component
+ */
 const ModelerSidebar = (props) => {
   return (
     <Sider className={styles.sider}>
       {props.modeler && <PropertiesPanel modeler={props.modeler} />}
       <Button
         type='primary'
-        style={{
-          width: '80%',
-          marginTop: '10px',
-          marginLeft: '30px',
-          marginRight: '30px',
-        }}
-        onClick={props.getBpmnDiagramRobot}
+        className={styles.button}
+        onClick={props.getRobotFile}
       >
         Get Robot file
       </Button>

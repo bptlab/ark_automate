@@ -5,8 +5,9 @@ import '../PropertiesPanel.css';
 const { Option } = Select;
 
 /**
- * @component
  * @description Renders the application-dropdown based on passed list of applications.
+ * @category Client
+ * @component
  */
 const PropertiesPanelApplicationDropdown = (props) => {
   return (

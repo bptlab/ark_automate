@@ -1,4 +1,9 @@
 /**
+ * @category Client
+ * @module
+ */
+
+/**
  * @description Fetch tasklist from Mongo-DB
  * @param {String} application - String with currently selected application from ApplicationDropdown
  */
