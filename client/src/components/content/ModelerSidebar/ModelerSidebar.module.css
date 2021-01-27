@@ -1,0 +1,12 @@
+.sider {
+  background: #ffc9b9;
+  padding: 1rem;
+  min-width: 350px !important;
+}
+
+.button {
+  width: 80%;
+  margin-top: 10px;
+  margin-left: 30px;
+  margin-right: 30px;
+}

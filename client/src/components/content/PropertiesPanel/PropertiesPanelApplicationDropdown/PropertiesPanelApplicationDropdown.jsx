@@ -1,41 +1,35 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Select } from 'antd';
-import '../PropertiesView/PropertiesView.css';
+import '../PropertiesPanel.css';
 
 const { Option } = Select;
 
 /**
- * @class
- * @component
+ * @description Renders the application-dropdown based on passed list of applications.
  * @category Client
- * @classdesc Renders the application-dropdown based on passed list of applications.
- * @example
- * let applicationList = ['MS Excel', 'Browser'];
- * let handleApplicationSelection = (event) => return 'successfully handled application selection';
- * return (
- *  <PropertiesPanelApplicationDropdown
- *      onApplicationSelection={this.handleApplicationSelection}
- *      applications={this.applicationList}
- *      currentSelection={'Element 1'} />
- * )
+ * @component
  */
-
-function PropertiesPanelApplicationDropdown(props) {
-  return (
-    <>
-      <Select
-        showSearch
-        style={{ width: '100%', marginTop: '10px' }}
-        placeholder='Please select application'
-        onChange={props.onApplicationSelection}
-        defaultValue={props.currentSelection}
-      >
-        {props.applications.map((application) => (
-          <Option value={application}>{application}</Option>
-        ))}
-      </Select>
-    </>
-  );
-}
+const PropertiesPanelApplicationDropdown = ({
+  onApplicationSelection,
+  currentSelection,
+  applications,
+}) => (
+  <>
+    <Select
+      className='properties-panel-dropdown'
+      showSearch
+      placeholder='Please select application'
+      onChange={onApplicationSelection}
+      defaultValue={currentSelection}
+    >
+      {applications.map((application) => (
+        <Option key={application} value={application}>
+          {application}
+        </Option>
+      ))}
+    </Select>
+  </>
+);
 
 export default PropertiesPanelApplicationDropdown;
