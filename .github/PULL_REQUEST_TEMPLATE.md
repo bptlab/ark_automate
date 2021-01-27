@@ -16,6 +16,6 @@
 * [ ] **Assign** one or two developers
 * [ ] **Change code** if reviewer(s) has/have requested it
 * [ ] **Pull request build** has passed
-* [ ] **tested locally** (in all browsers if frontend)
+* [ ] **tested locally** (in at least chrome & firefox if frontend)
 * [ ] updated the **documentation**
 * [ ] added **tests** where necessary
