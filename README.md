@@ -6,7 +6,7 @@
 [![GitHub open pull requests](https://img.shields.io/github/issues-pr/bptlab/ark_automate)](https://github.com/bptlab/ark_automate/issues)
 [![heroku](https://heroku-badge.herokuapp.com/?app=ark-automate&root=App.js)](https://heroku-badge.herokuapp.com/App.js)
 
-An open source RPA tool which uses several modeling languages to create bots.
+Ark-Automate is a platform that allows office users and software developers to automate business or everyday processes by simply sketching the steps of their process. By using simple flowcharts or powerful BPMN in their process outlines, users can create small software solutions using RPA that finish their tasks much faster and more reliably.
 
 ## Installation & Setup
 
