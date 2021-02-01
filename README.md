@@ -52,6 +52,6 @@ The main contributors to the project are the four members of the [2020/21 Bachel
 These four participants will push the project forward as part of their bachelor's degree until the summer of 2021.  
 At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community.
 
-## Code documentation
-
-Please see the [documentation website](https://bptlab.github.io/ark_automate/) for the documentation of the code including examples.
+## Project documentation
+Our [architecture](https://github.com/bptlab/ark_automate/wiki/Architecture-in-2021), as well as our current [vision of the project](https://github.com/bptlab/ark_automate/wiki/Vision-for-2021) can be found in our [wiki](https://github.com/bptlab/ark_automate/wiki). 
+Please also see the [code documentation website](https://bptlab.github.io/ark_automate/) for the documentation of the code including examples.
