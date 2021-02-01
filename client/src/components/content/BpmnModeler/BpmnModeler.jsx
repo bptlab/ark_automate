@@ -32,9 +32,6 @@ const BpmnModeler = () => {
       keyboard: {
         bindTo: window,
       },
-      propertiesPanel: {
-        parent: '#propview',
-      },
       additionalModules: [propertiesProviderModule],
       moddleExtensions: {
         camunda: camundaModdleDescriptor,
