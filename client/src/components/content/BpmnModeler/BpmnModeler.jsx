@@ -32,9 +32,6 @@ class BpmnModelerComponent extends Component {
       keyboard: {
         bindTo: window,
       },
-      propertiesPanel: {
-        parent: '#propview',
-      },
       additionalModules: [propertiesProviderModule],
       moddleExtensions: {
         camunda: camundaModdleDescriptor,
@@ -119,7 +116,7 @@ class BpmnModelerComponent extends Component {
           <div id='bpmncontainer'>
             <div
               id='bpmnview'
-              style={{ width: '85%', height: '98vh', float: 'left' }}
+              style={{ width: '100%', height: '98vh', float: 'left' }}
             ></div>
           </div>
         </Content>
