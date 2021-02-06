@@ -19,7 +19,7 @@ And then install all dependencies with `npm install` in the server and client di
 
 ### Set up Heroku
 
-For this step, an invitation to our Heroku project is necessary. Please create yourself a Heroku account, which you link to your Github profile. Then write a short mail to our team [mailing list](mailto:BP2020MW1-intern@hpi.de) to be added to the project.
+For this step, an invitation to our Heroku project is necessary. Please create yourself a Heroku account, which you link to your Github profile. Then write a short mail to our team [mailing list](mailto:bpmw2020@gmail.com) to be added to the project.
 
 1. Run in the server directory `npm install -g heroku`
 2. Login to Heroku by running `heroku login` and than login to your heroku account
