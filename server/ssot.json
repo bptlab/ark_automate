@@ -35,14 +35,25 @@
     },
     {
       "generalAttributes": {
-        "name": "exampleName",
+        "name": "ArrowExample",
         "id": "3",
         "predecessorIds": ["2"],
+        "successorIds": ["4", "5"]
+      },
+      "rpaAttributes": {},
+      "bpmnAttributes": {},
+      "otherModelAttributes": {}
+    },
+    {
+      "generalAttributes": {
+        "name": "exampleName",
+        "id": "4",
+        "predecessorIds": ["3"],
         "successorIds": [""]
       },
       "rpaAttributes": {
         "application": "Excel.Files",
-        "task": "Close Workbook",
+        "task": "Close Workbooook",
         "parameters": [
           {
             "name": "Filename",
@@ -55,6 +66,22 @@
             "requireUserInput": true
           }
         ],
+        "outputVariable": ""
+      },
+      "bpmnAttributes": {},
+      "otherModelAttributes": {}
+    },
+    {
+      "generalAttributes": {
+        "name": "parallelTrial",
+        "id": "5",
+        "predecessorIds": ["3"],
+        "successorIds": [""]
+      },
+      "rpaAttributes": {
+        "application": "Browser",
+        "task": "Click Button",
+        "parameters": [],
         "outputVariable": ""
       },
       "bpmnAttributes": {},
