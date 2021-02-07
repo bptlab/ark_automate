@@ -1,0 +1,86 @@
+{
+  "robotMetadata": {
+    "robotName": "exampleRobot",
+    "robotCreator": "Max Mustermann",
+    "robotCollaborators": ["John Doe", "Random Person"],
+    "starterId": "1"
+  },
+  "elements": [
+    {
+      "generalAttributes": {
+        "name": "exampleName",
+        "id": "2",
+        "predecessorIds": ["1"],
+        "successorIds": ["3"]
+      },
+      "rpaAttributes": {
+        "application": "Excel.Files",
+        "task": "Open Workbook",
+        "parameters": [
+          {
+            "name": "Filename",
+            "value": "example.xlsx",
+            "requireUserInput": true
+          },
+          {
+            "name": "Path",
+            "value": "C:/example/",
+            "requireUserInput": true
+          }
+        ],
+        "outputVariable": ""
+      },
+      "bpmnAttributes": {},
+      "otherModelAttributes": {}
+    },
+    {
+      "generalAttributes": {
+        "name": "exampleName",
+        "id": "3",
+        "predecessorIds": ["2"],
+        "successorIds": [""]
+      },
+      "rpaAttributes": {
+        "application": "Excel.Files",
+        "task": "Close Workbook",
+        "parameters": [
+          {
+            "name": "Filename",
+            "value": "example.xlsx",
+            "requireUserInput": true
+          },
+          {
+            "name": "Path",
+            "value": "C:/example/",
+            "requireUserInput": true
+          }
+        ],
+        "outputVariable": ""
+      },
+      "bpmnAttributes": {},
+      "otherModelAttributes": {}
+    },
+    {
+      "generalAttributes": {
+        "name": "exampleName2",
+        "id": "1",
+        "predecessorIds": [""],
+        "successorIds": ["2"]
+      },
+      "rpaAttributes": {
+        "application": "Browser",
+        "task": "Open Browser",
+        "parameters": [
+          {
+            "name": "Type",
+            "value": "Chrome",
+            "requireUserInput": true
+          }
+        ],
+        "outputVariable": ""
+      },
+      "bpmnAttributes": {},
+      "otherModelAttributes": {}
+    }
+  ]
+}
