@@ -29,4 +29,4 @@ We'd be glad to assist you if you do not get these things right in the first pla
 Maybe a look at the [documentation](https://github.com/bptlab/ark_automate/wiki) is a good start to the work on our project. 
 We also recommend taking a look at our [Code of Conduct](.github/CODE_OF_CONDUCT.md).
 
-If you have any questions, don't be afraid to contact us on our [mailing list](mailto:BP2020MW1-intern@hpi.de).
+If you have any questions, don't be afraid to contact us on our [mailing list](mailto:bpmw2020@gmail.com).
