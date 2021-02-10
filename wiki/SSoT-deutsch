@@ -13,8 +13,6 @@ Feststellung: Alle Frontends, die "ausführbaren Programmcode" abbilden, können
 - Linearer Flow (Sequenzen)
 - Verzweigung
 - Loops (For+While)
-- Try-Catch
-
 **Unterstützt nicht:** Try-Catch Konstrukte
 
 
@@ -36,7 +34,7 @@ Feststellung: Alle Frontends, die "ausführbaren Programmcode" abbilden, können
 
 
 ### kurz-FAQ:
-1. Speichern wir in der JSON Informationen zu jedem Modell oder "rendern" wir jedes Modell aus einer Haupt-SSoT?
+1. Speichern wir in der SSoT Informationen zu jedem Modell oder "rendern" wir jedes Modell aus der SSoT ohne spezifische Modellinformationen in der SSoT hinterlegt zu haben?
     1. Wir rendern jedes Modell aus unserem "Logik-Graphen"
     2. Es werden somit keine Modellierungs-Interface-spezifischen Werte gespeichert.
     3. Fehlende Attribute, die zur Erstellung einers Modellierungs-Visualisierung benötigt werden, müssen mit default-Werten angenommen oder errechnet werden
@@ -54,7 +52,7 @@ jedoch: Unterstützung beim Einhalten des Standards (automatischer Pretty Print)
 ## Anwendungskonzept SSoT
 
 **Feststellung: SSoT sollte näher an den grundlegenden Programmierkonstrukten sein als an einem BPMN-Modell.**
-Daher: Alle Interfaces werden in ein Graphen-Modell gerendert, bei denen die Knoten durch folgende Tags bestimmt werden: `SEQUENCE`, `BRANCH`, `LOOP` und `TRIGGER`. Diese Tags bilden die grundsätzlichen Programmierkonstrukte ab, die auch im **Robot Framework** verwendet werden können.
+Daher: Alle Interfaces werden in ein Graphen-Modell gerendert, bei denen die Knoten durch folgende Tags bestimmt werden: `INSTRUCTION`, `BRANCH`, `CASE` und `MARKER`. Diese Tags bilden die grundsätzlichen Programmierkonstrukte ab, die auch im **Robot Framework** verwendet werden können.
 
 
 ### Übersicht
@@ -78,7 +76,7 @@ Es werden momentan keine Zwischenevents unterstützt.
 
 ### Anwendung: HEADER
 
-Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer-Informationen zu einem Robot (Ersteller, Freigegeben für etc.) werden in einer zusätzlichen Datenbank abgelegt.
+Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer-Informationen zu einem Robot (Ersteller, Freigegeben für etc.) werden in einer zusätzlichen Datei in der Datenbank abgelegt.
 
 **SSoT**
 ``` json
@@ -176,7 +174,7 @@ Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer
   "loop_condition": "X > 5",
   "predecessorIds": ["randomId"],
   "successorIds": ["randomId"],
-  "loop_body_predescessorIds": ["randomId"],
+  "loop_body_predecessorIds": ["randomId"],
   "loop_body_successorIds": ["randomId"]
 }
 ```
@@ -506,9 +504,7 @@ Modellierter Prozess
 
 ``` json
 "robotMetadata": {
-        "robotName": "exampleRobot",
-        "robotCreator": "Max Mustermann",
-        "robotCollaborators": ["John Doe", "Random Person"],
+        "robotId": "exampleRobot",
         "starterId": "exampleID"
     },
     "elements": [
