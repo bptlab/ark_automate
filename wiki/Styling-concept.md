@@ -43,8 +43,8 @@ Now let's continue with this example. Let's say in _Example.module.css_ we have 
 
 In the file we would include the style in the following way:
 
-```html
-<button className="{styles.button}"></button>
+```jsx
+<button className='{styles.button}'></button>
 ```
 
 ### Conventions
