@@ -1,5 +1,8 @@
+import { describe, expect, test } from '@testing-library/jest-dom';
+
 const parser = require('../parser');
 const testJson = require('../jsonForTesting');
+
 const BROWSER_ACTIVITY_NAME = 'Browser Open Browser';
 const EXCEL_ACTIVITY_NAME = 'Excel Open Workbook';
 const LIBRARY_EXCEL = 'Library    RPA.Excel.Files';
@@ -26,13 +29,27 @@ describe('Parsing Tests', () => {
     expect(parserResultString).toMatch(BROWSER_ACTIVITY_NAME);
     expect(parserResultString).toMatch(OPEN_BROWSER_CMD);
 
-    expect(parserResultString.indexOf(BROWSER_ACTIVITY_NAME)).toBeLessThan(parserResultString.lastIndexOf(OPEN_BROWSER_CMD));
-    expect(parserResultString.indexOf(EXCEL_ACTIVITY_NAME)).toBeLessThan(parserResultString.lastIndexOf(OPEN_WORKBOOK_CMD));
-    expect(parserResultString.indexOf(EXCEL_ACTIVITY_NAME)).toBeLessThan(parserResultString.indexOf(FIND_EMPTY_ROW_CMD));
+    expect(parserResultString.indexOf(BROWSER_ACTIVITY_NAME)).toBeLessThan(
+      parserResultString.lastIndexOf(OPEN_BROWSER_CMD)
+    );
+    expect(parserResultString.indexOf(EXCEL_ACTIVITY_NAME)).toBeLessThan(
+      parserResultString.lastIndexOf(OPEN_WORKBOOK_CMD)
+    );
+    expect(parserResultString.indexOf(EXCEL_ACTIVITY_NAME)).toBeLessThan(
+      parserResultString.indexOf(FIND_EMPTY_ROW_CMD)
+    );
 
-    expect(parserResultString.indexOf(SETTING_STRING)).toBeLessThan(parserResultString.indexOf(TASK_STRING));
-    expect(parserResultString.indexOf(LIBRARY_BROWSER)).toBeLessThan(parserResultString.indexOf(TASK_STRING));
-    expect(parserResultString.indexOf(LIBRARY_EXCEL)).toBeLessThan(parserResultString.indexOf(LIBRARY_BROWSER));
-    expect(parserResultString.indexOf(LIBRARY_EXCEL)).toBeLessThan(parserResultString.indexOf(TASK_STRING));
-  })
-})
+    expect(parserResultString.indexOf(SETTING_STRING)).toBeLessThan(
+      parserResultString.indexOf(TASK_STRING)
+    );
+    expect(parserResultString.indexOf(LIBRARY_BROWSER)).toBeLessThan(
+      parserResultString.indexOf(TASK_STRING)
+    );
+    expect(parserResultString.indexOf(LIBRARY_EXCEL)).toBeLessThan(
+      parserResultString.indexOf(LIBRARY_BROWSER)
+    );
+    expect(parserResultString.indexOf(LIBRARY_EXCEL)).toBeLessThan(
+      parserResultString.indexOf(TASK_STRING)
+    );
+  });
+});

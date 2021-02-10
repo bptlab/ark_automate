@@ -1,42 +1,37 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Select } from 'antd';
+import '../PropertiesPanel.css';
 
 const { Option } = Select;
 
 /**
- * @class
- * @component
+ * @description Renders the task-dropdown based on passed list of task.
  * @category Client
- * @classdesc Renders the task-dropdown based on passed list of task.
- * @example 
- * let taskList = ['Open Browser', 'Close Browser'];
- * let handleTaskSelection = (event) => return 'successfully handled task selection';
- * let disableTaskSelection = false;
- * return (
- *  <PropertiesPanelTaskDropdown
- *      listOfTasks={this.taskList}
- *      onTaskSelection={this.handleTaskSelection}
- *      disabled={this.disableTaskSelection} 
- *      currentSelection={'Element 1'} />
- * )
+ * @component
  */
-
-function PropertiesPanelTaskDropdown(props) {
-    return <>
-
-        <Select
-            showSearch
-            style={{ width: '100%', marginTop: '10px' }}
-            placeholder="Please select task"
-            onChange={props.onTaskSelection}
-            disabled={props.disabled ? true : null}
-            defaultValue={props.currentSelection}
-        >
-            {props.listOfTasks.map((task) => (
-                <Option value={task}>{task}</Option>
-            ))}
-        </Select>
-    </>
-}
+const PropertiesPanelTaskDropdown = ({
+  onTaskSelection,
+  disabled,
+  currentSelection,
+  listOfTasks,
+}) => (
+  <>
+    <Select
+      className='properties-panel-dropdown'
+      showSearch
+      placeholder='Please select task'
+      onChange={onTaskSelection}
+      disabled={disabled ? true : null}
+      defaultValue={currentSelection}
+    >
+      {listOfTasks.map((task) => (
+        <Option key={task} value={task}>
+          {task}
+        </Option>
+      ))}
+    </Select>
+  </>
+);
 
 export default PropertiesPanelTaskDropdown;

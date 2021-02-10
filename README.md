@@ -6,7 +6,7 @@
 [![GitHub open pull requests](https://img.shields.io/github/issues-pr/bptlab/ark_automate)](https://github.com/bptlab/ark_automate/issues)
 [![heroku](https://heroku-badge.herokuapp.com/?app=ark-automate&root=App.js)](https://heroku-badge.herokuapp.com/App.js)
 
-An open source RPA tool which uses several modeling languages to create bots.
+Ark-Automate is a platform that allows office users and software developers to automate business or everyday processes by simply sketching the steps of their process. By using simple flowcharts or powerful BPMN in their process outlines, users can create small software solutions using RPA that finish their tasks much faster and more reliably.
 
 ## Installation & Setup
 
@@ -19,7 +19,7 @@ And then install all dependencies with `npm install` in the server and client di
 
 ### Set up Heroku
 
-For this step, an invitation to our Heroku project is necessary. Please create yourself a Heroku account, which you link to your Github profile. Then write a short mail to our team [mailing list](mailto:BP2020MW1-intern@hpi.de) to be added to the project.
+For this step, an invitation to our Heroku project is necessary. Please create yourself a Heroku account, which you link to your Github profile. Then write a short mail to our team [mailing list](mailto:bpmw2020@gmail.com) to be added to the project.
 
 1. Run in the server directory `npm install -g heroku`
 2. Login to Heroku by running `heroku login` and than login to your heroku account
@@ -52,6 +52,6 @@ The main contributors to the project are the four members of the [2020/21 Bachel
 These four participants will push the project forward as part of their bachelor's degree until the summer of 2021.  
 At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community.
 
-## Code documentation
-
-Please see the [documentation website](https://bptlab.github.io/ark_automate/) for the documentation of the code including examples.
+## Project documentation
+Our [architecture](https://github.com/bptlab/ark_automate/wiki/Architecture-in-2021), as well as our current [vision of the project](https://github.com/bptlab/ark_automate/wiki/Vision-for-2021) can be found in our [wiki](https://github.com/bptlab/ark_automate/wiki). 
+Please also see the [code documentation website](https://bptlab.github.io/ark_automate/) for the documentation of the code including examples.
