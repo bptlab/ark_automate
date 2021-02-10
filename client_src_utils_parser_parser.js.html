@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Classes</h3><ul><li><a href="BpmnModelerComponent.html">BpmnModelerComponent</a></li><li><a href="HeaderNavbar.html">HeaderNavbar</a></li><li><a href="PropertiesPanelApplicationDropdown.html">PropertiesPanelApplicationDropdown</a></li><li><a href="PropertiesPanelBuilder.html">PropertiesPanelBuilder</a></li><li><a href="PropertiesPanelTaskDropdown.html">PropertiesPanelTaskDropdown</a></li><li><a href="PropertiesView.html">PropertiesView</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#PropertiesPanelApplicationDropdown">PropertiesPanelApplicationDropdown</a></li><li><a href="global.html#PropertiesPanelTaskDropdown">PropertiesPanelTaskDropdown</a></li><li><a href="global.html#PropertiesPanelView">PropertiesPanelView</a></li><li><a href="global.html#RobotFile">RobotFile</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
                 
             </nav>
         </div>
@@ -90,105 +90,121 @@
  * @module
  */
 
+/* eslint-disable dot-notation */
+
 /**
  * @description Receives an array of bmpnTasks and generates the .robot code for the tasks sections
  * @returns {string} Generated .robot code for the tasks section
  */
-function generateCodeForMultiple(bpmnTasks) {
+const generateCodeForMultiple = (bpmnTasks) => {
   let lastApplication = 'None';
   let codeToAppend = '';
-  for (let task in bpmnTasks) {
-    let currentTask = bpmnTasks[task];
-    let rpaTaskName = currentTask['_attributes']['arkRPA:task'];
-    let rpaTaskInputString = currentTask['_attributes']['arkRPA:inputVars'];
+  Object.values(bpmnTasks).forEach((value) => {
+    const currentTask = value;
+    const rpaTaskName = currentTask['_attributes']['arkRPA:task'];
+    const rpaTaskInputString = currentTask['_attributes']['arkRPA:inputVars'];
     let rpaTaskInput = rpaTaskInputString.replace(/[\/]/g, '');
     rpaTaskInput = JSON.parse(rpaTaskInput);
     let counter = 0;
-    for (let propsIndex in rpaTaskInput) {
-      let currentApplication = currentTask['_attributes']['arkRPA:application'];
+    if (Object.keys(rpaTaskInput).length == 0) {
+      const currentApplication =
+        currentTask['_attributes']['arkRPA:application'];
       if (currentApplication !== lastApplication) {
-        codeToAppend += currentTask['_attributes']['name'] + '\n';
+        codeToAppend += `${currentTask['_attributes']['name']}\n`;
         lastApplication = currentApplication;
       }
-      if (counter === 0) {
-        codeToAppend += '  ' + rpaTaskName;
-      }
-      counter++;
-      codeToAppend += '  ' + rpaTaskInput[propsIndex];
+      codeToAppend += `  ${rpaTaskName}`;
+    } else {
+      Object.values(rpaTaskInput).forEach((val) => {
+        const currentApplication =
+          currentTask['_attributes']['arkRPA:application'];
+        if (currentApplication !== lastApplication) {
+          codeToAppend += `${currentTask['_attributes']['name']}\n`;
+          lastApplication = currentApplication;
+        }
+        if (counter === 0) {
+          codeToAppend += `  ${rpaTaskName}`;
+        }
+        counter += 1;
+        codeToAppend += `  ${val}`;
+      });
     }
     counter = 0;
     codeToAppend += '\n';
-  }
+  });
   return codeToAppend;
-}
+};
 
 /**
  * @description Receives a single bmpnTask and generates the .robot code for the tasks sections
  * @returns {string} Generated .robot code for the tasks section
  */
-function generateCodeForSingle(bpmnTask) {
+const generateCodeForSingle = (bpmnTask) => {
   let codeToAppend = '';
 
-  codeToAppend += bpmnTask['_attributes']['name'] + '\n';
-  let rpaTaskName = bpmnTask['_attributes']['arkRPA:task'];
-  let rpaTaskInputString = bpmnTask['_attributes']['arkRPA:inputVars'];
+  codeToAppend += `${bpmnTask['_attributes']['name']}\n`;
+  const rpaTaskName = bpmnTask['_attributes']['arkRPA:task'];
+  const rpaTaskInputString = bpmnTask['_attributes']['arkRPA:inputVars'];
   let rpaTaskInput = rpaTaskInputString.replaceAll('/', '');
   rpaTaskInput = JSON.parse(rpaTaskInput);
   let counter = 0;
-  for (let propsIndex in rpaTaskInput) {
-    if (counter === 0) {
-      codeToAppend += '  ' + rpaTaskName;
-    }
-    counter++;
-    codeToAppend += '  ' + rpaTaskInput[propsIndex];
+  if (Object.keys(rpaTaskInput).length === 0) {
+    codeToAppend += `  ${rpaTaskName}`;
+  } else {
+    Object.values(rpaTaskInput).forEach((value) => {
+      if (counter === 0) {
+        codeToAppend += `  ${rpaTaskName}`;
+      }
+      counter += 1;
+      codeToAppend += `  ${value}`;
+    });
   }
   counter = 0;
   return codeToAppend;
-}
+};
 
 /**
  * @description Receives all bpmnTasks and creates a list of all distinct applications needed
  * @returns {array} List of applications as string
  */
-function collectUsedApplications(bpmnTasks) {
-  let applications = [];
-  for (let task in bpmnTasks) {
-    if (bpmnTasks[task]['_attributes'] !== undefined) {
-      const rpaApp = bpmnTasks[task]['_attributes']['arkRPA:application'];
+const collectUsedApplications = (bpmnTasks) => {
+  const applications = [];
+  Object.values(bpmnTasks).forEach((value) => {
+    if (value['_attributes'] !== undefined) {
+      const rpaApp = value['_attributes']['arkRPA:application'];
       if (!applications.includes(rpaApp)) {
         applications.push(rpaApp);
       }
     }
-  }
+  });
   return applications;
-}
+};
 
 /**
  * @description Parses an JSON created from the .bpmn xml of the model to an executable .robot file
  * @returns {string} Code that has to be put in .robot file
  */
-function parseDiagramJson(json_data) {
+const parseDiagramJson = (jsonData) => {
   let parsedCode = '';
   // json_data = require("./newConvertedModelForTesting1Act.json")
-  var bpmnTasks = json_data['bpmn2:definitions']['bpmn2:process']['bpmn2:task'];
+  const bpmnTasks =
+    jsonData['bpmn2:definitions']['bpmn2:process']['bpmn2:task'];
   parsedCode += '*** Settings ***\n';
   parsedCode += 'Documentation  Our first parsed RPA\n';
-
   if (bpmnTasks !== undefined) {
     let codeToAppend = '';
     if (Array.isArray(bpmnTasks)) {
       const applications = collectUsedApplications(bpmnTasks);
-
-      for (let app in applications) {
-        parsedCode += 'Library    ' + 'RPA.' + applications[app] + '\n';
-      }
+      Object.values(applications).forEach((value) => {
+        parsedCode += `${'Library    RPA.'}${value}\n`;
+      });
 
       // idealy we use the keyword statement for each task, currently not working out of the box
       parsedCode += '\n*** Tasks ***\n';
       codeToAppend += generateCodeForMultiple(bpmnTasks);
     } else {
-      var application = bpmnTasks['_attributes']['arkRPA:application'];
-      codeToAppend += 'Library    ' + 'RPA.' + application + '\n';
+      const application = bpmnTasks['_attributes']['arkRPA:application'];
+      codeToAppend += `${'Library    RPA.'}${application}\n`;
 
       codeToAppend += '\n*** Tasks ***\n';
       codeToAppend += generateCodeForSingle(bpmnTasks);
@@ -196,8 +212,9 @@ function parseDiagramJson(json_data) {
     parsedCode += codeToAppend;
   }
   return parsedCode;
-}
-module.exports = { parseDiagramJson };
+};
+
+export default parseDiagramJson;
 </code></pre>
         </article>
     </section>

@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</title>
+  <title> client/src/components/pages/Home/Home.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</h1>
+                    <h1>client/src/components/pages/Home/Home.jsx</h1>
                 </header>
                 
 
@@ -85,41 +85,34 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
-import React from 'react';
-import { Select } from 'antd';
-import '../PropertiesPanel.css';
+            <pre class="prettyprint source linenums"><code>import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button, Typography } from 'antd';
+import styles from './Home.module.css';
 
-const { Option } = Select;
+const { Title } = Typography;
 
 /**
- * @description Renders the application-dropdown based on passed list of applications.
+ * @description Homepage of the application
  * @category Client
  * @component
  */
-const PropertiesPanelApplicationDropdown = ({
-  onApplicationSelection,
-  currentSelection,
-  applications,
-}) => (
-  &lt;>
-    &lt;Select
-      className='properties-panel-dropdown'
-      showSearch
-      placeholder='Please select application'
-      onChange={onApplicationSelection}
-      defaultValue={currentSelection}
-    >
-      {applications.map((application) => (
-        &lt;Option key={application} value={application}>
-          {application}
-        &lt;/Option>
-      ))}
-    &lt;/Select>
-  &lt;/>
-);
+const Home = () => {
+  const [message] = useState(null);
 
-export default PropertiesPanelApplicationDropdown;
+  return (
+    &lt;div>
+      &lt;Title className={styles.title}>Startseite&lt;/Title>
+      &lt;Title level={3}>Das ist unsere Startseite - TOLL!&lt;/Title>
+      &lt;p>{message}&lt;/p>
+      &lt;Link to='/modeler'>
+        &lt;Button type='primary'>Go to Modeler&lt;/Button>
+      &lt;/Link>
+    &lt;/div>
+  );
+};
+
+export default Home;
 </code></pre>
         </article>
     </section>

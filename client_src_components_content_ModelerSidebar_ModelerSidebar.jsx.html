@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</title>
+  <title> client/src/components/content/ModelerSidebar/ModelerSidebar.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</h1>
+                    <h1>client/src/components/content/ModelerSidebar/ModelerSidebar.jsx</h1>
                 </header>
                 
 
@@ -87,39 +87,27 @@
         <article>
             <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
 import React from 'react';
-import { Select } from 'antd';
-import '../PropertiesPanel.css';
+import { Layout, Button } from 'antd';
+import styles from './ModelerSidebar.module.css';
+import PropertiesPanel from '../PropertiesPanel/PropertiesPanel';
 
-const { Option } = Select;
+const { Sider } = Layout;
 
 /**
- * @description Renders the application-dropdown based on passed list of applications.
+ * @description This component renders the modeling sidebar.
  * @category Client
  * @component
  */
-const PropertiesPanelApplicationDropdown = ({
-  onApplicationSelection,
-  currentSelection,
-  applications,
-}) => (
-  &lt;>
-    &lt;Select
-      className='properties-panel-dropdown'
-      showSearch
-      placeholder='Please select application'
-      onChange={onApplicationSelection}
-      defaultValue={currentSelection}
-    >
-      {applications.map((application) => (
-        &lt;Option key={application} value={application}>
-          {application}
-        &lt;/Option>
-      ))}
-    &lt;/Select>
-  &lt;/>
+const ModelerSidebar = ({ modeler, getRobotFile }) => (
+  &lt;Sider className={styles.sider}>
+    {modeler &amp;&amp; &lt;PropertiesPanel modeler={modeler} />}
+    &lt;Button type='primary' className={styles.button} onClick={getRobotFile}>
+      Get Robot file
+    &lt;/Button>
+  &lt;/Sider>
 );
 
-export default PropertiesPanelApplicationDropdown;
+export default ModelerSidebar;
 </code></pre>
         </article>
     </section>

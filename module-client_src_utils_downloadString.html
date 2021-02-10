@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/utils/parser/parser</title>
+  <title> client/src/utils/downloadString</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>client/src/utils/parser/parser</h1>
+                    <h1>client/src/utils/downloadString</h1>
                 </header>
                 
 
@@ -121,8 +121,8 @@
 
 
     
-    <h4 class="name" id="~collectUsedApplications">
-        <a class="href-link" href="#~collectUsedApplications">#</a>
+    <h4 class="name" id="~downloadString">
+        <a class="href-link" href="#~downloadString">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -130,7 +130,7 @@
         
         <span class="code-name">
             
-                collectUsedApplications<span class="signature">()</span><span class="type-signature"> &rarr; {array}</span>
+                downloadString<span class="signature">(text, fileType, fileName)</span><span class="type-signature"> &rarr; {undefined}</span>
             
         </span>
     </h4>
@@ -139,7 +139,7 @@
     
     
     <div class="description">
-        Receives all bpmnTasks and creates a list of all distinct applications needed
+        Will download a given string as a file
     </div>
     
 
@@ -151,257 +151,106 @@
 
 
 
-
-
-
-
-<dl class="details">
-
+    <h5>Parameters:</h5>
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="client_src_utils_parser_parser.js.html" class="button">View Source</a>
-            <span>
-                <a href="client_src_utils_parser_parser.js.html">client/src/utils/parser/parser.js</a>, <a href="client_src_utils_parser_parser.js.html#line83">line 83</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
             
-                    
+            <th>Name</th>
+            
 
-<div class="columns">
-    
-    <div class='param-desc column is-7'>List of applications as string</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
         
-<span class="param-type">array</span>
 
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
             
-                <div class="member">
+<tr class="deep-level-0">
+  
+      <td class="name"><code>text</code></td>
+  
 
-
-    
-    <h4 class="name" id="~generateCodeForMultiple">
-        <a class="href-link" href="#~generateCodeForMultiple">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                generateCodeForMultiple<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Receives an array of bmpnTasks and generates the .robot code for the tasks sections
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="client_src_utils_parser_parser.js.html" class="button">View Source</a>
-            <span>
-                <a href="client_src_utils_parser_parser.js.html">client/src/utils/parser/parser.js</a>, <a href="client_src_utils_parser_parser.js.html#line12">line 12</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Generated .robot code for the tasks section</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
+  <td class="type">
+  
+      
 <span class="param-type">string</span>
 
 
-    </div>
-    
-</div>
+  
+  </td>
 
-                
-        </div>
-    </div>
+  
 
+  
 
-
-
-</div>
-            
-                <div class="member">
+  <td class="description last">String that will be the content of the downloaded file</td>
+</tr>
 
 
-    
-    <h4 class="name" id="~generateCodeForSingle">
-        <a class="href-link" href="#~generateCodeForSingle">#</a>
         
+
             
-                <span class='tag'>inner</span>
-            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>fileType</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String that sets the file type of the downloaded file; Use form text/filetype</td>
+</tr>
+
+
         
-        <span class="code-name">
+
             
-                generateCodeForSingle<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
-            
-        </span>
-    </h4>
-    
+<tr class="deep-level-0">
+  
+      <td class="name"><code>fileName</code></td>
+  
 
-    
-    
-    <div class="description">
-        Receives a single bmpnTask and generates the .robot code for the tasks sections
-    </div>
-    
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
 
 
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String that sets the name of the downloaded file; Use the same filetype as given in the fileType parameter e.g. name.filetype</td>
+</tr>
 
 
-
-
-
-
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -440,9 +289,9 @@
 
     
         <p class="tag-source">
-            <a href="client_src_utils_parser_parser.js.html" class="button">View Source</a>
+            <a href="client_src_utils_downloadString.js.html" class="button">View Source</a>
             <span>
-                <a href="client_src_utils_parser_parser.js.html">client/src/utils/parser/parser.js</a>, <a href="client_src_utils_parser_parser.js.html#line55">line 55</a>
+                <a href="client_src_utils_downloadString.js.html">client/src/utils/downloadString.js</a>, <a href="client_src_utils_downloadString.js.html#line13">line 13</a>
             </span>
         </p>
     
@@ -473,139 +322,13 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'>Generated .robot code for the tasks section</div>
+    <div class='param-desc column is-7'>The return is not defined</div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
-<span class="param-type">string</span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~parseDiagramJson">
-        <a class="href-link" href="#~parseDiagramJson">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                parseDiagramJson<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Parses an JSON created from the .bpmn xml of the model to an executable .robot file
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="client_src_utils_parser_parser.js.html" class="button">View Source</a>
-            <span>
-                <a href="client_src_utils_parser_parser.js.html">client/src/utils/parser/parser.js</a>, <a href="client_src_utils_parser_parser.js.html#line100">line 100</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Code that has to be put in .robot file</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">string</span>
+<span class="param-type">undefined</span>
 
 
     </div>

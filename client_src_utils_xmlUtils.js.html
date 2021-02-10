@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Classes</h3><ul><li><a href="BpmnModelerComponent.html">BpmnModelerComponent</a></li><li><a href="HeaderNavbar.html">HeaderNavbar</a></li><li><a href="PropertiesPanelApplicationDropdown.html">PropertiesPanelApplicationDropdown</a></li><li><a href="PropertiesPanelBuilder.html">PropertiesPanelBuilder</a></li><li><a href="PropertiesPanelTaskDropdown.html">PropertiesPanelTaskDropdown</a></li><li><a href="PropertiesView.html">PropertiesView</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#PropertiesPanelApplicationDropdown">PropertiesPanelApplicationDropdown</a></li><li><a href="global.html#PropertiesPanelTaskDropdown">PropertiesPanelTaskDropdown</a></li><li><a href="global.html#PropertiesPanelView">PropertiesPanelView</a></li><li><a href="global.html#RobotFile">RobotFile</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
                 
             </nav>
         </div>
@@ -89,55 +89,47 @@
  * @category Client
  * @module
  */
-var modeling;
-var element;
+import { fetchParametersForApplicationAndTask } from '../api/applicationAndTaskSelection';
 
 /**
- * @description Given the parameters this method will update the XML properties of the selected element
- * @param {String} selectedApplication the selected application
- * @param {String} selectedTask the selected task
- * @param {Object} passedModeling the modeling component
- * @param {Object} passedElement the element currently selected and whos properties are supposed to be updated
+ * @description Sets variables for input or output variables in an object
+ * @param {Object} IOobject input or output variable object retrieved from MongoDB
+ * @returns {Object} object where the fields have been set with values of that specific type
  */
-async function fetchAndUpdateRPAProperties(
-  applicationName,
-  taskName,
-  passedModeling,
-  passedElement
-) {
-  modeling = passedModeling;
-  element = passedElement;
-  await fetchParametersForTask(applicationName, taskName, element, modeling);
-}
-
-/**
- * @description Fetches input and output vars for the application, task tuple and calls the method to update the XML
- * @param {String} selectedApplication the selected application
- * @param {String} selectedTask the selected task
- */
-async function fetchParametersForTask(selectedApplication, selectedTask) {
-  await fetch(
-    'rpa-framework/commands/get-vars-for-task?application=' +
-      selectedApplication.replaceAll(' ', '+') +
-      '&amp;task=' +
-      selectedTask.replaceAll(' ', '+')
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      updateXML(data, selectedApplication, selectedTask);
-    });
-}
+const populateIOObjectWithMockValues = (IOobject) => {
+  if (!IOobject) return null;
+  const returnObject = {};
+  Object.entries(IOobject).forEach(([key, value]) => {
+    switch (value) {
+      case 'Boolean':
+        returnObject[key] = true;
+        break;
+      case 'String':
+        returnObject[key] = 'TestString';
+        break;
+      case 'Integer':
+        returnObject[key] = 69;
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.log('Not yet supported data type found for IO:', IOobject[key]);
+    }
+  });
+  return JSON.stringify(returnObject);
+};
 
 /**
  * @description Updates the XML of the selected element of the modeler
  * @param {Object} data the Object retrieved from MongoDB containing objects for input and output vars
- * @param {String} selectedApplication the selected application
- * @param {String} selectedTask the selected task
+ * @param {String} application the selected application
+ * @param {String} task the selected task
+ * @param {Object} modeling the modeling component
+ * @param {Object} element the element currently selected and whos properties are supposed to be updated
  */
-function updateXML(data, selectedApplication, selectedTask) {
-  let propertiesObject = {
-    'arkRPA:application': selectedApplication,
-    'arkRPA:task': selectedTask,
+const updateXML = (data, application, task, modeling, element) => {
+  const propertiesObject = {
+    'arkRPA:application': application,
+    'arkRPA:task': task,
     'arkRPA:inputVars': '',
     'arkRPA:outputVars': '',
   };
@@ -150,40 +142,32 @@ function updateXML(data, selectedApplication, selectedTask) {
       data.outputVars
     );
   modeling.updateProperties(element, propertiesObject);
-}
+};
 
 /**
- * @description Sets variables for input or output variables in an object
- * @param {Object} IOobject input or output variable object retrieved from MongoDB
- * @returns {Object} object where the fields have been set with values of that specific type
+ * @description Given the parameters this method will update the XML properties of the selected element
+ * @param {String} application the selected application
+ * @param {String} task the selected task
+ * @param {Object} modeling the modeling component
+ * @param {Object} element the element currently selected and whos properties are supposed to be updated
  */
-function populateIOObjectWithMockValues(IOobject) {
-  if (!IOobject) return null;
-  let returnObject = {};
-  for (let prop in IOobject) {
-    switch (IOobject[prop]) {
-      case 'Boolean':
-        returnObject[prop] = true;
-        break;
-      case 'String':
-        returnObject[prop] = 'TestString';
-        break;
-      case 'Integer':
-        returnObject[prop] = 69;
-        break;
-      default:
-        console.log(
-          'Not yet supported data type found for IO:',
-          IOobject[prop]
-        );
-    }
-  }
-  return JSON.stringify(returnObject);
-}
-
-module.exports = {
-  fetchAndUpdateRPAProperties,
+const fetchTaskParametersAndUpdateRPAProperties = (
+  application,
+  task,
+  modeling,
+  element
+) => {
+  fetchParametersForApplicationAndTask(application, task)
+    .then((response) => response.json())
+    .then((data) => {
+      updateXML(data, application, task, modeling, element);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
+
+export default fetchTaskParametersAndUpdateRPAProperties;
 </code></pre>
         </article>
     </section>

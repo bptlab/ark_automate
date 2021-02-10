@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Classes</h3><ul><li><a href="BpmnModelerComponent.html">BpmnModelerComponent</a></li><li><a href="HeaderNavbar.html">HeaderNavbar</a></li><li><a href="PropertiesPanelApplicationDropdown.html">PropertiesPanelApplicationDropdown</a></li><li><a href="PropertiesPanelBuilder.html">PropertiesPanelBuilder</a></li><li><a href="PropertiesPanelTaskDropdown.html">PropertiesPanelTaskDropdown</a></li><li><a href="PropertiesView.html">PropertiesView</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#PropertiesPanelApplicationDropdown">PropertiesPanelApplicationDropdown</a></li><li><a href="global.html#PropertiesPanelTaskDropdown">PropertiesPanelTaskDropdown</a></li><li><a href="global.html#PropertiesPanelView">PropertiesPanelView</a></li><li><a href="global.html#RobotFile">RobotFile</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
                 
             </nav>
         </div>
@@ -85,49 +85,45 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/destructuring-assignment */
+import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
-import './HeaderNavbar.css';
+import styles from './HeaderNavbar.module.css';
+import logoBlack from '../../../resources/assets/images/logo_black.png';
 
 const { Header } = Layout;
 
 /**
- * @class
  * @component
- * @category Client
- * @classdesc Renders the header navbar for all pages and initially selects the passed key-element.
- * @example
- * return &lt;HeaderNavbar selectedKey={2} />
+ * @description Renders the header navbar for all pages and initially selects the passed key-element.
+ * @example return &lt;HeaderNavbar selectedKey={2} />
  */
-class HeaderNavbar extends Component {
-  render() {
-    return (
-      &lt;Header style={{ background: '#363636' }}>
-        &lt;Menu
-          theme='dark'
-          style={{ background: '#363636' }}
-          mode='horizontal'
-          defaultSelectedKeys={[this.props.selectedKey.toString()]}
-        >
-          &lt;Menu.Item key='1'>
-            Home
-            &lt;Link to='/' />
-          &lt;/Menu.Item>
-          &lt;Menu.Item key='2'>
-            Modeler
-            &lt;Link to='/modeler' />
-          &lt;/Menu.Item>
-          &lt;Menu.Item key='3'>
-            Robot File
-            &lt;Link to='/robotfile' />
-          &lt;/Menu.Item>
-        &lt;/Menu>
-      &lt;/Header>
-    );
-  }
-}
-
+const HeaderNavbar = (props) => (
+  &lt;Header className={styles['header-background']}>
+    &lt;Menu
+      className={styles['header-background']}
+      theme='dark'
+      mode='horizontal'
+      // eslint-disable-next-line react/prop-types
+      defaultSelectedKeys={[props.selectedKey.toString()]}
+    >
+      &lt;img className={styles.logo} src={logoBlack} alt='ark_automate Icon' />
+      &lt;Menu.Item key='1'>
+        Home
+        &lt;Link to='/' />
+      &lt;/Menu.Item>
+      &lt;Menu.Item key='2'>
+        Modeler
+        &lt;Link to='/modeler' />
+      &lt;/Menu.Item>
+      &lt;Menu.Item key='3'>
+        Robot File
+        &lt;Link to='/robotfile' />
+      &lt;/Menu.Item>
+    &lt;/Menu>
+  &lt;/Header>
+);
 export default HeaderNavbar;
 </code></pre>
         </article>

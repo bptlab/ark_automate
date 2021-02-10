@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</title>
+  <title> client/src/components/content/PropertiesPanel/PropertiesPanelView/PropertiesPanelView.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</h1>
+                    <h1>client/src/components/content/PropertiesPanel/PropertiesPanelView/PropertiesPanelView.jsx</h1>
                 </header>
                 
 
@@ -85,41 +85,93 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
+            <pre class="prettyprint source linenums"><code>/* eslint-disable no-nested-ternary */
+/* eslint-disable react/prop-types */
+import { is } from 'bpmn-js/lib/util/ModelUtil';
 import React from 'react';
-import { Select } from 'antd';
+import { Input, Tooltip, Typography } from 'antd';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { InfoCircleOutlined } from '@ant-design/icons';
+import PropertiesPanelApplicationDropdown from '../PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown';
+import PropertiesPanelTaskDropdown from '../PropertiesPanelTaskDropdown/PropertiesPanelTaskDropdown';
+import styles from './PropertiesPanelView.module.css';
 import '../PropertiesPanel.css';
 
-const { Option } = Select;
+const { Text } = Typography;
 
 /**
- * @description Renders the application-dropdown based on passed list of applications.
+ * @description Shows PropertiesPanel for one selected BPMN-Element.
  * @category Client
  * @component
  */
-const PropertiesPanelApplicationDropdown = ({
-  onApplicationSelection,
-  currentSelection,
-  applications,
+const PropertiesPanelView = ({
+  element,
+  nameChanged,
+  applicationSelectionUpdated,
+  tasksForSelectedApplication,
+  taskSelectionUpdated,
+  disableTaskSelection,
 }) => (
-  &lt;>
-    &lt;Select
-      className='properties-panel-dropdown'
-      showSearch
-      placeholder='Please select application'
-      onChange={onApplicationSelection}
-      defaultValue={currentSelection}
-    >
-      {applications.map((application) => (
-        &lt;Option key={application} value={application}>
-          {application}
-        &lt;/Option>
-      ))}
-    &lt;/Select>
-  &lt;/>
-);
+  &lt;div className='element-properties' key={element.id}>
+    &lt;fieldset>
+      &lt;Text className={`label-on-dark-background ${styles.text}`}>
+        {is(element, 'bpmn:Task')
+          ? 'Activity'
+          : is(element, 'bpmn:Event')
+          ? 'Event'
+          : is(element, 'bpmn:Gateway')
+          ? 'Gateway'
+          : ''}
+      &lt;/Text>
+    &lt;/fieldset>
 
-export default PropertiesPanelApplicationDropdown;
+    &lt;fieldset>
+      &lt;Text className='label-on-dark-background'>ID: &lt;/Text>
+      &lt;Text className='label-on-dark-background'>{element.id}&lt;/Text>
+    &lt;/fieldset>
+
+    &lt;fieldset>
+      &lt;Text className='label-on-dark-background'>Name:&lt;/Text>
+      &lt;Input
+        className={styles.input}
+        placeholder='name'
+        suffix={
+          &lt;Tooltip title='the name of your task, gateway or event'>
+            &lt;InfoCircleOutlined className={styles.infoCircleOutlined} />
+          &lt;/Tooltip>
+        }
+        value={element.businessObject.name || ''}
+        onChange={nameChanged}
+      />
+    &lt;/fieldset>
+
+    &lt;fieldset>
+      {is(element, 'bpmn:Task') &amp;&amp; (
+        &lt;>
+          &lt;Text className='label-on-dark-background'>Actions: &lt;/Text>
+          &lt;br />
+          &lt;PropertiesPanelApplicationDropdown
+            onApplicationSelection={applicationSelectionUpdated}
+            applications={sessionStorage
+              .getItem('AvailableApplications')
+              .split(',')}
+            currentSelection={
+              element.businessObject.$attrs['arkRPA:application']
+            }
+          />
+          &lt;br />
+          &lt;PropertiesPanelTaskDropdown
+            listOfTasks={tasksForSelectedApplication}
+            onTaskSelection={taskSelectionUpdated}
+            disabled={disableTaskSelection}
+            currentSelection={element.businessObject.$attrs['arkRPA:task']}
+          />
+        &lt;/>
+      )}
+    &lt;/fieldset>
+  &lt;/div>
+);
+export default PropertiesPanelView;
 </code></pre>
         </article>
     </section>

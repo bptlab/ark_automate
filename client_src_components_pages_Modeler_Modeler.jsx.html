@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</title>
+  <title> client/src/components/pages/Modeler/Modeler.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</h1>
+                    <h1>client/src/components/pages/Modeler/Modeler.jsx</h1>
                 </header>
                 
 
@@ -85,41 +85,29 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
-import React from 'react';
-import { Select } from 'antd';
-import '../PropertiesPanel.css';
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
+import { Layout } from 'antd';
+import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 
-const { Option } = Select;
+const { Footer } = Layout;
 
 /**
- * @description Renders the application-dropdown based on passed list of applications.
+ * @description Modeler page that enables the user to build a robot
  * @category Client
  * @component
  */
-const PropertiesPanelApplicationDropdown = ({
-  onApplicationSelection,
-  currentSelection,
-  applications,
-}) => (
-  &lt;>
-    &lt;Select
-      className='properties-panel-dropdown'
-      showSearch
-      placeholder='Please select application'
-      onChange={onApplicationSelection}
-      defaultValue={currentSelection}
-    >
-      {applications.map((application) => (
-        &lt;Option key={application} value={application}>
-          {application}
-        &lt;/Option>
-      ))}
-    &lt;/Select>
-  &lt;/>
+const Modeler = () => (
+  &lt;div>
+    &lt;Layout>
+      &lt;HeaderNavbar selectedKey={2} />
+      &lt;BpmnModeler />
+      &lt;Footer>Fußzeile&lt;/Footer>
+    &lt;/Layout>
+  &lt;/div>
 );
 
-export default PropertiesPanelApplicationDropdown;
+export default Modeler;
 </code></pre>
         </article>
     </section>

@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/content/PropertiesPanel/PropertiesView/PropertiesView.jsx</title>
+  <title> client/src/api/applicationAndTaskSelection.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Classes</h3><ul><li><a href="BpmnModelerComponent.html">BpmnModelerComponent</a></li><li><a href="HeaderNavbar.html">HeaderNavbar</a></li><li><a href="PropertiesPanelApplicationDropdown.html">PropertiesPanelApplicationDropdown</a></li><li><a href="PropertiesPanelBuilder.html">PropertiesPanelBuilder</a></li><li><a href="PropertiesPanelTaskDropdown.html">PropertiesPanelTaskDropdown</a></li><li><a href="PropertiesView.html">PropertiesView</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#PropertiesPanelApplicationDropdown">PropertiesPanelApplicationDropdown</a></li><li><a href="global.html#PropertiesPanelTaskDropdown">PropertiesPanelTaskDropdown</a></li><li><a href="global.html#PropertiesPanelView">PropertiesPanelView</a></li><li><a href="global.html#RobotFile">RobotFile</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
                 
             </nav>
         </div>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/content/PropertiesPanel/PropertiesView/PropertiesView.jsx</h1>
+                    <h1>client/src/api/applicationAndTaskSelection.js</h1>
                 </header>
                 
 
@@ -85,95 +85,55 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
-import PropertiesPanelBuilder from '../PropertiesPanelBuilder/PropertiesPanelBuilder';
-import './PropertiesView.css';
-
-import { Typography } from 'antd';
-
-const { Title } = Typography;
-
-/**
- * @class
- * @component
+            <pre class="prettyprint source linenums"><code>/**
  * @category Client
- * @classdesc This class decides which sidebar is displayed. It updates itself depending on the number of selected BPMN elements.
- * @example return (&lt;PropertiesView />)
- *
- * @description Initializes state based on properties.
+ * @module
  */
 
-class PropertiesView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedElements: [],
-      element: null,
-    };
-  }
+/**
+ * @description Fetch tasklist from Mongo-DB
+ * @param {String} application - String with currently selected application from ApplicationDropdown
+ */
+const fetchTasksFromDB = async (application) => {
+  const response = await fetch(
+    `/rpa-framework/commands/get-available-tasks-for-application?application=${application.replaceAll(
+      ' ',
+      '+'
+    )}`
+  );
+  return response;
+};
 
-  /**
-   * @description
-   * On a changed selection, the selected element changed in the components state.
-   * We also update panel via .setState, if currently selected element changed.
-   */
-  componentDidMount() {
-    const { modeler } = this.props;
+/**
+ * @description Fetch all applications from MongoDB
+ */
+const getAvailableApplications = async () => {
+  const response = await fetch(
+    '/rpa-framework/commands/get-available-applications'
+  );
+  return response;
+};
 
-    modeler.on('selection.changed', (event) => {
-      this.setState({
-        selectedElements: event.newSelection,
-        element: event.newSelection[0],
-      });
-    });
+/**
+ * @description Fetch parameters for a specific applicationa and task
+ * @param {String} application - String with currently selected application from ApplicationDropdown
+ * @param {String} task - String with currently selected task from TaskDropdown
+ */
+const fetchParametersForApplicationAndTask = async (application, task) => {
+  const response = await fetch(
+    `rpa-framework/commands/get-vars-for-task?application=${application.replaceAll(
+      ' ',
+      '+'
+    )}&amp;task=${task.replaceAll(' ', '+')}`
+  );
+  return response;
+};
 
-    modeler.on('element.changed', (event) => {
-      const { element } = event;
-      const { element: currentElement } = this.state;
-
-      if (!currentElement) {
-        return;
-      }
-
-      if (element.id === currentElement.id) {
-        this.setState({
-          element,
-        });
-      }
-    });
-  }
-
-  render() {
-    const { modeler } = this.props;
-    const { selectedElements, element } = this.state;
-
-    return (
-      &lt;div className='sidebarWrapper'>
-        {selectedElements.length === 1 &amp;&amp; (
-          &lt;PropertiesPanelBuilder modeler={modeler} element={element} />
-        )}
-
-        {selectedElements.length === 0 &amp;&amp; (
-          &lt;span>
-            &lt;Title class='label-on-dark-background'>
-              Please select an element.
-            &lt;/Title>
-          &lt;/span>
-        )}
-
-        {selectedElements.length > 1 &amp;&amp; (
-          &lt;span>
-            &lt;Title class='label-on-dark-background'>
-              Please select a single element.
-            &lt;/Title>
-          &lt;/span>
-        )}
-      &lt;/div>
-    );
-  }
-}
-
-export default PropertiesView;
+export {
+  fetchParametersForApplicationAndTask,
+  getAvailableApplications,
+  fetchTasksFromDB,
+};
 </code></pre>
         </article>
     </section>

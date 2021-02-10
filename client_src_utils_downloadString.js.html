@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</title>
+  <title> client/src/utils/downloadString.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/content/PropertiesPanel/PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown.jsx</h1>
+                    <h1>client/src/utils/downloadString.js</h1>
                 </header>
                 
 
@@ -85,41 +85,36 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
-import React from 'react';
-import { Select } from 'antd';
-import '../PropertiesPanel.css';
-
-const { Option } = Select;
+            <pre class="prettyprint source linenums"><code>/**
+ * @category Client
+ * @module
+ */
 
 /**
- * @description Renders the application-dropdown based on passed list of applications.
- * @category Client
- * @component
+ * @description Will download a given string as a file
+ * @param {string} text String that will be the content of the downloaded file
+ * @param {string} fileType String that sets the file type of the downloaded file; Use form text/filetype
+ * @param {string} fileName String that sets the name of the downloaded file; Use the same filetype as given in the fileType parameter e.g. name.filetype
+ * @returns {undefined} The return is not defined
  */
-const PropertiesPanelApplicationDropdown = ({
-  onApplicationSelection,
-  currentSelection,
-  applications,
-}) => (
-  &lt;>
-    &lt;Select
-      className='properties-panel-dropdown'
-      showSearch
-      placeholder='Please select application'
-      onChange={onApplicationSelection}
-      defaultValue={currentSelection}
-    >
-      {applications.map((application) => (
-        &lt;Option key={application} value={application}>
-          {application}
-        &lt;/Option>
-      ))}
-    &lt;/Select>
-  &lt;/>
-);
+const downloadString = (text, fileType, fileName) => {
+  const blob = new Blob([text], { type: fileType });
+  const element = document.createElement('a');
+  element.download = fileName;
+  element.href = URL.createObjectURL(blob);
+  element.dataset.downloadurl = [fileType, element.download, element.href].join(
+    ':'
+  );
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+  setTimeout(() => {
+    URL.revokeObjectURL(element.href);
+  }, 1500);
+};
 
-export default PropertiesPanelApplicationDropdown;
+export default downloadString;
 </code></pre>
         </article>
     </section>

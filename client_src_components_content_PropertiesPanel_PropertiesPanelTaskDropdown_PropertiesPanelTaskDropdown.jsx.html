@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Classes</h3><ul><li><a href="BpmnModelerComponent.html">BpmnModelerComponent</a></li><li><a href="HeaderNavbar.html">HeaderNavbar</a></li><li><a href="PropertiesPanelApplicationDropdown.html">PropertiesPanelApplicationDropdown</a></li><li><a href="PropertiesPanelBuilder.html">PropertiesPanelBuilder</a></li><li><a href="PropertiesPanelTaskDropdown.html">PropertiesPanelTaskDropdown</a></li><li><a href="PropertiesView.html">PropertiesView</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#PropertiesPanelApplicationDropdown">PropertiesPanelApplicationDropdown</a></li><li><a href="global.html#PropertiesPanelTaskDropdown">PropertiesPanelTaskDropdown</a></li><li><a href="global.html#PropertiesPanelView">PropertiesPanelView</a></li><li><a href="global.html#RobotFile">RobotFile</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
                 
             </nav>
         </div>
@@ -85,46 +85,41 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React from 'react';
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
+import React from 'react';
 import { Select } from 'antd';
+import '../PropertiesPanel.css';
 
 const { Option } = Select;
 
 /**
- * @class
- * @component
+ * @description Renders the task-dropdown based on passed list of task.
  * @category Client
- * @classdesc Renders the task-dropdown based on passed list of task.
- * @example 
- * let taskList = ['Open Browser', 'Close Browser'];
- * let handleTaskSelection = (event) => return 'successfully handled task selection';
- * let disableTaskSelection = false;
- * return (
- *  &lt;PropertiesPanelTaskDropdown
- *      listOfTasks={this.taskList}
- *      onTaskSelection={this.handleTaskSelection}
- *      disabled={this.disableTaskSelection} 
- *      currentSelection={'Element 1'} />
- * )
+ * @component
  */
-
-function PropertiesPanelTaskDropdown(props) {
-    return &lt;>
-
-        &lt;Select
-            showSearch
-            style={{ width: '100%', marginTop: '10px' }}
-            placeholder="Please select task"
-            onChange={props.onTaskSelection}
-            disabled={props.disabled ? true : null}
-            defaultValue={props.currentSelection}
-        >
-            {props.listOfTasks.map((task) => (
-                &lt;Option value={task}>{task}&lt;/Option>
-            ))}
-        &lt;/Select>
-    &lt;/>
-}
+const PropertiesPanelTaskDropdown = ({
+  onTaskSelection,
+  disabled,
+  currentSelection,
+  listOfTasks,
+}) => (
+  &lt;>
+    &lt;Select
+      className='properties-panel-dropdown'
+      showSearch
+      placeholder='Please select task'
+      onChange={onTaskSelection}
+      disabled={disabled ? true : null}
+      defaultValue={currentSelection}
+    >
+      {listOfTasks.map((task) => (
+        &lt;Option key={task} value={task}>
+          {task}
+        &lt;/Option>
+      ))}
+    &lt;/Select>
+  &lt;/>
+);
 
 export default PropertiesPanelTaskDropdown;
 </code></pre>
