@@ -19,9 +19,9 @@ In principle, before each use of CSS should be considered whether the use in the
 In React the style of "normal" CSS files like _Example.css_ are defined globally. Therfore you don't need to explicitly import the CSS file to use the style. Thus be very careful when using normal CSS files and keep in mind that the style you define can be used in any file of the repository.
 For example when you define the following style...
 
-```
+```css
 .button {
-    background-color: red;
+  background-color: red;
 }
 ```
 
@@ -29,15 +29,15 @@ For example when you define the following style...
 
 If you want to apply style just to spefific files and not globally react has a solution called CSS modules. Instead of creating a file _Example.css_ you have to create _Example.module.css_. This file you have to explicitly import in every file you want to use it in. For example like this:
 
-```
+```jsx
 import styles from './Example.module.css';
 ```
 
 Now let's continue with this example. Let's say in _Example.module.css_ we have defined the following because we just want the buttons of this file to be green:
 
-```
+```css
 .button {
-    background-color: green;
+  background-color: green;
 }
 ```
 
