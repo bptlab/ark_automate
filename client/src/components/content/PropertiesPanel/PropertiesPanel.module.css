@@ -1,13 +1,10 @@
 .label-on-dark-background {
-  color: black;
-  font-weight: bold;
+  color: var(--colorPrimaryInvertedText);
 }
-
-.sidebarWrapper {
-  margin-left: 100;
-  padding-bottom: 1rem;
+.title {
+  margin-bottom: 0rem !important;
+  color: var(--colorPrimaryInvertedText) !important;
 }
 .properties-panel-dropdown {
   width: 100%;
-  margin-top: 10px;
 }

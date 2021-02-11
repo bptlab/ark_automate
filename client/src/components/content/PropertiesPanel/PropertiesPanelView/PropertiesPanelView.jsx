@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 import React from 'react';
-import { Input, Tooltip, Typography } from 'antd';
+import { Input, Tooltip, Typography, Space } from 'antd';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { InfoCircleOutlined } from '@ant-design/icons';
 import PropertiesPanelApplicationDropdown from '../PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown';
@@ -25,7 +25,7 @@ const PropertiesPanelView = ({
   disableTaskSelection,
 }) => (
   <div className='element-properties' key={element.id}>
-    <fieldset>
+    <Space direction='vertical' style={{ width: '100%', pading: '0rem' }}>
       <Text
         className={styles[`label-on-dark-background`]}
         style={{ fontSize: '24px' }}
@@ -38,17 +38,12 @@ const PropertiesPanelView = ({
           ? 'Gateway'
           : ''}
       </Text>
-    </fieldset>
-
-    <fieldset>
-      <Text className={styles[`label-on-dark-background`]}>ID: </Text>
-      <Text className={styles[`label-on-dark-background`]}>{element.id}</Text>
-    </fieldset>
-
-    <fieldset>
+      <Space direction='horizontal' style={{ width: '100%' }}>
+        <Text className={styles[`label-on-dark-background`]}>ID: </Text>
+        <Text className={styles[`label-on-dark-background`]}>{element.id}</Text>
+      </Space>
       <Text className={styles[`label-on-dark-background`]}>Name:</Text>
       <Input
-        style={{ marginBottom: '10px' }}
         placeholder='name'
         suffix={
           <Tooltip title='the name of your task, gateway or event'>
@@ -58,13 +53,10 @@ const PropertiesPanelView = ({
         value={element.businessObject.name || ''}
         onChange={nameChanged}
       />
-    </fieldset>
 
-    <fieldset>
       {is(element, 'bpmn:Task') && (
         <>
           <Text className={styles[`label-on-dark-background`]}>Actions: </Text>
-          <br />
           <PropertiesPanelApplicationDropdown
             onApplicationSelection={applicationSelectionUpdated}
             applications={sessionStorage
@@ -74,7 +66,6 @@ const PropertiesPanelView = ({
               element.businessObject.$attrs['arkRPA:application']
             }
           />
-          <br />
           <PropertiesPanelTaskDropdown
             listOfTasks={tasksForSelectedApplication}
             onTaskSelection={taskSelectionUpdated}
@@ -83,7 +74,7 @@ const PropertiesPanelView = ({
           />
         </>
       )}
-    </fieldset>
+    </Space>
   </div>
 );
 export default PropertiesPanelView;

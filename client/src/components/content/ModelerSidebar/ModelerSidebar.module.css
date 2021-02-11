@@ -1,12 +1,9 @@
 .sider {
-  background: #ffc9b9;
+  background: var(--colorPrimaryInverted2);
   padding: 1rem;
-  min-width: 350px !important;
+  min-width: 20rem !important;
 }
 
 .button {
-  width: 80%;
-  margin-top: 10px;
-  margin-left: 30px;
-  margin-right: 30px;
+  width: 100%;
 }
