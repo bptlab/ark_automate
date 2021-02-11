@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Typography } from 'antd';
-import styles from './Home.module.css';
 
 const { Title } = Typography;
 
@@ -15,7 +14,9 @@ const Home = () => {
 
   return (
     <div>
-      <Title className={styles.title}>Startseite</Title>
+      <Title style={{ alignItems: 'center', color: 'lightblue' }}>
+        Startseite
+      </Title>
       <Title level={3}>Das ist unsere Startseite - TOLL!</Title>
       <p>{message}</p>
       <Link to='/modeler'>

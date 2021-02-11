@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Select } from 'antd';
-import '../PropertiesPanel.css';
+import styles from '../PropertiesPanel.module.css';
 
 const { Option } = Select;
 
@@ -17,7 +17,7 @@ const PropertiesPanelApplicationDropdown = ({
 }) => (
   <>
     <Select
-      className='properties-panel-dropdown'
+      className={styles['properties-panel-dropdown']}
       showSearch
       placeholder='Please select application'
       onChange={onApplicationSelection}

@@ -7,8 +7,7 @@ import { Input, Tooltip, Typography } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import PropertiesPanelApplicationDropdown from '../PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown';
 import PropertiesPanelTaskDropdown from '../PropertiesPanelTaskDropdown/PropertiesPanelTaskDropdown';
-import styles from './PropertiesPanelView.module.css';
-import '../PropertiesPanel.css';
+import styles from '../PropertiesPanel.module.css';
 
 const { Text } = Typography;
 
@@ -27,7 +26,10 @@ const PropertiesPanelView = ({
 }) => (
   <div className='element-properties' key={element.id}>
     <fieldset>
-      <Text className={`label-on-dark-background ${styles.text}`}>
+      <Text
+        className={styles[`label-on-dark-background`]}
+        style={{ fontSize: '24px' }}
+      >
         {is(element, 'bpmn:Task')
           ? 'Activity'
           : is(element, 'bpmn:Event')
@@ -39,18 +41,18 @@ const PropertiesPanelView = ({
     </fieldset>
 
     <fieldset>
-      <Text className='label-on-dark-background'>ID: </Text>
-      <Text className='label-on-dark-background'>{element.id}</Text>
+      <Text className={styles[`label-on-dark-background`]}>ID: </Text>
+      <Text className={styles[`label-on-dark-background`]}>{element.id}</Text>
     </fieldset>
 
     <fieldset>
-      <Text className='label-on-dark-background'>Name:</Text>
+      <Text className={styles[`label-on-dark-background`]}>Name:</Text>
       <Input
-        className={styles.input}
+        style={{ marginBottom: '10px' }}
         placeholder='name'
         suffix={
           <Tooltip title='the name of your task, gateway or event'>
-            <InfoCircleOutlined className={styles.infoCircleOutlined} />
+            <InfoCircleOutlined style={{ color: 'black' }} />
           </Tooltip>
         }
         value={element.businessObject.name || ''}
@@ -61,7 +63,7 @@ const PropertiesPanelView = ({
     <fieldset>
       {is(element, 'bpmn:Task') && (
         <>
-          <Text className='label-on-dark-background'>Actions: </Text>
+          <Text className={styles[`label-on-dark-background`]}>Actions: </Text>
           <br />
           <PropertiesPanelApplicationDropdown
             onApplicationSelection={applicationSelectionUpdated}
