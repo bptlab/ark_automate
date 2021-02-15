@@ -522,9 +522,6 @@ Modellierter Prozess
             "id": "Activity_0a128t6",
             "predecessorIds": ["StartEvent_1"],
             "successorIds": ["Activity_0ascvdr"],
-            "rpaApplication": "",
-            "rpaTask": "",
-            "rpaParameters": [],
             "outputVariable": ""
         },
         // RPA activity
