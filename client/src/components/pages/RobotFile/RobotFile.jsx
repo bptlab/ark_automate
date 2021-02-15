@@ -1,7 +1,6 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, Typography } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import { Typography } from 'antd';
 
 const { Title } = Typography;
 
@@ -13,9 +12,8 @@ const { Title } = Typography;
 const RobotFile = () => (
   <Layout>
     <HeaderNavbar selectedKey={3} />
-    <Title style={{ paddingLeft: '30px' }}>
-      In future versions, the Robot Framework code can also be edited directly
-      here.
+    <Title style={{ paddingLeft: '2rem', paddingTop: '2rem' }}>
+      In future versions, the Robot Framework code can also be edited directly here.
     </Title>
   </Layout>
 );
