@@ -1,25 +1,29 @@
-const activityDataRetrieval = require('../services/ActivityDataRetrieval/ActivityDataRetrieval');
+const mongoose = require('mongoose');
+const rpaModels = require('../models/rpaTaskModel');
 
+// GET /rpa-framework/commands/get-available-applications
 exports.getAvailableApplications = async (req, res) => {
   try {
-    const listOfDistinctApplications = await activityDataRetrieval.getDistinctApplicationsFromDB();
     res.set('Content-Type', 'application/json');
-    res.send(listOfDistinctApplications);
+    mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });    
+    mongoose.model('rpa-tasks').distinct('Application', (err, tasks) => {
+      res.send(tasks);
+    });
   } catch (err) {
     console.log(err);
   }
 };
 
-// GET /get-available-tasks-for-application?application=Browser
+// GET /rpa-framework/commands/get-available-tasks-for-application?application=Browser
 exports.getAvailableTasksForApplications = async (req, res) => {
   try {
     const {application} = req.query;
     res.set('Content-Type', 'application/json');
     if (application != null) {
-      const listOfDistinctApplications = await activityDataRetrieval.getTasksForApplicationFromDB(
-        application
-      );
-      res.send(listOfDistinctApplications);
+      mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+      mongoose.model('rpa-tasks').distinct('Task', { Application: application }, (err, tasks) => {
+        res.send(tasks);
+      });
     } else {
       res.send('Please set a valid application parameter.');
     }
@@ -28,7 +32,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
   }
 };
 
-// GET /get-vars-for-task?application=Browser&task=Open+Browser
+// GET /rpa-framework/commands/get-vars-for-task?application=Browser&task=Open+Browser
 exports.getVarsForTask = async (req, res) => {
   try {
     const {application} = req.query;
@@ -36,11 +40,19 @@ exports.getVarsForTask = async (req, res) => {
     res.set('Content-Type', 'application/json');
 
     if (application != null && task != null) {
-      const listOfDistinctApplications = await activityDataRetrieval.getInputOutputForSelectedTask(
-        application,
-        task
-      );
-      res.send(listOfDistinctApplications);
+      mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+      mongoose.model('rpa-tasks').findOne(
+      {
+        Application: application,
+        Task: task,
+      }, 
+      {
+        InputVars: 1,
+        Output: 1
+      }, 
+      (err, tasks) => {
+        res.send(tasks);
+      });
     } else {
       res.send('Please set valid application and task parameters.');
     }

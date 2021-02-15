@@ -1,6 +1,4 @@
-import { describe, expect, test } from '@testing-library/jest-dom';
-
-const parser = require('../parser');
+const jsonParser = require('../parser');
 const testJson = require('../jsonForTesting');
 
 const BROWSER_ACTIVITY_NAME = 'Browser Open Browser';
@@ -13,9 +11,8 @@ const OPEN_WORKBOOK_CMD = 'Open Workbook';
 const FIND_EMPTY_ROW_CMD = 'Find Empty Row';
 const OPEN_BROWSER_CMD = 'Open Browser';
 
-describe('Parsing Tests', () => {
-  test('Manually pass in BPMN Json', () => {
-    const parserResultString = parser.parseDiagramJson(testJson.JSON_STRING);
+test('Manually pass in BPMN Json', () => {
+    const parserResultString = jsonParser.parseDiagramJson(testJson.JSON_STRING);
 
     expect.assertions(15);
     expect(parserResultString).toMatch(SETTING_STRING);
@@ -51,5 +48,4 @@ describe('Parsing Tests', () => {
     expect(parserResultString.indexOf(LIBRARY_EXCEL)).toBeLessThan(
       parserResultString.indexOf(TASK_STRING)
     );
-  });
 });
