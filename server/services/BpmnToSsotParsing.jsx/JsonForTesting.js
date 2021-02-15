@@ -1,268 +1,228 @@
 const JSON_SSOT_STRING = {
-
-"_declaration": {
-    "_attributes": {
-    "version": "1.0",
-    "encoding": "UTF-8"
-    }
-},
-"bpmn2:definitions": {
-    "_attributes": {
-    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-    "xmlns:bpmn2": "http://www.omg.org/spec/BPMN/20100524/MODEL",
-    "xmlns:bpmndi": "http://www.omg.org/spec/BPMN/20100524/DI",
-    "xmlns:dc": "http://www.omg.org/spec/DD/20100524/DC",
-    "xmlns:arkRPA": "http://magic",
-    "xmlns:di": "http://www.omg.org/spec/DD/20100524/DI",
-    "id": "sample-diagram",
-    "targetNamespace": "http://bpmn.io/schema/bpmn",
-    "xsi:schemaLocation": "http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+    "_declaration": {
+      "_attributes": {
+        "version": "1.0",
+        "encoding": "UTF-8"
+      }
     },
-    "bpmn2:collaboration": {
-    "_attributes": {
-        "id": "Collaboration_0czsqyr"
-    },
-    "bpmn2:participant": {
+    "bpmn2:definitions": {
+      "_attributes": {
+        "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "xmlns:bpmn2": "http://www.omg.org/spec/BPMN/20100524/MODEL",
+        "xmlns:bpmndi": "http://www.omg.org/spec/BPMN/20100524/DI",
+        "xmlns:dc": "http://www.omg.org/spec/DD/20100524/DC",
+        "xmlns:arkRPA": "http://magic",
+        "xmlns:di": "http://www.omg.org/spec/DD/20100524/DI",
+        "id": "sample-diagram",
+        "targetNamespace": "http://bpmn.io/schema/bpmn",
+        "xsi:schemaLocation": "http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+      },
+      "bpmn2:process": {
         "_attributes": {
-        "id": "Participant_0cyhvx8",
-        "processRef": "Process_1"
-        }
-    }
-    },
-    "bpmn2:process": {
-    "_attributes": {
-        "id": "Process_1",
-        "isExecutable": "false"
-    },
-    "bpmn2:task": [
-        {
-        "_attributes": {
-            "id": "Activity_0a128t6",
-            "name": "#+# First activity"
+          "id": "Process_07hzxw7"
         },
-        "bpmn2:incoming": {
-            "_text": "Flow_1bewk1i"
+        "bpmn2:startEvent": {
+          "_attributes": {
+            "id": "Event_0jcqjs1"
+          },
+          "bpmn2:outgoing": {
+            "_text": "Flow_0v30d6j"
+          }
         },
-        "bpmn2:outgoing": {
-            "_text": "Flow_0sg07kn"
-        }
-        },
-        {
-        "_attributes": {
-            "id": "Activity_0ascvdr",
-            "name": "#+#+# RPA Activity",
-            "arkRPA:application": "Browser",
-            "arkRPA:task": "Open Browser",
-            "arkRPA:inputVars": "{\"url\":\"TestString\",\"browser\":\"TestString\",\"alias\":\"TestString\",\"remote_url\":true,\"desired_capabilities\":\"TestString\",\"ff_profile_dir\":\"TestString\",\"options\":\"TestString\",\"service_log_path\":\"TestString\",\"executable_path\":\"TestString\"}",
-            "arkRPA:outputVars": ""
-        },
-        "bpmn2:incoming": {
-            "_text": "Flow_0sg07kn"
-        },
-        "bpmn2:outgoing": {
-            "_text": "Flow_1hwcghk"
-        }
-        }
-    ],
-    "bpmn2:sequenceFlow": [
-        {
-        "_attributes": {
-            "id": "Flow_1bewk1i",
-            "sourceRef": "StartEvent_1",
-            "targetRef": "Activity_0a128t6"
-        }
-        },
-        {
-        "_attributes": {
-            "id": "Flow_0sg07kn",
-            "sourceRef": "Activity_0a128t6",
-            "targetRef": "Activity_0ascvdr"
-        }
-        },
-        {
-        "_attributes": {
-            "id": "Flow_1hwcghk",
-            "sourceRef": "Activity_0ascvdr",
-            "targetRef": "Event_0wghmrz"
-        }
-        }
-    ],
-    "bpmn2:endEvent": {
-        "_attributes": {
-        "id": "Event_0wghmrz"
-        },
-        "bpmn2:incoming": {
-        "_text": "Flow_1hwcghk"
-        }
-    },
-    "bpmn2:startEvent": {
-        "_attributes": {
-        "id": "StartEvent_1"
-        },
-        "bpmn2:outgoing": {
-        "_text": "Flow_1bewk1i"
-        }
-    }
-    },
-    "bpmndi:BPMNDiagram": {
-    "_attributes": {
-        "id": "BPMNDiagram_1"
-    },
-    "bpmndi:BPMNPlane": {
-        "_attributes": {
-        "id": "BPMNPlane_1",
-        "bpmnElement": "Collaboration_0czsqyr"
-        },
-        "bpmndi:BPMNShape": [
-        {
+        "bpmn2:task": [
+          {
             "_attributes": {
-            "id": "Participant_0cyhvx8_di",
-            "bpmnElement": "Participant_0cyhvx8",
-            "isHorizontal": "true"
+              "id": "Activity_1groimk",
+              "name": "AAA"
             },
-            "dc:Bounds": {
-            "_attributes": {
-                "x": "130",
-                "y": "220",
-                "width": "710",
-                "height": "250"
-            }
-            }
-        },
-        {
-            "_attributes": {
-            "id": "Activity_0a128t6_di", // TODO WOHIN GEHÖRT DAS?
-            "bpmnElement": "Activity_0a128t6"
+            "bpmn2:incoming": {
+              "_text": "Flow_0v30d6j"
             },
-            "dc:Bounds": {
-            "_attributes": {
-                "x": "340",
-                "y": "280",
-                "width": "100",
-                "height": "80"
+            "bpmn2:outgoing": {
+              "_text": "Flow_0rgkjwc"
             }
-            }
-        },
-        {
+          },
+          {
             "_attributes": {
-            "id": "Activity_0ascvdr_di",
-            "bpmnElement": "Activity_0ascvdr"
+              "id": "Activity_1vb45u8",
+              "name": "BBB",
+              "arkRPA:application": "Excel.Files",
+              "arkRPA:task": "Set Worksheet Value",
+              "arkRPA:inputVars": "{\"row\":69,\"column\":69,\"name\":\"TestString\"}",
+              "arkRPA:outputVars": ""
             },
-            "dc:Bounds": {
-            "_attributes": {
-                "x": "500",
-                "y": "280",
-                "width": "100",
-                "height": "80"
-            }
-            }
-        },
-        {
-            "_attributes": {
-            "id": "Event_0wghmrz_di",
-            "bpmnElement": "Event_0wghmrz"
+            "bpmn2:incoming": {
+              "_text": "Flow_0rgkjwc"
             },
-            "dc:Bounds": {
-            "_attributes": {
-                "x": "662",
-                "y": "392",
-                "width": "36",
-                "height": "36"
+            "bpmn2:outgoing": {
+              "_text": "Flow_1bmltp6"
             }
-            }
-        },
-        {
-            "_attributes": {
-            "id": "_BPMNShape_StartEvent_2",
-            "bpmnElement": "StartEvent_1"
-            },
-            "dc:Bounds": {
-            "_attributes": {
-                "x": "212",
-                "y": "302",
-                "width": "36",
-                "height": "36"
-            }
-            }
-        }
+          }
         ],
-        "bpmndi:BPMNEdge": [
-        {
+        "bpmn2:sequenceFlow": [
+          {
             "_attributes": {
-            "id": "Flow_1bewk1i_di",
-            "bpmnElement": "Flow_1bewk1i"
-            },
-            "di:waypoint": [
-            {
-                "_attributes": {
-                "x": "248",
-                "y": "320"
-                }
-            },
-            {
-                "_attributes": {
-                "x": "340",
-                "y": "320"
-                }
+              "id": "Flow_0v30d6j",
+              "sourceRef": "Event_0jcqjs1",
+              "targetRef": "Activity_1groimk"
             }
-            ]
-        },
-        {
+          },
+          {
             "_attributes": {
-            "id": "Flow_0sg07kn_di",
-            "bpmnElement": "Flow_0sg07kn"
-            },
-            "di:waypoint": [
-            {
-                "_attributes": {
-                "x": "440",
-                "y": "320"
-                }
-            },
-            {
-                "_attributes": {
-                "x": "500",
-                "y": "320"
-                }
+              "id": "Flow_0rgkjwc",
+              "sourceRef": "Activity_1groimk",
+              "targetRef": "Activity_1vb45u8"
             }
-            ]
-        },
-        {
+          },
+          {
             "_attributes": {
-            "id": "Flow_1hwcghk_di",
-            "bpmnElement": "Flow_1hwcghk"
-            },
-            "di:waypoint": [
-            {
-                "_attributes": {
-                "x": "600",
-                "y": "320"
-                }
-            },
-            {
-                "_attributes": {
-                "x": "631",
-                "y": "320"
-                }
-            },
-            {
-                "_attributes": {
-                "x": "631",
-                "y": "410"
-                }
-            },
-            {
-                "_attributes": {
-                "x": "662",
-                "y": "410"
-                }
+              "id": "Flow_1bmltp6",
+              "sourceRef": "Activity_1vb45u8",
+              "targetRef": "Event_0otufrj"
             }
-            ]
+          }
+        ],
+        "bpmn2:endEvent": {
+          "_attributes": {
+            "id": "Event_0otufrj"
+          },
+          "bpmn2:incoming": {
+            "_text": "Flow_1bmltp6"
+          }
         }
-        ]
+      },
+      "bpmndi:BPMNDiagram": {
+        "_attributes": {
+          "id": "BPMNDiagram_1"
+        },
+        "bpmndi:BPMNPlane": {
+          "_attributes": {
+            "id": "BPMNPlane_1",
+            "bpmnElement": "Process_07hzxw7"
+          },
+          "bpmndi:BPMNEdge": [
+            {
+              "_attributes": {
+                "id": "Flow_0v30d6j_di",
+                "bpmnElement": "Flow_0v30d6j"
+              },
+              "di:waypoint": [
+                {
+                  "_attributes": {
+                    "x": "318",
+                    "y": "330"
+                  }
+                },
+                {
+                  "_attributes": {
+                    "x": "370",
+                    "y": "330"
+                  }
+                }
+              ]
+            },
+            {
+              "_attributes": {
+                "id": "Flow_0rgkjwc_di",
+                "bpmnElement": "Flow_0rgkjwc"
+              },
+              "di:waypoint": [
+                {
+                  "_attributes": {
+                    "x": "470",
+                    "y": "330"
+                  }
+                },
+                {
+                  "_attributes": {
+                    "x": "530",
+                    "y": "330"
+                  }
+                }
+              ]
+            },
+            {
+              "_attributes": {
+                "id": "Flow_1bmltp6_di",
+                "bpmnElement": "Flow_1bmltp6"
+              },
+              "di:waypoint": [
+                {
+                  "_attributes": {
+                    "x": "630",
+                    "y": "330"
+                  }
+                },
+                {
+                  "_attributes": {
+                    "x": "692",
+                    "y": "330"
+                  }
+                }
+              ]
+            }
+          ],
+          "bpmndi:BPMNShape": [
+            {
+              "_attributes": {
+                "id": "Event_0jcqjs1_di",
+                "bpmnElement": "Event_0jcqjs1"
+              },
+              "dc:Bounds": {
+                "_attributes": {
+                  "x": "282",
+                  "y": "312",
+                  "width": "36",
+                  "height": "36"
+                }
+              }
+            },
+            {
+              "_attributes": {
+                "id": "Activity_1groimk_di",
+                "bpmnElement": "Activity_1groimk"
+              },
+              "dc:Bounds": {
+                "_attributes": {
+                  "x": "370",
+                  "y": "290",
+                  "width": "100",
+                  "height": "80"
+                }
+              }
+            },
+            {
+              "_attributes": {
+                "id": "Activity_1vb45u8_di",
+                "bpmnElement": "Activity_1vb45u8"
+              },
+              "dc:Bounds": {
+                "_attributes": {
+                  "x": "530",
+                  "y": "290",
+                  "width": "100",
+                  "height": "80"
+                }
+              }
+            },
+            {
+              "_attributes": {
+                "id": "Event_0otufrj_di",
+                "bpmnElement": "Event_0otufrj"
+              },
+              "dc:Bounds": {
+                "_attributes": {
+                  "x": "692",
+                  "y": "312",
+                  "width": "36",
+                  "height": "36"
+                }
+              }
+            }
+          ]
+        }
+      }
     }
-    }
-}
-}
+  }
 
   module.exports = { JSON_SSOT_STRING };
