@@ -6,8 +6,8 @@ const SSOT_JSON_STRING = {
     "elements": [
         {
             "type": "MARKER",
-            "id": "Event_0jcqjs1",
             "name": "",
+            "id": "Event_0jcqjs1",
             "predecessorIds": [],
             "successorIds": ["Activity_1groimk"],
         },
@@ -17,9 +17,6 @@ const SSOT_JSON_STRING = {
             "id": "Activity_1groimk",
             "predecessorIds": ["Event_0jcqjs1"],
             "successorIds": ["Activity_1vb45u8"],
-            "rpaApplication": "",
-            "rpaTask": "",
-            "rpaParameters": [],
             "outputVariable": ""
         },
         {
@@ -30,15 +27,15 @@ const SSOT_JSON_STRING = {
             "successorIds": ["Event_0otufrj"],
             "rpaApplication": "Excel.Files",
             "rpaTask": "Set Worksheet Value",
-            "parameters": [
+            "rpaParameters": [
                 {
                     "name": "row",
-                    "value": "69",
+                    "value": 69,
                     "requireUserInput": true
                 },
                 {
                     "name": "column",
-                    "value": "69",
+                    "value": 69,
                     "requireUserInput": true
                 },
                 {
@@ -51,8 +48,8 @@ const SSOT_JSON_STRING = {
         },
         {
             "type": "MARKER",
-            "id": "Event_0otufrj",
             "name": "",
+            "id": "Event_0otufrj",
             "predecessorIds": ["Activity_1vb45u8"],
             "successorIds": [],
         }
