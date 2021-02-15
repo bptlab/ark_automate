@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Typography, Input, Space, FlexBox, Row, Col } from 'antd';
+import { Layout, Input, Space, Row, Col } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer'
 import styles from './RobotOverview.module.css';
@@ -9,6 +9,37 @@ const { Search } = Input;
 // just a dummy method for further implementation
 const handleSearch = value => {
   // console.log(value)
+};
+
+function createRobotBoxes() {
+  const robotList = [{
+    "robotMetadata": { "robotId": "#1234", "robotName": "EXCEL Workflow" }
+  },
+  {
+    "robotMetadata": { "robotId": "#1234", "robotName": "alle E-Mails löschen" }
+  },
+  {
+    "robotMetadata": { "robotId": "#1234", "robotName": "Daily CheckIn" }
+  },
+  {
+    "robotMetadata": { "robotId": "#1234", "robotName": "Daily Checkout" }
+  },
+  {
+    "robotMetadata": { "robotId": "#1234", "robotName": "Papierkorb aufräumen" }
+  },
+  {
+    "robotMetadata": { "robotId": "#1234", "robotName": "Twitter checken" }
+  },
+  {
+    "robotMetadata": { "robotId": "#1234", "robotName": "Login to PayPal" }
+  },
+  ];
+
+  return <>
+    {Object.values(robotList).map((val) => (
+      <RobotContainer robotName={val.robotMetadata.robotName} />
+    ))}
+  </>
 };
 
 /**
@@ -27,23 +58,10 @@ const RobotOverview = () => (
         </Row>
 
         <Row gutter={[16, 16]} style={{ width: '100%' }} >
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
-          <RobotContainer robotName='MyRobot' />
+          {/* Add Container for Create new Robot */}
+          {createRobotBoxes()}
         </Row>
       </Space>
-
-
-
     </Layout>
   </div >
 );
