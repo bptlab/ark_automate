@@ -189,8 +189,8 @@ Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer
 ```json
 {
   "type": "MARKER",
-  "id": "exampleId",
   "name": "5 Sekunden warten",
+  "id": "exampleId",
   "predecessorIds": ["randomId"],
   "successorIds": ["randomId"]
 }
@@ -510,8 +510,8 @@ Modellierter Prozess
     "elements": [
         {
             "type": "MARKER",
-            "id": "StartEvent_1",
             "name": "",
+            "id": "StartEvent_1",
             "predecessorIds": [],
             "successorIds": ["Activity_0a128t6"],
         },
@@ -583,8 +583,8 @@ Modellierter Prozess
         // Endevent
         {
             "type": "MARKER",
-            "id": "Event_0wghmrz",
             "name": "",
+            "id": "Event_0wghmrz",
             "predecessorIds": ["Activity_0a128t6"],
             "successorIds": [],
         }
