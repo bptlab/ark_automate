@@ -19,10 +19,12 @@ const HeaderNavbar = (props) => (
       // eslint-disable-next-line react/prop-types
       defaultSelectedKeys={[props.selectedKey.toString()]}
     >
-      <img style={{ height: '3rem' }} src={logoBlack} alt='ark_automate Icon' />
+      <Link to='/'>
+        <img style={{ height: '3rem' }} src={logoBlack} alt='ark_automate Icon' />
+      </Link>
       <Menu.Item key='1'>
-        Home
-        <Link to='/' />
+        Overview
+        <Link to='/robot_overview' />
       </Menu.Item>
       <Menu.Item key='2'>
         Modeler
