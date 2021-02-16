@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, Input, Space, Row, Col } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer'
+import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer'
 import styles from './RobotOverview.module.css';
 
 const { Search } = Input;
@@ -23,9 +24,6 @@ function createRobotBoxes() {
   },
   {
     "robotMetadata": { "robotId": "#1234", "robotName": "Daily Checkout" }
-  },
-  {
-    "robotMetadata": { "robotId": "#1234", "robotName": "Papierkorb aufräumen" }
   },
   {
     "robotMetadata": { "robotId": "#1234", "robotName": "Twitter checken" }
@@ -58,7 +56,8 @@ const RobotOverview = () => (
         </Row>
 
         <Row gutter={[16, 16]} style={{ width: '100%' }} >
-          {/* Add Container for Create new Robot */}
+          <CreateRobotContainer />
+
           {createRobotBoxes()}
         </Row>
       </Space>

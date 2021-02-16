@@ -1,37 +1,24 @@
-.dummy {
-
-  }
-
 .innerBox {
   background: var(--colorPrimaryInverted2);
-  color: var(--colorPrimaryInvertedText);
-  align-items: 'center';
-  justify-content: center !important;
   text-align: center !important;
-  height: '100%' !important;
 }
 
-.innerBox2 {
-  background: var(--colorPrimaryInverted2);
-  color: var(--colorPrimaryInvertedText);
-  align-items: 'center';
-  justify-content: center !important;
+.innerBoxCreateRobot {
+  background: var(--colorBackgroundCta);
   text-align: center !important;
-  height: '50%';
 }
 
-.robotWrapper{
-  width: '100vw';
-  height: '15rem' !important;
-  padding: '2rem' !important;
-};
+.clickicon{
+  font-size: '4rem';
+  color: var(--colorBackgroundCta);
+}
+
+.clickiconCreateRobot {
+  font-size: '4rem';
+  color: var(--colorBackground2);
+}
 
 .title {
   color: var(--colorPrimaryInvertedText) !important;
-  text-align: center !important;
-}
-
-.icons {
-  color: var(--colorBackgroundCta) !important;
-  font-size: '4rem' !important;
+  text-align: center;
 }
