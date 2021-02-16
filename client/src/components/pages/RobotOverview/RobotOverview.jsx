@@ -50,14 +50,11 @@ const RobotOverview = () => (
     <Layout>
       <HeaderNavbar selectedKey={1} />
 
-      <Space className={styles.contentWrapper} direction='vertical' size='large' style={{ width: '100%' }}>
-        <Row style={{ width: '100%' }}>
-          <Search placeholder='Search your Robot!' onSearch={handleSearch} enterButton />
-        </Row>
+      <Space className={styles.contentWrapper} direction='vertical' size='middle' >
+        <Search placeholder='Search your Robot!' onSearch={handleSearch} enterButton />
 
-        <Row gutter={[16, 16]} style={{ width: '100%' }} >
+        <Row gutter={[16, 16]} >
           <CreateRobotContainer />
-
           {createRobotBoxes()}
         </Row>
       </Space>

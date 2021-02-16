@@ -17,6 +17,7 @@
     "camunda-bpmn-moddle": "^4.4.1",
     "craco-antd": "^1.19.0",
     "craco-less": "^1.17.1",
+    "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

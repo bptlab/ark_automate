@@ -2,6 +2,7 @@
 import React from 'react';
 import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types'
 import styles from './RobotContainer.module.css';
 
 const { Title } = Typography;
@@ -15,7 +16,6 @@ const shortenTitle = (robotName) => {
         return robotName;
     }
     return `${robotName.substring(0, titleLength - 2)}...`;
-
 }
 
 /**
@@ -44,3 +44,7 @@ const RobotContainer = (props) => (
     </Col >
 );
 export default RobotContainer;
+
+RobotContainer.propTypes = {
+    robotName: PropTypes.string.isRequired,
+};
