@@ -1,0 +1,37 @@
+.dummy {
+
+  }
+
+.innerBox {
+  background: var(--colorPrimaryInverted2);
+  color: var(--colorPrimaryInvertedText);
+  align-items: 'center';
+  justify-content: center !important;
+  text-align: center !important;
+  height: '100%' !important;
+}
+
+.innerBox2 {
+  background: var(--colorPrimaryInverted2);
+  color: var(--colorPrimaryInvertedText);
+  align-items: 'center';
+  justify-content: center !important;
+  text-align: center !important;
+  height: '50%';
+}
+
+.robotWrapper{
+  width: '100vw';
+  height: '15rem' !important;
+  padding: '2rem' !important;
+};
+
+.title {
+  color: var(--colorPrimaryInvertedText) !important;
+  text-align: center !important;
+}
+
+.icons {
+  color: var(--colorBackgroundCta) !important;
+  font-size: '4rem' !important;
+}
