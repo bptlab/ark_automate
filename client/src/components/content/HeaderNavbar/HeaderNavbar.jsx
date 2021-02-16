@@ -3,6 +3,11 @@ import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import logoBlack from '../../../resources/assets/images/logo_black.png';
+import logoCTA from '../../../resources/assets/images/logo_cta.png';
+import logoPrim from '../../../resources/assets/images/logo_prim.png';
+import logoInv from '../../../resources/assets/images/logo_inverted.png';
+
+
 
 const { Header } = Layout;
 
@@ -20,7 +25,7 @@ const HeaderNavbar = (props) => (
       defaultSelectedKeys={[props.selectedKey.toString()]}
     >
       <Link to='/'>
-        <img style={{ height: '3rem' }} src={logoBlack} alt='ark_automate Icon' />
+        <img style={{ height: '3rem' }} src={logoCTA} alt='ark_automate Icon' />
       </Link>
       <Menu.Item key='1'>
         Overview
