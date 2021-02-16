@@ -7,11 +7,6 @@ import styles from './RobotOverview.module.css';
 
 const { Search } = Input;
 
-// just a dummy method for further implementation
-const handleSearch = value => {
-  // console.log(value)
-};
-
 const createRobotBoxes = () => {
   const robotList = [{
     "robotMetadata": { "robotId": "#1234", "robotName": "EXCEL Workflow" }
@@ -63,3 +58,10 @@ const RobotOverview = () => (
 );
 
 export default RobotOverview;
+
+
+// just a dummy method for further implementation
+const handleSearch = value => {
+  // RobotOverview.forceUpdate()
+  // console.log(value)
+};

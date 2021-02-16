@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
-import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
+import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
+import convert from 'xml-js';
+import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa';
 import parseDiagramJson from '../../../utils/parser/parser.js';
-import convert from 'xml-js';
 import downloadString from '../../../utils/downloadString.js';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
-import { Layout } from 'antd';
 
 const { Content } = Layout;
 
