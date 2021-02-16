@@ -15,15 +15,15 @@ const addRobot = () => alert("Adding Robots is currently not supported!");
  */
 const CreateRobotContainer = (props) => (
     <Col xs={24} sm={12} md={8} xl={6}>
-        <Col className={styles.innerBoxCreateRobot} style={{ height: '15rem', padding: '1rem' }}>
-            <Row align="middle" style={{ height: '55%' }}>
+        <Col className={styles.innerBoxCreateRobot} style={{ height: '13rem', padding: '1rem' }}>
+            <Row align="middle" style={{ height: '70%' }}>
                 <Col type="flex" span={24}>
-                    <PlusCircleOutlined onClick={addRobot} className={styles.clickiconCreateRobot} style={{ fontSize: '4rem' }} />
+                    <PlusCircleOutlined onClick={addRobot} className={styles.clickiconCreateRobot} style={{ fontSize: '6rem' }} />
                 </Col>
             </Row>
 
-            <Row justify="space-around" align="middle" style={{ height: '45%' }}>
-                <Title className={styles.title} level={2} >
+            <Row justify="space-around" align="middle" style={{ height: '40%' }}>
+                <Title className={styles.title} level={3} >
                     Create new Robot
                 </Title>
             </Row>

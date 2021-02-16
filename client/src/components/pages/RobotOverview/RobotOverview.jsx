@@ -12,7 +12,7 @@ const handleSearch = value => {
   // console.log(value)
 };
 
-function createRobotBoxes() {
+const createRobotBoxes = () => {
   const robotList = [{
     "robotMetadata": { "robotId": "#1234", "robotName": "EXCEL Workflow" }
   },

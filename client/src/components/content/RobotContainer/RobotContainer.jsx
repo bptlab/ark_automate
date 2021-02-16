@@ -9,6 +9,14 @@ const { Title } = Typography;
 const startRobot = () => alert("Running the Robot is currently not supported!");
 const editRobot = () => alert("Editing the Robot is currently not supported!");
 
+const shortenTitle = (robotName) => {
+    const titleLength = 18;
+    if (robotName.length < titleLength) {
+        return robotName;
+    }
+    return `${robotName.substring(0, titleLength - 2)}...`;
+
+}
 
 /**
  * @component
@@ -17,7 +25,7 @@ const editRobot = () => alert("Editing the Robot is currently not supported!");
  */
 const RobotContainer = (props) => (
     <Col xs={24} sm={12} md={8} xl={6}>
-        <Col className={styles.innerBox} style={{ height: '15rem', padding: '1rem' }}>
+        <Col className={styles.innerBox} style={{ height: '13rem', padding: '1rem' }}>
             <Row align="middle" style={{ height: '55%' }}>
                 <Col type="flex" span={12}>
                     <PlayCircleOutlined onClick={startRobot} className={styles.clickicon} style={{ fontSize: '4rem' }} />
@@ -28,8 +36,8 @@ const RobotContainer = (props) => (
             </Row>
 
             <Row justify="space-around" align="middle" style={{ height: '45%' }}>
-                <Title className={styles.title} level={2} editable >
-                    {props.robotName}
+                <Title className={styles.title} level={3} editable >
+                    {shortenTitle(props.robotName)}
                 </Title>
             </Row>
         </Col>

@@ -10,7 +10,7 @@
 
 .clickicon{
   font-size: '4rem';
-  color: var(--colorBackgroundCta);
+  color: var(--colorPrimary);
 }
 
 .clickiconCreateRobot {
