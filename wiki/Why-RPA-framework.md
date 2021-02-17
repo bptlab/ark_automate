@@ -9,6 +9,7 @@ The RPAf already offeres a large suite of supported functionalities and software
 * Email
 * Pdf
 * Image
+* Browser
 * HTTP request functionality
 
 ## Why are we using the RPA framework?
@@ -35,10 +36,10 @@ This could be achieved by an additional parsing step, which would take the user 
 The RPAf follows a unique approach in being open-source, extensible and usable for a plethora of use-cases.
 While many other platformas allow for export of the there created bots through XML, they do not offer the documentation in such detail, as RPAf is doing.
 Because the goal of this project was to create an open source platform, we took into consideration options we had from teh open source spectrum of existing solutions:
-* TagUI: This RPA software allows for easy bot creation using teh keywords 'type' and 'click'. This approach is really easy, but would require a graphically oriented interface to display the user which options are available, which would not be optimal of use with our approach of bot-creation through a modeler.
+* TagUI: This RPA software allows for easy bot creation using the keywords 'type' and 'click'. This approach is really easy, but would require a graphically oriented interface to display the user which options are available, which would not be optimal of use with our approach of bot-creation through a modeler.
 * OpenRPA: Is more focussed on the direction of having people use the internal design tool to create bots. Additionally the documentation is very barebones, which might be caused by the fact that the company standing behind this project also offers commercial support. Overall, it seemed not as easy to work with this project.
 * TaskT: When first inspecting this project, it seems like a very similar approach as the RPAf, but at the second look, it becomes clear, that the keywords used and displayed in the editor on TaskT are not only keywords, but only representations for the user to click to reveal the real underlying information. That fact, as well as the ineffective performance while testing caused us to decide against this project to use. 
-* UI.Vision: Was initially created as a browser extension, but since has been extended to also allow automation on the desktop. We ecplicitly want to stress teh fact, that it was created with web automation and scraping in mind and tehrefore works really well for this. For automating desktop applications we ran into problems when trying out this project.
+* UI.Vision: Was initially created as a browser extension, but since has been extended to also allow automation on the desktop. We explicitly want to stress the fact, that it was created with web automation and scraping in mind and therefore works really well for this. For automating desktop applications we ran into problems when trying out this project.
 
 # Feedback on our work with the RPA framework
 For us RPAf was the easiest solution to work with. It is very well documented, with no intention to sell premium support, which allowed and still allows us to read into libraries ourself and educate ourself on the topic.
