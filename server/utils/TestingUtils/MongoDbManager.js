@@ -39,18 +39,27 @@ class DBManager {
     const Task = mongoose.model('rpa-tasks');
     const Variable = mongoose.model('rpa-tasks-variable');
   
-    let var1 = new Variable({ Name: 'taste', Type: 'String', Required: true });
-    let var2 = new Variable({ Name: 'isHealthy', Type: 'Boolean', Required: false });
-    let task1 = new Task({ Application: 'My fancy Cookbook', Task: 'Taste Recipe', Code:'Taste Recipe', InputVars: [ var1, var2 ] });
+    let firstInputFirstTask = new Variable({ Name: 'taste', Type: 'String', Required: true });
+    let secondInputFirstTask = new Variable({ Name: 'isHealthy', Type: 'Boolean', Required: false });
+    let firstTestTask = new Task({ 
+      Application: 'My fancy Cookbook', 
+      Task: 'Taste Recipe', 
+      Code:'Taste Recipe', 
+      InputVars: [ firstInputFirstTask, secondInputFirstTask ] });
   
-    let var3 = new Variable({ Name: 'testVar', Type: 'String', Required: true });
-    let var4 = new Variable({ Name: 'anotherVar', Type: 'String', Required: true });
-    let var5 = new Variable({ Name: 'lastInput', Type: 'String', Required: true });
-    let var6 = new Variable({ Name: 'outputVar', Type: 'String', Required: true, InfoText: 'Output variable' });
+    let firstInputSecondTask = new Variable({ Name: 'testVar', Type: 'String', Required: true });
+    let secondInputSecondTask = new Variable({ Name: 'anotherVar', Type: 'String', Required: true });
+    let thirdInputSecondTask = new Variable({ Name: 'lastInput', Type: 'String', Required: true });
+    let singleOutputSecondTask = new Variable({ Name: 'outputVar', Type: 'String', Required: true, InfoText: 'Output variable' });
   
-    let task2 = new Task({ Application: 'Fancy Sales App', Task: 'Open Fancy Table', Code:'Open Fancy Table', InputVars: [ var3, var4, var5 ], Output: var6 });
+    let secondTestTask = new Task({ 
+      Application: 'Fancy Sales App', 
+      Task: 'Open Fancy Table', 
+      Code:'Open Fancy Table', 
+      InputVars: [ firstInputSecondTask, secondInputSecondTask, thirdInputSecondTask ], 
+      Output: singleOutputSecondTask });
   
-    return [ task1, task2 ];
+    return [ firstTestTask, secondTestTask ];
   }
 }
 
