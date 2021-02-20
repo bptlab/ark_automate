@@ -8,15 +8,15 @@ import styles from './RobotOverview.module.css';
 const { Search } = Input;
 
 /**
- * @description Overview page, where all robots are displayed.
+ * @description Overview page, where all robots are displayed and can be opened.
  * @category Client
  * @component
  */
 const RobotOverview = () => {
   const [searchValue, setSearchValue] = useState('');
 
-  const updateSearchValue = (searchValue) => {
-    setSearchValue(searchValue);
+  const updateSearchValue = (val) => {
+    setSearchValue(val);
   };
 
   const createRobotBoxes = (searchValue2) => {

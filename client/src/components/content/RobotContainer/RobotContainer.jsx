@@ -1,4 +1,4 @@
-/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-alert */
 import React from 'react';
 import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
@@ -9,20 +9,21 @@ const { Title } = Typography;
 
 /**
  * @component
- * @description #todo
- * @example return #todo
+ * @description Provides a prototype-box for all robots to be displayed in the Robot Overview 
+ * @category Client
  */
 const RobotContainer = (props) => {
 
+    const { robotName } = props;
     const startRobot = () => alert("Running the Robot is currently not supported!");
     const editRobot = () => alert("Editing the Robot is currently not supported!");
 
-    const shortenTitle = (robotName) => {
+    const shortenTitle = (botName) => {
         const titleLength = 18;
-        if (robotName.length < titleLength) {
-            return robotName;
+        if (botName.length < titleLength) {
+            return botName;
         }
-        return `${robotName.substring(0, titleLength - 2)}...`;
+        return `${botName.substring(0, titleLength - 2)}...`;
     }
 
     return (
@@ -39,7 +40,7 @@ const RobotContainer = (props) => {
 
                 <Row justify="space-around" align="middle" style={{ height: '45%' }}>
                     <Title className={styles.title} level={3} editable >
-                        {shortenTitle(props.robotName)}
+                        {shortenTitle(robotName)}
                     </Title>
                 </Row>
             </Col>

@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { Col, Row, Typography } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
@@ -8,11 +7,12 @@ const { Title } = Typography;
 
 /**
  * @component
- * @description #todo
- * @example return #todo
+ * @description Provides the first Box of Robot Overview with the "Create new Robot"-Box
+ * @category Client
  */
 const CreateRobotContainer = () => {
 
+    // eslint-disable-next-line no-alert
     const addRobot = () => alert("Adding Robots is currently not supported!");
 
     return (
