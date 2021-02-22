@@ -1,4 +1,4 @@
-const JSON_SSOT_STRING = {
+const BPMN_XML_AS_JSON = {
   "_declaration": {
     "_attributes": {
       "version": "1.0",
@@ -225,4 +225,4 @@ const JSON_SSOT_STRING = {
   }
 }
 
-module.exports = { JSON_SSOT_STRING };
+module.exports = { BPMN_XML_AS_JSON };

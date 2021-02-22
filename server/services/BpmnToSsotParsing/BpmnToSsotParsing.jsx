@@ -73,7 +73,6 @@ const findElements = (flows) => {
             targetElement.predecessorIds.push(source)
         }
     })
-
     return elementsArray
 }
 
@@ -100,11 +99,10 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
                 inputVar.requireUserInput = true
                 parameterArray.push(inputVar)
             })
-
             instructionElement.rpaParameters = parameterArray
         }
-        instructionElement.outputVariable = ""
 
+        instructionElement.outputVariable = ""
     })
     return elementsArray
 }
@@ -124,10 +122,10 @@ const enrichMarkerElements = (elementsArray) => {
 }
 
 /**
- * @description Parses an JSON created from the .bpmn xml of the model to the single source of truth
- * @returns {string} Code that has to be put in single source of truth file
+ * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
+ * @returns {string} JSON that has to be put in single source of truth file
  */
-const parseDiagramToSsot = (bpmnJson) => {
+const parseBpmnToSsot = (bpmnJson) => {
 
     const ssot = {}
     ssot.robotMetadata = createMetadataObj()
@@ -143,4 +141,4 @@ const parseDiagramToSsot = (bpmnJson) => {
     return JSON.stringify(ssot, null, 2);
 };
 
-module.exports = { parseDiagramToSsot }
+module.exports = { parseBpmnToSsot }
