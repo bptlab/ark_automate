@@ -15,27 +15,27 @@
  */
 const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
   const currentElement = elements.find(
-    (element) => element.generalAttributes.id === id
+    (element) => element.id === id
   );
   if (
-    Object.keys(currentElement.rpaAttributes).length !== 0 &&
-    currentElement.rpaAttributes !== undefined
+    currentElement.rpaParameters !== undefined &&
+    currentElement.rpaParameters.length !== 0
   ) {
-    const rpaTaskName = currentElement.rpaAttributes.task;
-    let rpaTaskParameters = currentElement.rpaAttributes.parameters;
+    const rpaTaskName = currentElement.rpaTask;
+    const rpaTaskParameters = currentElement.rpaParameters;
     let counter = 0;
-    if (Object.keys(rpaTaskParameters).length === 0) {
-      const currentApplication = currentElement.rpaAttributes.application;
+    if (rpaTaskParameters.length === 0) {
+      const currentApplication = currentElement.rpaApplication;
       if (currentApplication !== lastApplication) {
-        codeToAppend += `${currentElement.generalAttributes.name}\n`;
+        codeToAppend += `${currentElement.name}\n`;
         lastApplication = currentApplication;
       }
       codeToAppend += `  ${rpaTaskName}`;
     } else {
-      Object.values(rpaTaskParameters).forEach((parameter) => {
-        const currentApplication = currentElement.rpaAttributes.application;
+      currentElement.rpaParameters.forEach((parameter) => {
+        const currentApplication = currentElement.rpaApplication;
         if (currentApplication !== lastApplication) {
-          codeToAppend += `${currentElement.generalAttributes.name}\n`;
+          codeToAppend += `${currentElement.name}\n`;
           lastApplication = currentApplication;
         }
         if (counter === 0) {
@@ -49,7 +49,7 @@ const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
     codeToAppend += '\n';
   } else {
     let codeTest = codeToAppend;
-    currentElement.generalAttributes.successorIds.forEach((successorId) => {
+    currentElement.successorIds.forEach((successorId) => {
       codeTest = writeCodeForElement(
         successorId,
         elements,
@@ -61,22 +61,22 @@ const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
   }
 
   if (
-    currentElement.generalAttributes.successorIds[0] === '' ||
-    currentElement.generalAttributes.successorIds === undefined
+    currentElement.successorIds[0] === '' ||
+    currentElement.successorIds === undefined
   ) {
     return codeToAppend;
-  } else {
-    let codeTest = '';
-    currentElement.generalAttributes.successorIds.forEach((successorId) => {
-      codeTest = writeCodeForElement(
-        successorId,
-        elements,
-        codeToAppend,
-        currentElement.rpaAttributes.application
-      );
-    });
-    return codeTest;
   }
+  let codeTest = '';
+  currentElement.successorIds.forEach((successorId) => {
+    codeTest = writeCodeForElement(
+      successorId,
+      elements,
+      codeToAppend,
+      currentElement.rpaApplication
+    );
+  });
+  return codeTest;
+
 };
 
 /**
@@ -85,10 +85,11 @@ const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
  * @param {Object} metaData metaData of the robot
  * @returns {string} Generated .robot code for the tasks section
  */
-const generateCodeForElements = (elements, metaData) => {
-  let codeToAppend = '';
-  let lastApplication = 'None';
-  let givenId = metaData.starterId;
+const generateCodeForElements = (elements) => {
+  const codeToAppend = '';
+  const lastApplication = 'None';
+  const startElement = elements.find(element => (element.predecessorIds.length === 0))
+  const givenId = startElement.id
 
   const codeForElements = writeCodeForElement(
     givenId,
@@ -101,38 +102,45 @@ const generateCodeForElements = (elements, metaData) => {
 };
 
 /**
+ * @description Collects the applications used by the bot
+ * @returns {string} Code that has to be put in .robot file
+ */
+const collectApplications = (elements) => {
+  let parsedApplicationsCode = ''
+  if (elements !== undefined && elements.length > 0) {
+    const applications = [];
+
+    elements.forEach((element) => {
+      if (element.rpaApplication !== undefined) {
+        if (!applications.includes(element.rpaApplication)) {
+          applications.push(element.rpaApplication)
+        }
+      }
+    })
+    Object.values(applications).forEach((application) => {
+      parsedApplicationsCode += `${'Library    RPA.'}${application}\n`;
+    });
+
+    return parsedApplicationsCode
+  }
+}
+
+/**
  * @description Parses the SSoT to an executable .robot file
  * @returns {string} Code that has to be put in .robot file
  */
 const parseSsotToRobotCode = (ssot) => {
   let parsedCode = '';
-  const elements = ssot.elements;
+  const { elements } = ssot;
   const metaData = ssot.robotMetadata;
   parsedCode += '*** Settings ***\n';
   parsedCode += 'Documentation  Our first parsed RPA\n';
-  if (elements !== undefined && elements.length > 0) {
-    let codeToAppend = '';
-    const applications = [];
-    Object.values(elements).forEach((element) => {
-      if (
-        Object.keys(element.rpaAttributes).length !== 0 &&
-        element.rpaAttributes !== undefined
-      ) {
-        applications.push(element.rpaAttributes.application);
-      }
-    });
-    const uniqueApplications = applications.filter((value, index, self) => {
-      return self.indexOf(value) === index;
-    });
-    Object.values(uniqueApplications).forEach((application) => {
-      parsedCode += `${'Library    RPA.'}${application}\n`;
-    });
+  parsedCode += collectApplications(elements)
+  // idealy we use the keyword statement for each task, currently not working out of the box
+  parsedCode += '\n*** Tasks ***\n';
 
-    // idealy we use the keyword statement for each task, currently not working out of the box
-    parsedCode += '\n*** Tasks ***\n';
-    codeToAppend += generateCodeForElements(elements, metaData);
-    parsedCode += codeToAppend;
-  }
+  parsedCode += generateCodeForElements(elements);
+
   return parsedCode;
 };
 
