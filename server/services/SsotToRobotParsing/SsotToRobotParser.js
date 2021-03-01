@@ -6,7 +6,14 @@
 /* eslint-disable dot-notation */
 
 /**
- * @description Receives an array of all elements and generates the .robot code for the elements
+ * @description Checks wether the given element is of type instruction and contains rpa attributes
+ * @param {Object} element element to check
+ * @returns {bool} boolean value that specifies if object is of type instruction and contains rpa attributes
+ */
+const isAnRpaInstruction = (currentElement) => currentElement.rpaTask !== undefined &&
+  currentElement.rpaApplication !== undefined
+/**
+ * @description Receives an array of all elements and generates the .robot code for the elements recursively.
  * @param {Array} elements all the elements from the SSoT
  * @param {String} id id of the element we are looking for
  * @param {String} codeToAppend the current code we want to extend
@@ -17,10 +24,7 @@ const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
   const currentElement = elements.find(
     (element) => element.id === id
   );
-  if (
-    currentElement.rpaParameters !== undefined &&
-    currentElement.rpaParameters.length !== 0
-  ) {
+  if (isAnRpaInstruction(currentElement)) {
     const rpaTaskName = currentElement.rpaTask;
     const rpaTaskParameters = currentElement.rpaParameters;
     let counter = 0;
@@ -45,7 +49,6 @@ const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
         codeToAppend += `  ${parameter.value}`;
       });
     }
-    counter = 0;
     codeToAppend += '\n';
   } else {
     let codeTest = codeToAppend;
@@ -132,7 +135,6 @@ const collectApplications = (elements) => {
 const parseSsotToRobotCode = (ssot) => {
   let parsedCode = '';
   const { elements } = ssot;
-  const metaData = ssot.robotMetadata;
   parsedCode += '*** Settings ***\n';
   parsedCode += 'Documentation  Our first parsed RPA\n';
   parsedCode += collectApplications(elements)
