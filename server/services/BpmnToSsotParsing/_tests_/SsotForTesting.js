@@ -1,3 +1,7 @@
+/*
+This is a bpmn xml parsed to json. It contains two activites ordered and created in the following order: AAA, BBB.
+The first activity is a basic bpmn activity. The second has some rpa attributes.
+*/
 const SSOT_JSON_STRING = {
     "robotMetadata": {
         "robotId": "exampleRobot",
