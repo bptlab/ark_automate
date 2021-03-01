@@ -12,6 +12,7 @@
  */
 const isAnRpaInstruction = (currentElement) => currentElement.rpaTask !== undefined &&
   currentElement.rpaApplication !== undefined
+
 /**
  * @description Receives an array of all elements and generates the .robot code for the elements recursively.
  * @param {Array} elements all the elements from the SSoT
@@ -123,9 +124,8 @@ const collectApplications = (elements) => {
     Object.values(applications).forEach((application) => {
       parsedApplicationsCode += `${'Library    RPA.'}${application}\n`;
     });
-
-    return parsedApplicationsCode
   }
+  return parsedApplicationsCode
 }
 
 /**
@@ -140,7 +140,6 @@ const parseSsotToRobotCode = (ssot) => {
   parsedCode += collectApplications(elements)
   // idealy we use the keyword statement for each task, currently not working out of the box
   parsedCode += '\n*** Tasks ***\n';
-
   parsedCode += generateCodeForElements(elements);
 
   return parsedCode;
