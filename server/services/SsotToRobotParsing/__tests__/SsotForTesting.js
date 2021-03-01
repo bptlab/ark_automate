@@ -1,3 +1,9 @@
+/*
+This is a generated Ssot form a Bpmn diagram. It has three activities, named according to their execution order. 
+The activities were added in the following order: Second Avtivity, Third Activity and then the First activity. 
+It has a linear structure aswell as Start and End Events.
+*/
+
 const SSOT_JSON_STRING = {
     "robotMetadata": {
         "robotId": "exampleRobot",
@@ -8,7 +14,9 @@ const SSOT_JSON_STRING = {
             "type": "INSTRUCTION",
             "name": "SecondActivity",
             "id": "Activity_0frqu31",
-            "predecessorIds": [],
+            "predecessorIds": [
+                "Activity_02jyuh0"
+            ],
             "successorIds": [
                 "Activity_00ydbo0"
             ],
@@ -98,8 +106,7 @@ const SSOT_JSON_STRING = {
             "name": "FirstActivity",
             "id": "Activity_02jyuh0",
             "predecessorIds": [
-                "Event_1cnr8ow",
-                "Activity_02jyuh0"
+                "Event_1cnr8ow"
             ],
             "successorIds": [
                 "Activity_0frqu31"

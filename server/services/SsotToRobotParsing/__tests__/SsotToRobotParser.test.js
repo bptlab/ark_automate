@@ -1,10 +1,8 @@
-import { describe, expect, test } from '@testing-library/jest-dom';
-
 const parser = require('../SsotToRobotParser');
-const testJson = require('./jsonForTesting');
+const testSsot = require('./SsotForTesting').SSOT_JSON_STRING;
 
-const BROWSER_ACTIVITY_NAME = 'Browser Open Browser';
-const EXCEL_ACTIVITY_NAME = 'Excel Open Workbook';
+const BROWSER_ACTIVITY_NAME = 'ThirdActivity';
+const EXCEL_ACTIVITY_NAME = 'FirstActivity';
 const LIBRARY_EXCEL = 'Library    RPA.Excel.Files';
 const LIBRARY_BROWSER = 'Library    RPA.Browser';
 const SETTING_STRING = '*** Settings ***';
@@ -13,11 +11,14 @@ const OPEN_WORKBOOK_CMD = 'Open Workbook';
 const FIND_EMPTY_ROW_CMD = 'Find Empty Row';
 const OPEN_BROWSER_CMD = 'Open Browser';
 
-describe('Parsing Tests', () => {
-  test('Manually pass in BPMN Json', () => {
-    const parserResultString = parser.parseDiagramJson(testJson.JSON_STRING);
+const parserResultString = parser.parseSsotToRobotCode(testSsot);
 
-    expect.assertions(15);
+
+describe('Parsing Tests', () => {
+  test('Bot contains the correct elements', () => {
+
+    console.log(parserResultString)
+    expect.assertions(8);
     expect(parserResultString).toMatch(SETTING_STRING);
     expect(parserResultString).toMatch(LIBRARY_EXCEL);
     expect(parserResultString).toMatch(LIBRARY_BROWSER);
@@ -28,7 +29,11 @@ describe('Parsing Tests', () => {
 
     expect(parserResultString).toMatch(BROWSER_ACTIVITY_NAME);
     expect(parserResultString).toMatch(OPEN_BROWSER_CMD);
+  });
 
+  test('Bot orders the elements correctly', () => {
+
+    expect.assertions(7);
     expect(parserResultString.indexOf(BROWSER_ACTIVITY_NAME)).toBeLessThan(
       parserResultString.lastIndexOf(OPEN_BROWSER_CMD)
     );
