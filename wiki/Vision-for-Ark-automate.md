@@ -1,5 +1,4 @@
-## Using Ark_automate
-In the following document, we state how Ark_automate is supposed to be used and which individual steps happen (on an abstract layer).
+# Vision until summer 2021
 
 ### Pitch
 <details><summary>What can be achieved with our software at the end of the project?
@@ -12,6 +11,73 @@ In the following document, we state how Ark_automate is supposed to be used and 
 **Technical view**
 > Using Ark_automate users can build their own digital coworkers by visualizing business or everyday processes and automating these using robotic process automation (RPA). The digital coworkers request files or help whilst working on their own tasks which have been taught to them through the multiple modeling notations available.
 </p></details>
+
+___
+
+
+### Until summer 2021 we want to implement a **first working web-app** for our use case.
+
+<details><summary>This includes the following</summary><p>
+
+- **user management**
+    - comfortable user log-in
+    - only single-user accounts, no organizations
+- **different front-ends** to create bot flows
+    - BPMN-editor (`bpmn.js`)
+    - code-editor (edit `.robot`-code)
+    - (if possible one more frontend-editor)
+- many applications are supported with **RPA tasks**, only a few tasks work via an **API**
+- created bots are **running locally**; for this purpose, we provide an Ark Automate **local client**
+- users can **interact** with the bots by...
+    - ... starting the bots via our control interface of the web app
+    - ... viewing basic statistics in the control interface of the web app
+    - ... by using an API (especially for external companies)
+
+</p></details>
+
+
+___
+
+If you are interested in our 5-year vision, please contact us to get access to the file.
+Our vision with architecture and limits is stored on [HackMD](https://hackmd.io/@toUukITjSM6oWi52UMDSkA/Bk4kOnoqw).
+
+# Architecture
+
+![2021 Architecture](https://i.imgur.com/sFWWI9L.png)
+
+The **main architectural benefit** will be the modularity and interchangeability of the single components within the system.
+As the main platform will be created as a single web application, all system components are accessible through a **single browser**.  
+
+### Describing the interaction and the components
+<details><summary>More detailed description</summary><p>
+
+
+That way a **Low-Code RPA-Developer** can build new robots in the `Web-Browser` using the `Modelling Interface` with the mentioned multiple modeling tools.  
+
+About our **Database-Structure:**
+- The `Robot Repository` is where all created robots are stored and are available for the users to retrieve and make changes.
+- The `RPA-Activity-Storage` stores all activities that can be automated with our software.
+- The `User-Data-Storage` stores all the user's data, such as login details, personal settings etc., so that the user can work with the same status of the software on any device.
+
+**Customers** can start the robots via the `Control-Interface` in their `Web-Browser`. There they can also view basic statistics about the individual robots. This interface also allows the **RPA developers** to execute the robots, since they also have all the permissions of the end users.
+
+In addition, an `API` is provided to  the robots. External companies can use this to start robots in our system. Also, in the future, our robots could be controlled via this `API` through  control and the IoT, for example.
+
+To start robots or to get further information about executed robots, there is a communication with the `Robot Coordinator Backend`.
+This entire interaction is managed via a `Trigger-Interface`. This central interface ensures the modularity and expendability of the system.
+
+The `Robot Coordinator Backend` interacts with the `Local Client` and launches the bots on the local machine. In addition, the backend gets all the information it needs from the database.
+
+
+</p></details>
+
+
+
+
+
+
+# Using Ark_automate
+Here we state how Ark_automate is supposed to be used and which individual steps happen (on an abstract layer).
 
 ### Individual steps that occur when interacting with our software
 
