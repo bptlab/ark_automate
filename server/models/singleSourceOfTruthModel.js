@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const robotMetadataSchema = new Schema({
     robotId: String,
@@ -32,9 +32,8 @@ const markerSchema = new Schema({
 });
 
 const SSoT_Schema = new Schema({
-  robotMetadata: robotMetadataSchema,
-  Task: String,
-  Code: String
+    robotMetadata: robotMetadataSchema,
+    elements: [instructionSchema]
 }, { collection: 'completeCollection' });
 
 mongoose.model('SSoTs', SSoT_Schema);
