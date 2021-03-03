@@ -1,4 +1,4 @@
-# Welcome to the ark_automate wiki!
+# Welcome to the Ark_automate wiki!
 
 Ark_automate is an open-source RPA tool that uses several modeling languages to create bots.
 
@@ -15,7 +15,7 @@ In our Wiki you can find the following:
 
 ## How to contribute to the wiki
 
-To contribute a page to the wiki, please create a markdown file in the `wiki` directory. It will automatically be deployed as a wiki page once it it pushed onto the DEV branch.  
-The page title will have the same name as the filename of your created file and will show hyphens as emptyspaces. Therefore we ask you to not use emptyspaces in your filenames.
+To contribute a page to the wiki, please create a markdown file in the `wiki` directory. It will automatically be deployed as a wiki page once it is pushed onto the DEV branch.  
+The page title will have the same name as the filename of your created file and will show hyphens as empty spaces. Therefore, we ask you to not use empty spaces in your filenames.
 
 > The deployment of wiki pages will overwrite the existing pages, so if you want to persist your article in the wiki, please go the route of creating a markdown file.

@@ -1,16 +1,16 @@
 # Vision for this project until summer 2021
 
 Until summer 2021 we want to implement a **first working web-app** for our use case.
-This incldues:
+This includes:
 - **user management**
-    - confortable user log-in
-    - only single user accounts, no organisations 
+    - comfortable user log-in
+    - only single-user accounts, no organizations
 - **different front-ends** to create bot flows
     - BPMN-editor (`bpmn.js`)
     - code-editor (edit `.robot`-code)
     - (if possible one more frontend-editor)
 - many applications are supported with **RPA tasks**, only a few tasks work via an **API**
-- created bots are **running locally**; for this purpose we provide an Ark Automate **local client**
+- created bots are **running locally**; for this purpose, we provide an Ark Automate **local client**
 - users can **interact** with the bots by...
     - ... starting the bots via our control interface of the web app
     - ... viewing basic statistics in the control interface of the web app

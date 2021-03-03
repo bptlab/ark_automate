@@ -4,19 +4,19 @@
 
 In principle, before each use of CSS should be considered whether the use in the planned place is absolutely necessary. Special caution with:
 
-- **Changes of colors, font sizes and fonts:** Should be urgently avoided, since we always refer to the properties defined in the theme.
+- **Changes of colors, font sizes, and fonts:** Should be urgently avoided since we always refer to the properties defined in the theme.
 - **Add spacing (padding):** Should be urgently avoided, as AntD's Space component should be used for this.
 
 ### Basic rules for style information:
 
-- we do **just use inline CSS with AntD componentes for 1-2 properties** -> all CSS code with more than two properties is outsourced to external files.
+- we do **just use inline CSS with AntD components for 1-2 properties** -> all CSS code with more than two properties is outsourced to external files.
 - **global CSS properties** (which cannot be specified in the theme) are only written to `Index.css` to prevent several sources of global style
 - **local CSS properties** are written to a file next to the component where they occur and CSS modules are used for this purpose
 - if **multiple components** need the **same customization**, the CSS property should be set in a CSS modules file next to the common parent component
 
 ### CSS vs. CSS modules
 
-In React the style of "normal" CSS files like _Example.css_ are defined globally. Therfore you don't need to explicitly import the CSS file to use the style. Thus be very careful when using normal CSS files and keep in mind that the style you define can be used in any file of the repository.
+In React the style of "normal" CSS files like _Example.css_ are defined globally. Therefore you don't need to explicitly import the CSS file to use the style. Thus be very careful when using normal CSS files and keep in mind that the style you define can be used in any file of the repository.
 For example when you define the following style...
 
 ```css
@@ -27,7 +27,7 @@ For example when you define the following style...
 
 ... this might lead to confusion because whenever someone uses the class button now this style is applied no matter if it was intended or not.
 
-If you want to apply style just to spefific files and not globally react has a solution called CSS modules. Instead of creating a file _Example.css_ you have to create _Example.module.css_. This file you have to explicitly import in every file you want to use it in. For example like this:
+If you want to apply style just to specific files and not globally react has a solution called CSS modules. Instead of creating a file _Example.css_ you have to create _Example.module.css_. This file you have to explicitly import in every file you want to use it in. For example like this:
 
 ```jsx
 import styles from './Example.module.css';
@@ -51,7 +51,7 @@ In the file we would include the style in the following way:
 
 - naming
   For the naming of classes and ids please use **hyphens** consistently.
-  For example don't call the class `buttonBackground` and instead call it `button-background`.
+  For example, don't call the class `buttonBackground` and instead call it `button-background`.
 - sizing
   Try to use only relative units (vw,vh,rem,%) to size elements and **not** absolut units (px)
 
@@ -79,14 +79,14 @@ In the file we would include the style in the following way:
 
 How to use this color schema:
 
-- color-primary: Is the primary color of our brand. It is used for important elements (e.g headlines)
-- color-primary-inverted: Is the main color complementing the primary color. For example it can be used for the header/footer.
-- color-primary-inverted-2: Is the another color complementing the primary color. It is useful in combination with color-primary-inverted.
+- color-primary: This is the primary color of our brand. It is used for important elements (e.g headlines)
+- color-primary-inverted: Is the main color complementing the primary color. For example, it can be used for the header/footer.
+- color-primary-inverted-2: This is another color complementing the primary color. It is useful in combination with color-primary-inverted.
 - color-primary-inverted-text: Is the color of all text written on color-primary-inverted or color-primary-inverted-2.
-- color-background: Is the main background color of the website and should therefore be used for the coloring of the background.
-- color-background-2: Is another background color that can be used on the main background color (e.g. for containers).
+- color-background: This is the main background color of the website and should therefore be used for the coloring of the background.
+- color-background-2: This is another background color that can be used on the main background color (e.g. for containers).
 - color-background-text: The color of all the text that is either written on color-background or color-background-2
-- color-cta: Is the "call-to-action" color and thus is used for elements like buttons.
+- color-cta: This is the "call-to-action" color and thus is used for elements like buttons.
 
 ### Font
 
