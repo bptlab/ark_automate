@@ -1,82 +1,91 @@
 # Single Source of Truth
 
-### Sammler: Welche Frontends wollen wir supporten?
-- definitiv implementiert werden: BPMN-Editor, Robot-Framework Code-Editor
-- optional (geplant) sind: Google BLOCKLY
-- langfristig sind wir offen für andere Modellierungssprachen 
+## What do we need a SSoT for?
+The goal of Ark_automate is to have multiple interfaces altering/showing the same robot. For each robot, there will be a properties panel to change attributes, a view of the current .robot code and possibly multiple modeling interfaces.
+The user selects the modeling language he/she prefers and starts modeling the behavior of the robot (at least for now the user has to pre-select the modeling language). At the same time, the user can view/change the .robot code of the bot and/or update attributes via the property panel.
+To achieve that we need a single-source-of-truth(SSoT) for each robot. In the SSoT all necessary information is saved so that changes can be automatically applied to every interface.
 
-(_Wir wollen alle Modellierungssprachen, die sich in ein  Kanten- und Knoten-Modell rendern lassen, unterstützen_)
+### Which frontends do we want to support?
+- definitely have to be implemented: BPMN editor, robot framework code editor
+- optional (planned) are: Google BLOCKLY
+- in the long run we are open for other modelling languages
 
-Feststellung: Alle Frontends, die "ausführbaren Programmcode" abbilden, können als Graph dargestellt werden.
+(_We want to support all modelling languages that can be rendered into an edge and node model_)
 
-### Analyse: Was kann Robot Framework alles unterstützen?
-- Linearer Flow (Sequenzen)
-- Verzweigung
+Observation: All frontends that represent "executable program code" can be represented as a graph.
+
+### Analysis: What can Robot Framework support?
+- Linear flow (sequences)
+- Branching
 - Loops (For+While)
-**Unterstützt nicht:** Try-Catch Konstrukte
+**Does not support** try-catch constructs
+
+## How is the SSoT going to be included in the product?
+The SSoT itself will be stored on the server-side of the product. It will support multiple use cases shown in the following image:
+![SSoT in product](https://i.imgur.com/jViSHTQ.png)
+With a change of one of the interfaces on the client-side (e.g. type in a new name in the side panel) the new data will be sent to the SSoT via HTTP and the SSoT on the server side will be updated. Once the SSoT gets updated all the other interfaces update accordingly as they are dependent on the SSoT data.
 
 
-### Wir haben uns auf folgendes geeinigt
-- **Speichern der SSoT**
-    - die lokale SSOT wird nach Interval (bzw. Trigger wie "Tab wechseln") in die DB gepusht
-    - die SSoT speichert nur die Logik hinter den Mod-Interfaces 
-(die visuelle Darstellung wird aus dem Graphen "gerendert")
-- Es werden nur diese Features der Modellierungssprachen zugelassen, die durch **Robot Framework unterstützt werden**
-    - Parallelität wird nicht unterstützt
-    - Es werden keine Gateways außer ein XOR Split in der SSOT festgehalten
-( => non-interrupting Events werden nicht unterstützt)
-    - Exception-Handling wird nicht unterstützt 
-(=> daher unterstützen wir in BPMN keine Zwischenereignisse)
-- **Frontend-Rendering**
-    - erfordert eine umfangreiche Programmierung
-    - kann u.U. dafür sorgen, das der Programmierer sein Modell anders angezeigt bekommt, als er es abgespeichert hat
-    - benötigte Hard-Coded-Values für das Frontend-Rendering werden in `config.json` abgelegt
+### We have agreed on the following
+- **Saving the SSoT**
+    - the local SSOT is pushed into the DB in certain time intervals (or trigger like "change tab")
+    - the SSoT stores only the logic behind the modeling interfaces
+(the visual representation is "rendered" from the graph)
+- Only those features of the modelling languages are allowed that **are supported by Robot Framework**.
+    - Parallelism is not supported
+    - No gateways other than an XOR split are recorded in the SSOT.
+( => non-interrupting events are not supported)
+    - Exception handling is not supported
+(=> therefore we do not support intermediate events in BPMN)
+- **Front-end rendering**
+    - requires extensive programming
+    - may cause the programmer to see his model differently from the way he saved it
+    - Hard-coded values required for frontend rendering are stored in a `config.json`
 
 
-### kurz-FAQ:
-1. Speichern wir in der SSoT Informationen zu jedem Modell oder "rendern" wir jedes Modell aus der SSoT ohne spezifische Modellinformationen in der SSoT hinterlegt zu haben?
-    1. Wir rendern jedes Modell aus unserem "Logik-Graphen"
-    2. Es werden somit keine Modellierungs-Interface-spezifischen Werte gespeichert.
-    3. Fehlende Attribute, die zur Erstellung einers Modellierungs-Visualisierung benötigt werden, müssen mit default-Werten angenommen oder errechnet werden
-4. Verwenden wir das XML als SSOT?
-_Nein, wir rendern aus der SSOT die Modelle._
-_Für z.B. BPMN rendern wir SSOT zu XML zu BPMN?_
-5. Wie speichern wir die Kanten aus BPMN?
-_Implizit durch die Nachfolger/Vorgänger-Beziehungen. Die genauen Waypoints müssen "errechnet" werden._
-6. Was für Konsequenzen hat das nicht-Speichern von Modellierungsattributen für unser Projekt? (**BPMN-spezifisch**)
-    - exakte Anordnung im Interface wird nicht beibehalten;
-jedoch: Unterstützung beim Einhalten des Standards (automatischer Pretty Print)
-    - Es wir eine Logik für das Updaten der SSoT nach Löschen (und Hinzufügen) benötigt
-    - Config-Dateien mit Größen, Farben, Symbolen etc. werden für jedes Modellierungsinterface benötigt
+### FAQ:
+1. **Do we store information about each model in the SSoT or do we "render" each model from the SSoT without having specific model information stored in the SSoT?**
+    1. we render each model from our "logical graph".
+    2. no modelling-interface-specific values are therefore stored.
+    3. missing attributes needed to create a modelling visualisation have to be assumed or calculated with default values
+2. **Do we use the XML as SSOT?**
+No, we render the models from the SSOT. For e.g. BPMN we render SSOT to XML to BPMN.
+3. **How do we store the edges from BPMN?**
+Implicitly through the successor/predecessor relationships. The exact waypoints have to be "calculated"
+4. **What are the consequences of not saving modelling attributes for our project? (BPMN specific)**
+    - exact arrangement in the interface is not maintained;
+however: support for adherence to the standard (automatic pretty print)
+    - Logic for updating SSoT after deleting (and adding) is needed.
+    - Config files with sizes, colours, symbols etc. are needed for each modelling interface
 
-## Anwendungskonzept SSoT
+## Concept for applying the SSoT
 
-**Feststellung: SSoT sollte näher an den grundlegenden Programmierkonstrukten sein als an einem BPMN-Modell.**
-Daher: Alle Interfaces werden in ein Graphen-Modell gerendert, bei denen die Knoten durch folgende Tags bestimmt werden: `INSTRUCTION`, `BRANCH`, `CASE` und `MARKER`. Diese Tags bilden die grundsätzlichen Programmierkonstrukte ab, die auch im **Robot Framework** verwendet werden können.
+**Note: SSoT should be closer to basic programming constructs than to a BPMN model.
+Therefore: All interfaces are rendered into a graph model where the nodes are defined by the following tags: 'INSTRUCTION', 'BRANCH', 'CASE' and 'MARKER'. These tags represent the basic programming constructs that can also be used in the **Robot Framework**.
 
 
-### Übersicht
-|  SSoT-Tag   |      BPMN-Repräsentation       |  Code-Repräsentation   |      ArkA 0.3      |      ArkA 1.0      |
+### Overview
+| SSoT tag | BPMN representation | Code representation | ArkA 0.3 | ArkA 1.0 |
 |:-----------:|:------------------------------:|:----------------------:|:------------------:|:------------------:|
-| INSTRUCTION |           Aktivität            |   "eine Zeile Code"    | :heavy_check_mark: | :heavy_check_mark: |
-|    CASE     |          XOR-Gateway           | Verzweigung (IF, CASE) |        :x:         | :heavy_check_mark: |
-|    LOOP     | XOR-Split & Join (Kombination) | Schleife (FOR, WHILE)  |        :x:         | :heavy_check_mark: |
-|   MARKER    |       Start- & End-Event       |           -            | :heavy_check_mark: | :heavy_check_mark: |
-| _EXCEPTION_ |      _intermediate Event_      |      _TRY-CATCH_       |        :x:         |        :x:         |
+| INSTRUCTION | Activity | "one line of code" | :heavy_check_mark: | :heavy_check_mark: |
+| CASE | XOR-Gateway | Branching (IF, CASE) | :x: | :heavy_check_mark: |
+| LOOP | XOR-Split & Join (Combination) | Loop (FOR, WHILE) | :x: | :heavy_check_mark: |
+| MARKER | Start & End Event | - | :heavy_check_mark: | :heavy_check_mark: |
+| _EXCEPTION_ | _intermediate Event_ | _TRY-CATCH_ | :x: | :x: |
 
-**Besonderheiten bei Events:**
-**Timer:** Langfristig sollen Timer in BPMN als Zwischenevent dargestellt werden. Momentan ist beispielhaft ein "Sleep-Event" (zum Pausieren der Ausführung) als Instruction mit einer RPA-Aktion zu definieren.
+**Special features for events:**
+**Timers:** In the long term, timers are to be represented in BPMN as intermediate events. At the moment, a "sleep event" (to pause execution) is to be defined as an instruction with an RPA action as an example.
 
-**Event-Typen:** Diese werden nicht gespeichert. Events erscheinen daher immer als "leere Kreise". Sie sind auch nicht mit Logik verknüpfbar. Soll z.B. ein End-Event eine Mail senden, so ist dieses Konstrukt bitte als `Aktivität: Mail Senden` und `End Event` zu modellieren.
-Es werden momentan keine Zwischenevents unterstützt.
+**Event types:** are not stored. Events therefore always appear as "empty circles". They are also not linkable with logic. For example, if an end event is to send a mail, please model this construct as 'Activity: Send Mail' and 'End Event'.
+No intermediate events are currently supported.
 
-### Übersicht SSOT Aufbau
+### Overview SSOT hierarchy
 ![](https://i.imgur.com/7yOqDZv.png)
 
 
-### Anwendung: HEADER
+### Component: HEADER
 
-Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer-Informationen zu einem Robot (Ersteller, Freigegeben für etc.) werden in einer zusätzlichen Datei in der Datenbank abgelegt.
+User information about a robot (creator, released for etc.) is stored in an additional file in the database.
 
 **SSoT**
 ``` json
@@ -85,13 +94,12 @@ Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer
       "starterId":"exampleId"
    },
    "elements":[
-      {/* Hier folgen die Knoten des Graphens */}  
+      {/* Here start the nodes of the graph */}  
    ]
 }
 ```
 
-
-### Anwendung: INSTRUCTION
+### Element: INSTRUCTION
 
 **SSoT**
 ```json
@@ -119,22 +127,22 @@ Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer
 }
 ```
 
-**BPMN benötigt:**
-- id :heavy_check_mark: 
-- Label -> name :heavy_check_mark: 
-- Vorgänger :heavy_check_mark: 
-- Nachfolger :heavy_check_mark: 
-- ~~Position~~ -> berechnet :heavy_check_mark: 
-- ~~Größe~~ -> `config.json` :heavy_check_mark: 
-- _RPA-Task & Application & Parameters_ :heavy_check_mark: 
+**BPMN requires:**
+- id :heavy_check_mark:
+- Label -> name :heavy_check_mark:
+- Predecessor :heavy_check_mark:
+- Successor :heavy_check_mark:
+- ~~position~~ -> calculated :heavy_check_mark:
+- ~~size~~ -> `config.json` :heavy_check_mark:
+- _RPA-Task & Application & Parameters_ :heavy_check_mark:
 
-### Anwendung: CASE
+### Element: CASE
 
-**SSoT speichert**
-- Vorgängerknoten, Nachfolgerknoten
-- Name, ID
-- default-Nachfolgerknoten 
-- Conditions (zu jewieligem Nachfolgerknoten) = IF-Bedingung
+**SSoT stores**
+- Predecessor node, Successor node
+- name, ID
+- default successor node
+- Conditions (for each successor node) = IF condition
 
 ```json
 {
@@ -151,21 +159,22 @@ Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer
 }
 ```
 
-**BPMN benötigt**
-- Vorgängerknoten :heavy_check_mark: 
-- Nachfolgerknoten :heavy_check_mark: 
-- Label (name) :heavy_check_mark: 
-- default-Nachfolgerknoten :heavy_check_mark: 
-- Conditions (Texte am Path zu jedem Nachfolgerknoten) :heavy_check_mark: 
+**BPMN requires**
+- Predecessor node :heavy_check_mark:
+- Successor node :heavy_check_mark:
+- Label (name) :heavy_check_mark:
+- default successor node :heavy_check_mark:
+- Conditions (texts at the Path to each successor node) :heavy_check_mark:
 
-### Anwendung: LOOP
+### Element: LOOP
 
-**SSoT speichert**
-- ID, Text (Label)
-- Vorgänger- und Nachfolgerknoten der Schleife
-- Schleifenabbruchbedingung
-- Vorgängerknoten des Schleifenkörper-Endes
-- Nachfolgerknoten des Schleifenkörper-Anfangs
+**SSoT stores**
+- ID, text (label)
+- Predecessor and successor nodes of the loop
+- Loop termination condition
+- Predecessor node of the loop body end
+- Successor node of the loop body start
+
 
 ```json
 {
@@ -179,38 +188,39 @@ Hierbei ändert sich nichts im Vergleich zu Daniels Aufschlag einer SSoT. Nutzer
 }
 ```
 
-### Anwendung: MARKER
-**SSoT speichert**
-- ID, Text (Label)
-- Vorgängerknoten
-- Nachfolgerknoten
+### Element: MARKER
+**SSoT stores**
+- ID, text (label)
+- predecessor node
+- Successor node
 
 
 ```json
 {
   "type": "MARKER",
   "id": "exampleId",
-  "name": "5 Sekunden warten",
+  "name": "Wait 5 seconds",
   "predecessorIds": ["randomId"],
   "successorIds": ["randomId"]
 }
 ```
 
-**BPMN benötigt**
+**BPMN requires**
 
-- Label :heavy_check_mark: 
-- Event-Typ1: Start, End :heavy_check_mark: 
-    - Start = Event ohne eingehende Kante
-    - End = Event ohne ausgehende Kante 
-- Event-Typ2: Timer-Event, Message-Event etc. :thought_balloon: 
-    - alle Events werden immer als "neutrale Events" (leerer Kreis) gerendert
+- Label :heavy_check_mark:
+- Event type1: Start, End :heavy_check_mark:
+    - Start = Event without incoming edge
+    - End = Event without outgoing edge
+- Event type2: timer event, message event etc. :thought_balloon:
+    - All events are always rendered as "neutral events" (empty circle).
+
 
 ---
 
 
 
-## Beispielhaftes Parsen von BPMN xml zu SSOT
-Modellierter Prozess
+## Example parsing from BPMN xml to SSOT
+Modelled process
 ![](https://i.imgur.com/rMsmw1g.png)
 
 
@@ -219,7 +229,7 @@ Modellierter Prozess
 <td> BPMN Json </td> <td> SSOT </td>
 </tr>
 <tr>
-<td> 
+<td>
 
 ``` json
   {
@@ -515,7 +525,7 @@ Modellierter Prozess
             "predecessorIds": [],
             "successorIds": ["Activity_0a128t6"],
         },
-        // first activity 
+        // first activity
         {
             "type": "INSTRUCTION",
             "name": "#+# First activity",
@@ -596,38 +606,3 @@ Modellierter Prozess
 </tr>
 </tr>
 </table>
-
-## [OLD] Alternative BPMN-nahe SSoT 
-``` json
-  "robotMetadata": {
-    "robotId": "exampleRobotId",
-    "starterId": "exampleId"
-  },
-  "elements": [
-    {
-      "type": "StartEvent/EndEvent/Activity/InterruptingBoundaryEvent",
-      "name": "exampleName",
-      "id": "exampleId",
-      "predecessorIds": ["randomId"],
-      "successorIds": ["randomId"],
-      "rpaApplication": "e.g. Excel.Files",
-      "rpaTask": "e.g. Open Workbook",
-      "rpaParameters": [
-        {
-          "name": "Filename",
-          "value": "example.xlsx",
-          "requireUserInput": true
-        },
-        {
-          "name": "Path",
-          "value": "C:/example/",
-          "requireUserInput": true
-        }
-      ],
-      "outputVariable": "",
-      "condition": ["true"],
-      "hasBoundaryEvent": "boundaryEventId"
-    }
-  ]
-}
-```
