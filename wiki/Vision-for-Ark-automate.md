@@ -1,4 +1,4 @@
-# Vision until summer 2021
+# Vision
 
 ### Pitch
 <details><summary>What can be achieved with our software at the end of the project?
@@ -41,7 +41,7 @@ ___
 If you are interested in our 5-year vision, please contact us to get access to the file.
 Our vision with architecture and limits is stored on [HackMD](https://hackmd.io/@toUukITjSM6oWi52UMDSkA/Bk4kOnoqw).
 
-# Architecture
+# Architecture for 2021
 
 ![2021 Architecture](https://i.imgur.com/sFWWI9L.png)
 
@@ -70,11 +70,6 @@ The `Robot Coordinator Backend` interacts with the `Local Client` and launches t
 
 
 </p></details>
-
-
-
-
-
 
 # Using Ark_automate
 Here we state how Ark_automate is supposed to be used and which individual steps happen (on an abstract layer).
