@@ -7,113 +7,109 @@
 
 /**
  * @description Checks whether the given element is of type instruction and contains rpa attributes
- * @param {Object} element element to check
- * @returns {bool} boolean value that specifies if object is of type instruction and contains rpa attributes
+ * @param {Object} currentElement Element to check
+ * @returns {bool} Value specifies if object is of type instruction and contains rpa attributes
  */
 const isAnRpaInstruction = (currentElement) =>
   currentElement.rpaTask !== undefined &&
   currentElement.rpaApplication !== undefined;
 
 /**
+ * @description Checks whether the given element contains rpa parameters
+ * @param {Object} currentElement Element to check
+ * @returns {bool} Value specifies if object contains rpa parameters
+ */
+const rpaParametersExist = (currentElement) =>
+  currentElement.rpaParameters !== undefined &&
+  currentElement.rpaParameters.length !== 0;
+
+/**
+ * @description Checks whether the given element has a successor element
+ * @param {Object} currentElement Element to check
+ * @returns {bool} Value specifies if element has a successor element
+ */
+const successorTasksExist = (currentElement) =>
+  currentElement.successorIds !== undefined &&
+  currentElement.successorIds[0] !== '';
+
+/**
  * @description Receives an array of all elements and generates the .robot code for the elements recursively.
- * @param {Array} elements all the elements from the SSoT
- * @param {String} id id of the element we are looking for
- * @param {String} codeToAppend the current code we want to extend
- * @param {String} lastApplication name of the rpa application of the previous element
+ * @param {String} id Id of the element we are looking for
+ * @param {Array} elements All the elements from the SSoT
+ * @param {String} codeToAppend The current code we want to extend
+ * @param {String} previousApplication Name of the rpa application of the previous element
  * @returns {string} Generated .robot code for the tasks section
  */
-const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
+const writeCodeForElement = (
+  id,
+  elements,
+  codeToAppend,
+  previousApplication
+) => {
   const currentElement = elements.find((element) => element.id === id);
   if (isAnRpaInstruction(currentElement)) {
-    const rpaTaskName = currentElement.rpaTask;
-    const rpaTaskParameters = currentElement.rpaParameters;
-    let counter = 0;
-    if (rpaTaskParameters.length === 0) {
-      const currentApplication = currentElement.rpaApplication;
-      if (currentApplication !== lastApplication) {
-        codeToAppend += `${currentElement.name}\n`;
-        lastApplication = currentApplication;
-      }
-      codeToAppend += `  ${rpaTaskName}`;
-    } else {
+    if (currentElement.rpaApplication !== previousApplication) {
+      codeToAppend += `${currentElement.name}\n`;
+      previousApplication = currentElement.rpaApplication;
+    }
+    codeToAppend += `  ${currentElement.rpaTask}`;
+    if (rpaParametersExist(currentElement)) {
       currentElement.rpaParameters.forEach((parameter) => {
-        const currentApplication = currentElement.rpaApplication;
-        if (currentApplication !== lastApplication) {
-          codeToAppend += `${currentElement.name}\n`;
-          lastApplication = currentApplication;
-        }
-        if (counter === 0) {
-          codeToAppend += `  ${rpaTaskName}`;
-        }
-        counter += 1;
         codeToAppend += `  ${parameter.value}`;
       });
     }
     codeToAppend += '\n';
-  } else {
-    let codeTest = codeToAppend;
-    currentElement.successorIds.forEach((successorId) => {
-      codeTest = writeCodeForElement(
-        successorId,
-        elements,
-        codeTest,
-        lastApplication
-      );
-    });
-    return codeTest;
   }
 
-  if (
-    currentElement.successorIds[0] === '' ||
-    currentElement.successorIds === undefined
-  ) {
+  if (successorTasksExist(currentElement)) {
+    // Xor handling is needed here in the future
+    currentElement.successorIds.forEach((successorId) => {
+      codeToAppend = writeCodeForElement(
+        successorId,
+        elements,
+        mergedCode,
+        previousApplication
+      );
+    });
+
+    return codeToAppend;
+  } else {
     return codeToAppend;
   }
-  let codeTest = '';
-  currentElement.successorIds.forEach((successorId) => {
-    codeTest = writeCodeForElement(
-      successorId,
-      elements,
-      codeToAppend,
-      currentElement.rpaApplication
-    );
-  });
-  return codeTest;
 };
 
 /**
- * @description Receives an array of all elements and generates the .robot code for the elements
- * @param {Array} elements all the elements from the SSoT
- * @param {Object} metaData metaData of the robot
+ * @description Receives an array of all elements and generates the .robot code for all RPA Tasks
+ * @param {Array} elements All the elements from the SSoT
+ * @param {Object} metaData MetaData of the robot
  * @returns {string} Generated .robot code for the tasks section
  */
-const generateCodeForElements = (elements) => {
-  const codeToAppend = '';
-  const lastApplication = 'None';
+const generateCodeForRpaTasks = (elements) => {
   const startElement = elements.find(
     (element) => element.predecessorIds.length === 0
   );
-  const givenId = startElement.id;
+  const id = startElement.id;
+  const codeToAppend = '';
+  const previousApplication = 'None';
 
-  const codeForElements = writeCodeForElement(
-    givenId,
+  const codeForRpaTasks = writeCodeForElement(
+    id,
     elements,
     codeToAppend,
-    lastApplication
+    previousApplication
   );
 
-  return codeForElements;
+  return codeForRpaTasks;
 };
 
 /**
  * @description Collects the applications used by the bot
- * @returns {string} Code that has to be put in .robot file
+ * @param {Array} elements All the elements from the SSoT
+ * @returns {Array} All unique Applications that occur in the ssot
  */
 const collectApplications = (elements) => {
-  let parsedApplicationsCode = '';
   if (elements !== undefined && elements.length > 0) {
     const applications = [];
-
     elements.forEach((element) => {
       if (element.rpaApplication !== undefined) {
         if (!applications.includes(element.rpaApplication)) {
@@ -121,26 +117,40 @@ const collectApplications = (elements) => {
         }
       }
     });
-    Object.values(applications).forEach((application) => {
-      parsedApplicationsCode += `${'Library    RPA.'}${application}\n`;
-    });
+
+    return applications;
   }
-  return parsedApplicationsCode;
+};
+
+/**
+ * @description Generates the Library Import Code of the .robot file
+ * @param {Array} elements All the elements from the SSoT
+ * @returns {string} Library Import Code that has to be put in .robot file
+ */
+const generateCodeForLibraryImports = (elements) => {
+  let libraryImports = '';
+  const applications = collectApplications(elements);
+  Object.values(applications).forEach((application) => {
+    libraryImports += `${'Library    RPA.'}${application}\n`;
+  });
+
+  return libraryImports;
 };
 
 /**
  * @description Parses the SSoT to an executable .robot file
+ * @param {Object} ssot The SSoT
  * @returns {string} Code that has to be put in .robot file
  */
 const parseSsotToRobotCode = (ssot) => {
-  let parsedCode = '';
   const { elements } = ssot;
+  let parsedCode = '';
   parsedCode += '*** Settings ***\n';
   parsedCode += 'Documentation  Our first parsed RPA\n';
-  parsedCode += collectApplications(elements);
+  parsedCode += generateCodeForLibraryImports(elements);
   // ideally we use the keyword statement for each task, currently not working out of the box
   parsedCode += '\n*** Tasks ***\n';
-  parsedCode += generateCodeForElements(elements);
+  parsedCode += generateCodeForRpaTasks(elements);
 
   return parsedCode;
 };
