@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - DEV
+name: Wiki Update
+jobs:
+  update-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Sync Wiki
+        uses: joeizzard/action-wiki-sync@master
+        with:
+          username: example
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          wiki_folder: wiki
+          commit_username: "Wiki Warden"
+          commit_email: "wiki.warden@users.noreply.github.com"
+          commit_message: "action: wiki sync"
