@@ -27,14 +27,14 @@ const RobotContainer = (props) => {
     }
 
     return (
-        <Col xs={24} sm={12} md={8} xl={6}>
-            <Col className={styles.innerBox} style={{ height: '13rem', padding: '1rem' }}>
+        <Col /* id="robotContainer" */ xs={24} sm={12} md={8} xl={6}>
+            <Col className={[styles.box, styles.robotBox]}>
                 <Row align="middle" style={{ height: '55%' }}>
                     <Col type="flex" span={12}>
-                        <PlayCircleOutlined onClick={startRobot} className={styles.clickicon} style={{ fontSize: '4rem' }} />
+                        <PlayCircleOutlined onClick={startRobot} className={styles.clickableIcon} />
                     </Col>
                     <Col type="flex" span={12}>
-                        <EditOutlined onClick={editRobot} className={styles.clickicon} style={{ fontSize: '4rem' }} />
+                        <EditOutlined onClick={editRobot} className={styles.clickableIcon} />
                     </Col>
                 </Row>
 

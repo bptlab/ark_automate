@@ -3,7 +3,6 @@ import { Layout, Input, Space, Row } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer'
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer'
-import styles from './RobotOverview.module.css';
 
 const { Search } = Input;
 
@@ -20,6 +19,7 @@ const RobotOverview = () => {
   };
 
   const createRobotBoxes = (searchValue2) => {
+    // mock object (JSON of example-robots)
     const robotList = [{
       "robotMetadata": { "robotId": "#1234", "robotName": "EXCEL Workflow" }
     },
@@ -51,20 +51,18 @@ const RobotOverview = () => {
   };
 
   return (
-    <div>
-      <Layout>
-        <HeaderNavbar selectedKey={1} />
+    <Layout>
+      <HeaderNavbar selectedKey={1} />
 
-        <Space className={styles.contentWrapper} direction='vertical' size='middle' >
-          <Search placeholder='Search your Robot!' onSearch={updateSearchValue} enterButton />
+      <Space style={{ padding: "1rem" }} direction='vertical' size='middle' >
+        <Search placeholder='Search your Robot!' onSearch={updateSearchValue} enterButton />
 
-          <Row gutter={[16, 16]} >
-            <CreateRobotContainer />
-            {createRobotBoxes(searchValue)}
-          </Row>
-        </Space>
-      </Layout>
-    </div >
+        <Row gutter={[16, 16]} >
+          <CreateRobotContainer />
+          {createRobotBoxes(searchValue)}
+        </Row>
+      </Space>
+    </Layout>
   )
 };
 export default RobotOverview;

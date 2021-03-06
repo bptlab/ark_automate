@@ -1,21 +1,20 @@
-.innerBox {
+.box {
+  text-align: center;
+  padding: 1rem;
+  height: 13rem;
+}
+
+.robotBox {
   background: var(--colorPrimaryInverted2);
-  text-align: center !important;
 }
 
-.innerBoxCreateRobot {
+.createRobotBox {
   background: var(--colorBackgroundCta);
-  text-align: center !important;
 }
 
-.clickicon{
-  font-size: '4rem';
+.clickableIcon{
   color: var(--colorPrimary);
-}
-
-.clickiconCreateRobot {
-  font-size: '4rem';
-  color: var(--colorBackground2);
+  font-size: 4rem;
 }
 
 .title {
