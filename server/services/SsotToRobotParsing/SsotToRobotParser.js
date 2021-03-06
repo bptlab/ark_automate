@@ -6,12 +6,13 @@
 /* eslint-disable dot-notation */
 
 /**
- * @description Checks wether the given element is of type instruction and contains rpa attributes
+ * @description Checks whether the given element is of type instruction and contains rpa attributes
  * @param {Object} element element to check
  * @returns {bool} boolean value that specifies if object is of type instruction and contains rpa attributes
  */
-const isAnRpaInstruction = (currentElement) => currentElement.rpaTask !== undefined &&
-  currentElement.rpaApplication !== undefined
+const isAnRpaInstruction = (currentElement) =>
+  currentElement.rpaTask !== undefined &&
+  currentElement.rpaApplication !== undefined;
 
 /**
  * @description Receives an array of all elements and generates the .robot code for the elements recursively.
@@ -22,9 +23,7 @@ const isAnRpaInstruction = (currentElement) => currentElement.rpaTask !== undefi
  * @returns {string} Generated .robot code for the tasks section
  */
 const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
-  const currentElement = elements.find(
-    (element) => element.id === id
-  );
+  const currentElement = elements.find((element) => element.id === id);
   if (isAnRpaInstruction(currentElement)) {
     const rpaTaskName = currentElement.rpaTask;
     const rpaTaskParameters = currentElement.rpaParameters;
@@ -80,7 +79,6 @@ const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
     );
   });
   return codeTest;
-
 };
 
 /**
@@ -92,8 +90,10 @@ const writeCodeForElement = (id, elements, codeToAppend, lastApplication) => {
 const generateCodeForElements = (elements) => {
   const codeToAppend = '';
   const lastApplication = 'None';
-  const startElement = elements.find(element => (element.predecessorIds.length === 0))
-  const givenId = startElement.id
+  const startElement = elements.find(
+    (element) => element.predecessorIds.length === 0
+  );
+  const givenId = startElement.id;
 
   const codeForElements = writeCodeForElement(
     givenId,
@@ -110,23 +110,23 @@ const generateCodeForElements = (elements) => {
  * @returns {string} Code that has to be put in .robot file
  */
 const collectApplications = (elements) => {
-  let parsedApplicationsCode = ''
+  let parsedApplicationsCode = '';
   if (elements !== undefined && elements.length > 0) {
     const applications = [];
 
     elements.forEach((element) => {
       if (element.rpaApplication !== undefined) {
         if (!applications.includes(element.rpaApplication)) {
-          applications.push(element.rpaApplication)
+          applications.push(element.rpaApplication);
         }
       }
-    })
+    });
     Object.values(applications).forEach((application) => {
       parsedApplicationsCode += `${'Library    RPA.'}${application}\n`;
     });
   }
-  return parsedApplicationsCode
-}
+  return parsedApplicationsCode;
+};
 
 /**
  * @description Parses the SSoT to an executable .robot file
@@ -137,8 +137,8 @@ const parseSsotToRobotCode = (ssot) => {
   const { elements } = ssot;
   parsedCode += '*** Settings ***\n';
   parsedCode += 'Documentation  Our first parsed RPA\n';
-  parsedCode += collectApplications(elements)
-  // idealy we use the keyword statement for each task, currently not working out of the box
+  parsedCode += collectApplications(elements);
+  // ideally we use the keyword statement for each task, currently not working out of the box
   parsedCode += '\n*** Tasks ***\n';
   parsedCode += generateCodeForElements(elements);
 
