@@ -17,7 +17,7 @@ const getCurrentUserId = async () => {
  */
 const setCurrentUserId = async (value) => {
   const response = await fetch(`user/config/set-current-id?userId=${value}`);
-  return response;
+  return response.json();
 };
 
 export { getCurrentUserId, setCurrentUserId };

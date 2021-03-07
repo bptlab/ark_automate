@@ -28,6 +28,15 @@ const RobotOverview = () => {
     });
   }, []);
 
+  /**
+   * @description Updates the current user id on the server side and set the state variable userId to the new value
+   */
+  const changeUserId = (value) => {
+    setCurrentUserId(value).then((data) => {
+      setUserId(data.UserId);
+    });
+  };
+
   const updateSearchValue = (val) => {
     setSearchValue(val);
   };
@@ -93,7 +102,7 @@ const RobotOverview = () => {
             min={1}
             defaultValue={1}
             value={userId}
-            onChange={setCurrentUserId}
+            onChange={changeUserId}
           />
         </div>
 
