@@ -6,6 +6,7 @@ const numCPUs = require('os').cpus().length;
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
 const rpaFrameworkRouter = require('./routes/rpaFramework');
+const userRouter = require('./routes/user');
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -29,6 +30,7 @@ if (!isDev && cluster.isMaster) {
   app.use(express.json());
 
   app.use('/rpa-framework', rpaFrameworkRouter);
+  app.use('/user', userRouter);
 
   // All remaining requests return the React app, so it can handle routing.
   /* app.get('*', function (request, response) {
@@ -38,7 +40,7 @@ if (!isDev && cluster.isMaster) {
   app.listen(PORT, () => {
     console.error(
       `Node ${
-        isDev ? 'dev server' : `cluster worker ${  process.pid}`
+        isDev ? 'dev server' : `cluster worker ${process.pid}`
       }: listening on port ${PORT}`
     );
   });
