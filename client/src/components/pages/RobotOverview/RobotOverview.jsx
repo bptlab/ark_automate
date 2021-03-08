@@ -3,10 +3,7 @@ import { Layout, Input, Space, Row, InputNumber } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
-import {
-  getCurrentUserId,
-  setCurrentUserId,
-} from '../../../api/userConfiguration';
+import initSessionStorage from '../../../utils/sessionStorage';
 
 const { Search } = Input;
 
@@ -23,19 +20,17 @@ const RobotOverview = () => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
-    getCurrentUserId().then((data) => {
-      setUserId(data.UserId);
-    });
+    initSessionStorage('CurrentUserId', 1);
+    setUserId(sessionStorage.getItem('CurrentUserId'));
   }, []);
 
   /**
-   * @description Updates the current user id on the server side and set the state variable userId to the new value
+   * @description Updates the current user id in the session storage and sets the state variable userId to the new value
    * @param {Integer} value the value of the number input field used for setting the user id
    */
   const changeUserId = (value) => {
-    setCurrentUserId(value).then((data) => {
-      setUserId(data.UserId);
-    });
+    setUserId(value);
+    sessionStorage.setItem('CurrentUserId', value);
   };
 
   /**
