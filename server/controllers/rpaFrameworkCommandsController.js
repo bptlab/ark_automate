@@ -9,7 +9,7 @@ exports.getAvailableApplications = async (req, res) => {
       res.send(tasks);
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -26,7 +26,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
       res.send('Please set a valid application parameter.');
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -54,6 +54,6 @@ exports.getVarsForTask = async (req, res) => {
       res.send('Please set valid application and task parameters.');
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

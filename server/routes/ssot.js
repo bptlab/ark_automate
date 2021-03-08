@@ -7,6 +7,6 @@ const retrievalController = require('../controllers/ssotRetrievalController');
 
 /// SSOTPARSING ROUTES ///
 
-router.get('/ssot', retrievalController.getSsot);
+router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
 
 module.exports = router;

@@ -7,6 +7,12 @@ const robotMetadataSchema = new Schema({
     starterId: String
 });
 
+const inputParameterSchema = new Schema({
+    name: String,
+    value: Schema.Types.Mixed,
+    requireUserInput: Boolean
+});
+
 const instructionSchema = new Schema({
     type: String,
     name: String,
@@ -16,12 +22,6 @@ const instructionSchema = new Schema({
     rpaTask: String,
     rpaParameters: [inputParameterSchema],
     outputVariable: Schema.Types.Mixed
-});
-
-const inputParameterSchema = new Schema({
-    name: String,
-    value: Schema.Types.Mixed,
-    requireUserInput: Boolean
 });
 
 const markerSchema = new Schema({
@@ -34,6 +34,6 @@ const markerSchema = new Schema({
 const SSoT_Schema = new Schema({
     robotMetadata: robotMetadataSchema,
     elements: [instructionSchema]
-}, { collection: 'completeCollection' });
+});
 
-mongoose.model('SSoTs', SSoT_Schema);
+mongoose.model('SSoT', SSoT_Schema);
