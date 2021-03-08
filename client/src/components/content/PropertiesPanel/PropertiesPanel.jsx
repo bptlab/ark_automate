@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from 'antd';
 import PropertiesPanelView from './PropertiesPanelView/PropertiesPanelView';
-import './PropertiesPanel.css';
+import styles from './PropertiesPanel.module.css';
 import fetchTaskParametersAndUpdateRPAProperties from '../../../utils/xmlUtils';
 import {
   fetchTasksFromDB,
@@ -192,7 +192,7 @@ const PropertiesPanel = ({ modeler }) => {
   };
 
   return (
-    <div className='sidebarWrapper'>
+    <div>
       {elementState.selectedElements.length === 1 && (
         <PropertiesPanelView
           nameChanged={nameChangedHandler.bind(this)}
@@ -208,7 +208,7 @@ const PropertiesPanel = ({ modeler }) => {
 
       {elementState.selectedElements.length === 0 && (
         <span>
-          <Title className='label-on-dark-background'>
+          <Title level={4} className={styles.title}>
             Please select an element.
           </Title>
         </span>
@@ -216,7 +216,7 @@ const PropertiesPanel = ({ modeler }) => {
 
       {elementState.selectedElements.length > 1 && (
         <span>
-          <Title className='label-on-dark-background'>
+          <Title level={4} className={styles.title}>
             Please select a single element.
           </Title>
         </span>

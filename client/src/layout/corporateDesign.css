@@ -1,0 +1,12 @@
+/* changes to the variables here also have to be made in corporateDesign.js! */
+
+:root {
+  --colorPrimary: #00c2ff;
+  --colorPrimaryInverted: #1c272b;
+  --colorPrimaryInverted2: #2f3c41;
+  --colorPrimaryInvertedText: #ffffff;
+  --colorBackground: #efefef;
+  --colorBackground2: #ffffff;
+  --colorBackgroundText: #1d1d1f;
+  --colorBackgroundCta: #ff6b00;
+}
