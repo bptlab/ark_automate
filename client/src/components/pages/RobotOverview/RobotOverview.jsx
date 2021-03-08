@@ -30,6 +30,7 @@ const RobotOverview = () => {
 
   /**
    * @description Updates the current user id on the server side and set the state variable userId to the new value
+   * @param {Integer} value the value of the number input field used for setting the user id
    */
   const changeUserId = (value) => {
     setCurrentUserId(value).then((data) => {
