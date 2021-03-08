@@ -33,7 +33,7 @@ const markerSchema = new Schema({
 
 const SSoT_Schema = new Schema({
     robotMetadata: robotMetadataSchema,
-    elements: [instructionSchema]
+    elements: [instructionSchema, markerSchema ]
 });
 
 mongoose.model('SSoT', SSoT_Schema);

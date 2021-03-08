@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 
 
-// GET /ssot/id
+// GET /ssot/:id
 exports.getSingleSourceOfTruth = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
