@@ -129,9 +129,9 @@ User information about a robot (creator, released for etc.) is stored in an addi
 
 **BPMN requires:**
 - id :heavy_check_mark:
-- Label -> name :heavy_check_mark:
-- Predecessor :heavy_check_mark:
-- Successor :heavy_check_mark:
+- label -> name :heavy_check_mark:
+- predecessor :heavy_check_mark:
+- successor :heavy_check_mark:
 - ~~position~~ -> calculated :heavy_check_mark:
 - ~~size~~ -> `config.json` :heavy_check_mark:
 - _RPA-Task & Application & Parameters_ :heavy_check_mark:
@@ -139,10 +139,10 @@ User information about a robot (creator, released for etc.) is stored in an addi
 ### Element: CASE
 
 **SSoT stores**
-- Predecessor node, Successor node
+- predecessor node, Successor node
 - name, ID
 - default successor node
-- Conditions (for each successor node) = IF condition
+- conditions (for each successor node) = IF condition
 
 ```json
 {
@@ -160,20 +160,20 @@ User information about a robot (creator, released for etc.) is stored in an addi
 ```
 
 **BPMN requires**
-- Predecessor node :heavy_check_mark:
-- Successor node :heavy_check_mark:
-- Label (name) :heavy_check_mark:
+- predecessor node :heavy_check_mark:
+- successor node :heavy_check_mark:
+- label (name) :heavy_check_mark:
 - default successor node :heavy_check_mark:
-- Conditions (texts at the Path to each successor node) :heavy_check_mark:
+- conditions (texts at the Path to each successor node) :heavy_check_mark:
 
 ### Element: LOOP
 
 **SSoT stores**
-- ID, text (label)
-- Predecessor and successor nodes of the loop
-- Loop termination condition
-- Predecessor node of the loop body end
-- Successor node of the loop body start
+- id, text (label)
+- predecessor and successor nodes of the loop
+- loop termination condition
+- predecessor node of the loop body end
+- successor node of the loop body start
 
 
 ```json
@@ -190,9 +190,9 @@ User information about a robot (creator, released for etc.) is stored in an addi
 
 ### Element: MARKER
 **SSoT stores**
-- ID, text (label)
+- id, text (label)
 - predecessor node
-- Successor node
+- successor node
 
 
 ```json
@@ -207,12 +207,12 @@ User information about a robot (creator, released for etc.) is stored in an addi
 
 **BPMN requires**
 
-- Label :heavy_check_mark:
-- Event type1: Start, End :heavy_check_mark:
-    - Start = Event without incoming edge
-    - End = Event without outgoing edge
-- Event type2: timer event, message event etc. :thought_balloon:
-    - All events are always rendered as "neutral events" (empty circle).
+- label :heavy_check_mark:
+- event type1: Start, End :heavy_check_mark:
+    - start = Event without incoming edge
+    - end = Event without outgoing edge
+- event type2: timer event, message event etc. :thought_balloon:
+    - all events are always rendered as "neutral events" (empty circle).
 
 
 ---
@@ -520,8 +520,8 @@ Modelled process
     "elements": [
         {
             "type": "MARKER",
+            "name": "", 
             "id": "StartEvent_1",
-            "name": "",
             "predecessorIds": [],
             "successorIds": ["Activity_0a128t6"],
         },
@@ -532,9 +532,6 @@ Modelled process
             "id": "Activity_0a128t6",
             "predecessorIds": ["StartEvent_1"],
             "successorIds": ["Activity_0ascvdr"],
-            "rpaApplication": "",
-            "rpaTask": "",
-            "rpaParameters": [],
             "outputVariable": ""
         },
         // RPA activity
@@ -593,8 +590,8 @@ Modelled process
         // Endevent
         {
             "type": "MARKER",
-            "id": "Event_0wghmrz",
             "name": "",
+            "id": "Event_0wghmrz",
             "predecessorIds": ["Activity_0a128t6"],
             "successorIds": [],
         }

@@ -2,15 +2,13 @@
 
 ### General
 - One sprint is usually three weeks long.
-- The teams' core work time is Monday (9 am-3 pm) and Wednesday (9 am-3 pm)
-- Each member of the team works about 16 hours per week
-
-Update: Starting March 8, the team will work on the project four days a week. Monday-Wednesday will be the core workdays that each team member will work. The fourth workday can be any of the days from Thursday through Sunday.
+- The teams' core work time is Monday-Wednesday (9 am-3 pm) and a fourth flexible day that each team member can set himself
+- Each member of the team works about 32 hours per week
 
 ### Meetings
 
 **1. Daily Scrum:**
-Limited to 15 min the daily scrum takes place Monday at 9 am and Wednesday at 9 am in MS Teams.
+Limited to 15 min the daily scrum takes place Monday, Tuesday and at 9 am in MS Teams.
 Only the core team is participating including Maximilian.
 The structure the team agreed on is that every team member shortly answers the following three questions:
 * What did I do yesterday that helped the Development Team achieve the sprint goal?

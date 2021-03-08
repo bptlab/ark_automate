@@ -42,7 +42,7 @@ There are 2 main competitors for testing utilities: Enzyme and React Testing Lib
 #### Jest
 * Unit testing
 * Snapshot testing
-    * is useful for making sure that the UI does not change unexpectedly
+    * Is useful for making sure that the UI does not change unexpectedly
 * Integration testing
 * Mocks, Stubs, and Spies ([Dive Deeper](https://youtu.be/GTaVTa4QuAM?t=119))
     * Mock = An object on which you set expectations
@@ -73,7 +73,7 @@ You can also use [this short Jest cheatsheet](https://devhints.io/jest)
 * Complex implementations (eg: algorithms)
 * Anything that has edge cases
 * Core business logic
-* high-risk Services
+* High-risk Services
 * Common user interactions
 * Error cases that you expect to happen frequently (such as entering an incorrect password when logging in)
 * Interactions between units that were stubbed in the unit tests
@@ -90,7 +90,7 @@ You can also use [this short Jest cheatsheet](https://devhints.io/jest)
 ### How to write a test?
 - In the same folder of component, create file filename.test.js
     - If multiple test files are responsible for the same JS file, please add a Tests folder on the same structure level as the file to include the test files
-- use describe, it, beforeEach, etc.
+- Use describe, it, beforeEach, etc.
 
 ### How to execute a test?
 `npm test` to run tests in client or server folder (doesn't work yet, needs to be added to scripts)
@@ -104,7 +104,7 @@ You can also use [this short Jest cheatsheet](https://devhints.io/jest)
     * Dates
     * Random values
     * File access
-* use constants to assign and evaluate to prevent typos that may cause the test to fail
+* Use constants to assign and evaluate to prevent typos that may cause the test to fail
 * Create Tests That Are Resistant to UI Changes
 * All tests should be independent of each other - use jest.resetAllMocks(); jest.clearAllMocks();
     * Think about using the built-in afterEach functionality if your Use-Case requires it

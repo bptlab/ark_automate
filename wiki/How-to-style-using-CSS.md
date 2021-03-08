@@ -382,10 +382,10 @@ In the file we would include the style in the following way:
 <details><summary>We agreed on
 </summary><p>
 
-- naming
+- naming:
   For the naming of classes and ids please use **hyphens** consistently.
   For example, don't call the class `buttonBackground` and instead call it `button-background`.
-- sizing
+- sizing:
   Try to use only relative units (vw,vh,rem,%) to size elements and **not** absolut units (px)
 
 
