@@ -3,8 +3,6 @@ import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa';
-import {parseDiagramJson} from '../../../utils/parser/parser.js';
 import convert from 'xml-js';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 // eslint-disable-next-line camelcase
