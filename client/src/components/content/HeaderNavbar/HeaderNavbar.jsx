@@ -2,7 +2,7 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
-import logoBlack from '../../../resources/assets/images/logo_black.png';
+import logoCTA from '../../../resources/assets/images/logo_cta.png';
 
 const { Header } = Layout;
 
@@ -19,10 +19,16 @@ const HeaderNavbar = (props) => (
       // eslint-disable-next-line react/prop-types
       defaultSelectedKeys={[props.selectedKey.toString()]}
     >
-      <img style={{ height: '3rem' }} src={logoBlack} alt='ark_automate Icon' />
+      <Link to='/'>
+        <img
+          style={{ margin: '0 1rem 0 -1rem', height: '3rem' }}
+          src={logoCTA}
+          alt='ark_automate Icon'
+        />
+      </Link>
       <Menu.Item key='1'>
-        Home
-        <Link to='/' />
+        Overview
+        <Link to='/robot_overview' />
       </Menu.Item>
       <Menu.Item key='2'>
         Modeler
