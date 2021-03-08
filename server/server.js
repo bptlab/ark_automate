@@ -8,6 +8,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
 const rpaFrameworkRouter = require('./routes/rpaFramework');
 const ssotRouter = require('./routes/ssot');
+const robotRouter = require('./routes/robot');
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -26,7 +27,10 @@ if (!isDev && cluster.isMaster) {
 } else {
   const app = express();
 
-  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, 'client/build')));
@@ -34,11 +38,12 @@ if (!isDev && cluster.isMaster) {
 
   app.use('/rpa-framework', rpaFrameworkRouter);
   app.use('/ssot', ssotRouter);
+  app.use('/robot', robotRouter);
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function (request, response) {
     response.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
-  }); 
+  });
 
   app.listen(PORT, () => {
     console.error(

@@ -13,6 +13,7 @@ import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
+import setRobotJob from '../../../api/robot';
 
 const { Content } = Layout;
 
@@ -81,6 +82,14 @@ const BpmnModeler = () => {
       });
   };
 
+  /**
+   * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it.
+   */
+  const executeBot = (robotId) => {
+    robotId = exampleRobot;
+    setRobotJob(robotId);
+  };
+
   return (
     <Layout>
       <Content>
@@ -88,7 +97,11 @@ const BpmnModeler = () => {
           <div className={styles['bpmn-modeler-container']} id='bpmnview' />
         </div>
       </Content>
-      <ModelerSidebar modeler={modeler} getRobotFile={getRobotFile} />
+      <ModelerSidebar
+        modeler={modeler}
+        getRobotFile={getRobotFile}
+        executeBot={executeBot}
+      />
     </Layout>
   );
 };
