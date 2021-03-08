@@ -21,7 +21,7 @@ const CreateRobotContainer = () => {
             <Col className={[styles.box, styles.createRobotBox]} >
                 <Row align="middle" style={{ height: '70%' }}>
                     <Col type="flex" span={24}>
-                        <PlusCircleOutlined onClick={addRobot} style={{ fontSize: '6rem', color: corporateDesign.colorBackground2 }} />
+                        <PlusCircleOutlined onClick={addRobot} style={{ fontSize: '6rem', color: corporateDesign.colorBackground }} />
                     </Col>
                 </Row>
 

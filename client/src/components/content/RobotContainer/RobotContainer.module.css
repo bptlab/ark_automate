@@ -14,7 +14,7 @@
 }
 
 .clickableIcon{
-  color: var(--colorPrimary);
+  color: var(--colorBackgroundCta);
   font-size: 4rem;
 }
 
