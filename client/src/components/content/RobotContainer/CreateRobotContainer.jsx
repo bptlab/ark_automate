@@ -17,7 +17,7 @@ const CreateRobotContainer = () => {
     const addRobot = () => alert("Adding Robots is currently not supported!");
 
     return (
-        <Col xs={24} sm={12} md={8} xl={6}>
+        <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
             <Col className={[styles.box, styles.createRobotBox]} >
                 <Row align="middle" style={{ height: '70%' }}>
                     <Col type="flex" span={24}>
