@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+name: Heroku Deployment
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: copy server to root and commit
+        run: mv ./server/* ./
+      - run: git config user.email "heroku.deployer@ark-automate.com" && git config user.name "Heroku Deployer" && git add -A && git commit -m "heroku deployment commit"
+      - uses: akhileshns/heroku-deploy@v3.11.10
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "ark-automate"
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          justlogin: true
+      - run: heroku git:remote -a ark-automate && git push heroku DEV:master --force
