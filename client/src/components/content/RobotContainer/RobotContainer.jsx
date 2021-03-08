@@ -18,14 +18,6 @@ const RobotContainer = (props) => {
     const startRobot = () => alert("Running the Robot is currently not supported!");
     const editRobot = () => alert("Editing the Robot is currently not supported!");
 
-    const shortenTitle = (botName) => {
-        const titleLength = 18;
-        if (botName.length < titleLength) {
-            return botName;
-        }
-        return `${botName.substring(0, titleLength - 2)}...`;
-    }
-
     return (
         <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
             <Col className={[styles.box, styles.robotBox]}>
@@ -40,7 +32,7 @@ const RobotContainer = (props) => {
 
                 <Row justify="space-around" align="middle" style={{ height: '45%' }}>
                     <Title className={styles.title} level={3} editable >
-                        {shortenTitle(robotName)}
+                        {robotName}
                     </Title>
                 </Row>
             </Col>
