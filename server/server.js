@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
@@ -23,6 +24,8 @@ if (!isDev && cluster.isMaster) {
   });
 } else {
   const app = express();
+
+  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
   // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, '../client/build')));

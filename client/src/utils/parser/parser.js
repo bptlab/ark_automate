@@ -58,7 +58,7 @@ const generateCodeForSingle = (bpmnTask) => {
   codeToAppend += `${bpmnTask['_attributes']['name']}\n`;
   const rpaTaskName = bpmnTask['_attributes']['arkRPA:task'];
   const rpaTaskInputString = bpmnTask['_attributes']['arkRPA:inputVars'];
-  let rpaTaskInput = rpaTaskInputString.replaceAll('/', '');
+  let rpaTaskInput = rpaTaskInputString.replace(/[\/]/g, '');
   rpaTaskInput = JSON.parse(rpaTaskInput);
   let counter = 0;
   if (Object.keys(rpaTaskInput).length === 0) {
@@ -127,4 +127,4 @@ const parseDiagramJson = (jsonData) => {
   return parsedCode;
 };
 
-export default parseDiagramJson;
+export {parseDiagramJson};
