@@ -18,4 +18,4 @@ const rpaTaskSchema = new Schema({
 }, { collection: 'completeCollection' });
 
 mongoose.model('rpa-tasks-variable', rpaVariableSchema);
-mongoose.model('rpa-tasks', rpaTaskSchema);
+mongoose.model('rpa-task', rpaTaskSchema);

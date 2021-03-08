@@ -4,7 +4,7 @@ import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa';
-import parseDiagramJson from '../../../utils/parser/parser.js';
+import {parseDiagramJson} from '../../../utils/parser/parser.js';
 import convert from 'xml-js';
 import downloadString from '../../../utils/downloadString.js';
 import 'bpmn-js/dist/assets/diagram-js.css';

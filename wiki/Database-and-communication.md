@@ -21,3 +21,7 @@ One such example can be observed on the server side in the MongoDbManager.js whi
 
 For the future we should consider to refactor the MongoDbManager.js file to allow for usage with multiple test cases for any objects on the backend side.
 Until then, please keep in mind to connect to a local instance the way it is done in that file. Other ways might cause the first test after setup of any testclass to fail. If you want to read up on this issue, please have a look [here](https://github.com/nodkz/mongodb-memory-server#several-mongoose-connections-simultaneously) under _Note: When you create mongoose connection manually_.
+
+## Tutorial
+
+For an additional tutorial on how to use Mongoose, please have a look [here](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose).

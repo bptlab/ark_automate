@@ -4,9 +4,8 @@ const rpaModels = require('../models/rpaTaskModel');
 // GET /rpa-framework/commands/get-available-applications
 exports.getAvailableApplications = async (req, res) => {
   try {
-    res.set('Content-Type', 'application/json');
-    mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });    
-    mongoose.model('rpa-tasks').distinct('Application', (err, tasks) => {
+    res.set('Content-Type', 'application/json'); 
+    mongoose.model('rpa-task').distinct('Application', (err, tasks) => {
       res.send(tasks);
     });
   } catch (err) {
@@ -20,8 +19,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
     const {application} = req.query;
     res.set('Content-Type', 'application/json');
     if (application != null) {
-      mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-      mongoose.model('rpa-tasks').distinct('Task', { Application: application }, (err, tasks) => {
+      mongoose.model('rpa-task').distinct('Task', { Application: application }, (err, tasks) => {
         res.send(tasks);
       });
     } else {
@@ -40,8 +38,7 @@ exports.getVarsForTask = async (req, res) => {
     res.set('Content-Type', 'application/json');
 
     if (application != null && task != null) {
-      mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-      mongoose.model('rpa-tasks').findOne(
+      mongoose.model('rpa-task').findOne(
       {
         Application: application,
         Task: task,
