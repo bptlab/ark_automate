@@ -20,7 +20,11 @@ const HeaderNavbar = (props) => (
       defaultSelectedKeys={[props.selectedKey.toString()]}
     >
       <Link to='/'>
-        <img style={{ margin: '0 1rem 0 -1rem', height: '3rem' }} src={logoCTA} alt='ark_automate Icon' />
+        <img
+          style={{ margin: '0 1rem 0 -1rem', height: '3rem' }}
+          src={logoCTA}
+          alt='ark_automate Icon'
+        />
       </Link>
       <Menu.Item key='1'>
         Overview
