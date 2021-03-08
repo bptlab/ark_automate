@@ -16,14 +16,16 @@ const RobotOverview = () => {
 
   /**
    * @description Handles the update when a new searchValue was entered
+   * @param {String} value Current value of searchbar to be stored
    */
-  const updateSearchValue = (val) => {
-    setSearchValue(val);
+  const updateSearchValue = (value) => {
+    setSearchValue(value);
   };
 
   /**
    * @description Creates all boxes for the robots from the database
    * @returns All Boxes that match the current searchValue as React component
+   * @param {String} searchValue2 Currently stored value of the search bar, by which the boxes to be displayed are selected
    */
   const createRobotBoxes = (searchValue2) => {
     // mock object (JSON of example-robots)
