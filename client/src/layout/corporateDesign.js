@@ -1,4 +1,4 @@
-// changes to the variables here also have to be made in corporateDesign.css !!!
+// changes to the variables here also have to be made in corporateDesign.css!
 
 const colorPrimary = '#00C2FF';
 const colorPrimaryInverted = '#1C272B';
