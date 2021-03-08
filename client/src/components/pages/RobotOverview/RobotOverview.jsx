@@ -14,10 +14,17 @@ const { Search } = Input;
 const RobotOverview = () => {
   const [searchValue, setSearchValue] = useState('');
 
+  /**
+   * @description Handles the update when a new searchValue was entered
+   */
   const updateSearchValue = (val) => {
     setSearchValue(val);
   };
 
+  /**
+   * @description Creates all boxes for the robots from the database
+   * @returns All Boxes that match the current searchValue as React component
+   */
   const createRobotBoxes = (searchValue2) => {
     // mock object (JSON of example-robots)
     const robotList = [{
