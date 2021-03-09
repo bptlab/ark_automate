@@ -14,7 +14,6 @@ import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 import setRobotJob from '../../../api/robot';
-import { Layout } from 'antd';
 import { getParsedRobotFile } from '../../../api/ssot';
 
 const { Content } = Layout;
@@ -87,7 +86,7 @@ const BpmnModeler = () => {
       </Content>
       <ModelerSidebar
         modeler={modeler}
-        getRobotFile={getRobotFile}
+        getRobotFile={downloadRobotFile}
         executeBot={executeBot}
       />
     </Layout>
