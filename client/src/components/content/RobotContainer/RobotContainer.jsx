@@ -1,9 +1,10 @@
 /* eslint-disable no-alert */
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types'
 import styles from './RobotContainer.module.css';
+import {changeSSOTName} from '../../../api/SSOTretrieval';
 
 const { Title } = Typography;
 
@@ -14,9 +15,21 @@ const { Title } = Typography;
  */
 const RobotContainer = (props) => {
 
-    const { robotName } = props;
+    const {robotId} = props;
+    // eslint-disable-next-line react/destructuring-assignment
+    const [robotName, setRobotName] = useState(props.robotName);
     const startRobot = () => alert("Running the Robot is currently not supported!");
     const editRobot = () => alert("Editing the Robot is currently not supported!");
+
+    const renameRobot = (value) => {
+        changeSSOTName(robotId, value)
+            .then(() => {
+                setRobotName(value);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
 
     return (
         <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
@@ -31,7 +44,7 @@ const RobotContainer = (props) => {
                 </Row>
 
                 <Row justify="space-around" align="middle" style={{ height: '45%' }}>
-                    <Title className={styles.title} level={3} editable >
+                    <Title className={styles.title} level={3} editable={{ onChange: renameRobot }} >
                         {robotName}
                     </Title>
                 </Row>
@@ -43,4 +56,5 @@ export default RobotContainer;
 
 RobotContainer.propTypes = {
     robotName: PropTypes.string.isRequired,
+    robotId: PropTypes.string.isRequired,
 };

@@ -4,7 +4,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
-import fetchSSOTsForUser from '../../../api/SSOTretrieval';
+import {fetchSSOTsForUser} from '../../../api/SSOTretrieval';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -21,10 +21,10 @@ const RobotOverview = () => {
 
   /**
    * @description Fetches Bots for the specified user and will trigger a rerender so that it will be displayed
-   * @param {String} userIuserIdToFetch The userId to fetch Bots for
+   * @param {String} userIdToFetch The userId to fetch Bots for
    */
-   const retrieveBotList = (userIuserIdToFetch) => {
-    fetchSSOTsForUser(userIuserIdToFetch)
+   const retrieveBotList = (userIdToFetch) => {
+    fetchSSOTsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
         setRobotList(data);
@@ -75,7 +75,10 @@ const RobotOverview = () => {
     return (
       <>
         {filteredBotList.map((val) => (
-          <RobotContainer robotName={val.robotName} />
+          <RobotContainer 
+            robotId={val.robotId} 
+            robotName={val.robotName} 
+          />
         ))}
       </>
     );
