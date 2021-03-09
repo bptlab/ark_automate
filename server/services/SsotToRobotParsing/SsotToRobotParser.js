@@ -67,7 +67,7 @@ const writeCodeForElement = (
       codeToAppend = writeCodeForElement(
         successorId,
         elements,
-        mergedCode,
+        codeToAppend,
         previousApplication
       );
     });
