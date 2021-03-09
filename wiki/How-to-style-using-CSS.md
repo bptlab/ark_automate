@@ -1,4 +1,4 @@
-# Introduction in CSS
+# How to style components using CSS
 ## CSS general info
 - CSS = Cascading Style Sheets
 - Only purpose is to style and animate markup language (HTML)
@@ -10,7 +10,7 @@
 </summary><p>
 
 **1. Use Inline CSS**
-Just add `style` as another Attribute in the `HTML`-Tag. Add multiple styles with a semicolon. 
+Just add `style` as another Attribute in the `HTML`-Tag. Add multiple styles with a semicolon.
 ```html
 <body style="background-color: blue;">
 ```
@@ -28,8 +28,8 @@ In the <head></head> tag open a \<style> \</style> tag. There you can specifiy t
 </head>
 ```
 **3. Use External CSS**
-Create a `styles.css` file and copy everything from your internal style tag to there. Then reference the file in the head of the html using the link tag. Then everywhere where you reference the style.css file, the styles will be applied.
-`<link rel="stylesheet" href="./styles.css">`
+Create a `styles.css` file and copy everything from your internal style tag to there. Then reference the file in the head of the HTML using the link tag. Then everywhere where you reference the style.css file, the styles will be applied.
+`<link rel="stylesheet" href="./styles.CSS">`
 
 Remember: Every HTML tag has already a default style, that may hide your additional styling. See here for more https://www.w3schools.com/cssref/css_default_values.asp
 
@@ -44,27 +44,27 @@ Use the dev tools of your browser and check out the Style tab regarding your sel
 
 
 ```html
-selector { 
-    property: value; 
+selector {
+    property: value;
 }
 
 // Example
-h1 { 
+h1 {
     color: red;
 }
 ```
 **Selector:** Who do you want to change?
 **Property:** What do you want to change?
-**Value:** How do you want it to be changed? 
+**Value:** How do you want it to be changed?
 
 ### About CSS Selectors
 
 **Which properties can I change?**
-Checkout https://developer.mozilla.org/en-US/docs/Web/CSS/Reference#index
+Check out https://developer.mozilla.org/en-US/docs/Web/CSS/Reference#index
 
 
 #### Selector: CSS Classes  
-You can add `class` attributes to html tags which you can then select in your css and style. To target a class in your css file you need to put a `.` in front of your class identifier. You can state multiple classes inside the class html tag.
+You can add `class` attributes to HTML tags which you can then select in your CSS and style. To target a class in your CSS file you need to put a `.` in front of your class identifier. You can state multiple classes inside the class HTML tag.
 **Html**
 ```html
  <h1 class="title name"> Helloo
@@ -78,8 +78,8 @@ You can add `class` attributes to html tags which you can then select in your cs
 ```
 
 
-#### Selector: HTML IDs. 
-You can add `id` attributes to html tags which you can then select in your css and style. To target a class you need to put a `#` in front of your class. You can only have a single instance of your id in your page (classes for multiple times). An html can have only one id.
+#### Selector: HTML IDs.
+You can add `id` attributes to HTML tags which you can then select in your CSS and style. To target a class you need to put a `#` in front of your class. You can only have a single instance of your id on your page (classes for multiple times). An HTML can have only one id.
 **Html**
 ```html
 <h1 id="MyTitle"> Helloo
@@ -94,8 +94,8 @@ You can add `id` attributes to html tags which you can then select in your css a
 
 
 #### Selector: Pseudo classes  
-Some css selectors have `:` written in front of them. These styles are applied, when the affected html element is in a certain state, f.e. the mouse hovers above it. See for example [:hover](https://developer.mozilla.org/en-US/docs/Web/CSS/:hover) 
-```html
+Some CSS selectors have `:` written in front of them. These styles are applied, when the affected HTML element is in a certain state, f.e. the mouse hovers above it. See for example [:hover](https://developer.mozilla.org/en-US/docs/Web/CSS/:hover)
+```HTML
 h1:hover{
     color= blue;
 }
@@ -140,7 +140,7 @@ class MyHeader extends React.Component {
   }
 }
 ```
-> Inline CSS should only be used when 1-2 styles are given to a component, which are definitely not needed in any other context (e.g.) in another component. In this case, the styles do not have to be swapped out separately.
+> Inline CSS should only be used when 1-2 styles are given to a component, which is not needed in any other context (e.g.) in another component. In this case, the styles do not have to be swapped out separately.
 
 ### Using external stylesheets  
 Write your CSS styling in a separate .css file and import it.
@@ -166,8 +166,8 @@ button {
     margin: 10px;
 }
 ```
-### Dynamicaly changing Styles  
-You can change your inline styles like any other variable (asuming that you have it as a JS object in your file). When the component is rendered, the values will be read and the styling then applied. Everytime you rerender, the values will be read again and with it any changes you applied.
+### Dynamically changing Styles  
+You can change your inline styles like any other variable (assuming that you have it as a JS object in your file). When the component is rendered, the values will be read and the styling then applied. Every time you rerender, the values will be read again and with it any changes you applied.
 
 
 ```jsx
@@ -181,12 +181,12 @@ class MyPersons extends React.Component {
         backgroundColor: 'green',
         textColor: 'white'
     };
-    
+
     if (this.state.isPersonVisible) {
         persons = ...
         style.backgroundColor = 'red'
     }
-        
+
     return (
          {persons}
          <button style = {style} />
@@ -211,7 +211,7 @@ To **use AntD**, it must be installed in the client directory. This is done auto
 
 Basically every HTML-Component is wrapped by an AntD-Component. You can identify AntD components by the fact that they are always capitalized compared to HTML components. `<button> plain HTML-Button </button>` vs. `<Button> AntD-Button </Button>`  
 
-Therefore, whenever we add new frontend components, we use AntD components. So (with the exception of divs and other standard HTML tags) we should no longer use lowercase HTML tags in our code.
+Therefore, whenever we add new frontend components, we use AntD components. So (except for divs and other standard HTML tags) we should no longer use lowercase HTML tags in our code.
 
 ```jsx
 import React from 'react';
@@ -237,14 +237,14 @@ export default TestButton;
 - for input fields see: [Input](https://ant.design/components/input/)
 
 **About AntD Layout & Grid**  
-**AntD Layout** gives us the possibility to set a layout for the page. A layout describes the arrangement of different blocks like header, footer, menu and content with various presets. We have used such a layout for all our pages that already appear in the final design with the navigation bar.
+**AntD Layout** gives us the possibility to set a layout for the page. A layout describes the arrangement of different blocks like header, footer, menu, and content with various presets. We have used such a layout for all our pages that already appear in the final design with the navigation bar.
 For design inspiration, we recommend taking a look at the [layout documentation](https://ant.design/components/layout/).
 
 **AntD Grid**  
 - As known from HTML, a page is created by lining up elements in rows. In these lines, columns can be used to divide the page horizontally.
-- Your content elements should be placed directly in the col, and only col should be placed directly in row.
+- Your content elements should be placed directly in the col, and the only col should be placed directly in a row.
 - The column grid system is a value of 1-24 to represent its range spans. For example, three columns of equal width can be created by `<Col span={8} />`.
-- If the sum of col spans in a row are more than 24, then the overflowing col as a whole will start a new line arrangement.
+- If the sum of col spans in a row is more than 24, then the overflowing col as a whole will start a new line arrangement.
 - You can align Elements in the Grid horizontally and vertically and add Gutter (kind of margin between the boxes) which should always be preferred to the traditional alignment using CSS!
 
 ```jsx
@@ -266,7 +266,7 @@ ReactDOM.render(
 );
 ```
 > This will return two rows. The first row contains two columns, the second row contains three columns.
-> 
+>
 **AntD Space**  
 If you arrange several elements together in a container, you should use `space` between the elements. Space is also an AntD component that includes all the components that should be aligned with each other with horizontal and vertical spacing.
 
@@ -285,7 +285,7 @@ function SpaceDemo() {
 ReactDOM.render(<SpaceDemo />, mountNode);
 ```
 > This will return two Buttons, horizontally aligned with space between the buttons.
-> 
+>
 By default `space` adds a distance in the horizontal and in the vertical. This can be specified with the `direction="vertical"` or `direction="horizontal"` attribute.
 
 The size of the distance between the components can be changed with the size attribute (`size="small", size = "medium", size="large"`). It is also possible to specify the size of the space numerically. However, this is not recommended.
@@ -304,16 +304,94 @@ function SpaceDemo() {
 
 ReactDOM.render(<SpaceDemo />, mountNode);
 ```
-> This will return two Buttons which have small spaces exclusively in the horizontal. Vertically, they have no spacing at all.
-> 
+> This will return two Buttons that have small spaces exclusively in the horizontal. Vertically, they have no spacing at all.
+>
 
 
-**Link to the Documentation**. 
-For a Overview of all AntD-Components expecially the huge amount of input and display components see the [Components-Documentation](https://ant.design/components/overview/) with many code-examples.
+**Link to the Documentation**.
+For an Overview of all AntD-Components especially the huge amount of input and display components see the [Components-Documentation](https://ant.design/components/overview/) with many code-examples.
 
 </p></details>
 
-##
+# How to apply CSS in this Project
+
+## Use of styles via CSS
+
+In principle, before each use of CSS should be considered whether the use in the planned place is absolutely necessary. Special caution with:
+
+- **Changes of colors, font sizes, and fonts:** Should be urgently avoided since we always refer to the properties defined in the theme.
+- **Add spacing (padding):** Should be urgently avoided, as AntD's Space component should be used for this.
+
+### Basic rules for styling:
+
+<details><summary>See the rules
+</summary><p>
+
+- we do **just use inline CSS with AntD components for 1-2 properties** -> all CSS code with more than two properties is outsourced to external files.
+- **global CSS properties** (which cannot be specified in the theme) are only written to `Index.css` to prevent several sources of global style
+- **local CSS properties** are written to a file next to the component where they occur and CSS modules are used for this purpose
+- if **multiple components** need the **same customization**, the CSS property should be set in a CSS modules file next to the common parent component
+
+
+</p></details>
+
+
+
+
+### CSS vs. CSS modules
+
+<details><summary>When to use what?
+</summary><p>
+
+In React the style of "normal" CSS files like _Example.css_ are defined globally. Therefore you don't need to explicitly import the CSS file to use the style. Thus be very careful when using normal CSS files and keep in mind that the style you define can be used in any file of the repository.
+For example when you define the following style...
+
+```css
+.button {
+  background-color: red;
+}
+```
+
+... this might lead to confusion because whenever someone uses the class button now this style is applied no matter if it was intended or not.
+
+If you want to apply style just to specific files and not globally react has a solution called CSS modules. Instead of creating a file _Example.css_ you have to create _Example.module.css_. This file you have to explicitly import in every file you want to use it in. For example like this:
+
+```jsx
+import styles from './Example.module.css';
+```
+
+Now let's continue with this example. Let's say in _Example.module.css_ we have defined the following because we just want the buttons of this file to be green:
+
+```css
+.button {
+  background-color: green;
+}
+```
+
+In the file we would include the style in the following way:
+
+```jsx
+<button className='{styles.button}'></button>
+```
+
+</p></details>
+
+
+
+### Conventions
+<details><summary>We agreed on
+</summary><p>
+
+- naming:
+  For the naming of classes and ids please use **hyphens** consistently.
+  For example, don't call the class `buttonBackground` and instead call it `button-background`.
+- sizing:
+  Try to use only relative units (vw,vh,rem,%) to size elements and **not** absolut units (px)
+
+
+</p></details>
+
+---
 
 
 
@@ -323,7 +401,7 @@ For a Overview of all AntD-Components expecially the huge amount of input and di
 4. For fun with the CSS Grid first read [this](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout) and then play [this](https://cssgridgarden.com/#de)
 5. For fun with the CSS flexbox first read [this](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox) and then play [this](http://flexboxfroggy.com/)
 
-## Further Reading. 
-For more games to learn css checkout https://codepip.com/games/  
+## Further Reading.
+For more games to learn CSS checkout https://codepip.com/games/  
 Take a look at this website https://css-tricks.com/  
-For the styleguide issue https://24ways.org/2011/front-end-style-guides  
+For the style guide issue https://24ways.org/2011/front-end-style-guides  
