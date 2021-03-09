@@ -8,11 +8,9 @@
  * @param {String} userId - String including the user Id
  */
  const fetchSSOTsForUser = async (userId) => {
-     let testString = `/ssot/getAvailableBotsForUser/${ userId }`;
-    const response = await fetch(testString);
+    const requestString = `/ssot/getAvailableBotsForUser/${ userId }`;
+    const response = await fetch(requestString);
     return response;
   };
 
-export {
-    fetchSSOTsForUser
-};
+export default fetchSSOTsForUser;

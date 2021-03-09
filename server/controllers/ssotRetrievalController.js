@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 const mongoose = require('mongoose');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 const userAccessModels = require('../models/userAccessObjectModel.js');
-
 
 // GET /ssot/:id
 exports.getSingleSourceOfTruth = async (req, res) => {

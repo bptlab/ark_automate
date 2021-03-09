@@ -32,6 +32,7 @@ const markerSchema = new Schema({
     successorIds: [mongoose.Types.ObjectId]
 });
 
+// eslint-disable-next-line camelcase
 const SSoT_Schema = new Schema({
     robotMetadata: robotMetadataSchema,
     elements: [instructionSchema, markerSchema ]

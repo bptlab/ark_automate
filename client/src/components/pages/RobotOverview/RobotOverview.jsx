@@ -4,7 +4,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
-import {fetchSSOTsForUser} from '../../../api/SSOTretrieval';
+import fetchSSOTsForUser from '../../../api/SSOTretrieval';
 
 const { Search } = Input;
 const { Option } = Select;
