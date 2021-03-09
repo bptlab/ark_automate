@@ -86,15 +86,12 @@ const generateCodeForRpaTasks = (elements) => {
   const startElement = elements.find(
     (element) => element.predecessorIds.length === 0
   );
-  const { id } = startElement;
-  const codeToAppend = '';
-  const previousApplication = 'None';
 
   const codeForRpaTasks = writeCodeForElement(
-    id,
+    startElement.id,
     elements,
-    codeToAppend,
-    previousApplication
+    '',
+    'None'
   );
 
   return codeForRpaTasks;
