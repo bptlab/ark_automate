@@ -72,8 +72,8 @@ const BpmnModeler = () => {
   /**
    * @description Will add a new job with the current robot id to the job list on the server side
    */
-  const executeBot = (robotId) => {
-    robotId = exampleRobot;
+  const executeBot = () => {
+    const robotId = '6045eccfa9a07940e5763f0b';
     setRobotJob(robotId);
   };
 
