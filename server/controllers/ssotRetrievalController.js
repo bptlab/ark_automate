@@ -60,3 +60,26 @@ exports.getBotList = async (req, res) => {
     console.error(err);
   }
 };
+
+// GET /renameBot?id=Browser&newName=Open+Browser
+exports.renameBot = async (req, res) => {
+    try {
+        res.set('Content-Type', 'application/json');
+        const {id} = req.query;
+        const {newName} = req.query;
+        const newNameWithEmptyspace = newName.replace(/\+/g, ' ');
+
+        const ssot = await mongoose.model('SSoT').findByIdAndUpdate(
+            { _id: id },
+            {'robotMetadata.robotName': newNameWithEmptyspace},
+            {
+                new: true,
+                useFindAndModify: false
+            }
+        ).exec();
+
+        res.send(ssot.robotMetadata);
+    } catch (err) {
+        console.error(err);
+    }
+};

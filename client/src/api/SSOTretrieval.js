@@ -13,4 +13,18 @@
     return response;
   };
 
-export default fetchSSOTsForUser;
+  /**
+   * @description Fetch all those SSOT names and Ids, which are available for the current user
+   * @param {String} userId - String including the user Id
+   */
+   const changeSSOTName = async (SSOTid, newName) => {
+      const adjustedName = newName.replace(/\s/g, '+');
+      const requestString = `/ssot/renameBot?id=${ SSOTid }&newName=${ adjustedName }`;
+      const response = await fetch(requestString);
+      return response;
+    };
+
+export {
+  fetchSSOTsForUser,
+  changeSSOTName
+};
