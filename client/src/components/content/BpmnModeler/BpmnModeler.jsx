@@ -71,7 +71,7 @@ const BpmnModeler = () => {
   };
 
   /**
-   * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it.
+   * @description Will add a new job with the current robot id to the job list on the server side
    */
   const executeBot = (robotId) => {
     robotId = exampleRobot;
