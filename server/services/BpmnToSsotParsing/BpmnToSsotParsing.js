@@ -5,31 +5,19 @@
  * @module
  */
 
+const SsotBaseObjects = require('./SsotBaseObjects')
+
+const ssotBaseElement = SsotBaseObjects.baseElement;
+const ssotMetadataObj = SsotBaseObjects.metadataObj;
+
 /**
  * @description Creates a base element of the single source of truth
  * @returns {object}  Base element of the single source of truth
  */
 const createBaseElement = (id) => {
-    const baseElement = {
-        "type": "",
-        "name": "",
-        "id": id,
-        "predecessorIds": [],
-        "successorIds": []
-    }
+    const baseElement = JSON.parse(JSON.stringify(ssotBaseElement));
+    baseElement.id = id
     return baseElement
-};
-
-/**
- * @description Creates the metadata object of the single source of truth
- * @returns {object}  Metadata object of the single source of truth
- */
-const createMetadataObj = () => {
-    const metadataObj = {
-        "robotId": "exampleRobot",
-        "starterId": "exampleID"
-    }
-    return metadataObj
 };
 
 /**
@@ -128,11 +116,10 @@ const enrichMarkerElements = (elementsArray) => {
 const parseBpmnToSsot = (bpmnJson) => {
 
     const ssot = {}
-    ssot.robotMetadata = createMetadataObj()
+    ssot.robotMetadata = ssotMetadataObj
 
     const flows = bpmnJson['bpmn2:definitions']['bpmn2:process']['bpmn2:sequenceFlow'];
     let elementsArray = findElements(flows)
-
     const bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process']['bpmn2:task'];
     elementsArray = enrichInstructionElements(elementsArray, bpmnActivities)
     elementsArray = enrichMarkerElements(elementsArray)

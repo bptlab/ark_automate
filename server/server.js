@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const path = require('path');
 const cluster = require('cluster');
@@ -25,17 +26,19 @@ if (!isDev && cluster.isMaster) {
 } else {
   const app = express();
 
+  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
   // Priority serve any static files.
-  app.use(express.static(path.resolve(__dirname, '../client/build')));
+  app.use(express.static(path.resolve(__dirname, 'build')));
   app.use(express.json());
 
   app.use('/rpa-framework', rpaFrameworkRouter);
   app.use('/ssot', ssotRouter);
 
   // All remaining requests return the React app, so it can handle routing.
-  /* app.get('*', function (request, response) {
-    response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-  }); */
+  app.get('*', (request, response) => {
+    response.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+  }); 
 
   app.listen(PORT, () => {
     console.error(

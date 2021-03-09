@@ -1,6 +1,6 @@
 const parser = require('../BpmnToSsotParsing');
-const BPMN_JSON = require('./BpmnJsonForTesting').BPMN_XML_AS_JSON;
-const testSsot = require('./SsotForTesting').SSOT_JSON_STRING;
+const BPMN_JSON = require('./BpmnMockForTesting').BPMN_XML_AS_JSON;
+const testSsot = require('./SsotMockForTesting').SSOT_JSON_STRING;
 
 const Ssot = JSON.parse(parser.parseBpmnToSsot(BPMN_JSON));
 

@@ -1,0 +1,31 @@
+.box {
+  text-align: center;
+  padding: 1rem;
+  height: 13rem;
+  border-radius: 5px;
+}
+
+.robotBox {
+  background: var(--colorPrimaryInverted2);
+}
+
+.createRobotBox {
+  background: var(--colorBackgroundCta);
+}
+
+.clickableIcon{
+  color: var(--colorBackgroundCta);
+  font-size: 4rem;
+}
+
+.title {
+  color: var(--colorPrimaryInvertedText) !important;
+  text-align: center;
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+.title:hover {
+  overflow: visible;
+}

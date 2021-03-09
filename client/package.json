@@ -2,9 +2,12 @@
   "name": "ark-automate",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "proxy": "http://localhost:5000/",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.5",
+    "@ant-design/icons": "^4.4.0",
+    "@craco/craco": "^6.1.1",
+    "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.1.1",
     "@testing-library/user-event": "^12.2.0",
     "antd": "^4.8.2",
@@ -13,6 +16,9 @@
     "bpmn-js": "^7.4.0",
     "bpmn-js-properties-panel": "^0.37.5",
     "camunda-bpmn-moddle": "^4.4.1",
+    "craco-antd": "^1.19.0",
+    "craco-less": "^1.17.1",
+    "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -21,9 +27,9 @@
     "xml-js": "^1.6.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "lint": "eslint --ignore-path ../.gitignore --ext .js,.jsx .",
     "docs": "jsdoc -c ../documentationConfig.json -r -R ../README.md"
@@ -47,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "better-docs": "^2.3.2",
     "eslint": "^7.17.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^7.1.0",
@@ -55,7 +62,6 @@
     "eslint-plugin-only-warn": "^1.0.2",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "better-docs": "^2.3.2",
     "jsdoc": "^3.6.6"
   }
 }

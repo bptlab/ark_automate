@@ -1,0 +1,10 @@
+.label-on-dark-background {
+  color: var(--colorPrimaryInvertedText);
+}
+.title {
+  margin-bottom: 0rem !important;
+  color: var(--colorPrimaryInvertedText) !important;
+}
+.properties-panel-dropdown {
+  width: 100%;
+}
