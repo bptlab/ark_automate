@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node server",
-    "build": "cd client/ && npm install && npm run build",
+    "build": "",
     "test": "jest",
     "lint": "eslint --ignore-path ../.gitignore --ext .js,.jsx ."
   },
