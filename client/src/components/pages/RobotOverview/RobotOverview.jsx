@@ -107,7 +107,7 @@ const RobotOverview = () => {
             <Option key='user1' value='80625d115100a2ee8d8e695b'>Lukas</Option>
             <Option key='user2' value='365889fcf871cfe88711b630'>Erik</Option>
             <Option key='user3' value='225aa14130f2c07789cfa38e'>Sandro</Option>
-            <Option key='user4' value='afdb3d839ca02a106750a2a0'>Wolle</Option>
+            <Option key='user4' value='afdb3d839ca02a106750a2a0'>Daniel</Option>
           </Select>
         </div>
 
