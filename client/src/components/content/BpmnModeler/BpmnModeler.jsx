@@ -13,6 +13,7 @@ import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
+import getParsedRobotFile from "../../../api/ssot";
 
 const { Content } = Layout;
 
@@ -59,25 +60,11 @@ const BpmnModeler = () => {
    * @description Will parse a given xml file into a .robot file and download it
    * @param {string} xml String that sets the xml to be parsed
    */
-  const downloadRobotFile = (xml) => {
-    const body = convert.xml2json(xml, { compact: true, spaces: 4 });
-    const jsonBody = JSON.parse(body);
-    const robot = parseDiagramJson(jsonBody);
-    downloadString(robot, 'text/robot', 'testRobot.robot');
-  };
-
-  /**
-   * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it.
-   */
-  const getRobotFile = () => {
-    modeler
-      .saveXML()
-      .then((json) => {
-        const { xml } = json;
-        downloadRobotFile(xml);
-      })
-      .catch((error) => {
-        console.error(error);
+  const downloadRobotFile = () => {
+    getParsedRobotFile()
+      .then((response) => response.text())
+      .then((robotCode) => {
+        downloadString(robotCode, 'text/robot', 'testRobot.robot');
       });
   };
 
@@ -88,7 +75,7 @@ const BpmnModeler = () => {
           <div className={styles['bpmn-modeler-container']} id='bpmnview' />
         </div>
       </Content>
-      <ModelerSidebar modeler={modeler} getRobotFile={getRobotFile} />
+      <ModelerSidebar modeler={modeler} getRobotFile={downloadRobotFile} />
     </Layout>
   );
 };
