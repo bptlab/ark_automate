@@ -33,7 +33,7 @@ if (!isDev && cluster.isMaster) {
   });
 
   // Priority serve any static files.
-  app.use(express.static(path.resolve(__dirname, 'client/build')));
+  app.use(express.static(path.resolve(__dirname, 'build')));
   app.use(express.json());
 
   app.use('/rpa-framework', rpaFrameworkRouter);
@@ -41,8 +41,8 @@ if (!isDev && cluster.isMaster) {
   app.use('/robot', robotRouter);
 
   // All remaining requests return the React app, so it can handle routing.
-  app.get('*', function (request, response) {
-    response.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
+  app.get('*', (request, response) => {
+    response.sendFile(path.resolve(__dirname, 'build', 'index.html'));
   });
 
   app.listen(PORT, () => {

@@ -9,6 +9,6 @@ exports.getRobotCode = async (req, res) => {
     const robotCode = ssotToRobotparser.parseSsotToRobotCode(ssot);
     res.send(robotCode);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

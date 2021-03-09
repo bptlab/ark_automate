@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Input, Space, Row, InputNumber } from 'antd';
+import { Layout, Input, Space, Row, Select } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
+import fetchSSOTsForUser from '../../../api/SSOTretrieval';
 
 const { Search } = Input;
+const { Option } = Select;
 
 /**
  * @description Overview page, where all robots are displayed and can be opened.
@@ -14,14 +16,30 @@ const { Search } = Input;
  */
 const RobotOverview = () => {
   const [searchValue, setSearchValue] = useState('');
-  const [userId, setUserId] = useState(1);
+  const [userId, setUserId] = useState('80625d115100a2ee8d8e695b');
+  const [robotList, setRobotList] = useState([]);
+
+  /**
+   * @description Fetches Bots for the specified user and will trigger a rerender so that it will be displayed
+   * @param {String} userIuserIdToFetch The userId to fetch Bots for
+   */
+   const retrieveBotList = (userIuserIdToFetch) => {
+    fetchSSOTsForUser(userIuserIdToFetch)
+      .then((response) => response.json())
+      .then((data) => {
+        setRobotList(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   /**
    * @description Equivalent to ComponentDidMount in class based components
    */
-  useEffect(() => {
-    initSessionStorage('CurrentUserId', 1);
-    setUserId(sessionStorage.getItem('CurrentUserId'));
+  useEffect( () => {
+    initSessionStorage('CurrentUserId', '80625d115100a2ee8d8e695b');
+    retrieveBotList(userId);
   }, []);
 
   /**
@@ -29,8 +47,9 @@ const RobotOverview = () => {
    * @param {Integer} value the value of the number input field used for setting the user id
    */
   const changeUserId = (value) => {
-    setUserId(value);
     sessionStorage.setItem('CurrentUserId', value);
+    retrieveBotList(value);
+    setUserId(value);
   };
 
   /**
@@ -47,30 +66,8 @@ const RobotOverview = () => {
    * @param {String} searchValue2 Currently stored value of the search bar, by which the boxes to be displayed are selected
    */
   const createRobotBoxes = (searchValue2) => {
-    // mock object (JSON of example-robots)
-    const robotList = [
-      {
-        robotMetadata: { robotId: '#1234', robotName: 'EXCEL Workflow' },
-      },
-      {
-        robotMetadata: { robotId: '#1234', robotName: 'alle E-Mails löschen' },
-      },
-      {
-        robotMetadata: { robotId: '#1234', robotName: 'Daily CheckIn' },
-      },
-      {
-        robotMetadata: { robotId: '#1234', robotName: 'Daily Checkout' },
-      },
-      {
-        robotMetadata: { robotId: '#1234', robotName: 'Twitter checken' },
-      },
-      {
-        robotMetadata: { robotId: '#1234', robotName: 'Login to PayPal' },
-      },
-    ];
-
     const filteredBotList = Object.values(robotList).filter((val) =>
-      val.robotMetadata.robotName
+      val.robotName
         .toUpperCase()
         .includes(searchValue2.toUpperCase())
     );
@@ -78,7 +75,7 @@ const RobotOverview = () => {
     return (
       <>
         {filteredBotList.map((val) => (
-          <RobotContainer robotName={val.robotMetadata.robotName} />
+          <RobotContainer robotName={val.robotName} />
         ))}
       </>
     );
@@ -99,16 +96,19 @@ const RobotOverview = () => {
             style={{
               marginRight: '16px',
             }}
-            placeholder='Search your Robot!'
+            placeholder='Search your Robot'
             onSearch={updateSearchValue}
             enterButton
           />
-          <InputNumber
-            min={1}
-            defaultValue={1}
-            value={userId}
+          <Select
             onChange={changeUserId}
-          />
+            defaultValue='80625d115100a2ee8d8e695b'
+          >
+            <Option key='user1' value='80625d115100a2ee8d8e695b'>Lukas</Option>
+            <Option key='user2' value='365889fcf871cfe88711b630'>Erik</Option>
+            <Option key='user3' value='225aa14130f2c07789cfa38e'>Sandro</Option>
+            <Option key='user4' value='afdb3d839ca02a106750a2a0'>Daniel</Option>
+          </Select>
         </div>
 
         <Row gutter={[16, 16]}>

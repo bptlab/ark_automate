@@ -8,7 +8,7 @@
 /**
  * @description Checks whether the given element is of type instruction and contains rpa attributes
  * @param {Object} currentElement Element to check
- * @returns {bool} Value specifies if object is of type instruction and contains rpa attributes
+ * @returns {Boolean} Value specifies if object is of type instruction and contains rpa attributes
  */
 const isAnRpaInstruction = (currentElement) =>
   currentElement.rpaTask !== undefined &&
@@ -17,7 +17,7 @@ const isAnRpaInstruction = (currentElement) =>
 /**
  * @description Checks whether the given element contains rpa parameters
  * @param {Object} currentElement Element to check
- * @returns {bool} Value specifies if object contains rpa parameters
+ * @returns {Boolean} Value specifies if object contains rpa parameters
  */
 const rpaParametersExist = (currentElement) =>
   currentElement.rpaParameters !== undefined &&
@@ -26,7 +26,7 @@ const rpaParametersExist = (currentElement) =>
 /**
  * @description Checks whether the given element has a successor element
  * @param {Object} currentElement Element to check
- * @returns {bool} Value specifies if element has a successor element
+ * @returns {Boolean} Value specifies if element has a successor element
  */
 const successorTasksExist = (currentElement) =>
   currentElement.successorIds !== undefined &&
@@ -47,35 +47,34 @@ const writeCodeForElement = (
   previousApplication
 ) => {
   const currentElement = elements.find((element) => element.id === id);
+  let combinedCode = codeToAppend;
+  let newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
     if (currentElement.rpaApplication !== previousApplication) {
-      codeToAppend += `${currentElement.name}\n`;
-      previousApplication = currentElement.rpaApplication;
+      combinedCode += `${currentElement.name}\n`;
+      newPreviousApplication = currentElement.rpaApplication;
     }
-    codeToAppend += `  ${currentElement.rpaTask}`;
+    combinedCode += `  ${currentElement.rpaTask}`;
     if (rpaParametersExist(currentElement)) {
       currentElement.rpaParameters.forEach((parameter) => {
-        codeToAppend += `  ${parameter.value}`;
+        combinedCode += `  ${parameter.value}`;
       });
     }
-    codeToAppend += '\n';
+    combinedCode += '\n';
   }
 
   if (successorTasksExist(currentElement)) {
     // Xor handling is needed here in the future
     currentElement.successorIds.forEach((successorId) => {
-      codeToAppend = writeCodeForElement(
+      combinedCode = writeCodeForElement(
         successorId,
         elements,
-        codeToAppend,
-        previousApplication
+        combinedCode,
+        newPreviousApplication
       );
     });
-
-    return codeToAppend;
-  } else {
-    return codeToAppend;
   }
+  return combinedCode;
 };
 
 /**
@@ -88,15 +87,12 @@ const generateCodeForRpaTasks = (elements) => {
   const startElement = elements.find(
     (element) => element.predecessorIds.length === 0
   );
-  const id = startElement.id;
-  const codeToAppend = '';
-  const previousApplication = 'None';
 
   const codeForRpaTasks = writeCodeForElement(
-    id,
+    startElement.id,
     elements,
-    codeToAppend,
-    previousApplication
+    '',
+    'None'
   );
 
   return codeForRpaTasks;

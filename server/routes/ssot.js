@@ -8,7 +8,8 @@ const parsingController = require('../controllers/ssotParsingController');
 
 /// SSOTPARSING ROUTES ///
 
-router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
 router.get('/parser/get-robot-code', parsingController.getRobotCode);
+router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
+router.get('/getAvailableBotsForUser/:userid', retrievalController.getBotList);
 
 module.exports = router;

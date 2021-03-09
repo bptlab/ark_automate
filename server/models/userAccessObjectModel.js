@@ -6,6 +6,6 @@ const userAccessSchema = new Schema({
   AccessLevel: String,
   robotId: mongoose.Types.ObjectId,
   userId: mongoose.Types.ObjectId
-}, { collection: 'completeCollection' });
+});
 
-mongoose.model('userAccessObjects', userAccessSchema);
+mongoose.model('userAccessObject', userAccessSchema);

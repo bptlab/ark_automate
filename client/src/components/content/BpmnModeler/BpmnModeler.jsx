@@ -7,14 +7,14 @@ import convert from 'xml-js';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 // eslint-disable-next-line camelcase
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa.json';
-import parseDiagramJson from '../../../utils/parser/parser';
+import { parseDiagramJson } from '../../../utils/parser/parser';
 import downloadString from '../../../utils/downloadString';
 import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 import setRobotJob from '../../../api/robot';
-import { getParsedRobotFile } from '../../../api/ssot';
+import getParsedRobotFile from '../../../api/ssot';
 
 const { Content } = Layout;
 
