@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 
 const robotMetadataSchema = new Schema({
     robotId: String,
-    starterId: String
+    starterId: String,
+    robotName: String
 });
 
 const inputParameterSchema = new Schema({
