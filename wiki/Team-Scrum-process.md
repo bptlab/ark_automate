@@ -8,7 +8,7 @@
 ### Meetings
 
 **1. Daily Scrum:**
-Limited to 15 min the daily scrum takes place Monday, Tuesday and at 9 am in MS Teams.
+Limited to 15 min the daily scrum takes place Monday, Tuesday and Wednesday at 9 am in MS Teams.
 Only the core team is participating including Maximilian.
 The structure the team agreed on is that every team member shortly answers the following three questions:
 * What did I do yesterday that helped the Development Team achieve the sprint goal?
