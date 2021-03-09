@@ -12,5 +12,6 @@ router.get('/parser/get-robot-code', parsingController.getRobotCode);
 router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
 router.get('/getAvailableBotsForUser/:userid', retrievalController.getBotList);
 router.get('/renameBot', retrievalController.renameBot);
+router.get('/createNewBot', retrievalController.createNewBot);
 
 module.exports = router;

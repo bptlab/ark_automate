@@ -4,7 +4,7 @@ import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types'
 import styles from './RobotContainer.module.css';
-import {changeSSOTName} from '../../../api/SSOTretrieval';
+import { changeSSOTName } from '../../../api/SSOTretrieval';
 
 const { Title } = Typography;
 
@@ -15,9 +15,8 @@ const { Title } = Typography;
  */
 const RobotContainer = (props) => {
 
-    const {robotId} = props;
-    // eslint-disable-next-line react/destructuring-assignment
-    const [robotName, setRobotName] = useState(props.robotName);
+    const { robotId, robotName } = props;
+    const [name, setRobotName] = useState(robotName);
     const startRobot = () => alert("Running the Robot is currently not supported!");
     const editRobot = () => alert("Editing the Robot is currently not supported!");
 
@@ -45,7 +44,7 @@ const RobotContainer = (props) => {
 
                 <Row justify="space-around" align="middle" style={{ height: '45%' }}>
                     <Title className={styles.title} level={3} editable={{ onChange: renameRobot }} >
-                        {robotName}
+                        {name}
                     </Title>
                 </Row>
             </Col>

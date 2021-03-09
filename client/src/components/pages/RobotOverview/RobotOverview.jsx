@@ -4,7 +4,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
-import {fetchSSOTsForUser} from '../../../api/SSOTretrieval';
+import { fetchSSOTsForUser, createNewBot } from '../../../api/SSOTretrieval';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -24,10 +24,12 @@ const RobotOverview = () => {
    * @param {String} userIdToFetch The userId to fetch Bots for
    */
    const retrieveBotList = (userIdToFetch) => {
+    setRobotList([]);
     fetchSSOTsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
         setRobotList(data);
+        console.log(robotList);
       })
       .catch((error) => {
         console.error(error);
@@ -58,6 +60,24 @@ const RobotOverview = () => {
    */
   const updateSearchValue = (value) => {
     setSearchValue(value);
+  };
+
+  /**
+ * @description Creates a new bot for the current userId
+ */
+ const createNewRobot = () => {
+    const robotName = 'New Robot';
+    setRobotList([]);
+    createNewBot(userId, robotName)
+      .then((response) => response.json())
+      .then((data) => {
+        var newList = robotList;
+        newList.push(data);
+        setRobotList(newList);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   /**
@@ -115,7 +135,7 @@ const RobotOverview = () => {
         </div>
 
         <Row gutter={[16, 16]}>
-          <CreateRobotContainer />
+          <CreateRobotContainer createNewRobot={createNewRobot}/>
           {createRobotBoxes(searchValue)}
         </Row>
       </Space>
