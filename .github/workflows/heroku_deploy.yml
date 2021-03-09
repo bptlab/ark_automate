@@ -26,4 +26,4 @@ jobs:
           justlogin: true
       - run: heroku git:remote -a ark-automate
       - run: git config user.email "heroku.deployer@ark-automate.com" && git config user.name "Heroku Deployer" && git add . && git commit -m "heroku deployment commit"
-      - run: git push heroku master --force
+      - run: git push heroku HEAD:master --force
