@@ -2,6 +2,7 @@
   "name": "ark-automate",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "proxy": "http://localhost:5000/",
   "dependencies": {
     "@craco/craco": "^6.1.1",
