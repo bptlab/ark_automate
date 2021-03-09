@@ -10,13 +10,14 @@
  * @param {Object} currentElement Element to check
  * @returns {Boolean} Value specifies if object is of type instruction and contains rpa attributes
  */
-const isAnRpaInstruction = (currentElement) => currentElement.rpaTask !== undefined &&
+const isAnRpaInstruction = (currentElement) =>
+  currentElement.rpaTask !== undefined &&
   currentElement.rpaApplication !== undefined
 
 /**
  * @description Checks whether the given element contains rpa parameters
  * @param {Object} currentElement Element to check
- * @returns {bool} Value specifies if object contains rpa parameters
+ * @returns {Boolean} Value specifies if object contains rpa parameters
  */
 const rpaParametersExist = (currentElement) =>
   currentElement.rpaParameters !== undefined &&
@@ -25,7 +26,7 @@ const rpaParametersExist = (currentElement) =>
 /**
  * @description Checks whether the given element has a successor element
  * @param {Object} currentElement Element to check
- * @returns {bool} Value specifies if element has a successor element
+ * @returns {Boolean} Value specifies if element has a successor element
  */
 const successorTasksExist = (currentElement) =>
   currentElement.successorIds !== undefined &&
