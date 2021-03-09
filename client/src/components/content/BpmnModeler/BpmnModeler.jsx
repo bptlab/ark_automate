@@ -13,6 +13,7 @@ import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
+import getParsedRobotFile from "../../../api/ssot";
 
 const { Content } = Layout;
 

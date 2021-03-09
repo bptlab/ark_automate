@@ -6,9 +6,6 @@
 /**
  * @description triggers parsing of the SSoT to .robot file and returns .robot file code
  */
-const getParsedRobotFile = async () => {
-  const response = await fetch(`/ssot/parser/get-robot-code`);
-  return response;
-};
+const getParsedRobotFile = async () => fetch(`/ssot/parser/get-robot-code`);
 
-export { getParsedRobotFile };
+export default getParsedRobotFile
