@@ -23,7 +23,7 @@ const RobotOverview = () => {
    * @description Fetches Bots for the specified user and will trigger a rerender so that it will be displayed
    * @param {String} userIuserIdToFetch The userId to fetch Bots for
    */
-   const retrieveBotList = async (userIuserIdToFetch) => {
+   const retrieveBotList = (userIuserIdToFetch) => {
     fetchSSOTsForUser(userIuserIdToFetch)
       .then((response) => response.json())
       .then((data) => {
@@ -37,7 +37,7 @@ const RobotOverview = () => {
   /**
    * @description Equivalent to ComponentDidMount in class based components
    */
-  useEffect(async () => {
+  useEffect( () => {
     initSessionStorage('CurrentUserId', '80625d115100a2ee8d8e695b');
     retrieveBotList(userId);
   }, []);
