@@ -24,7 +24,6 @@ const RobotOverview = () => {
    * @param {String} userIdToFetch The userId to fetch Bots for
    */
   const retrieveBotList = (userIdToFetch) => {
-    // setRobotList([]);
     fetchSSOTsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
@@ -62,16 +61,16 @@ const RobotOverview = () => {
   };
 
   /**
- * @description Creates a new bot for the current userId
- */
+   * @description Creates a new bot for the current userId
+   */
   const createNewRobot = () => {
     const robotName = 'New Robot';
     createNewBot(userId, robotName)
       .then((response) => response.json())
-      .then((data) => {
-        const newList = [...robotList]
-        newList.push(data);
-        setRobotList(newList);
+      .then((newRobot) => {
+        const newRobotList = [...robotList]
+        newRobotList.push(newRobot);
+        setRobotList(newRobotList);
       })
       .catch((error) => {
         console.error(error);

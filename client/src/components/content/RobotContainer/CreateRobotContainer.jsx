@@ -14,9 +14,7 @@ const { Title } = Typography;
  */
 const CreateRobotContainer = (props) => {
 
-    const addRobot = () => {
-        props.createNewRobot();
-    }
+    const addRobot = () => props.createNewRobot();
 
     return (
         <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
@@ -40,4 +38,4 @@ export default CreateRobotContainer;
 
 CreateRobotContainer.propTypes = {
     createNewRobot: PropTypes.string.isRequired,
-   };
+};
