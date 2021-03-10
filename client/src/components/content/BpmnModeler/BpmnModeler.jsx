@@ -7,7 +7,7 @@ import convert from 'xml-js';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 // eslint-disable-next-line camelcase
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa.json';
-import {parseDiagramJson} from '../../../utils/parser/parser';
+import { parseDiagramJson } from '../../../utils/parser/parser';
 import downloadString from '../../../utils/downloadString';
 import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
@@ -22,7 +22,8 @@ const { Content } = Layout;
  * @category Client
  * @component
  */
-const BpmnModeler = () => {
+const BpmnModeler = (props) => {
+  const { robotId } = props;
   const [modeler, setModeler] = useState(null);
 
   /**
@@ -75,7 +76,7 @@ const BpmnModeler = () => {
           <div className={styles['bpmn-modeler-container']} id='bpmnview' />
         </div>
       </Content>
-      <ModelerSidebar modeler={modeler} getRobotFile={downloadRobotFile} />
+      <ModelerSidebar robotId={robotId} modeler={modeler} getRobotFile={downloadRobotFile} />
     </Layout>
   );
 };

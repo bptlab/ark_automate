@@ -20,7 +20,7 @@ const { Title } = Typography;
  * @category Client
  * @component
  */
-const PropertiesPanel = ({ modeler }) => {
+const PropertiesPanel = ({ modeler, robotId }) => {
   const [elementState, setElementState] = useState({
     selectedElements: [],
     currentElement: null,
@@ -184,6 +184,9 @@ const PropertiesPanel = ({ modeler }) => {
 
   return (
     <div>
+      <Title level={5} className={styles.title}>
+        Roboter: {robotId}
+      </Title>
       {elementState.selectedElements.length === 1 && (
         <PropertiesPanelView
           nameChanged={nameChangedHandler.bind(this)}

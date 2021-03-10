@@ -1,8 +1,10 @@
 import React from 'react';
 import { Col, Row, Typography } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 import styles from './RobotContainer.module.css';
 import corporateDesign from '../../../layout/corporateDesign';
+
 
 const { Title } = Typography;
 
@@ -11,10 +13,10 @@ const { Title } = Typography;
  * @description Provides the first Box of Robot Overview with the "Create new Robot"-Box
  * @category Client
  */
-const CreateRobotContainer = () => {
-
-    // eslint-disable-next-line no-alert
-    const addRobot = () => alert("Adding Robots is currently not supported!");
+const CreateRobotContainer = (props) => {
+    const addRobot = () => {
+        props.createNewRobot();
+    };
 
     return (
         <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
@@ -35,3 +37,7 @@ const CreateRobotContainer = () => {
     )
 };
 export default CreateRobotContainer;
+
+CreateRobotContainer.propTypes = {
+    createNewRobot: PropTypes.string.isRequired,
+};
