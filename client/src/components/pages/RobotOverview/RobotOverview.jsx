@@ -23,13 +23,12 @@ const RobotOverview = () => {
    * @description Fetches Bots for the specified user and will trigger a rerender so that it will be displayed
    * @param {String} userIdToFetch The userId to fetch Bots for
    */
-   const retrieveBotList = (userIdToFetch) => {
-    setRobotList([]);
+  const retrieveBotList = (userIdToFetch) => {
+    // setRobotList([]);
     fetchSSOTsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
         setRobotList(data);
-        console.log(robotList);
       })
       .catch((error) => {
         console.error(error);
@@ -39,7 +38,7 @@ const RobotOverview = () => {
   /**
    * @description Equivalent to ComponentDidMount in class based components
    */
-  useEffect( () => {
+  useEffect(() => {
     initSessionStorage('CurrentUserId', '80625d115100a2ee8d8e695b');
     retrieveBotList(userId);
   }, []);
@@ -65,13 +64,12 @@ const RobotOverview = () => {
   /**
  * @description Creates a new bot for the current userId
  */
- const createNewRobot = () => {
+  const createNewRobot = () => {
     const robotName = 'New Robot';
-    setRobotList([]);
     createNewBot(userId, robotName)
       .then((response) => response.json())
       .then((data) => {
-        var newList = robotList;
+        const newList = [...robotList]
         newList.push(data);
         setRobotList(newList);
       })
@@ -95,9 +93,9 @@ const RobotOverview = () => {
     return (
       <>
         {filteredBotList.map((val) => (
-          <RobotContainer 
-            robotId={val.robotId} 
-            robotName={val.robotName} 
+          <RobotContainer
+            robotId={val.robotId}
+            robotName={val.robotName}
           />
         ))}
       </>
@@ -135,7 +133,7 @@ const RobotOverview = () => {
         </div>
 
         <Row gutter={[16, 16]}>
-          <CreateRobotContainer createNewRobot={createNewRobot}/>
+          <CreateRobotContainer createNewRobot={createNewRobot} />
           {createRobotBoxes(searchValue)}
         </Row>
       </Space>
