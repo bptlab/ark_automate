@@ -23,13 +23,15 @@ const { Content } = Layout;
  * @component
  */
 const BpmnModeler = (props) => {
-  const { robotId } = props;
+  const { robotId, robotName } = props;
   const [modeler, setModeler] = useState(null);
 
   /**
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
+    console.log(robotName)
+
     const newModeler = new CamundaBpmnModeler({
       container: '#bpmnview',
       keyboard: {
@@ -76,7 +78,7 @@ const BpmnModeler = (props) => {
           <div className={styles['bpmn-modeler-container']} id='bpmnview' />
         </div>
       </Content>
-      <ModelerSidebar robotId={robotId} modeler={modeler} getRobotFile={downloadRobotFile} />
+      <ModelerSidebar robotId={robotId} robotName={robotName} modeler={modeler} getRobotFile={downloadRobotFile} />
     </Layout>
   );
 };

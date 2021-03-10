@@ -19,7 +19,6 @@ const RobotContainer = (props) => {
     const { robotId, robotName } = props;
     const [name, setRobotName] = useState(robotName);
     const startRobot = () => alert("Running the Robot is currently not supported!");
-    const editRobot = () => alert("Editing the Robot is currently not supported!");
 
     const renameRobot = (value) => {
         changeSSOTName(robotId, value)
@@ -40,7 +39,7 @@ const RobotContainer = (props) => {
                     </Col>
                     <Col type="flex" span={12}>
                         <Link to={`/modeler/${robotId}`}>
-                            <EditOutlined /* onClick={editRobot} */ className={styles.clickableIcon} />
+                            <EditOutlined className={styles.clickableIcon} />
                         </Link>
                     </Col>
                 </Row>
