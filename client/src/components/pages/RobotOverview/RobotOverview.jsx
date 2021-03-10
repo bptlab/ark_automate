@@ -4,7 +4,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
-import { fetchSSOTsForUser } from '../../../api/SSOTretrieval';
+import { fetchSSOTsForUser, createNewBot } from '../../../api/SSOTretrieval';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -64,17 +64,18 @@ const RobotOverview = () => {
    * @description Creates a new bot for the current userId
    */
   const createNewRobot = () => {
-    console.log(`User ${userId} wants to create a new Bot`);
-    // POST-Request -> return value = element
-    setRobotList(robotList.push({
-      "_id": "6047a51fca754c5d25594399",
-      "robotId": "6045eccfa9a07940e5763f0c",
-      "starterId": "exampleID",
-      "robotName": "Noch ein Roboter"
-    }))
-    console.log(robotList);
+    const robotName = 'New Robot';
+    createNewBot(userId, robotName)
+      .then((response) => response.json())
+      .then((newRobot) => {
+        const newRobotList = [...robotList]
+        newRobotList.push(newRobot);
+        setRobotList(newRobotList);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
-
 
   /**
    * @description Creates all boxes for the robots from the database
