@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ssotToRobotParser = require('../services/SsotToRobotParsing/SsotToRobotParser.js');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
+
 const robotJobs = [];
 
 // GET /robot/jobs/add?robotId=123245
