@@ -70,7 +70,8 @@ const RobotOverview = () => {
       .then((response) => response.json())
       .then((newRobot) => {
         const newRobotList = [...robotList]
-        newRobotList.push(newRobot);
+        newRobotList.unshift(newRobot);
+        setRobotList([]);
         setRobotList(newRobotList);
       })
       .catch((error) => {
