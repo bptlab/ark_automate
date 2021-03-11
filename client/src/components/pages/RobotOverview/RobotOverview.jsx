@@ -4,7 +4,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
-import { fetchSSOTsForUser, createNewBot } from '../../../api/SSOTretrieval';
+import { fetchSsotsForUser, createNewBot } from '../../../api/ssotRetrieval';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -24,7 +24,7 @@ const RobotOverview = () => {
    * @param {String} userIdToFetch The userId to fetch Bots for
    */
   const retrieveBotList = (userIdToFetch) => {
-    fetchSSOTsForUser(userIdToFetch)
+    fetchSsotsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
         setRobotList([]);

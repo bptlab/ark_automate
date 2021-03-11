@@ -35,8 +35,9 @@ const CreateRobotContainer = (props) => {
         </Col >
     )
 };
-export default CreateRobotContainer;
 
 CreateRobotContainer.propTypes = {
     createNewRobot: PropTypes.string.isRequired,
 };
+
+export default CreateRobotContainer;

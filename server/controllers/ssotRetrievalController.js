@@ -16,8 +16,8 @@ exports.getSingleSourceOfTruth = async (req, res) => {
     }
 };
 
-// GET /getAvailableBotsForUser/78d09f66d2ed466cf20b06f7
-exports.getBotList = async (req, res) => {
+// GET /getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
+exports.getRobotList = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const { userid } = req.params;
@@ -32,24 +32,24 @@ exports.getBotList = async (req, res) => {
             }
         ).exec();
 
-        const SSOTIds = [];
+        const ssotIds = [];
         userAccessObjs.forEach((singleUserObj) => {
-            SSOTIds.push(singleUserObj.robotId);
+            ssotIds.push(singleUserObj.robotId);
         });
 
-        const availableSSOTs = await mongoose.model('SSoT').find(
-            { _id: { $in: SSOTIds } },
+        const availableSsots = await mongoose.model('SSoT').find(
+            { _id: { $in: ssotIds } },
             {
                 robotMetadata: 1
             }
         ).exec();
 
-        const SSOTs = [];
-        availableSSOTs.forEach((singleSSOT) => {
-            SSOTs.push(singleSSOT.robotMetadata);
+        const Ssots = [];
+        availableSsots.forEach((singleSsot) => {
+            Ssots.push(singleSsot.robotMetadata);
         });
 
-        res.send(SSOTs);
+        res.send(Ssots);
     } catch (err) {
         console.error(err);
     }

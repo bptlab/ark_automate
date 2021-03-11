@@ -5,7 +5,7 @@ import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
-import { changeSSOTName } from '../../../api/SSOTretrieval';
+import { changeSsotName } from '../../../api/ssotRetrieval';
 
 const { Title } = Typography;
 
@@ -21,7 +21,7 @@ const RobotContainer = (props) => {
     const startRobot = () => alert("Running the Robot is currently not supported!");
 
     const renameRobot = (value) => {
-        changeSSOTName(robotId, value)
+        changeSsotName(robotId, value)
             .then(() => {
                 setRobotName(value);
             })
@@ -53,9 +53,10 @@ const RobotContainer = (props) => {
         </Col >
     )
 };
-export default RobotContainer;
 
 RobotContainer.propTypes = {
     robotName: PropTypes.string.isRequired,
     robotId: PropTypes.string.isRequired,
 };
+
+export default RobotContainer;

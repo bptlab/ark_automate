@@ -79,8 +79,8 @@ const BpmnModeler = (props) => {
   );
 };
 
-export default BpmnModeler;
-
 BpmnModeler.propTypes = {
   robotId: PropTypes.string.isRequired
 };
+
+export default BpmnModeler;

@@ -3,7 +3,6 @@ import { Layout } from 'antd';
 import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 
-
 const { Footer } = Layout;
 
 /**
