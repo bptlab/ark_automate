@@ -24,6 +24,7 @@ const PropertiesPanelTaskDropdown = ({
       onChange={onTaskSelection}
       disabled={disabled ? true : null}
       defaultValue={currentSelection}
+      value={currentSelection}
     >
       {listOfTasks.map((task) => (
         <Option key={task} value={task}>
