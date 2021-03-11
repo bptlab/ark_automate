@@ -1,11 +1,13 @@
 # Single Source of Truth
 
 ## What do we need a SSoT for?
+
 The goal of Ark_automate is to have multiple interfaces altering/showing the same robot. For each robot, there will be a properties panel to change attributes, a view of the current .robot code and possibly multiple modeling interfaces.
 The user selects the modeling language he/she prefers and starts modeling the behavior of the robot (at least for now the user has to pre-select the modeling language). At the same time, the user can view/change the .robot code of the bot and/or update attributes via the property panel.
 To achieve that we need a single-source-of-truth(SSoT) for each robot. In the SSoT all necessary information is saved so that changes can be automatically applied to every interface.
 
 ### Which frontends do we want to support?
+
 - definitely have to be implemented: BPMN editor, robot framework code editor
 - optional (planned) are: Google BLOCKLY
 - in the long run we are open for other modelling languages
@@ -15,63 +17,57 @@ To achieve that we need a single-source-of-truth(SSoT) for each robot. In the SS
 Observation: All frontends that represent "executable program code" can be represented as a graph.
 
 ### Analysis: What can Robot Framework support?
+
 - Linear flow (sequences)
 - Branching
 - Loops (For+While)
-**Does not support** try-catch constructs
+  **Does not support** try-catch constructs
 
 ## How is the SSoT going to be included in the product?
+
 The SSoT itself will be stored on the server-side of the product. It will support multiple use cases shown in the following image:
 ![SSoT in product](https://i.imgur.com/jViSHTQ.png)
 With a change of one of the interfaces on the client-side (e.g. type in a new name in the side panel) the new data will be sent to the SSoT via HTTP and the SSoT on the server side will be updated. Once the SSoT gets updated all the other interfaces update accordingly as they are dependent on the SSoT data.
 
-
 ### We have agreed on the following
-- **Saving the SSoT**
-    - the local SSOT is pushed into the DB in certain time intervals (or trigger like "change tab")
-    - the SSoT stores only the logic behind the modeling interfaces
-(the visual representation is "rendered" from the graph)
-- Only those features of the modelling languages are allowed that **are supported by Robot Framework**.
-    - Parallelism is not supported
-    - No gateways other than an XOR split are recorded in the SSOT.
-( => non-interrupting events are not supported)
-    - Exception handling is not supported
-(=> therefore we do not support intermediate events in BPMN)
-- **Front-end rendering**
-    - requires extensive programming
-    - may cause the programmer to see his model differently from the way he saved it
-    - Hard-coded values required for frontend rendering are stored in a `config.json`
 
+- **Saving the SSoT** - the local SSOT is pushed into the DB in certain time intervals (or trigger like "change tab") - the SSoT stores only the logic behind the modeling interfaces
+  (the visual representation is "rendered" from the graph)
+- Only those features of the modelling languages are allowed that **are supported by Robot Framework**. - Parallelism is not supported - No gateways other than an XOR split are recorded in the SSOT.
+  ( => non-interrupting events are not supported) - Exception handling is not supported
+  (=> therefore we do not support intermediate events in BPMN)
+- **Front-end rendering**
+  - requires extensive programming
+  - may cause the programmer to see his model differently from the way he saved it
+  - Hard-coded values required for frontend rendering are stored in a `config.json`
 
 ### FAQ:
+
 1. **Do we store information about each model in the SSoT or do we "render" each model from the SSoT without having specific model information stored in the SSoT?**
-    1. we render each model from our "logical graph".
-    2. no modelling-interface-specific values are therefore stored.
-    3. missing attributes needed to create a modelling visualisation have to be assumed or calculated with default values
+   1. we render each model from our "logical graph".
+   2. no modelling-interface-specific values are therefore stored.
+   3. missing attributes needed to create a modelling visualisation have to be assumed or calculated with default values
 2. **Do we use the XML as SSOT?**
-No, we render the models from the SSOT. For e.g. BPMN we render SSOT to XML to BPMN.
+   No, we render the models from the SSOT. For e.g. BPMN we render SSOT to XML to BPMN.
 3. **How do we store the edges from BPMN?**
-Implicitly through the successor/predecessor relationships. The exact waypoints have to be "calculated"
-4. **What are the consequences of not saving modelling attributes for our project? (BPMN specific)**
-    - exact arrangement in the interface is not maintained;
-however: support for adherence to the standard (automatic pretty print)
-    - Logic for updating SSoT after deleting (and adding) is needed.
-    - Config files with sizes, colours, symbols etc. are needed for each modelling interface
+   Implicitly through the successor/predecessor relationships. The exact waypoints have to be "calculated"
+4. **What are the consequences of not saving modelling attributes for our project? (BPMN specific)** - exact arrangement in the interface is not maintained;
+   however: support for adherence to the standard (automatic pretty print) - Logic for updating SSoT after deleting (and adding) is needed. - Config files with sizes, colours, symbols etc. are needed for each modelling interface
 
 ## Concept for applying the SSoT
 
 **Note: SSoT should be closer to basic programming constructs than to a BPMN model.
-Therefore: All interfaces are rendered into a graph model where the nodes are defined by the following tags: 'INSTRUCTION', 'BRANCH', 'CASE' and 'MARKER'. These tags represent the basic programming constructs that can also be used in the **Robot Framework**.
-
+Therefore: All interfaces are rendered into a graph model where the nodes are defined by the following tags: 'INSTRUCTION', 'BRANCH', 'CASE' and 'MARKER'. These tags represent the basic programming constructs that can also be used in the **Robot Framework\*\*.
 
 ### Overview
-| SSoT tag | BPMN representation | Code representation | ArkA 0.3 | ArkA 1.0 |
-|:-----------:|:------------------------------:|:----------------------:|:------------------:|:------------------:|
-| INSTRUCTION | Activity | "one line of code" | :heavy_check_mark: | :heavy_check_mark: |
-| CASE | XOR-Gateway | Branching (IF, CASE) | :x: | :heavy_check_mark: |
-| LOOP | XOR-Split & Join (Combination) | Loop (FOR, WHILE) | :x: | :heavy_check_mark: |
-| MARKER | Start & End Event | - | :heavy_check_mark: | :heavy_check_mark: |
-| _EXCEPTION_ | _intermediate Event_ | _TRY-CATCH_ | :x: | :x: |
+
+|  SSoT tag   |      BPMN representation       | Code representation  |      ArkA 0.3      |      ArkA 1.0      |
+| :---------: | :----------------------------: | :------------------: | :----------------: | :----------------: |
+| INSTRUCTION |            Activity            |  "one line of code"  | :heavy_check_mark: | :heavy_check_mark: |
+|    CASE     |          XOR-Gateway           | Branching (IF, CASE) |        :x:         | :heavy_check_mark: |
+|    LOOP     | XOR-Split & Join (Combination) |  Loop (FOR, WHILE)   |        :x:         | :heavy_check_mark: |
+|   MARKER    |       Start & End Event        |          -           | :heavy_check_mark: | :heavy_check_mark: |
+| _EXCEPTION_ |      _intermediate Event_      |     _TRY-CATCH_      |        :x:         |        :x:         |
 
 **Special features for events:**
 **Timers:** In the long term, timers are to be represented in BPMN as intermediate events. At the moment, a "sleep event" (to pause execution) is to be defined as an instruction with an RPA action as an example.
@@ -80,28 +76,32 @@ Therefore: All interfaces are rendered into a graph model where the nodes are de
 No intermediate events are currently supported.
 
 ### Overview SSOT hierarchy
-![](https://i.imgur.com/7yOqDZv.png)
 
+![](https://i.imgur.com/7yOqDZv.png)
 
 ### Component: HEADER
 
 User information about a robot (creator, released for etc.) is stored in an additional file in the database.
 
 **SSoT**
-``` json
-{"robotMetadata":{
-      "robotId":"exampleRobotId",
-      "starterId":"exampleId"
-   },
-   "elements":[
-      {/* Here start the nodes of the graph */}  
-   ]
+
+```json
+{
+  "_id": "6045eccfa9a07940e5763f0b",
+  "starterId": "exampleID",
+  "robotName": "exampleRobot",
+  "elements": [
+    {
+      /* Here start the nodes of the graph */
+    }
+  ]
 }
 ```
 
 ### Element: INSTRUCTION
 
 **SSoT**
+
 ```json
 {
   "type": "INSTRUCTION",
@@ -128,6 +128,7 @@ User information about a robot (creator, released for etc.) is stored in an addi
 ```
 
 **BPMN requires:**
+
 - id :heavy_check_mark:
 - label -> name :heavy_check_mark:
 - predecessor :heavy_check_mark:
@@ -139,6 +140,7 @@ User information about a robot (creator, released for etc.) is stored in an addi
 ### Element: CASE
 
 **SSoT stores**
+
 - predecessor node, Successor node
 - name, ID
 - default successor node
@@ -153,13 +155,14 @@ User information about a robot (creator, released for etc.) is stored in an addi
   "successorIds": ["randomId", "randomId2, randomId3"],
   "default_successorIds": "randomId",
   "conditions": {
-      "X+1==3": "randomID",
-      "X-1==3": "randomID2"
-    }
+    "X+1==3": "randomID",
+    "X-1==3": "randomID2"
+  }
 }
 ```
 
 **BPMN requires**
+
 - predecessor node :heavy_check_mark:
 - successor node :heavy_check_mark:
 - label (name) :heavy_check_mark:
@@ -169,12 +172,12 @@ User information about a robot (creator, released for etc.) is stored in an addi
 ### Element: LOOP
 
 **SSoT stores**
+
 - id, text (label)
 - predecessor and successor nodes of the loop
 - loop termination condition
 - predecessor node of the loop body end
 - successor node of the loop body start
-
 
 ```json
 {
@@ -189,11 +192,12 @@ User information about a robot (creator, released for etc.) is stored in an addi
 ```
 
 ### Element: MARKER
+
 **SSoT stores**
+
 - id, text (label)
 - predecessor node
 - successor node
-
 
 ```json
 {
@@ -209,20 +213,17 @@ User information about a robot (creator, released for etc.) is stored in an addi
 
 - label :heavy_check_mark:
 - event type1: Start, End :heavy_check_mark:
-    - start = Event without incoming edge
-    - end = Event without outgoing edge
+  - start = Event without incoming edge
+  - end = Event without outgoing edge
 - event type2: timer event, message event etc. :thought_balloon:
-    - all events are always rendered as "neutral events" (empty circle).
-
+  - all events are always rendered as "neutral events" (empty circle).
 
 ---
 
-
-
 ## Example parsing from BPMN xml to SSOT
+
 Modelled process
 ![](https://i.imgur.com/rMsmw1g.png)
-
 
 <table>
 <tr>
@@ -231,7 +232,7 @@ Modelled process
 <tr>
 <td>
 
-``` json
+```json
   {
   "_declaration": {
     "_attributes": {
@@ -508,19 +509,17 @@ Modelled process
 }
 ```
 
-
 </td>
 <td>
 
-``` json
-"robotMetadata": {
-        "robotId": "exampleRobot",
-        "starterId": "exampleID"
-    },
+```json
+    "_id": "6045eccfa9a07940e5763f0b",
+    "starterId": "exampleID",
+    "robotName": "exampleRobot",
     "elements": [
         {
             "type": "MARKER",
-            "name": "", 
+            "name": "",
             "id": "StartEvent_1",
             "predecessorIds": [],
             "successorIds": ["Activity_0a128t6"],

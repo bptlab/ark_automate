@@ -1,14 +1,15 @@
 const baseElement = {
-    "type": "",
-    "name": "",
-    "id": "",
-    "predecessorIds": [],
-    "successorIds": []
-}
+  type: '',
+  name: '',
+  id: '',
+  predecessorIds: [],
+  successorIds: [],
+};
 
 const metadataObj = {
-    "robotId": "exampleRobot",
-    "starterId": "exampleID"
-}
+  _id: '6045eccfa9a07940e5763f0b',
+  starterId: 'exampleID',
+  robotName: 'exampleRobot',
+};
 
-module.exports = { baseElement, metadataObj  };
+module.exports = { baseElement, metadataObj };

@@ -3,61 +3,60 @@ This is a bpmn xml parsed to json. It contains two activites ordered and created
 The first activity is a basic bpmn activity. The second has some rpa attributes.
 */
 const SSOT_JSON_STRING = {
-    "robotMetadata": {
-        "robotId": "exampleRobot",
-        "starterId": "exampleID"
+  _id: '6045eccfa9a07940e5763f0b',
+  starterId: 'exampleID',
+  robotName: 'exampleRobot',
+  elements: [
+    {
+      type: 'MARKER',
+      name: '',
+      id: 'Event_0jcqjs1',
+      predecessorIds: [],
+      successorIds: ['Activity_1groimk'],
     },
-    "elements": [
+    {
+      type: 'INSTRUCTION',
+      name: 'AAA',
+      id: 'Activity_1groimk',
+      predecessorIds: ['Event_0jcqjs1'],
+      successorIds: ['Activity_1vb45u8'],
+      outputVariable: '',
+    },
+    {
+      type: 'INSTRUCTION',
+      name: 'BBB',
+      id: 'Activity_1vb45u8',
+      predecessorIds: ['Activity_1groimk'],
+      successorIds: ['Event_0otufrj'],
+      rpaApplication: 'Excel.Files',
+      rpaTask: 'Set Worksheet Value',
+      rpaParameters: [
         {
-            "type": "MARKER",
-            "name": "",
-            "id": "Event_0jcqjs1",
-            "predecessorIds": [],
-            "successorIds": ["Activity_1groimk"],
+          name: 'row',
+          value: 69,
+          requireUserInput: true,
         },
         {
-            "type": "INSTRUCTION",
-            "name": "AAA",
-            "id": "Activity_1groimk",
-            "predecessorIds": ["Event_0jcqjs1"],
-            "successorIds": ["Activity_1vb45u8"],
-            "outputVariable": ""
+          name: 'column',
+          value: 69,
+          requireUserInput: true,
         },
         {
-            "type": "INSTRUCTION",
-            "name": "BBB",
-            "id": "Activity_1vb45u8",
-            "predecessorIds": ["Activity_1groimk"],
-            "successorIds": ["Event_0otufrj"],
-            "rpaApplication": "Excel.Files",
-            "rpaTask": "Set Worksheet Value",
-            "rpaParameters": [
-                {
-                    "name": "row",
-                    "value": 69,
-                    "requireUserInput": true
-                },
-                {
-                    "name": "column",
-                    "value": 69,
-                    "requireUserInput": true
-                },
-                {
-                    "name": "name",
-                    "value": "TestString",
-                    "requireUserInput": true
-                }
-            ],
-            "outputVariable": ""
+          name: 'name',
+          value: 'TestString',
+          requireUserInput: true,
         },
-        {
-            "type": "MARKER",
-            "name": "",
-            "id": "Event_0otufrj",
-            "predecessorIds": ["Activity_1vb45u8"],
-            "successorIds": [],
-        }
-    ]
-}
+      ],
+      outputVariable: '',
+    },
+    {
+      type: 'MARKER',
+      name: '',
+      id: 'Event_0otufrj',
+      predecessorIds: ['Activity_1vb45u8'],
+      successorIds: [],
+    },
+  ],
+};
 
 module.exports = { SSOT_JSON_STRING };
