@@ -11,9 +11,6 @@ import {
   fetchTasksFromDB,
   getAvailableApplications,
 } from '../../../api/applicationAndTaskSelection';
-import { retrieveMetadataForBot } from '../../../api/SSOTretrieval';
-
-
 
 const { Title } = Typography;
 
@@ -23,9 +20,7 @@ const { Title } = Typography;
  * @category Client
  * @component
  */
-const PropertiesPanel = ({ modeler, robotId, robotName }) => {
-  console.log(robotName)
-
+const PropertiesPanel = ({ modeler, robotId }) => {
   const [elementState, setElementState] = useState({
     selectedElements: [],
     currentElement: null,
@@ -187,25 +182,9 @@ const PropertiesPanel = ({ modeler, robotId, robotName }) => {
     );
   };
 
-  const loadRobotName = (idForRobot) => {
-    console.log(idForRobot)
-    let localRobotName;
-    retrieveMetadataForBot(idForRobot)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-        localRobotName = data.robotName;
-        console.log(localRobotName);
-        return (localRobotName)
-      })
-    console.log(localRobotName)
-
-  }
-
   return (
     <div>
       <Title level={5} className={styles.title}>
-        {console.log(loadRobotName(robotId))}
         Roboter: {robotId}
       </Title>
       {elementState.selectedElements.length === 1 && (

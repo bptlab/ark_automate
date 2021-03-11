@@ -14,8 +14,9 @@ const fetchSSOTsForUser = async (userId) => {
 };
 
 /**
- * @description Fetch all those SSOT names and Ids, which are available for the current user
- * @param {String} userId - String including the user Id
+ * @description This function renames the robot in SSOT
+ * @param {String} SSOTid - String including the SSotid
+ * @param {String} newName - String with the new RobotName
  */
 const changeSSOTName = async (SSOTid, newName) => {
   const adjustedName = newName.replace(/\s/g, '+');
@@ -25,8 +26,8 @@ const changeSSOTName = async (SSOTid, newName) => {
 };
 
 /**
- * @description Fetch all those SSOT names and Ids, which are available for the current user
- * @param {String} userId - String including the user Id
+ * @description Fetches all the Metadata for a single Robot
+ * @param {String} robotId - String including the robotId
  */
 const retrieveMetadataForBot = async (robotId) => {
   const requestString = `/ssot/retrieveMetadataForBot/${robotId}`;

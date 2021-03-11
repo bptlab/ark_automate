@@ -11,10 +11,10 @@ const { Sider } = Layout;
  * @category Client
  * @component
  */
-const ModelerSidebar = ({ modeler, getRobotFile, robotId, robotName }) => (
+const ModelerSidebar = ({ modeler, getRobotFile, robotId }) => (
   <Sider className={styles.sider}>
     <Space direction='vertical' size='large' style={{ width: '100%' }}>
-      {modeler && <PropertiesPanel robotId={robotId} robotName={robotName} modeler={modeler} />}
+      {modeler && <PropertiesPanel robotId={robotId} modeler={modeler} />}
       <Button type='primary' className={styles.button} onClick={getRobotFile}>
         Get Robot file
       </Button>
