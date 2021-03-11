@@ -27,7 +27,8 @@ const RobotOverview = () => {
     fetchSSOTsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
-        setRobotList(data);
+        setRobotList([]);
+        setRobotList([...data]);
       })
       .catch((error) => {
         console.error(error);
