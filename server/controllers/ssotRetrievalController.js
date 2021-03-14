@@ -16,8 +16,8 @@ exports.getSingleSourceOfTruth = async (req, res) => {
     }
 };
 
-// GET /getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
-exports.getRobotList = async (req, res) => {
+// GET /getAvailableBotsForUser/78d09f66d2ed466cf20b06f7
+exports.getBotList = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const { userid } = req.params;
