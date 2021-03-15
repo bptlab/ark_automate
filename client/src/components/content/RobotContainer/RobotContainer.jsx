@@ -5,7 +5,7 @@ import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import styles from './RobotContainer.module.css';
 import { changeSSOTName } from '../../../api/SSOTretrieval';
-import setRobotJob from '../../../api/robot';
+import setRobotJob from '../../../api/jobs';
 import isBotExecutable from '../../../utils/botExecution';
 
 const { Title } = Typography;
@@ -17,6 +17,7 @@ const { Title } = Typography;
  */
 const RobotContainer = (props) => {
   const { robotId } = props;
+  const { userId } = props;
   // eslint-disable-next-line react/destructuring-assignment
   const [robotName, setRobotName] = useState(props.robotName);
 
@@ -25,7 +26,7 @@ const RobotContainer = (props) => {
    */
   const startRobot = () => {
     if (isBotExecutable()) {
-      setRobotJob(robotId);
+      setRobotJob(robotId, userId);
     } else {
       alert('Your Bot is not ready to be executed!');
     }
@@ -80,4 +81,5 @@ export default RobotContainer;
 RobotContainer.propTypes = {
   robotName: PropTypes.string.isRequired,
   robotId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired
 };

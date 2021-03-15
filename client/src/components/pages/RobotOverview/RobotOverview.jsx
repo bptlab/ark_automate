@@ -75,9 +75,10 @@ const RobotOverview = () => {
     return (
       <>
         {filteredBotList.map((val) => (
-          <RobotContainer 
-            robotId={val.robotId} 
-            robotName={val.robotName} 
+          <RobotContainer
+            robotId={val.robotId}
+            robotName={val.robotName}
+            userId={userId}
           />
         ))}
       </>
