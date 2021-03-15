@@ -14,7 +14,7 @@ import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection
  * @category Client
  * @component
  */
-const PropertiesPanelView = ({
+const PropertiesPanel = ({
   element,
   nameChanged,
   applicationSelectionUpdated,
@@ -44,7 +44,7 @@ const PropertiesPanelView = ({
   </div >
 );
 
-PropertiesPanelView.propTypes = {
+PropertiesPanel.propTypes = {
   element: PropTypes.objectOf(PropTypes.shape).isRequired,
   nameChanged: PropTypes.func.isRequired,
   applicationSelectionUpdated: PropTypes.func.isRequired,
@@ -53,4 +53,4 @@ PropertiesPanelView.propTypes = {
   disableTaskSelection: PropTypes.bool.isRequired
 };
 
-export default PropertiesPanelView;
+export default PropertiesPanel;

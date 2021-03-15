@@ -23,7 +23,7 @@ const { Sider } = Layout;
  * @category Client
  * @component
  */
-const PropertiesPanel = ({ modeler }) => {
+const ModelerSidebar = ({ modeler }) => {
   const [elementState, setElementState] = useState({
     selectedElements: [],
     currentElement: null,
@@ -232,8 +232,8 @@ const PropertiesPanel = ({ modeler }) => {
   );
 };
 
-PropertiesPanel.propTypes = {
+ModelerSidebar.propTypes = {
   modeler: PropTypes.objectOf(PropTypes.shape).isRequired,
 };
 
-export default PropertiesPanel;
+export default ModelerSidebar;
