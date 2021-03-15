@@ -184,7 +184,7 @@ const PropertiesPanel = ({ modeler }) => {
   };
 
   /**
-   * @description Gets called when a new app was selected in the dropwdown in the sidebar. Resets the task to default value
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar. Resets the task to default value
    */
   const resetTask = () => {
     elementState.currentElement.businessObject.$attrs['arkRPA:task'] =
