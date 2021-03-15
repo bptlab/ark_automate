@@ -1,8 +1,8 @@
 import React from 'react';
 import { Typography, Space } from 'antd';
 import PropTypes from 'prop-types'
-import PropertiesPanelApplicationDropdown from '../../PropertiesPanelApplicationDropdown/PropertiesPanelApplicationDropdown';
-import PropertiesPanelTaskDropdown from '../../PropertiesPanelTaskDropdown/PropertiesPanelTaskDropdown';
+import PropertiesPanelApplicationDropdown from '../PropertiesPanelComponents/PPApplicationDropdown';
+import PropertiesPanelTaskDropdown from '../PropertiesPanelComponents/PPTaskDropdown';
 import styles from '../../PropertiesPanel.module.css';
 
 const { Text } = Typography;

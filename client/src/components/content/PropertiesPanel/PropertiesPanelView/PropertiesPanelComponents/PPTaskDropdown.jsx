@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Select } from 'antd';
-import styles from '../PropertiesPanel.module.css';
+import styles from '../../PropertiesPanel.module.css';
 
 const { Option } = Select;
 
@@ -10,7 +10,7 @@ const { Option } = Select;
  * @category Client
  * @component
  */
-const PropertiesPanelTaskDropdown = ({
+const PPTaskDropdown = ({
   onTaskSelection,
   disabled,
   currentSelection,
@@ -34,4 +34,4 @@ const PropertiesPanelTaskDropdown = ({
   </>
 );
 
-export default PropertiesPanelTaskDropdown;
+export default PPTaskDropdown;
