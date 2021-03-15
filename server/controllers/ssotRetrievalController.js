@@ -23,7 +23,7 @@ exports.getBotList = async (req, res) => {
     const { userid } = req.params;
 
     const usableUserId = mongoose.Types.ObjectId(userid);
-    const availableSSOTsById = await mongoose
+    const availableSsotsById = await mongoose
       .model('userAccessObject')
       .find(
         { userId: usableUserId },
@@ -35,15 +35,15 @@ exports.getBotList = async (req, res) => {
       )
       .exec();
 
-    const SSOTIds = [];
-    availableSSOTsById.forEach((singleUserObj) => {
-      SSOTIds.push(singleUserObj.robotId);
+    const ssotIds = [];
+    availableSsotsById.forEach((singleUserObj) => {
+      ssotIds.push(singleUserObj.robotId);
     });
 
-    const availableSSOTs = await mongoose
+    const availableSsots = await mongoose
       .model('SSoT')
       .find(
-        { _id: { $in: SSOTIds } },
+        { _id: { $in: ssotIds } },
         {
           startedId: 1,
           robotName: 1,
@@ -51,16 +51,16 @@ exports.getBotList = async (req, res) => {
       )
       .exec();
 
-    const SSOTs = [];
-    availableSSOTs.forEach((singleSSOT) => {
-      SSOTs.push({
-        _id: singleSSOT['_id'],
-        starterId: singleSSOT.startedId,
-        robotName: singleSSOT.robotName,
+    const ssots = [];
+    availableSsots.forEach((ssot) => {
+      ssots.push({
+        _id: ssot.id,
+        starterId: ssot.startedId,
+        robotName: ssot.robotName,
       });
     });
 
-    res.send(SSOTs);
+    res.send(ssots);
   } catch (err) {
     console.error(err);
   }
@@ -87,7 +87,7 @@ exports.renameBot = async (req, res) => {
       .exec();
 
     res.send({
-      starterId: ssot.startedId,
+      starterId: ssot.starterId,
       robotName: ssot.robotName,
     });
   } catch (err) {

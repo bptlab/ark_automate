@@ -8,7 +8,6 @@
 const SsotBaseObjects = require('./SsotBaseObjects');
 
 const ssotBaseElement = SsotBaseObjects.baseElement;
-const ssotMetadataObj = SsotBaseObjects.metadataObj;
 
 /**
  * @description Creates a base element of the single source of truth
@@ -121,10 +120,11 @@ const enrichMarkerElements = (elementsArray) => {
  * @returns {string} JSON that has to be put in single source of truth file
  */
 const parseBpmnToSsot = (bpmnJson) => {
-  const ssot = {};
-  ssot['_id'] = ssotMetadataObj['_id'];
-  ssot.starterId = ssotMetadataObj.starterId;
-  ssot.robotName = ssotMetadataObj.robotName;
+  const ssot = {
+    _id: '6045eccfa9a07940e5763f0b',
+    starterId: 'exampleID',
+    robotName: 'exampleRobot',
+  };
 
   const flows =
     bpmnJson['bpmn2:definitions']['bpmn2:process']['bpmn2:sequenceFlow'];

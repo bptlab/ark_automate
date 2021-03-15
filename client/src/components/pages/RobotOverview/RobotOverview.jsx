@@ -63,17 +63,17 @@ const RobotOverview = () => {
   /**
    * @description Creates all boxes for the robots from the database
    * @returns All Boxes that match the current searchValue as React component
-   * @param {String} searchValue2 Currently stored value of the search bar, by which the boxes to be displayed are selected
+   * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
    */
-  const createRobotBoxes = (searchValue2) => {
+  const createRobotBoxes = (currentSearchValue) => {
     const filteredBotList = Object.values(robotList).filter((val) =>
-      val.robotName.toUpperCase().includes(searchValue2.toUpperCase())
+      val.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
     );
 
     return (
       <>
         {filteredBotList.map((val) => (
-          <RobotContainer robotId={val['_id']} robotName={val.robotName} />
+          <RobotContainer robotId={val.id} robotName={val.robotName} />
         ))}
       </>
     );
