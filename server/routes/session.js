@@ -9,6 +9,7 @@ const sessionsController = require('../controllers/sessionsController');
 
 router.get('/byClient/:id', sessionsController.getUserFromClientId);
 router.get('/new', sessionsController.createSession);
+router.get('/:id', sessionsController.getSession);
 router.delete('/:id', sessionsController.deleteSession);
 
 module.exports = router;

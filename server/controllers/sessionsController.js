@@ -39,6 +39,18 @@ exports.createSession = async (req, res) => {
   });
 };
 
+// GET /session/:id
+exports.getSession = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const session = await mongoose.model('session').findById(id).exec();
+    res.send(session);
+    console.log(session);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // DELETE /session/:id
 exports.deleteSession = async (req, res) => {
   try {

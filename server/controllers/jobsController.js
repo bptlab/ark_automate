@@ -8,9 +8,15 @@ const ssotToRobotParser = require('../services/SsotToRobotParsing/SsotToRobotPar
 exports.getJobsForUser = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-
     const { id } = req.params;
-    const jobs = await mongoose.model('jobs').find({ _id: id }).exec();
+    const usableId = mongoose.Types.ObjectId(id);
+    const jobs = await mongoose
+      .model('jobs')
+      .find({ user_id: usableId })
+      .exec();
+    console.log(usableId);
+    console.log(typeof usableId);
+
     res.send(jobs);
   } catch (err) {
     console.error(err);
@@ -23,7 +29,8 @@ exports.deleteJobById = async (req, res) => {
   try {
     const { id } = req.params;
     await mongoose.model('jobs').deleteOne({ _id: id }).exec();
-    res.send('Job deleted');
+    const response = `Deleted Job with id: ${id}`;
+    res.send(response);
   } catch (err) {
     console.error(err);
   }
@@ -33,7 +40,6 @@ exports.deleteJobById = async (req, res) => {
 // TODO herausfinden wie ich das mit den Parameter Array hier machen kann https://stackoverflow.com/questions/1763508/passing-arrays-as-url-parameter/1764199#1764199
 exports.createJob = async (req, res) => {
   res.set('Content-Type', 'application/json');
-  console.log('heeeeeeeeeeeeeeeeeere', req.query);
   const job = new JobsModel.Job({
     user_id: req.query.userId,
     robot_id: req.query.robotId,
@@ -56,9 +62,13 @@ exports.executeJob = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const ssot = await mongoose.model('SSoT').findById(id).exec();
-    const robotCode = ssotToRobotParser.parseSsotToRobotCode(ssot);
-    res.send(robotCode);
+    const ssot = await mongoose.model('SSoT').findById(id).lean().exec();
+    if (ssot === null) {
+      res.send('No Bot found for id');
+    } else {
+      const robotCode = ssotToRobotParser.parseSsotToRobotCode(ssot);
+      res.send(robotCode);
+    }
   } catch (err) {
     console.error(err);
   }
