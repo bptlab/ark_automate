@@ -10,10 +10,10 @@ const inputParameterSchema = new Schema({
 // eslint-disable-next-line camelcase
 const Job_Schema = new Schema({
   user_id: mongoose.Types.ObjectId,
-  ssot_id: mongoose.Types.ObjectId,
+  robot_id: mongoose.Types.ObjectId,
   status: String,
   parameters: [inputParameterSchema],
 });
 
 const Job = mongoose.model('jobs', Job_Schema);
-module.exports =  { Job }
+module.exports = { Job };
