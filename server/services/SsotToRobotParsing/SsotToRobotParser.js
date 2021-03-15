@@ -12,7 +12,7 @@
  */
 const isAnRpaInstruction = (currentElement) =>
   currentElement.rpaTask !== undefined &&
-  currentElement.rpaApplication !== undefined
+  currentElement.rpaApplication !== undefined;
 
 /**
  * @description Checks whether the given element contains rpa parameters
@@ -47,8 +47,8 @@ const writeCodeForElement = (
   previousApplication
 ) => {
   const currentElement = elements.find((element) => element.id === id);
-  let combinedCode = codeToAppend
-  let newPreviousApplication = previousApplication
+  let combinedCode = codeToAppend;
+  let newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
     if (currentElement.rpaApplication !== previousApplication) {
       combinedCode += `${currentElement.name}\n`;

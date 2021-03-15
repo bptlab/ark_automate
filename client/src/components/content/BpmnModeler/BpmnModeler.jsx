@@ -7,13 +7,14 @@ import convert from 'xml-js';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 // eslint-disable-next-line camelcase
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa.json';
-import {parseDiagramJson} from '../../../utils/parser/parser';
+import { parseDiagramJson } from '../../../utils/parser/parser';
 import downloadString from '../../../utils/downloadString';
 import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
-import getParsedRobotFile from "../../../api/ssot";
+import setRobotJob from '../../../api/robot';
+import getParsedRobotFile from '../../../api/ssot';
 
 const { Content } = Layout;
 
@@ -68,6 +69,14 @@ const BpmnModeler = () => {
       });
   };
 
+  /**
+   * @description Will add a new job with the current robot id to the job list on the server side
+   */
+  const executeBot = () => {
+    const robotId = '6045eccfa9a07940e5763f0b';
+    setRobotJob(robotId);
+  };
+
   return (
     <Layout>
       <Content>
@@ -75,7 +84,11 @@ const BpmnModeler = () => {
           <div className={styles['bpmn-modeler-container']} id='bpmnview' />
         </div>
       </Content>
-      <ModelerSidebar modeler={modeler} getRobotFile={downloadRobotFile} />
+      <ModelerSidebar
+        modeler={modeler}
+        getRobotFile={downloadRobotFile}
+        executeBot={executeBot}
+      />
     </Layout>
   );
 };

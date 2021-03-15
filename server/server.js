@@ -8,6 +8,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
 const rpaFrameworkRouter = require('./routes/rpaFramework');
 const ssotRouter = require('./routes/ssot');
+const robotRouter = require('./routes/robot');
 const jobRouter = require('./routes/job');
 const sessionRouter = require('./routes/session');
 
@@ -39,6 +40,7 @@ if (!isDev && cluster.isMaster) {
 
   app.use('/rpa-framework', rpaFrameworkRouter);
   app.use('/ssot', ssotRouter);
+  app.use('/robot', robotRouter);
   app.use('/jobs', jobRouter);
   app.use('/sessions', sessionRouter);
 

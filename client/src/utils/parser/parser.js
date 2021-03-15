@@ -127,4 +127,4 @@ const parseDiagramJson = (jsonData) => {
   return parsedCode;
 };
 
-export {parseDiagramJson};
+export default parseDiagramJson;
