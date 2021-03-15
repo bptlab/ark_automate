@@ -4,7 +4,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
-import { fetchSsotsForUser, createNewBot } from '../../../api/ssotRetrieval';
+import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -64,9 +64,9 @@ const RobotOverview = () => {
   /**
    * @description Creates a new bot for the current userId
    */
-  const createNewRobot = () => {
+  const initiateRobotCreation = () => {
     const robotName = 'New Robot';
-    createNewBot(userId, robotName)
+    createNewRobot(userId, robotName)
       .then((response) => response.json())
       .then((newRobot) => {
         const newRobotList = [...robotList]
@@ -134,7 +134,7 @@ const RobotOverview = () => {
         </div>
 
         <Row gutter={[16, 16]}>
-          <CreateRobotContainer createNewRobot={createNewRobot} />
+          <CreateRobotContainer createNewRobot={initiateRobotCreation} />
           {createRobotBoxes(searchValue)}
         </Row>
       </Space>

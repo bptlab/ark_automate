@@ -16,8 +16,8 @@ exports.getSingleSourceOfTruth = async (req, res) => {
     }
 };
 
-// GET /getAvailableBotsForUser/78d09f66d2ed466cf20b06f7
-exports.getBotList = async (req, res) => {
+// GET /getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
+exports.getRobotList = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const { userid } = req.params;
@@ -55,8 +55,8 @@ exports.getBotList = async (req, res) => {
     }
 };
 
-// GET /renameBot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
-exports.renameBot = async (req, res) => {
+// GET /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
+exports.renameRobot = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const { id } = req.query;
@@ -79,17 +79,15 @@ exports.renameBot = async (req, res) => {
     }
 };
 
-// GET /shareBotWithUser?userid=78d09f66d2ed466cf20b06f7&botId=78d09f66d2ed466cf20b06f7
-exports.shareBotWithUser = async (req, res) => {
+// GET /shareRobotWithUser?userid=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
+exports.shareRobotWithUser = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { userid } = req.query;
-        const { botId } = req.query;
 
         const uao = await mongoose.model('userAccessObject').create({
             AccessLevel: 'ReadWrite',
-            robotId: botId,
-            userId: userid
+            robotId: req.query.robotId,
+            userId: req.query.userid
         });
 
 
@@ -99,14 +97,14 @@ exports.shareBotWithUser = async (req, res) => {
     }
 };
 
-// GET /retrieveMetadataForBot/78d09f66d2ed466cf20b06f7
-exports.retrieveBotMetadata = async (req, res) => {
+// GET /retrieveMetadataForRobot/78d09f66d2ed466cf20b06f7
+exports.retrieveRobotMetadata = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { botId } = req.params;
+        const { robotId } = req.params;
 
         const ssotData = await mongoose.model('SSoT').findById(
-            botId,
+            robotId,
             {
                 robotMetadata: 1
             }
@@ -117,14 +115,14 @@ exports.retrieveBotMetadata = async (req, res) => {
 };
 
 
-// GET /createNewBot?userid=78d09f66d2ed466cf20b06f7&botName=NewRobot
-exports.createNewBot = async (req, res) => {
+// GET /createNewRobot?userid=78d09f66d2ed466cf20b06f7&robotName=NewRobot
+exports.createNewRobot = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const { userid } = req.query;
         const usableUserId = mongoose.Types.ObjectId(userid);
-        const { botName } = req.query;
-        const nameWithEmptyspace = botName.replace(/\+/g, ' ');
+        const { robotName } = req.query;
+        const nameWithEmptyspace = robotName.replace(/\+/g, ' ');
 
         const ssot = await mongoose.model('SSoT').create({
             robotMetadata: {
