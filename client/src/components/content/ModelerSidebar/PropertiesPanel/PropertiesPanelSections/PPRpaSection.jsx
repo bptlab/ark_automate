@@ -3,7 +3,7 @@ import { Typography, Space } from 'antd';
 import PropTypes from 'prop-types'
 import PropertiesPanelApplicationDropdown from '../PropertiesPanelComponents/PPApplicationDropdown';
 import PropertiesPanelTaskDropdown from '../PropertiesPanelComponents/PPTaskDropdown';
-import styles from '../../PropertiesPanel.module.css';
+import styles from '../../ModelerSidebar.module.css';
 
 const { Text } = Typography;
 

@@ -20,7 +20,7 @@ const PropertiesPanelView = ({
   applicationSelectionUpdated,
   tasksForSelectedApplication,
   taskSelectionUpdated,
-  disableTaskSelection,
+  disableTaskSelection
 }) => (
   < div className='element-properties' key={element.id} >
     <Space direction='vertical' style={{ width: '100%' }}>

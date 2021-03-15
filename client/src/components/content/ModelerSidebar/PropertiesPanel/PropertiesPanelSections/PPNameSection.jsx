@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Input, Typography, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import corporateDesign from '../../../../../layout/corporateDesign';
-import styles from '../../PropertiesPanel.module.css';
+import styles from '../../ModelerSidebar.module.css';
 
 const { Text } = Typography;
 

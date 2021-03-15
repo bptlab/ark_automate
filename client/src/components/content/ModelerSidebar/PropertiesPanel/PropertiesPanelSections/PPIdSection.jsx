@@ -1,6 +1,6 @@
 import React from 'react';
 import { Space, Typography } from 'antd';
-import styles from '../../PropertiesPanel.module.css';
+import styles from '../../ModelerSidebar.module.css';
 
 const { Text } = Typography;
 

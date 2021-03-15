@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Select } from 'antd';
-import styles from '../../PropertiesPanel.module.css';
+import styles from '../../ModelerSidebar.module.css';
 
 const { Option } = Select;
 
