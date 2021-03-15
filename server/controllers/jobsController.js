@@ -35,7 +35,7 @@ exports.createJob = async (req, res) => {
   const job = new JobsModel.Job({
     user_id: req.query.userId,
     ssot_id: req.query.ssotId,
-    status: 'new',
+    status: 'waiting',
     parameters: [
       {
         name: 'path',
