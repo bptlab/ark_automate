@@ -9,6 +9,8 @@ import PPNameSection from './PropertiesPanelSections/PPNameSection';
 import PPRpaSection from './PropertiesPanelSections/PPRpaSection';
 import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection'
 
+const outputVariableText = 'GetCell returns the value of the specified cell!';
+
 /**
  * @description Shows PropertiesPanel for one selected BPMN-Element.
  * @category Client
@@ -37,7 +39,7 @@ const PropertiesPanel = ({
             taskSelectionUpdated={taskSelectionUpdated}
             disableTaskSelection={disableTaskSelection}
           />
-          <PPOutputValueSection />
+          {(outputVariableText && <PPOutputValueSection outputVariableText={outputVariableText} />)}
         </>
       )}
     </Space>

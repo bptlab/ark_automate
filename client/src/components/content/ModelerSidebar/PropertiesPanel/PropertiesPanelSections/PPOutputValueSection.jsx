@@ -1,6 +1,7 @@
 import React from 'react';
 import { Space, Typography, Tooltip, Input } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types'
 import corporateDesign from '../../../../../layout/corporateDesign';
 import styles from '../../ModelerSidebar.module.css';
 
@@ -11,7 +12,7 @@ const { Text } = Typography;
  * @category Client
  * @component
  */
-const PPOutputValueSection = () => (
+const PPOutputValueSection = ({ outputVariableText }) => (
   <>
     <Space>
       <Text className={styles[`label-on-dark-background`]}>OutputValue: </Text>
@@ -26,7 +27,7 @@ const PPOutputValueSection = () => (
     <Input
       placeholder='Please type in your outputValue name'
       suffix={
-        <Tooltip title='GetCell returns the value of the specified cell.'>
+        <Tooltip title={outputVariableText}>
           <InfoCircleOutlined style={{ color: corporateDesign.colorPrimaryInverted }} />
         </Tooltip>
       }
@@ -35,5 +36,9 @@ const PPOutputValueSection = () => (
     />
   </>
 );
+
+PPOutputValueSection.propTypes = {
+  outputVariableText: PropTypes.string.isRequired
+};
 
 export default PPOutputValueSection;
