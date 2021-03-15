@@ -1,5 +1,5 @@
-import { is } from 'bpmn-js/lib/util/ModelUtil';
 import React from 'react';
+import { is } from 'bpmn-js/lib/util/ModelUtil';
 import { Space } from 'antd';
 import PropTypes from 'prop-types'
 
