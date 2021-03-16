@@ -3,7 +3,7 @@ import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 // eslint-disable-next-line camelcase
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa.json';
@@ -12,7 +12,8 @@ import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
-import getParsedRobotFile from "../../../api/ssot";
+import setRobotJob from '../../../api/robotExecutionJobs';
+import getParsedRobotFile from '../../../api/ssot';
 
 const { Content } = Layout;
 
@@ -67,6 +68,14 @@ const BpmnModeler = (props) => {
       });
   };
 
+  /**
+   * @description Will add a new job with the current robot id to the job list on the server side
+   */
+  const executeBot = () => {
+    const robotId = '6045eccfa9a07940e5763f0b';
+    setRobotJob(robotId);
+  };
+
   return (
     <Layout>
       <Content>
@@ -74,13 +83,18 @@ const BpmnModeler = (props) => {
           <div className={styles['bpmn-modeler-container']} id='bpmnview' />
         </div>
       </Content>
-      <ModelerSidebar robotId={robotId} modeler={modeler} getRobotFile={downloadRobotFile} />
+      <ModelerSidebar
+        modeler={modeler}
+        robotId={robotId}
+        getRobotFile={downloadRobotFile}
+        executeBot={executeBot}
+      />
     </Layout>
   );
 };
 
 BpmnModeler.propTypes = {
-  robotId: PropTypes.string.isRequired
+  robotId: PropTypes.string.isRequired,
 };
 
 export default BpmnModeler;
