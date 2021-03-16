@@ -27,7 +27,6 @@ const RobotOverview = () => {
     fetchSsotsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
-        console.log('data: ', data);
         setRobotList([]);
         setRobotList([...data]);
       })
@@ -86,7 +85,6 @@ const RobotOverview = () => {
    * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
    */
   const createRobotBoxes = (currentSearchValue) => {
-    console.log('robotList ', robotList);
     const filteredBotList = Object.values(robotList)
       .filter((val) => val.robotName !== undefined)
       .filter((val) =>
@@ -96,6 +94,7 @@ const RobotOverview = () => {
     return (
       <>
         {filteredBotList.map((val) => (
+          // eslint-disable-next-line dot-notation
           <RobotContainer robotId={val['_id']} robotName={val.robotName} />
         ))}
       </>

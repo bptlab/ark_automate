@@ -15,7 +15,6 @@ const parserResultString = parser.parseSsotToRobotCode(testSsot);
 
 describe('Parsing Tests', () => {
   test('Bot contains the correct elements', () => {
-    console.log(parserResultString);
     expect.assertions(8);
     expect(parserResultString).toMatch(SETTING_STRING);
     expect(parserResultString).toMatch(LIBRARY_EXCEL);

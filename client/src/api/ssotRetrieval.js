@@ -19,7 +19,6 @@ const fetchSsotsForUser = async (userId) => {
  * @param {String} newName - String with the new RobotName
  */
 const changeSsotName = async (ssotId, newName) => {
-  console.log('changeSsotName: ', ssotId);
   const adjustedName = newName.replace(/\s/g, '+');
   const requestString = `/ssot/renameRobot?id=${ssotId}&newName=${adjustedName}`;
   const response = await fetch(requestString);
