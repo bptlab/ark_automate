@@ -1,14 +1,9 @@
 const baseElement = {
-    "type": "",
-    "name": "",
-    "id": "",
-    "predecessorIds": [],
-    "successorIds": []
-}
+  type: '',
+  name: '',
+  id: '',
+  predecessorIds: [],
+  successorIds: [],
+};
 
-const metadataObj = {
-    "robotId": "exampleRobot",
-    "starterId": "exampleID"
-}
-
-module.exports = { baseElement, metadataObj  };
+module.exports = { baseElement };

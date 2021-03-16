@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, useLocation } from 'react-router-dom';
 import Modeler from './pages/Modeler/Modeler';
 import Home from './pages/Home/Home';
 import Error from './pages/Error/Error';
@@ -17,7 +17,7 @@ const App = () => (
     <div>
       <Switch>
         <Route path='/' component={Home} exact />
-        <Route path='/modeler' component={Modeler} />
+        <Route path='/modeler/:robotId' component={Modeler} />
         <Route path='/robotfile' component={RobotFile} />
         <Route path='/robot_overview' component={RobotOverview} />
         <Route component={Error} />

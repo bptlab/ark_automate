@@ -3,6 +3,7 @@ import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
+import PropTypes from 'prop-types';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 // eslint-disable-next-line camelcase
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa.json';
@@ -21,7 +22,8 @@ const { Content } = Layout;
  * @category Client
  * @component
  */
-const BpmnModeler = () => {
+const BpmnModeler = (props) => {
+  const { robotId } = props;
   const [modeler, setModeler] = useState(null);
 
   /**
@@ -44,8 +46,7 @@ const BpmnModeler = () => {
     const openBpmnDiagram = (xml) => {
       newModeler.importXML(xml, (error) => {
         if (error) {
-          // eslint-disable-next-line no-console
-          return console.log('fail import xml');
+          return console.error('fail import xml');
         }
         const canvas = newModeler.get('canvas');
         canvas.zoom('fit-viewport');
@@ -84,11 +85,16 @@ const BpmnModeler = () => {
       </Content>
       <ModelerSidebar
         modeler={modeler}
+        robotId={robotId}
         getRobotFile={downloadRobotFile}
         executeBot={executeBot}
       />
     </Layout>
   );
+};
+
+BpmnModeler.propTypes = {
+  robotId: PropTypes.string.isRequired,
 };
 
 export default BpmnModeler;
