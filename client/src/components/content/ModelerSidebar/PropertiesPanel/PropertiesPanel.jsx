@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import PPIdSection from './PropertiesPanelSections/PPIdSection';
 import PPTitle from './PropertiesPanelSections/PPTitleSection'
 import PPNameSection from './PropertiesPanelSections/PPNameSection';
+import PPParameterSection from './PropertiesPanelSections/PPParameterSection';
 import PPRpaSection from './PropertiesPanelSections/PPRpaSection';
 import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection'
 
@@ -22,7 +23,10 @@ const PropertiesPanel = ({
   applicationSelectionUpdated,
   tasksForSelectedApplication,
   taskSelectionUpdated,
-  disableTaskSelection
+  disableTaskSelection,
+  robotId,
+  variableList,
+  parameterUpdated
 }) => (
   < div className='element-properties' key={element.id} >
     <Space direction='vertical' style={{ width: '100%' }}>
@@ -39,6 +43,7 @@ const PropertiesPanel = ({
             taskSelectionUpdated={taskSelectionUpdated}
             disableTaskSelection={disableTaskSelection}
           />
+          {((variableList.length > 0) && <PPParameterSection variableList={variableList} onValueChange={parameterUpdated} />)}
           {(outputVariableText && <PPOutputValueSection outputVariableText={outputVariableText} />)}
         </>
       )}
@@ -52,7 +57,9 @@ PropertiesPanel.propTypes = {
   applicationSelectionUpdated: PropTypes.func.isRequired,
   tasksForSelectedApplication: PropTypes.arrayOf(PropTypes.shape).isRequired,
   taskSelectionUpdated: PropTypes.func.isRequired,
-  disableTaskSelection: PropTypes.bool.isRequired
+  disableTaskSelection: PropTypes.bool.isRequired,
+  variableList: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  parameterUpdated: PropTypes.func.isRequired
 };
 
 export default PropertiesPanel;

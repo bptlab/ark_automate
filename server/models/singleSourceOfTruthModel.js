@@ -11,7 +11,10 @@ const robotMetadataSchema = new Schema({
 const inputParameterSchema = new Schema({
     name: String,
     value: Schema.Types.Mixed,
-    requireUserInput: Boolean
+    requireUserInput: Boolean,
+    type: String,
+    isRequired: Boolean,
+    infoText: String
 });
 
 const instructionSchema = new Schema({
@@ -22,7 +25,8 @@ const instructionSchema = new Schema({
     rpaApplication: String,
     rpaTask: String,
     rpaParameters: [inputParameterSchema],
-    outputVariable: Schema.Types.Mixed
+    outputVariable: Schema.Types.Mixed,
+    id: String
 });
 
 const markerSchema = new Schema({
@@ -35,7 +39,7 @@ const markerSchema = new Schema({
 // eslint-disable-next-line camelcase
 const SSoT_Schema = new Schema({
     robotMetadata: robotMetadataSchema,
-    elements: [instructionSchema, markerSchema ]
+    elements: [instructionSchema, markerSchema]
 });
 
 mongoose.model('SSoT', SSoT_Schema);

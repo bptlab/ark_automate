@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Layout, Space, Button } from 'antd';
 import PropTypes from 'prop-types'
-import PropertiesPanelView from './PropertiesPanel/PropertiesPanel';
+import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
 import fetchTaskParametersAndUpdateRPAProperties from '../../../utils/xmlUtils';
 import initSessionStorage from '../../../utils/sessionStorage';
@@ -10,6 +10,10 @@ import {
   fetchTasksFromDB,
   getAvailableApplications,
 } from '../../../api/applicationAndTaskSelection';
+import {
+  variablesForNewTask,
+  updateVariablesForBot
+} from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
 
@@ -23,7 +27,9 @@ const { Sider } = Layout;
  * @category Client
  * @component
  */
-const ModelerSidebar = ({ modeler }) => {
+const ModelerSidebar = ({ modeler, robotId }) => {
+  const [variableList, setvariableList] = useState([]);
+
   const [elementState, setElementState] = useState({
     selectedElements: [],
     currentElement: null,
@@ -183,6 +189,39 @@ const ModelerSidebar = ({ modeler }) => {
       modeling,
       elementState.currentElement
     );
+    variablesForNewTask(
+      robotId,
+      elementState.currentElement.businessObject.id,
+      selectedApplication,
+      value
+    )
+      .then((response) => response.json())
+      .then((data) => setvariableList(data))
+  };
+
+  /**
+   * @description Gets called when the value in a single input field for the parameters has been changed and updates
+   * the values in the SSOT
+   * @param {Object} value new value of input field
+   */
+  const handleInputParameterChange = (value) => {
+    console.log(value.target.value);
+    const variableName = value.target.placeholder;
+    const variableValue = value.target.value;
+    const editedVariableList = [];
+    variableList.forEach((singleVariable) => {
+      const variableToAdd = singleVariable;
+      if (variableToAdd.name === variableName) {
+        variableToAdd.value = variableValue;
+      }
+      editedVariableList.push(variableToAdd);
+    })
+
+    updateVariablesForBot(
+      robotId,
+      elementState.currentElement.businessObject.id,
+      editedVariableList
+    );
   };
 
   /**
@@ -201,7 +240,7 @@ const ModelerSidebar = ({ modeler }) => {
     <Sider className={styles.sider}>
       <Space direction='vertical' size='large' style={{ width: '100%' }}>
         {elementState.selectedElements.length === 1 && (
-          <PropertiesPanelView
+          <PropertiesPanel
             nameChanged={nameChangedHandler.bind(this)}
             applicationSelectionUpdated={selectApplicationUpdatedHandler.bind(
               this
@@ -210,6 +249,9 @@ const ModelerSidebar = ({ modeler }) => {
             tasksForSelectedApplication={tasksForSelectedApplication}
             disableTaskSelection={disableTaskSelection}
             element={elementState.currentElement}
+            robotId={robotId}
+            variableList={variableList}
+            parameterUpdated={handleInputParameterChange.bind(this)}
           />
         )}
 
@@ -234,6 +276,7 @@ const ModelerSidebar = ({ modeler }) => {
 
 ModelerSidebar.propTypes = {
   modeler: PropTypes.objectOf(PropTypes.shape).isRequired,
+  robotId: PropTypes.string.isRequired
 };
 
 export default ModelerSidebar;

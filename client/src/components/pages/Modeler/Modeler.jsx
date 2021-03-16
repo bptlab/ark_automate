@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Layout } from 'antd';
 import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import PropertiesPanel from '../../content/ModelerSidebar/ModelerSidebar'
-
+import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 
@@ -24,7 +23,7 @@ const Modeler = () => {
       <HeaderNavbar selectedKey={2} />
       <Layout>
         <BpmnModeler onModelerUpdate={updateModeler} />
-        {modeler && <PropertiesPanel modeler={modeler} />}
+        {modeler && <ModelerSidebar modeler={modeler} robotId="6045eccfa9a07940e5763f0b" />}
       </Layout>
     </>
   )

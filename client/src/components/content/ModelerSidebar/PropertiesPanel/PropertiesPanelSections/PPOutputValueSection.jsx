@@ -12,8 +12,13 @@ const { Text } = Typography;
  * @category Client
  * @component
  */
-const PPOutputValueSection = ({ outputVariableText }) => (
-  <>
+const PPOutputValueSection = ({ outputVariableText }) => {
+  const handleOutputVariableChange = (event) => {
+    const outputValueName = event.target.value.replace(/\$/g, '')
+    console.log(outputValueName)
+  }
+
+  return (<>
     <Space>
       <Text className={styles[`label-on-dark-background`]}>OutputValue: </Text>
       <Tooltip
@@ -31,11 +36,11 @@ const PPOutputValueSection = ({ outputVariableText }) => (
           <InfoCircleOutlined style={{ color: corporateDesign.colorPrimaryInverted }} />
         </Tooltip>
       }
-    /* value={element.businessObject.name || ''}
-    onChange={nameChanged} */
+      /* value={element.businessObject.name || ''} */
+      onPressEnter={handleOutputVariableChange}
     />
-  </>
-);
+  </>)
+}
 
 PPOutputValueSection.propTypes = {
   outputVariableText: PropTypes.string.isRequired
