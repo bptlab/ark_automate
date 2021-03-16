@@ -3,7 +3,7 @@ import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 // eslint-disable-next-line camelcase
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa.json';
@@ -80,7 +80,7 @@ const BpmnModeler = (props) => {
 };
 
 BpmnModeler.propTypes = {
-  robotId: PropTypes.string.isRequired
+  robotId: PropTypes.string.isRequired,
 };
 
 export default BpmnModeler;

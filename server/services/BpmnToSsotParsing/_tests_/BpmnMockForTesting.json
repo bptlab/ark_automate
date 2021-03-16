@@ -1,4 +1,4 @@
-const BPMN_XML_AS_JSON = {
+{
   "_declaration": {
     "_attributes": {
       "version": "1.0",
@@ -225,4 +225,3 @@ const BPMN_XML_AS_JSON = {
   }
 }
 
-module.exports = { BPMN_XML_AS_JSON };

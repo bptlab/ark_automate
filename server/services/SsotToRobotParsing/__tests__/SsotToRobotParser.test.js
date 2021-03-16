@@ -1,5 +1,5 @@
 const parser = require('../SsotToRobotParser');
-const testSsot = require('./SsotForTesting').SSOT_JSON_STRING;
+const testSsot = require('./SsotForTesting.json');
 
 const BROWSER_ACTIVITY_NAME = 'ThirdActivity';
 const EXCEL_ACTIVITY_NAME = 'FirstActivity';
@@ -13,11 +13,8 @@ const OPEN_BROWSER_CMD = 'Open Browser';
 
 const parserResultString = parser.parseSsotToRobotCode(testSsot);
 
-
 describe('Parsing Tests', () => {
   test('Bot contains the correct elements', () => {
-
-    console.log(parserResultString)
     expect.assertions(8);
     expect(parserResultString).toMatch(SETTING_STRING);
     expect(parserResultString).toMatch(LIBRARY_EXCEL);
@@ -32,7 +29,6 @@ describe('Parsing Tests', () => {
   });
 
   test('Bot orders the elements correctly', () => {
-
     expect.assertions(7);
     expect(parserResultString.indexOf(BROWSER_ACTIVITY_NAME)).toBeLessThan(
       parserResultString.lastIndexOf(OPEN_BROWSER_CMD)
