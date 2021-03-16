@@ -8,7 +8,7 @@
  * @param {String} application - String with currently selected application from ApplicationDropdown
  */
 const setRobotJob = async (robotId) => {
-  const response = await fetch(`/robot/jobs/add?robotId=${robotId}`);
+  const response = await fetch(`/robot-execution-jobs/add?robotId=${robotId}`);
   return response;
 };
 

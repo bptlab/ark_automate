@@ -4,7 +4,7 @@ const ssotModels = require('../models/singleSourceOfTruthModel.js');
 
 const robotJobs = [];
 
-// GET /robot/jobs/add?robotId=123245
+// GET /robot-execution-jobs/add?robotId=123245
 exports.addNewRobotJob = async (req, res) => {
   try {
     const { robotId } = req.query;
@@ -15,7 +15,7 @@ exports.addNewRobotJob = async (req, res) => {
   }
 };
 
-// GET /robot/jobs/execute
+// GET /robot-execution-jobs/execute
 exports.executeCurrentRobotJob = async (req, res) => {
   try {
     if (robotJobs.length !== 0) {
