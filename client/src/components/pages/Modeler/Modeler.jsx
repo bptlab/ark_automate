@@ -10,14 +10,18 @@ const { Footer } = Layout;
  * @category Client
  * @component
  */
-const Modeler = () => (
-  <div>
-    <Layout>
-      <HeaderNavbar selectedKey={2} />
-      <BpmnModeler />
-      <Footer>Fußzeile</Footer>
-    </Layout>
-  </div>
-);
+const Modeler = (match) => {
+  const { robotId } = match.match.params;
+
+  return (
+    <div>
+      <Layout>
+        <HeaderNavbar selectedKey={2} />
+        <BpmnModeler robotId={robotId} />
+        <Footer>Fußzeile</Footer>
+      </Layout>
+    </div>
+  )
+};
 
 export default Modeler;

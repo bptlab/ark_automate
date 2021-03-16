@@ -21,7 +21,7 @@ class DBManager {
     process.env.MONGODB_URI = url;
 
     const conn = await mongoose.createConnection(); // just create connection instance
-    const Tasks = conn.model('rpa-tasks'); // define model
+    const Tasks = conn.model('rpa-task'); // define model
     conn.openUri(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
     Tasks.createCollection()
       .then(() => {
@@ -36,7 +36,7 @@ class DBManager {
   }
 
   mockDocuments() {
-    const Task = mongoose.model('rpa-tasks');
+    const Task = mongoose.model('rpa-task');
     const Variable = mongoose.model('rpa-tasks-variable');
   
     let firstInputFirstTask = new Variable({ Name: 'taste', Type: 'String', Required: true });
