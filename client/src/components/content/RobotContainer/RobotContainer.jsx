@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
-import {changeSSOTName} from '../../../api/SSOTretrieval';
+import { changeSsotName } from '../../../api/ssotRetrieval';
 
 const { Title } = Typography;
 
@@ -15,14 +16,12 @@ const { Title } = Typography;
  */
 const RobotContainer = (props) => {
 
-    const {robotId} = props;
-    // eslint-disable-next-line react/destructuring-assignment
-    const [robotName, setRobotName] = useState(props.robotName);
+    const { robotId, robotName } = props;
+    const [name, setRobotName] = useState(robotName);
     const startRobot = () => alert("Running the Robot is currently not supported!");
-    const editRobot = () => alert("Editing the Robot is currently not supported!");
 
     const renameRobot = (value) => {
-        changeSSOTName(robotId, value)
+        changeSsotName(robotId, value)
             .then(() => {
                 setRobotName(value);
             })
@@ -39,22 +38,25 @@ const RobotContainer = (props) => {
                         <PlayCircleOutlined onClick={startRobot} className={styles.clickableIcon} />
                     </Col>
                     <Col type="flex" span={12}>
-                        <EditOutlined onClick={editRobot} className={styles.clickableIcon} />
+                        <Link to={`/modeler/${robotId}`}>
+                            <EditOutlined className={styles.clickableIcon} />
+                        </Link>
                     </Col>
                 </Row>
 
                 <Row justify="space-around" align="middle" style={{ height: '45%' }}>
                     <Title className={styles.title} level={3} editable={{ onChange: renameRobot }} >
-                        {robotName}
+                        {name}
                     </Title>
                 </Row>
             </Col>
         </Col >
     )
 };
-export default RobotContainer;
 
 RobotContainer.propTypes = {
     robotName: PropTypes.string.isRequired,
     robotId: PropTypes.string.isRequired,
 };
+
+export default RobotContainer;

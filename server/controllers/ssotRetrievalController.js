@@ -16,14 +16,14 @@ exports.getSingleSourceOfTruth = async (req, res) => {
   }
 };
 
-// GET /getAvailableBotsForUser/:userid
-exports.getBotList = async (req, res) => {
+// GET /getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
+exports.getRobotList = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
     const { userid } = req.params;
-
     const usableUserId = mongoose.Types.ObjectId(userid);
-    const availableSsotsById = await mongoose
+
+    const userAccessObjs = await mongoose
       .model('userAccessObject')
       .find(
         { userId: usableUserId },
@@ -36,7 +36,7 @@ exports.getBotList = async (req, res) => {
       .exec();
 
     const ssotIds = [];
-    availableSsotsById.forEach((singleUserObj) => {
+    userAccessObjs.forEach((singleUserObj) => {
       ssotIds.push(singleUserObj.robotId);
     });
 
@@ -45,7 +45,7 @@ exports.getBotList = async (req, res) => {
       .find(
         { _id: { $in: ssotIds } },
         {
-          startedId: 1,
+          starterId: 1,
           robotName: 1,
         }
       )
@@ -66,18 +66,19 @@ exports.getBotList = async (req, res) => {
   }
 };
 
-// GET /renameBot?id=Browser&newName=Open+Browser
-exports.renameBot = async (req, res) => {
+// GET /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
+exports.renameRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
     const { id } = req.query;
+    const usableUserId = mongoose.Types.ObjectId(id);
     const { newName } = req.query;
     const newNameWithEmptyspace = newName.replace(/\+/g, ' ');
 
     const ssot = await mongoose
       .model('SSoT')
       .findByIdAndUpdate(
-        { _id: id },
+        { _id: usableUserId },
         { robotName: newNameWithEmptyspace },
         {
           new: true,
@@ -90,6 +91,80 @@ exports.renameBot = async (req, res) => {
       starterId: ssot.starterId,
       robotName: ssot.robotName,
     });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET /shareRobotWithUser?userid=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
+exports.shareRobotWithUser = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+
+    const uao = await mongoose.model('userAccessObject').create({
+      AccessLevel: 'ReadWrite',
+      robotId: req.query.robotId,
+      userId: req.query.userid,
+    });
+
+    res.send(uao);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET /retrieveMetadataForRobot/78d09f66d2ed466cf20b06f7
+exports.retrieveRobotMetadata = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const { robotId } = req.params;
+
+    const ssotData = await mongoose
+      .model('SSoT')
+      .findById(robotId, {
+        robotMetadata: 1,
+      })
+      .exec();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET /createNewRobot?userid=78d09f66d2ed466cf20b06f7&robotName=NewRobot
+exports.createNewRobot = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const { userid } = req.query;
+    const usableUserId = mongoose.Types.ObjectId(userid);
+    const { robotName } = req.query;
+    const nameWithEmptyspace = robotName.replace(/\+/g, ' ');
+
+    const ssot = await mongoose.model('SSoT').create({
+      robotMetadata: {
+        starterId: '',
+        robotName: nameWithEmptyspace,
+      },
+      elements: [],
+    });
+
+    const updatedSsot = await ssot
+      .updateOne({
+        'robotMetadata.robotId': ssot.id,
+      })
+      .exec();
+
+    const uao = await mongoose.model('userAccessObject').create({
+      AccessLevel: 'ReadWrite',
+      robotId: ssot.id,
+      userId: usableUserId,
+    });
+
+    const returnObj = {
+      robotName: nameWithEmptyspace,
+      robotId: ssot.id,
+    };
+
+    res.send(returnObj);
   } catch (err) {
     console.error(err);
   }

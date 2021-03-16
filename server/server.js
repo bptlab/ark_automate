@@ -38,12 +38,11 @@ if (!isDev && cluster.isMaster) {
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', (request, response) => {
     response.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-  }); 
+  });
 
   app.listen(PORT, () => {
     console.error(
-      `Node ${
-        isDev ? 'dev server' : `cluster worker ${process.pid}`
+      `Node ${isDev ? 'dev server' : `cluster worker ${process.pid}`
       }: listening on port ${PORT}`
     );
   });
