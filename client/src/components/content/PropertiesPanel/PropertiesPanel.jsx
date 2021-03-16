@@ -20,7 +20,7 @@ const { Title } = Typography;
  * @category Client
  * @component
  */
-const PropertiesPanel = ({ modeler }) => {
+const PropertiesPanel = ({ modeler, robotId }) => {
   const [elementState, setElementState] = useState({
     selectedElements: [],
     currentElement: null,
@@ -164,6 +164,7 @@ const PropertiesPanel = ({ modeler }) => {
       currentElement: elementState.currentElement,
     });
     setSelectedApplication(value);
+    resetTask();
     getTasksForApplication(value);
   };
 
@@ -182,8 +183,23 @@ const PropertiesPanel = ({ modeler }) => {
     );
   };
 
+  /**
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar. Resets the task to default value
+   */
+  const resetTask = () => {
+    elementState.currentElement.businessObject.$attrs['arkRPA:task'] =
+      'Please select task';
+    setElementState({
+      selectedElements: elementState.selectedElements,
+      currentElement: elementState.currentElement,
+    });
+  };
+
   return (
     <div>
+      <Title level={5} className={styles.title}>
+        Roboter: {robotId}
+      </Title>
       {elementState.selectedElements.length === 1 && (
         <PropertiesPanelView
           nameChanged={nameChangedHandler.bind(this)}

@@ -47,8 +47,7 @@ if (!isDev && cluster.isMaster) {
 
   app.listen(PORT, () => {
     console.error(
-      `Node ${
-        isDev ? 'dev server' : `cluster worker ${process.pid}`
+      `Node ${isDev ? 'dev server' : `cluster worker ${process.pid}`
       }: listening on port ${PORT}`
     );
   });

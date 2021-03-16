@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const robotMetadataSchema = new Schema({
-    robotId: String,
+    robotId: mongoose.Types.ObjectId,
     starterId: String,
     robotName: String
 });
