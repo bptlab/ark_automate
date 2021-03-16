@@ -4,6 +4,7 @@ import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import socket from '../../../utils/socket/socketConnections'
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
 
@@ -18,9 +19,7 @@ const RobotContainer = (props) => {
   const { robotId, robotName } = props;
   const [name, setRobotName] = useState(robotName);
 
-  const startRobot = () =>
-    alert('Running the Robot is currently not supported!');
-
+  const startRobot = () => socket.emit('robotExecutionJobs', robotId)
   const renameRobot = (value) => {
     changeSsotName(robotId, value)
       .then(() => {

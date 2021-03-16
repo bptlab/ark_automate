@@ -12,7 +12,6 @@ import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
-import setRobotJob from '../../../api/robotExecutionJobs';
 import getParsedRobotFile from '../../../api/ssot';
 
 const { Content } = Layout;
@@ -68,14 +67,6 @@ const BpmnModeler = (props) => {
       });
   };
 
-  /**
-   * @description Will add a new job with the current robot id to the job list on the server side
-   */
-  const executeBot = () => {
-    const robotId = '6045eccfa9a07940e5763f0b';
-    setRobotJob(robotId);
-  };
-
   return (
     <Layout>
       <Content>
@@ -87,7 +78,6 @@ const BpmnModeler = (props) => {
         modeler={modeler}
         robotId={robotId}
         getRobotFile={downloadRobotFile}
-        executeBot={executeBot}
       />
     </Layout>
   );
