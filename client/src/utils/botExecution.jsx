@@ -1,8 +1,9 @@
 // is a dummy function
 const isBotExecutable = () => {
-    if (Math.random() > 0.49) {
-        return true;
-    }
-    return false;
+  // eslint-disable-next-line no-constant-condition
+  if (true) {
+    return true;
+  }
+  return false;
 };
 export default isBotExecutable;
