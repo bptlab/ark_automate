@@ -2,8 +2,7 @@
 const mongoose = require('mongoose');
 const sessionsModel = require('../models/sessionModel.js');
 
-// GET /session/:client_id
-// example client_id 604a3ba656ee2d1f2d4eda61
+// GET /session/604a3ba656ee2d1f2d4eda61
 exports.getUserFromClientId = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
@@ -26,7 +25,7 @@ exports.getUserFromClientId = async (req, res) => {
   }
 };
 
-// GET /session/new?lci=123123&userId=123111
+// GET /session/new?lci=604a3baa56ee2d1f2d4eda60&userId=604a3ba656ee2d1f2d4eda61
 exports.createSession = async (req, res) => {
   res.set('Content-Type', 'application/json');
   const session = new sessionsModel.Session({
@@ -39,19 +38,18 @@ exports.createSession = async (req, res) => {
   });
 };
 
-// GET /session/:id
+// GET /session/604a3ba656ee2d1f2d4eda10
 exports.getSession = async (req, res) => {
   try {
     const { id } = req.params;
     const session = await mongoose.model('session').findById(id).exec();
     res.send(session);
-    console.log(session);
   } catch (err) {
     console.error(err);
   }
 };
 
-// DELETE /session/:id
+// DELETE /session/604a3ba656ee2d1f2d4eda50
 exports.deleteSession = async (req, res) => {
   try {
     const { id } = req.params;

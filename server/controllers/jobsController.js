@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
+require('express');
 const mongoose = require('mongoose');
 const JobsModel = require('../models/jobModel.js');
 const ssotToRobotParser = require('../services/SsotToRobotParsing/SsotToRobotParser.js');
 
-// GET /jobs/user/:id
-// testuserid 604a2073f1ec35a222478e17
+// GET /jobs/user/604a2073f1ec35a222478e17
 exports.getJobsForUser = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
@@ -14,17 +14,13 @@ exports.getJobsForUser = async (req, res) => {
       .model('jobs')
       .find({ user_id: usableId })
       .exec();
-    console.log(usableId);
-    console.log(typeof usableId);
-
     res.send(jobs);
   } catch (err) {
     console.error(err);
   }
 };
 
-// DELETE /jobs/:id
-// test job id 604a2073f1ec35a442478e17
+// DELETE /jobs/604a2073f1ec35a442478e17
 exports.deleteJobById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -36,28 +32,33 @@ exports.deleteJobById = async (req, res) => {
   }
 };
 
-// GET /jobs/new?userId=111111&ssotId=123123
-// TODO herausfinden wie ich das mit den Parameter Array hier machen kann https://stackoverflow.com/questions/1763508/passing-arrays-as-url-parameter/1764199#1764199
+// GET /jobs/new?userId=111111&robotId=123123&path=1&name=2
+// Parameter array musst wie folgt gepassed werden https://stackoverflow.com/questions/6566456/how-to-serialize-an-object-into-a-list-of-url-query-parameters/23639793#23639793
 exports.createJob = async (req, res) => {
   res.set('Content-Type', 'application/json');
+
+  const queryKeys = Object.keys(req.query);
+  const queryParameters = [];
+  queryKeys.forEach((key) => {
+    if (!(key === 'userId' || key === 'robotId')) {
+      queryParameters.push({ name: key, value: req.query[key] });
+    }
+  });
+
   const job = new JobsModel.Job({
     user_id: req.query.userId,
     robot_id: req.query.robotId,
     status: 'waiting',
-    parameters: [
-      {
-        name: 'path',
-        value: '1',
-      },
-    ],
+    parameters: queryParameters,
   });
+
   job.save((err) => {
     if (err) return console.error(err);
     return res.send(job);
   });
 };
 
-// GET /jobs/run/:id
+// GET /jobs/run/604a2073f1ec35a442478e17
 exports.executeJob = async (req, res) => {
   try {
     const { id } = req.params;
