@@ -16,6 +16,7 @@ import {
 } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
+import { fetchSsot } from '../../../api/ssotRetrieval';
 
 
 const { Title } = Typography;
@@ -59,6 +60,14 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
+    fetchSsot(robotId)
+      .then((response) => response.json())
+      .then((data) => {
+        sessionStorage.setItem('ssotLocal', data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
     initSessionStorage('AvailableApplications', []);
     const applicationList = sessionStorage.getItem('AvailableApplications');

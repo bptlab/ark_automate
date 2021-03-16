@@ -14,6 +14,7 @@
     "body-parser": "^1.18.3",
     "bpmn-font": "^0.10.0",
     "bpmn-js": "^7.4.0",
+    "bpmn-js-cli": "^2.0.2",
     "bpmn-js-properties-panel": "^0.37.5",
     "camunda-bpmn-moddle": "^4.4.1",
     "craco-antd": "^1.19.0",

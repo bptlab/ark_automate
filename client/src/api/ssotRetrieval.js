@@ -4,10 +4,19 @@
  */
 
 /**
+* @description Fetch the ssot correlating to the specified Id
+* @param { String } robotId - String including the Id of the robot to be retrieved
+*/
+const fetchSsot = async (robotId) => {
+    const requestString = `/ssot/get/${robotId}`;
+    const response = await fetch(requestString);
+    return response;
+};
+
+/**
 * @description Fetch all those Ssot names and Ids, which are available for the current user
 * @param { String } userId - String including the user Id
 */
-
 const fetchSsotsForUser = async (userId) => {
     const requestString = `/ssot/getAvailableRobotsForUser/${userId}`;
     const response = await fetch(requestString);
@@ -48,6 +57,7 @@ const createNewRobot = async (userid, newName) => {
 };
 
 export {
+    fetchSsot,
     fetchSsotsForUser,
     changeSsotName,
     retrieveMetadataForBot,

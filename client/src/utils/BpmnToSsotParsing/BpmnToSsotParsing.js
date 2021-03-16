@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
 /**
- * @category Server
+ * @category Client
  * @module
  */
 
