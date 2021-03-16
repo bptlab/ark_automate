@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
-import setRobotJob from '../../../api/robot';
+import setRobotJob from '../../../api/robotExecutionJobs';
 import isBotExecutable from '../../../utils/botExecution';
 
 const { Title } = Typography;
