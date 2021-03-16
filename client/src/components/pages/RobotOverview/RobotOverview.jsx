@@ -4,7 +4,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
-import {fetchSSOTsForUser} from '../../../api/SSOTretrieval';
+import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -23,11 +23,12 @@ const RobotOverview = () => {
    * @description Fetches Bots for the specified user and will trigger a rerender so that it will be displayed
    * @param {String} userIdToFetch The userId to fetch Bots for
    */
-   const retrieveBotList = (userIdToFetch) => {
-    fetchSSOTsForUser(userIdToFetch)
+  const retrieveBotList = (userIdToFetch) => {
+    fetchSsotsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
-        setRobotList(data);
+        setRobotList([]);
+        setRobotList([...data]);
       })
       .catch((error) => {
         console.error(error);
@@ -37,7 +38,7 @@ const RobotOverview = () => {
   /**
    * @description Equivalent to ComponentDidMount in class based components
    */
-  useEffect( () => {
+  useEffect(() => {
     initSessionStorage('CurrentUserId', '80625d115100a2ee8d8e695b');
     retrieveBotList(userId);
   }, []);
@@ -61,24 +62,40 @@ const RobotOverview = () => {
   };
 
   /**
+   * @description Creates a new bot for the current userId
+   */
+  const initiateRobotCreation = () => {
+    const robotName = 'New Robot';
+    createNewRobot(userId, robotName)
+      .then((response) => response.json())
+      .then((newRobot) => {
+        const newRobotList = [newRobot, ...robotList];
+        setRobotList([]);
+        setRobotList(newRobotList);
+        retrieveBotList(userId);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  /**
    * @description Creates all boxes for the robots from the database
    * @returns All Boxes that match the current searchValue as React component
-   * @param {String} searchValue2 Currently stored value of the search bar, by which the boxes to be displayed are selected
+   * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
    */
-  const createRobotBoxes = (searchValue2) => {
-    const filteredBotList = Object.values(robotList).filter((val) =>
-      val.robotName
-        .toUpperCase()
-        .includes(searchValue2.toUpperCase())
-    );
+  const createRobotBoxes = (currentSearchValue) => {
+    const filteredBotList = Object.values(robotList)
+      .filter((val) => val.robotName !== undefined)
+      .filter((val) =>
+        val.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
+      );
 
     return (
       <>
         {filteredBotList.map((val) => (
-          <RobotContainer 
-            robotId={val.robotId} 
-            robotName={val.robotName} 
-          />
+          // eslint-disable-next-line dot-notation
+          <RobotContainer robotId={val['_id']} robotName={val.robotName} />
         ))}
       </>
     );
@@ -107,15 +124,23 @@ const RobotOverview = () => {
             onChange={changeUserId}
             defaultValue='80625d115100a2ee8d8e695b'
           >
-            <Option key='user1' value='80625d115100a2ee8d8e695b'>Lukas</Option>
-            <Option key='user2' value='365889fcf871cfe88711b630'>Erik</Option>
-            <Option key='user3' value='225aa14130f2c07789cfa38e'>Sandro</Option>
-            <Option key='user4' value='afdb3d839ca02a106750a2a0'>Daniel</Option>
+            <Option key='user1' value='80625d115100a2ee8d8e695b'>
+              Lukas
+            </Option>
+            <Option key='user2' value='365889fcf871cfe88711b630'>
+              Erik
+            </Option>
+            <Option key='user3' value='225aa14130f2c07789cfa38e'>
+              Sandro
+            </Option>
+            <Option key='user4' value='afdb3d839ca02a106750a2a0'>
+              Daniel
+            </Option>
           </Select>
         </div>
 
         <Row gutter={[16, 16]}>
-          <CreateRobotContainer />
+          <CreateRobotContainer createNewRobot={initiateRobotCreation} />
           {createRobotBoxes(searchValue)}
         </Row>
       </Space>

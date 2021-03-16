@@ -5,75 +5,166 @@ const userAccessModels = require('../models/userAccessObjectModel.js');
 
 // GET /ssot/:id
 exports.getSingleSourceOfTruth = async (req, res) => {
-    try {
-        res.set('Content-Type', 'application/json');
-        
-        const { id } = req.params;
-        const ssot = await mongoose.model('SSoT').findById(id).exec();
-        res.send(ssot);
-    } catch (err) {
-        console.error(err);
-    }
+  try {
+    res.set('Content-Type', 'application/json');
+
+    const { id } = req.params;
+    const ssot = await mongoose.model('SSoT').findById(id).exec();
+    res.send(ssot);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-// GET /getAvailableBotsForUser/:userid
-exports.getBotList = async (req, res) => {
-    try {
-        res.set('Content-Type', 'application/json');
-        const { userid } = req.params;
-        
-        const usableUserId = mongoose.Types.ObjectId(userid);
-        const availableSSOTsById = await mongoose.model('userAccessObject').find(
-            { userId: usableUserId }, 
-            {
-                AccessLevel: 0,
-                _id: 0,
-                userId: 0
-            }
-        ).exec();
-        
-        const SSOTIds = [];
-        availableSSOTsById.forEach((singleUserObj) => {
-            SSOTIds.push(singleUserObj.robotId);
-        });
+// GET /getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
+exports.getRobotList = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const { userid } = req.params;
+    const usableUserId = mongoose.Types.ObjectId(userid);
 
-        const availableSSOTs = await mongoose.model('SSoT').find(
-            { _id: { $in: SSOTIds } }, 
-            {
-                robotMetadata: 1
-            }
-        ).exec();
-        
-        const SSOTs = [];
-        availableSSOTs.forEach((singleSSOT) => {
-            SSOTs.push(singleSSOT.robotMetadata);
-        });
+    const userAccessObjs = await mongoose
+      .model('userAccessObject')
+      .find(
+        { userId: usableUserId },
+        {
+          AccessLevel: 0,
+          _id: 0,
+          userId: 0,
+        }
+      )
+      .exec();
 
-        res.send(SSOTs);
-    } catch (err) {
-        console.error(err);
-    }
+    const ssotIds = [];
+    userAccessObjs.forEach((singleUserObj) => {
+      ssotIds.push(singleUserObj.robotId);
+    });
+
+    const availableSsots = await mongoose
+      .model('SSoT')
+      .find(
+        { _id: { $in: ssotIds } },
+        {
+          starterId: 1,
+          robotName: 1,
+        }
+      )
+      .exec();
+
+    const ssots = [];
+    availableSsots.forEach((ssot) => {
+      ssots.push({
+        _id: ssot.id,
+        starterId: ssot.startedId,
+        robotName: ssot.robotName,
+      });
+    });
+
+    res.send(ssots);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-// GET /renameBot?id=Browser&newName=Open+Browser
-exports.renameBot = async (req, res) => {
-    try {
-        res.set('Content-Type', 'application/json');
-        const {id} = req.query;
-        const {newName} = req.query;
-        const newNameWithEmptyspace = newName.replace(/\+/g, ' ');
+// GET /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
+exports.renameRobot = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const { id } = req.query;
+    const usableUserId = mongoose.Types.ObjectId(id);
+    const { newName } = req.query;
+    const newNameWithEmptyspace = newName.replace(/\+/g, ' ');
 
-        const ssot = await mongoose.model('SSoT').findByIdAndUpdate(
-            { _id: id },
-            {'robotMetadata.robotName': newNameWithEmptyspace},
-            {
-                new: true,
-                useFindAndModify: false
-            }
-        ).exec();
+    const ssot = await mongoose
+      .model('SSoT')
+      .findByIdAndUpdate(
+        { _id: usableUserId },
+        { robotName: newNameWithEmptyspace },
+        {
+          new: true,
+          useFindAndModify: false,
+        }
+      )
+      .exec();
 
-        res.send(ssot.robotMetadata);
-    } catch (err) {
-        console.error(err);
-    }
+    res.send({
+      starterId: ssot.starterId,
+      robotName: ssot.robotName,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET /shareRobotWithUser?userid=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
+exports.shareRobotWithUser = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+
+    const uao = await mongoose.model('userAccessObject').create({
+      AccessLevel: 'ReadWrite',
+      robotId: req.query.robotId,
+      userId: req.query.userid,
+    });
+
+    res.send(uao);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET /retrieveMetadataForRobot/78d09f66d2ed466cf20b06f7
+exports.retrieveRobotMetadata = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const { robotId } = req.params;
+
+    const ssotData = await mongoose
+      .model('SSoT')
+      .findById(robotId, {
+        starterId: 1,
+        robotName: 1,
+      })
+      .exec();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// GET /createNewRobot?userid=78d09f66d2ed466cf20b06f7&robotName=NewRobot
+exports.createNewRobot = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const { userid } = req.query;
+    const usableUserId = mongoose.Types.ObjectId(userid);
+    const { robotName } = req.query;
+    const nameWithEmptyspace = robotName.replace(/\+/g, ' ');
+
+    const ssot = await mongoose.model('SSoT').create({
+      starterId: '',
+      robotName: nameWithEmptyspace,
+      elements: [],
+    });
+
+    const updatedSsot = await ssot
+      .updateOne({
+        _id: ssot.id,
+      })
+      .exec();
+
+    const uao = await mongoose.model('userAccessObject').create({
+      AccessLevel: 'ReadWrite',
+      robotId: ssot.id,
+      userId: usableUserId,
+    });
+
+    const returnObj = {
+      robotName: nameWithEmptyspace,
+      robotId: ssot.id,
+    };
+
+    res.send(returnObj);
+  } catch (err) {
+    console.error(err);
+  }
 };

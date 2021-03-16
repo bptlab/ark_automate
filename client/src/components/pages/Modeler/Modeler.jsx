@@ -11,7 +11,8 @@ import 'bpmn-font/dist/css/bpmn-embedded.css';
  * @category Client
  * @component
  */
-const Modeler = () => {
+const Modeler = (match) => {
+  const { robotId } = match.match.params;
   const [modeler, setModeler] = useState(null);
 
   const updateModeler = (updatedModeler) => {
@@ -22,8 +23,8 @@ const Modeler = () => {
     <>
       <HeaderNavbar selectedKey={2} />
       <Layout>
-        <BpmnModeler onModelerUpdate={updateModeler} />
-        {modeler && <ModelerSidebar modeler={modeler} robotId="6045eccfa9a07940e5763f0b" />}
+        <BpmnModeler robotId={robotId} onModelerUpdate={updateModeler} />
+        {modeler && <ModelerSidebar modeler={modeler} robotId={robotId} />}
       </Layout>
     </>
   )

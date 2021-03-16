@@ -8,11 +8,13 @@ const retrievalController = require('../controllers/ssotRetrievalController');
 const variableController = require('../controllers/ssotVariableController');
 
 /// SSOTPARSING ROUTES ///
-
 router.get('/parser/get-robot-code', parsingController.getRobotCode);
 router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
-router.get('/getAvailableBotsForUser/:userid', retrievalController.getBotList);
-router.get('/renameBot', retrievalController.renameBot);
+router.get('/getAvailableRobotsForUser/:userid', retrievalController.getRobotList);
+router.get('/renameRobot', retrievalController.renameRobot);
+router.get('/retrieveMetadataForRobot/:botId', retrievalController.retrieveRobotMetadata);
+router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser);
+router.get('/createNewRobot', retrievalController.createNewRobot);
 
 router.get('/getVariablesForNewTask', variableController.getVariablesForNewTask);
 router.get('/checkForExistingVariables', variableController.checkForExistingVariables);

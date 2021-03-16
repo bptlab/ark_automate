@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
@@ -19,7 +19,7 @@ const { Content } = Layout;
  * @component
  */
 const BpmnModeler = (props) => {
-  // const [modeler, setModeler] = useState(null);
+  const [modeler, setModeler] = useState(null);
 
   /**
    * @description Equivalent to ComponentDidMount in class based components
