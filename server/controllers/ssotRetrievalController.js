@@ -122,7 +122,8 @@ exports.retrieveRobotMetadata = async (req, res) => {
     const ssotData = await mongoose
       .model('SSoT')
       .findById(robotId, {
-        robotMetadata: 1,
+        starterId: 1,
+        robotName: 1,
       })
       .exec();
   } catch (err) {
@@ -140,16 +141,14 @@ exports.createNewRobot = async (req, res) => {
     const nameWithEmptyspace = robotName.replace(/\+/g, ' ');
 
     const ssot = await mongoose.model('SSoT').create({
-      robotMetadata: {
-        starterId: '',
-        robotName: nameWithEmptyspace,
-      },
+      starterId: '',
+      robotName: nameWithEmptyspace,
       elements: [],
     });
 
     const updatedSsot = await ssot
       .updateOne({
-        'robotMetadata.robotId': ssot.id,
+        _id: ssot.id,
       })
       .exec();
 

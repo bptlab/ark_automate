@@ -27,6 +27,7 @@ const RobotOverview = () => {
     fetchSsotsForUser(userIdToFetch)
       .then((response) => response.json())
       .then((data) => {
+        console.log('data: ', data);
         setRobotList([]);
         setRobotList([...data]);
       })
@@ -69,10 +70,10 @@ const RobotOverview = () => {
     createNewRobot(userId, robotName)
       .then((response) => response.json())
       .then((newRobot) => {
-        const newRobotList = [...robotList];
-        newRobotList.unshift(newRobot);
+        const newRobotList = [newRobot, ...robotList];
         setRobotList([]);
         setRobotList(newRobotList);
+        retrieveBotList(userId);
       })
       .catch((error) => {
         console.error(error);
@@ -85,14 +86,17 @@ const RobotOverview = () => {
    * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
    */
   const createRobotBoxes = (currentSearchValue) => {
-    const filteredBotList = Object.values(robotList).filter((val) =>
-      val.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
-    );
+    console.log('robotList ', robotList);
+    const filteredBotList = Object.values(robotList)
+      .filter((val) => val.robotName !== undefined)
+      .filter((val) =>
+        val.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
+      );
 
     return (
       <>
         {filteredBotList.map((val) => (
-          <RobotContainer robotId={val.id} robotName={val.robotName} />
+          <RobotContainer robotId={val['_id']} robotName={val.robotName} />
         ))}
       </>
     );

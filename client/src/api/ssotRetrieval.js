@@ -19,6 +19,7 @@ const fetchSsotsForUser = async (userId) => {
  * @param {String} newName - String with the new RobotName
  */
 const changeSsotName = async (ssotId, newName) => {
+  console.log('changeSsotName: ', ssotId);
   const adjustedName = newName.replace(/\s/g, '+');
   const requestString = `/ssot/renameRobot?id=${ssotId}&newName=${adjustedName}`;
   const response = await fetch(requestString);
@@ -36,7 +37,7 @@ const retrieveMetadataForBot = async (robotId) => {
 };
 
 /**
- * @description Create a new robot with the specified name for the specified user 
+ * @description Create a new robot with the specified name for the specified user
  * @param {String} newName - String including the user Id
  */
 const createNewRobot = async (userid, newName) => {
@@ -50,5 +51,5 @@ export {
   fetchSsotsForUser,
   changeSsotName,
   retrieveMetadataForBot,
-  createNewRobot
+  createNewRobot,
 };
