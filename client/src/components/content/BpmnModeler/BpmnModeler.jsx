@@ -3,17 +3,15 @@ import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-import convert from 'xml-js';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 // eslint-disable-next-line camelcase
 import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa.json';
-import { parseDiagramJson } from '../../../utils/parser/parser';
 import downloadString from '../../../utils/downloadString';
 import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
-import setRobotJob from '../../../api/robot';
+import setRobotJob from '../../../api/robotExecutionJobs';
 import getParsedRobotFile from '../../../api/ssot';
 
 const { Content } = Layout;
