@@ -164,6 +164,7 @@ const PropertiesPanel = ({ modeler, robotId }) => {
       currentElement: elementState.currentElement,
     });
     setSelectedApplication(value);
+    resetTask();
     getTasksForApplication(value);
   };
 
@@ -180,6 +181,18 @@ const PropertiesPanel = ({ modeler, robotId }) => {
       modeling,
       elementState.currentElement
     );
+  };
+
+  /**
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar. Resets the task to default value
+   */
+  const resetTask = () => {
+    elementState.currentElement.businessObject.$attrs['arkRPA:task'] =
+      'Please select task';
+    setElementState({
+      selectedElements: elementState.selectedElements,
+      currentElement: elementState.currentElement,
+    });
   };
 
   return (
