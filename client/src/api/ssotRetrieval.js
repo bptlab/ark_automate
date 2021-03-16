@@ -36,7 +36,7 @@ const retrieveMetadataForBot = async (robotId) => {
 };
 
 /**
- * @description Create a new robot with the specified name for the specified user 
+ * @description Create a new robot with the specified name for the specified user
  * @param {String} newName - String including the user Id
  */
 const createNewRobot = async (userid, newName) => {
@@ -50,5 +50,5 @@ export {
   fetchSsotsForUser,
   changeSsotName,
   retrieveMetadataForBot,
-  createNewRobot
+  createNewRobot,
 };
