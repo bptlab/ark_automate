@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
+import setRobotJob from '../../../api/robotExecutionJobs';
+import isBotExecutable from '../../../utils/botExecution';
 
 const { Title } = Typography;
 
@@ -18,8 +20,16 @@ const RobotContainer = (props) => {
   const { robotId, robotName } = props;
   const [name, setRobotName] = useState(robotName);
 
-  const startRobot = () =>
-    alert('Running the Robot is currently not supported!');
+  /**
+   * @description Will add a new job with the current robot id to the job list on the server side
+   */
+  const startRobot = () => {
+    if (isBotExecutable()) {
+      setRobotJob(robotId);
+    } else {
+      alert('Your Bot is not ready to be executed!');
+    }
+  };
 
   const renameRobot = (value) => {
     changeSsotName(robotId, value)
