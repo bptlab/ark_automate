@@ -95,7 +95,11 @@ const RobotOverview = () => {
       <>
         {filteredBotList.map((val) => (
           // eslint-disable-next-line dot-notation
-          <RobotContainer robotId={val['_id']} robotName={val.robotName} />
+          <RobotContainer
+            userId={userId}
+            robotId={val['_id']}
+            robotName={val.robotName}
+          />
         ))}
       </>
     );

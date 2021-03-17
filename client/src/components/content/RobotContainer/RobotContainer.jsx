@@ -4,7 +4,7 @@ import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import socket from '../../../utils/socket/socketConnections'
+import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
 
@@ -16,10 +16,26 @@ const { Title } = Typography;
  * @category Client
  */
 const RobotContainer = (props) => {
-  const { robotId, robotName } = props;
+  const { robotId, robotName, userId } = props;
   const [name, setRobotName] = useState(robotName);
 
-  const startRobot = () => socket.emit('robotExecutionJobs', robotId)
+  const joinUserRoom = (id) => socket.emit('joinUserRoom', id);
+
+  const startRobot = () => {
+    console.log(userId);
+    joinUserRoom(userId);
+    socket.on('successUserRoomConnection', (message) => {
+      console.log(message);
+    });
+    socket.on('errorUserRoomConnection', (message) => {
+      console.log(message);
+    });
+    socket.on('newClientJoinedUserRoom', (message) => {
+      console.log(message);
+    });
+    socket.emit('robotExecutionJobs', { robotId, userId });
+  };
+
   const renameRobot = (value) => {
     changeSsotName(robotId, value)
       .then(() => {
@@ -64,6 +80,7 @@ const RobotContainer = (props) => {
 RobotContainer.propTypes = {
   robotName: PropTypes.string.isRequired,
   robotId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 export default RobotContainer;
