@@ -59,12 +59,13 @@ module.exports.connect = async () => {
     autoReconnect: true,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 1000,
+    useUnifiedTopology: true,
   };
   const conn = await mongoose.createConnection(uri, mongooseOpts);
   await mongoose.connect(uri);
   console.log(mongoose.connection.readyState);
   console.log('Connected to MongoDB with uri:', uri);
-  setupSsot(conn, uri);
+  //setupSsot(conn, uri);
   setupUao(conn, uri);
 };
 
@@ -73,7 +74,7 @@ module.exports.connect = async () => {
  */
 module.exports.closeDatabase = async () => {
   const uri = await mongod.getUri();
-  await mongoose.connect(uri);
+  //  await mongoose.connect(uri);
 
   await mongoose.connection.dropDatabase();
   console.log(mongoose.connection.readyState);
@@ -89,7 +90,7 @@ module.exports.closeDatabase = async () => {
 module.exports.clearDatabase = async () => {
   const { collections } = mongoose.connection;
   const uri = await mongod.getUri();
-  await mongoose.connect(uri);
+  //  await mongoose.connect(uri);
 
   // fix according to https://docs.w3cub.com/eslint/rules/no-await-in-loop.html
   const result = [];
@@ -103,10 +104,14 @@ module.exports.clearDatabase = async () => {
   return Promise.all(result);
 };
 
-this.connect();
-let end = Date.now() + 5000;
-while (Date.now() < end);
-this.clearDatabase();
-end = Date.now() + 5000;
-while (Date.now() < end);
-this.closeDatabase();
+module.exports.wrapper = async () => {
+  await this.connect();
+  let end = Date.now() + 5000;
+  while (Date.now() < end);
+  await this.clearDatabase();
+  end = Date.now() + 5000;
+  while (Date.now() < end);
+  await this.closeDatabase();
+};
+
+// this.wrapper();
