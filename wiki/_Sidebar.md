@@ -3,7 +3,7 @@ Back to the [Wiki home](https://github.com/bptlab/ark_automate/wiki)
   - About Ark_automate
     - [Pitch](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Pitch)
     - [Vision](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate)
-    - [Features to be implemented](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Until-summer-2021-we-want-to-implement-a-first-working-web-app-for-our-use-case) in the summer of 2021
+    - [Features to be implemented](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Until-summer-2021-we-want-to-implement-a-first-working-web-app-for-our-use-case) until the summer of 2021
     - [Architecture](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Architecture)
 
 - Documentation
@@ -19,4 +19,4 @@ Back to the [Wiki home](https://github.com/bptlab/ark_automate/wiki)
 - Guides
     - [Code documentation](https://github.com/bptlab/ark_automate/wiki/How-to-write-code-documentation)
     - [Tests](https://github.com/bptlab/ark_automate/wiki/How-to-write-tests)
-    - [Sytle our components using css](https://github.com/bptlab/ark_automate/wiki/How-to-style-using-css)
+    - [Style our components using css](https://github.com/bptlab/ark_automate/wiki/How-to-style-using-css)
