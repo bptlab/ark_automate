@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Input, Space, Row, Select } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
+import socket from '../../../utils/socket/socketConnections';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
 import initSessionStorage from '../../../utils/sessionStorage';
 import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
@@ -39,6 +40,16 @@ const RobotOverview = () => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
+    socket.emit('joinUserRoom', userId);
+    socket.on('successUserRoomConnection', (message) => {
+      console.log(message);
+    });
+    socket.on('errorUserRoomConnection', (message) => {
+      console.log(message);
+    });
+    socket.on('newClientJoinedUserRoom', (message) => {
+      console.log(message);
+    });
     initSessionStorage('CurrentUserId', '80625d115100a2ee8d8e695b');
     retrieveBotList(userId);
   }, []);

@@ -19,27 +19,21 @@ const RobotContainer = (props) => {
   const { robotId, robotName, userId } = props;
   const [name, setRobotName] = useState(robotName);
 
-  const joinUserRoom = (id) => socket.emit('joinUserRoom', id);
-
+  /**
+   * @description Sends a job to the server to execute a specfic robot for a specific user
+   */
   const startRobot = () => {
-    console.log(userId);
-    joinUserRoom(userId);
-    socket.on('successUserRoomConnection', (message) => {
-      console.log(message);
-    });
-    socket.on('errorUserRoomConnection', (message) => {
-      console.log(message);
-    });
-    socket.on('newClientJoinedUserRoom', (message) => {
-      console.log(message);
-    });
     socket.emit('robotExecutionJobs', { robotId, userId });
   };
 
-  const renameRobot = (value) => {
-    changeSsotName(robotId, value)
+  /**
+   * @description Updates the name of the robot in the backend and in the robot container
+   * @param {String} newRobotName New name of the robot
+   */
+  const renameRobot = (newRobotName) => {
+    changeSsotName(robotId, newRobotName)
       .then(() => {
-        setRobotName(value);
+        setRobotName(newRobotName);
       })
       .catch((error) => {
         console.error(error);
