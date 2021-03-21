@@ -126,41 +126,45 @@ const enrichMarkerElements = (elementsArray) => {
   return elementsArray;
 };
 
+const getStartEventId = (bpmnJson) => {
+  let startEvents;
+  const startEventIds = [];
+
+  startEvents = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
+  if (typeof startEvents === 'undefined') {
+    startEvents = [];
+  }
+  startEvents.forEach(singleStartEvent => {
+    startEventIds.push(singleStartEvent.$.id);
+  });
+
+  if (startEventIds.length === 0) {
+    alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+  } else if (startEventIds.length > 1) {
+    alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+  } else if (startEventIds.length === 1)
+    return startEventIds;
+}
+
 /**
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
  * @returns {string} JSON that has to be put in single source of truth file
  */
-const parseBpmnToSsot = (xml2, robotId) => {
+const parseBpmnToSsot = async (bpmnXml, robotId) => {
   let bpmnJson;
   let startEventId;
   let ssot;
 
-  parseString(xml2.xml)
+  return parseString(bpmnXml.xml)
     .then((result) => {
-      let startEvents;
-      const startEventIds = [];
-
       bpmnJson = result;
-      startEvents = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
-      if (typeof startEvents === 'undefined') {
-        startEvents = [];
-      }
-      startEvents.forEach(singleStartEvent => {
-        startEventIds.push(singleStartEvent.$.id);
-      });
+      startEventId = getStartEventId(bpmnJson);
 
-      if (startEventIds.length === 0) {
-        alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-      } else if (startEventIds.length > 1) {
-        alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-      } else if (startEventIds.length === 1)
-        [startEventId] = startEventIds;
-    })
-    .then(() => {
+      // Build basic ssot-frame
       ssot = {
         _id: robotId,
         starterId: startEventId,
-        // Must be retrieved from DB
+        // TODO: Must be retrieved from DB
         robotName: 'exampleRobot',
       };
     })
@@ -183,8 +187,11 @@ const parseBpmnToSsot = (xml2, robotId) => {
 
       ssot.elements = elementsArray;
       console.log(ssot)
+      // JSON.stringify(ssot, null, 2);
       return ssot;
     })
-};
+    .then(() => ssot)
+}
+
 
 module.exports = { parseBpmnToSsot };

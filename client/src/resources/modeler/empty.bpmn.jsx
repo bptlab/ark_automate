@@ -13,7 +13,7 @@ export const emptyBpmn = `<?xml version="1.0" encoding="UTF-8"?>
 				<dc:Bounds x="130" y="220" width="600" height="250" />
 			</bpmndi:BPMNShape>
 			<bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-				<dc:Bounds x="412" y="240" width="36" height="36" />
+				<dc:Bounds x="200" y="330" width="36" height="36" />
 			</bpmndi:BPMNShape>
 		</bpmndi:BPMNPlane>
 	</bpmndi:BPMNDiagram>
