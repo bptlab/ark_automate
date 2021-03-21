@@ -1,4 +1,6 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-underscore-dangle */
+const { parseString } = require('xmljs2');
 
 /**
  * @category Client
@@ -36,11 +38,18 @@ const isElementTracked = (elementsArray, id) => {
  * @returns {Array}  Array of elements with their id, successors and predecessors
  */
 const findElements = (flows) => {
+  console.log('enter findElments')
+  if (typeof flows === 'undefined') {
+    return []
+  }
   const elementsArray = [];
+
+  console.log(flows)
 
   flows.forEach((flow) => {
     const source = flow._attributes.sourceRef;
     const target = flow._attributes.targetRef;
+    console.log(flow)
 
     if (!isElementTracked(elementsArray, source)) {
       const newElement = createBaseElement(source);
@@ -72,6 +81,10 @@ const findElements = (flows) => {
  * @returns {Array}  Array of elements for single source of truth
  */
 const enrichInstructionElements = (elementsArray, bpmnActivities) => {
+  if (typeof bpmnActivities === 'undefined') {
+    return [];
+  }
+
   bpmnActivities.forEach((activity) => {
     const instructionElement = elementsArray.find(
       (element) => element.id === activity._attributes.id
@@ -119,23 +132,56 @@ const enrichMarkerElements = (elementsArray) => {
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
  * @returns {string} JSON that has to be put in single source of truth file
  */
-const parseBpmnToSsot = (bpmnJson) => {
-  const ssot = {
-    _id: '6045eccfa9a07940e5763f0b',
-    starterId: 'exampleID',
-    robotName: 'exampleRobot',
-  };
+const parseBpmnToSsot = (xml2, robotId) => {
+  let bpmnJson;
+  let startEventId;
+  let ssot;
 
-  const flows =
-    bpmnJson['bpmn2:definitions']['bpmn2:process']['bpmn2:sequenceFlow'];
-  let elementsArray = findElements(flows);
-  const bpmnActivities =
-    bpmnJson['bpmn2:definitions']['bpmn2:process']['bpmn2:task'];
-  elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
-  elementsArray = enrichMarkerElements(elementsArray);
+  parseString(xml2.xml)
+    .then((result) => {
+      let startEvents;
+      const startEventIds = [];
 
-  ssot.elements = elementsArray;
-  return JSON.stringify(ssot, null, 2);
+      bpmnJson = result;
+      startEvents = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
+      if (typeof startEvents === 'undefined') {
+        startEvents = [];
+      }
+      startEvents.forEach(singleStartEvent => {
+        startEventIds.push(singleStartEvent.$.id);
+      });
+
+      if (startEventIds.length === 0) {
+        alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+      } else if (startEventIds.length > 1) {
+        alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+      } else if (startEventIds.length === 1)
+        [startEventId] = startEventIds;
+    })
+    .then(() => {
+      ssot = {
+        _id: robotId,
+        starterId: startEventId,
+        // Must be retrieved from DB
+        robotName: 'exampleRobot',
+      };
+    })
+    .then(() => {
+      const flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
+      console.log(`Anzahl Kanten: ${flows.length}`)
+      const bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
+      console.log(`Anzahl Aktivitäten: ${bpmnActivities.length}`)
+
+      let elementsArray = findElements(flows);
+      console.log(findElements(flows))
+      elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
+      elementsArray = enrichMarkerElements(elementsArray);
+
+      ssot.elements = elementsArray;
+      console.log(ssot)
+      console.log(JSON.stringify(ssot, null, 2));
+      return JSON.stringify(ssot, null, 2);
+    })
 };
 
 module.exports = { parseBpmnToSsot };

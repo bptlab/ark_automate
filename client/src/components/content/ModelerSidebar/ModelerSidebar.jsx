@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Layout, Space, Button } from 'antd';
 import PropTypes from 'prop-types'
+// import bpmnModeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
 import fetchTaskParametersAndUpdateRPAProperties from '../../../utils/xmlUtils';
@@ -17,7 +18,6 @@ import {
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
 import { fetchSsot } from '../../../api/ssotRetrieval';
-
 
 const { Title } = Typography;
 const { Sider } = Layout;

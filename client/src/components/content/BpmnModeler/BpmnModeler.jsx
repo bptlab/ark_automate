@@ -11,7 +11,7 @@ import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertie
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
-import { parseSsotToBpmn } from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing'
+import { parseBpmnToSsot } from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
 
 const { Content } = Layout;
 
@@ -22,12 +22,13 @@ const { Content } = Layout;
  */
 const BpmnModeler = (props) => {
   const [modeler, setModeler] = useState(null);
+  let newModeler;
 
   /**
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
-    const newModeler = new CamundaBpmnModeler({
+    newModeler = new CamundaBpmnModeler({
       container: '#bpmnview',
       keyboard: {
         bindTo: window,
@@ -59,6 +60,24 @@ const BpmnModeler = (props) => {
     openBpmnDiagram(emptyBpmn);
   }, []);
 
+
+  // trigger rerendering of Ssot on every update
+  useEffect(() => {
+    newModeler.on('element.changed', () => {
+      newModeler
+        .saveXML({ format: true })
+        .then((xml) => {
+          parseBpmnToSsot(xml, props.robotId)
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+
+    newModeler.on('selection.changed', () => {
+    });
+  }, [newModeler]);
+
   return (
     <Content className={styles.bpmncontainer}>
       <div className={styles['bpmn-modeler-container']} id='bpmnview' />
@@ -68,6 +87,7 @@ const BpmnModeler = (props) => {
 
 BpmnModeler.propTypes = {
   onModelerUpdate: PropTypes.func.isRequired,
+  robotId: PropTypes.string.isRequired,
 };
 
 export default BpmnModeler;
