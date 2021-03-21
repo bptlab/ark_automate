@@ -63,7 +63,7 @@ const BpmnModeler = (props) => {
 
   // trigger rerendering of Ssot on every update
   useEffect(() => {
-    newModeler.on('element.changed', () => {
+    newModeler.on('selection.changed', () => {
       newModeler
         .saveXML({ format: true })
         .then((xml) => {
@@ -74,7 +74,7 @@ const BpmnModeler = (props) => {
         });
     });
 
-    newModeler.on('selection.changed', () => {
+    newModeler.on('element.changed', () => {
     });
   }, [newModeler]);
 

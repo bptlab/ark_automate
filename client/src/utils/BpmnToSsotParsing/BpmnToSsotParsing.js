@@ -1,5 +1,5 @@
 /* eslint-disable no-alert */
-/* eslint-disable no-underscore-dangle */
+const { elementType } = require('prop-types');
 const { parseString } = require('xmljs2');
 
 /**
@@ -16,7 +16,7 @@ const ssotBaseElement = SsotBaseObjects.baseElement;
  * @returns {object}  Base element of the single source of truth
  */
 const createBaseElement = (id) => {
-  const baseElement = JSON.parse(JSON.stringify(ssotBaseElement));
+  const baseElement = ssotBaseElement;
   baseElement.id = id;
   return baseElement;
 };
@@ -38,42 +38,40 @@ const isElementTracked = (elementsArray, id) => {
  * @returns {Array}  Array of elements with their id, successors and predecessors
  */
 const findElements = (flows) => {
-  console.log('enter findElments')
   if (typeof flows === 'undefined') {
     return []
   }
-  const elementsArray = [];
 
-  console.log(flows)
+  const localElementsArray = [];
 
   flows.forEach((flow) => {
-    const source = flow._attributes.sourceRef;
-    const target = flow._attributes.targetRef;
-    console.log(flow)
 
-    if (!isElementTracked(elementsArray, source)) {
-      const newElement = createBaseElement(source);
-      newElement.successorIds.push(target);
-      elementsArray.push(newElement);
+    const flowSource = flow.$.sourceRef;
+    const flowTarget = flow.$.targetRef;
+
+    if (!isElementTracked(localElementsArray, flowSource)) {
+      const newElement = createBaseElement(flowSource);
+      newElement.successorIds.push(flowTarget);
+      localElementsArray.push(newElement);
     } else {
-      const sourceElement = elementsArray.find(
-        (element) => element.id === source
+      const sourceElement = localElementsArray.find((element) =>
+        element.id === flowSource
       );
-      sourceElement.successorIds.push(target);
+      sourceElement.successorIds.push(flowTarget);
     }
 
-    if (!isElementTracked(elementsArray, target)) {
-      const newElement = createBaseElement(target);
-      newElement.predecessorIds.push(source);
-      elementsArray.push(newElement);
+    if (!isElementTracked(localElementsArray, flowTarget)) {
+      const newElement = createBaseElement(flowTarget);
+      newElement.predecessorIds.push(flowSource);
+      localElementsArray.push(newElement);
     } else {
-      const targetElement = elementsArray.find(
-        (element) => element.id === source
+      const targetElement = localElementsArray.find((element) =>
+        element.id === flowSource
       );
-      targetElement.predecessorIds.push(source);
+      targetElement.predecessorIds.push(flowSource);
     }
   });
-  return elementsArray;
+  return localElementsArray;
 };
 
 /**
@@ -87,18 +85,18 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
 
   bpmnActivities.forEach((activity) => {
     const instructionElement = elementsArray.find(
-      (element) => element.id === activity._attributes.id
+      (element) => element.id === activity.$.id
     );
-    instructionElement.name = activity._attributes.name;
+    instructionElement.name = activity.$.name;
     instructionElement.type = 'INSTRUCTION';
 
-    if (activity._attributes['arkRPA:application']) {
+    if (activity.$['arkRPA:application']) {
       instructionElement.rpaApplication =
-        activity._attributes['arkRPA:application'];
-      instructionElement.rpaTask = activity._attributes['arkRPA:task'];
+        activity.$['arkRPA:application'];
+      instructionElement.rpaTask = activity.$['arkRPA:task'];
 
       const parameterArray = [];
-      const parameterObj = JSON.parse(activity._attributes['arkRPA:inputVars']);
+      const parameterObj = JSON.parse(activity.$['arkRPA:inputVars']);
       Object.keys(parameterObj).forEach((key) => {
         const inputVar = {};
         inputVar.name = key;
@@ -167,20 +165,25 @@ const parseBpmnToSsot = (xml2, robotId) => {
       };
     })
     .then(() => {
-      const flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
+      let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
+      if (typeof flows === 'undefined') {
+        flows = [];
+      }
       console.log(`Anzahl Kanten: ${flows.length}`)
-      const bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
+
+      let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
+      if (typeof bpmnActivities === 'undefined') {
+        bpmnActivities = [];
+      }
       console.log(`Anzahl Aktivitäten: ${bpmnActivities.length}`)
 
       let elementsArray = findElements(flows);
-      console.log(findElements(flows))
       elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
       elementsArray = enrichMarkerElements(elementsArray);
 
       ssot.elements = elementsArray;
       console.log(ssot)
-      console.log(JSON.stringify(ssot, null, 2));
-      return JSON.stringify(ssot, null, 2);
+      return ssot;
     })
 };
 
