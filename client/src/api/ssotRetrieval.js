@@ -56,10 +56,29 @@ const createNewRobot = async (userid, newName) => {
     return response;
 };
 
+/**
+ * TODO
+ */
+const updateSsot = async (
+  botId,
+  newSsot) => {
+  const requestString = `/ssot/overwriteRobot/${botId}`;
+  const response = await fetch(requestString, 
+    {
+    body: JSON.stringify(newSsot),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    }
+  });
+  return response;
+};
+
 export {
     fetchSsot,
     fetchSsotsForUser,
     changeSsotName,
     retrieveMetadataForBot,
     createNewRobot,
+    updateSsot,
 };

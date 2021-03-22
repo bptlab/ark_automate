@@ -168,3 +168,29 @@ exports.createNewRobot = async (req, res) => {
     console.error(err);
   }
 };
+
+// POST /overwriteRobot/78d09f66d2ed466cf20b06f7
+exports.overwriteRobot = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const updatedSsot = req.body;
+    const { robotId } = req.params;
+    
+    const ssotData = await mongoose
+      .model('SSoT')
+      .findByIdAndUpdate(
+        updatedSsot['_id'], 
+        updatedSsot,
+        {
+            new: true,
+            useFindAndModify: false,
+            upsert: true
+        }
+        )
+      .exec();
+
+    res.send('ssotData');
+  } catch (err) {
+    console.error(err);
+  }
+};

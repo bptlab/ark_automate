@@ -18,6 +18,7 @@ router.get('/renameRobot', retrievalController.renameRobot);
 router.get('/retrieveMetadataForRobot/:botId', retrievalController.retrieveRobotMetadata);
 router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser);
 router.get('/createNewRobot', retrievalController.createNewRobot);
+router.post('/overwriteRobot/:robotId', retrievalController.overwriteRobot);
 
 /// VARIABLE ROUTES ///
 router.get('/getVariablesForNewTask', variableController.getVariablesForNewTask);
