@@ -15,7 +15,8 @@ const ssotBaseElement = SsotBaseObjects.baseElement;
  * @returns {object}  Base element of the single source of truth
  */
 const createBaseElement = (id) => {
-  const baseElement = ssotBaseElement;
+  // creates deep copy of baseElement
+  const baseElement = JSON.parse(JSON.stringify(ssotBaseElement));
   baseElement.id = id;
   return baseElement;
 };
