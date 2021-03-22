@@ -51,7 +51,6 @@ const findElements = (flows) => {
     if (!isElementTracked(localElementsArray, flowSource)) {
       const newElement = createBaseElement(flowSource);
       newElement.successorIds.push(flowTarget);
-      console.log(newElement)
       localElementsArray.push(newElement);
     } else {
       const sourceElement = localElementsArray.find((element) =>
@@ -70,7 +69,6 @@ const findElements = (flows) => {
       );
       targetElement.predecessorIds.push(flowSource);
     }
-    console.log(localElementsArray)
   });
   return localElementsArray;
 };
@@ -161,13 +159,12 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   return parseString(bpmnXml.xml)
     .then((result) => {
       bpmnJson = result;
-      console.log(bpmnJson)
       startEventId = getStartEventId(bpmnJson);
 
       // Build basic ssot-frame
       ssot = {
         _id: robotId,
-        starterId: startEventId,
+        starterId: startEventId[0],
         robotName,
       };
     })
@@ -178,15 +175,11 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
       if (typeof flows === 'undefined') {
         flows = [];
       }
-      // eslint-disable-next-line no-console
-      console.log(`Anzahl Kanten: ${flows.length}`)
 
       let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
       if (typeof bpmnActivities === 'undefined') {
         bpmnActivities = [];
       }
-      // eslint-disable-next-line no-console
-      console.log(`Anzahl Aktivitäten: ${bpmnActivities.length}`)
 
       let elementsArray = findElements(flows);
       elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
