@@ -74,9 +74,7 @@ const BpmnModeler = (props) => {
             .then((result) => {
               ssot = result
               sessionStorage.setItem('ssotLocal', ssot);
-              console.log(ssot)
-              // TODO: push ssot to DB
-              updateSsot(props.robotId, ssot).then(result23 => console.log(result23))
+              updateSsot(props.robotId, ssot);
             })
         })
         .catch((err) =>
