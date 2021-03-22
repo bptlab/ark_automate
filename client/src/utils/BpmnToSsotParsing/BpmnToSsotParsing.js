@@ -15,7 +15,8 @@ const ssotBaseElement = SsotBaseObjects.baseElement;
  * @returns {object}  Base element of the single source of truth
  */
 const createBaseElement = (id) => {
-  const baseElement = ssotBaseElement;
+  // creates deep copy of baseElement
+  const baseElement = JSON.parse(JSON.stringify(ssotBaseElement));
   baseElement.id = id;
   return baseElement;
 };
@@ -44,7 +45,6 @@ const findElements = (flows) => {
   const localElementsArray = [];
 
   flows.forEach((flow) => {
-
     const flowSource = flow.$.sourceRef;
     const flowTarget = flow.$.targetRef;
 
@@ -164,7 +164,7 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
       // Build basic ssot-frame
       ssot = {
         _id: robotId,
-        starterId: startEventId,
+        starterId: startEventId[0],
         robotName,
       };
     })
@@ -175,15 +175,11 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
       if (typeof flows === 'undefined') {
         flows = [];
       }
-      // eslint-disable-next-line no-console
-      console.log(`Anzahl Kanten: ${flows.length}`)
 
       let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
       if (typeof bpmnActivities === 'undefined') {
         bpmnActivities = [];
       }
-      // eslint-disable-next-line no-console
-      console.log(`Anzahl Aktivitäten: ${bpmnActivities.length}`)
 
       let elementsArray = findElements(flows);
       elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
