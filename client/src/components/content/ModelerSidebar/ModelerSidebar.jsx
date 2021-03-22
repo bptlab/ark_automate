@@ -13,7 +13,7 @@ import {
 } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
-import { getAttributes, setRpaApplication } from '../../../utils/attributeAndParamUtils';
+import { setRpaApplication, setRpaTask } from '../../../utils/attributeAndParamUtils';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -40,22 +40,11 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   ] = useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
 
-  const getCurrentApplicationForActivity = async () => {
-    console.log("...")
-    getAttributes(robotId, elementState.currentElement.id)
-      .then((result) => {
-        if (typeof result.rpaApplication !== 'undefined') {
-          setCurrentSelection(result.rpaApplication)
-        }
-      })
-  }
-
   /**
    * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
    */
   useEffect(() => {
     modeler.on('selection.changed', (event) => {
-      console.log(event.newSelection[0]);
 
       setElementState({
         selectedElements: event.newSelection,
@@ -66,7 +55,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       elementState.selectedElements = event.newSelection;
       const currentElement = event.newSelection[0];
       elementState.currentElement = currentElement;
-      console.log(elementState.currentElement)
       // console.log(event.newSelection[0].id);
       if (
         event.newSelection[0] &&
@@ -87,9 +75,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             setvariableList(data ? data.rpaParameters : []);
             setOutputVariableName(data ? data.outputVariable : null);
           })
-      }
-      if (elementState.currentElement) {
-        getCurrentApplicationForActivity();
       }
     });
 
@@ -115,6 +100,20 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   const updateName = (name) => {
     const modeling = modeler.get('modeling');
     modeling.updateLabel(elementState.currentElement, name);
+  };
+
+  /**
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar. 
+   * Resets the task to default value
+   */
+  const resetTask = () => {
+    setRpaTask(robotId, elementState.currentElement.id, undefined)
+    elementState.currentElement.businessObject.$attrs['arkRPA:task'] =
+      'Please select task';
+    setElementState({
+      selectedElements: elementState.selectedElements,
+      currentElement: elementState.currentElement,
+    });
   };
 
   /**
@@ -174,8 +173,11 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       selectedElements: elementState.selectedElements,
       currentElement: elementState.currentElement,
     });
-    setRpaApplication(robotId, elementState.currentElement.id, value)
+    if (value) {
+      setRpaApplication(robotId, elementState.currentElement.id, value)
+    }
     setSelectedApplication(value);
+    resetTask()
     getTasksForApplication(value);
   };
 
@@ -184,7 +186,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * and gets the parameters of the task and updates the XML RPA properties (adds the application and the task).
    * @param {Object} value new value of the TaskDropdown
    */
-  const selectTaskUpdatedHandler = (value) => {
+  const taskChangedHandler = (value) => {
+    setRpaTask(robotId, elementState.currentElement.id, value)
     const modeling = modeler.get('modeling');
     variablesForNewTask(
       robotId,
@@ -271,12 +274,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   };
 
 
-  const getCurrentTaskForActivity = () =>
-    // return getRpaTask(robotId,elementState.currentElement.id)
-    // TODO: ERIK
-    'initial'
-
-
   return (
     <Sider className={styles.sider}>
       <Space direction='vertical' size='small' style={{ width: '100%' }}>
@@ -289,9 +286,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             applicationSelectionUpdated={applicationChangedHandler.bind(
               this
             )}
-            taskSelectionUpdated={selectTaskUpdatedHandler.bind(this)}
-            getCurrentApplicationForActivity={currentSelection}
-            getCurrentTaskForActivity={getCurrentTaskForActivity}
+            taskSelectionUpdated={taskChangedHandler.bind(this)}
+            selectedActivity={elementState.currentElement.id}
             tasksForSelectedApplication={tasksForSelectedApplication}
             disableTaskSelection={disableTaskSelection}
             element={elementState.currentElement}

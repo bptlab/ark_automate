@@ -20,8 +20,7 @@ const PropertiesPanel = ({
   nameChanged,
   applicationSelectionUpdated,
   tasksForSelectedApplication,
-  getCurrentApplicationForActivity,
-  getCurrentTaskForActivity,
+  selectedActivity,
   taskSelectionUpdated,
   disableTaskSelection,
   robotId,
@@ -44,8 +43,7 @@ const PropertiesPanel = ({
             tasksForSelectedApplication={tasksForSelectedApplication}
             taskSelectionUpdated={taskSelectionUpdated}
             disableTaskSelection={disableTaskSelection}
-            getCurrentApplicationForActivity={getCurrentApplicationForActivity}
-            getCurrentTaskForActivity={getCurrentTaskForActivity}
+            selectedActivity={selectedActivity}
           />
           {((variableList.length > 0) && <PPParameterSection variableList={variableList} onValueChange={parameterUpdated} />)}
           {(outputVariableName && <PPOutputValueSection outputVariableText={outputVariableName} onNameChange={outputNameUpdated} />)}
@@ -61,8 +59,7 @@ PropertiesPanel.propTypes = {
   applicationSelectionUpdated: PropTypes.func.isRequired,
   tasksForSelectedApplication: PropTypes.arrayOf(PropTypes.shape).isRequired,
   taskSelectionUpdated: PropTypes.func.isRequired,
-  getCurrentApplicationForActivity: PropTypes.func.isRequired,
-  getCurrentTaskForActivity: PropTypes.func.isRequired,
+  selectedActivity: PropTypes.string.isRequired,
   disableTaskSelection: PropTypes.bool.isRequired,
   variableList: PropTypes.arrayOf(PropTypes.shape).isRequired,
   parameterUpdated: PropTypes.func.isRequired,

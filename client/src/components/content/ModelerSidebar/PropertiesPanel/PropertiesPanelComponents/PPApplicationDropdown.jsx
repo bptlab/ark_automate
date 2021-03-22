@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Select } from 'antd';
+import PropTypes from 'prop-types'
 import styles from '../../ModelerSidebar.module.css';
 
 const { Option } = Select;
@@ -11,27 +11,17 @@ const { Option } = Select;
  * @component
  */
 const PPApplicationDropdown = ({
-  currentSelection,
+  selectedActivity,
   onApplicationSelection,
   applications,
 }) => {
-  /*   const [currentSelection, setCurrentSelection] = useState([]);
-    const [exampleState, setExampleState] = useState([]); */
+  const localStorage = JSON.parse(sessionStorage.getItem('appTaskLocalStorage'));
+  const matchingEntry = localStorage.find((element) => (element.activityId === selectedActivity));
 
-  console.log(currentSelection)
-
-  /* useEffect(() => {
-    getCurrentApplicationForActivity().then(response => {
-      setCurrentSelection(response);
-    })
-  }, [])
-
-  useEffect(() => {
-    if (currentSelection && currentSelection.length > 0) {
-      setCurrentSelection(currentSelection)
-      console.log(currentSelection)
-    }
-  }, [currentSelection]) */
+  let defaultValue;
+  if (matchingEntry) {
+    defaultValue = matchingEntry.rpaApplication;
+  }
 
   return (
     <>
@@ -40,7 +30,7 @@ const PPApplicationDropdown = ({
         showSearch
         placeholder='Please select application'
         onChange={onApplicationSelection}
-        defaultValue={currentSelection}
+        defaultValue={defaultValue}
       >
         {applications.map((applicaton) => (
           <Option key={applicaton} value={applicaton}>
@@ -50,6 +40,12 @@ const PPApplicationDropdown = ({
       </Select>
     </>
   )
+};
+
+PPApplicationDropdown.propTypes = {
+  applications: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  onApplicationSelection: PropTypes.func.isRequired,
+  selectedActivity: PropTypes.string.isRequired,
 };
 
 export default PPApplicationDropdown;

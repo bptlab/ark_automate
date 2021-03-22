@@ -18,8 +18,7 @@ const PPRpaSection = ({
     tasksForSelectedApplication,
     taskSelectionUpdated,
     disableTaskSelection,
-    getCurrentApplicationForActivity,
-    getCurrentTaskForActivity,
+    selectedActivity,
 }) => (
     <>
         <Text className={styles[`label-on-dark-background`]}>Actions: </Text>
@@ -27,13 +26,13 @@ const PPRpaSection = ({
             <PropertiesPanelApplicationDropdown
                 onApplicationSelection={applicationSelectionUpdated}
                 applications={JSON.parse(sessionStorage.getItem('AvailableApplications'))}
-                currentSelection={getCurrentApplicationForActivity}
+                selectedActivity={selectedActivity}
             />
             <PropertiesPanelTaskDropdown
                 listOfTasks={tasksForSelectedApplication}
                 onTaskSelection={taskSelectionUpdated}
                 disabled={disableTaskSelection}
-                currentSelection={getCurrentTaskForActivity}
+                selectedActivity={selectedActivity}
             />
         </Space>
     </>
@@ -42,8 +41,7 @@ const PPRpaSection = ({
 PPRpaSection.propTypes = {
     element: PropTypes.objectOf(PropTypes.shape).isRequired,
     applicationSelectionUpdated: PropTypes.func.isRequired,
-    getCurrentApplicationForActivity: PropTypes.func.isRequired,
-    getCurrentTaskForActivity: PropTypes.func.isRequired,
+    selectedActivity: PropTypes.string.isRequired,
     tasksForSelectedApplication: PropTypes.arrayOf(PropTypes.shape).isRequired,
     taskSelectionUpdated: PropTypes.func.isRequired,
     disableTaskSelection: PropTypes.bool.isRequired

@@ -72,6 +72,7 @@ const BpmnModeler = (props) => {
         .then((xml) => {
           parseBpmnToSsot(xml, props.robotId)
             .then((result) => {
+              console.log(result)
               ssot = JSON.stringify(result)
               sessionStorage.setItem('ssotLocal', ssot);
               updateSsot(props.robotId, ssot);

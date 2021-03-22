@@ -11,10 +11,56 @@ const APPLICATION_TASK_STORAGE_PATH = 'appTaskLocalStorage';
 const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
 
 /**
- * TODO
+ * @description stores the RPA Application for the currently selected activity in the session storage
+ * @param {string} robotId id of the currently opened robot
+ * @param {string} activityId id of the currently selected activity
+ * @param {string} newApplication name of the selected application from dropdown
+ */
+const setRpaApplication = async (robotId, activityId, newApplication) => {
+    const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
+
+    let matchingActivity = localStorage.find((element) => (element.activityId === activityId));
+    const arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId === robotId && element.activityId !== activityId);
+
+    if (matchingActivity) {
+        matchingActivity.rpaApplication = newApplication;
+    } else {
+        matchingActivity = {
+            activityId,
+            ssotId: robotId,
+            rpaApplication: newApplication,
+        };
+    }
+
+    arrayWithoutMatchingElement.push(matchingActivity);
+    sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, JSON.stringify(arrayWithoutMatchingElement));
+};
+
+/**
+ * @description stores the RPA Task for the currently selected activity in the session storage
+ * @param {string} robotId id of the currently opened robot
+ * @param {string} activityId id of the currently selected activity
+ * @param {string} newTask name of the selected task from dropdown
+ */
+const setRpaTask = (robotId, activityId, newTask) => {
+    const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
+
+    const matchingActivity = localStorage.find((element) => (element.activityId === activityId));
+    const arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId === robotId && element.activityId !== activityId);
+
+    if (matchingActivity) {
+        matchingActivity.rpaTask = newTask;
+    }
+
+    arrayWithoutMatchingElement.push(matchingActivity);
+    sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, JSON.stringify(arrayWithoutMatchingElement));
+};
+
+/**
+ * TODO => kann weg
  */
 const getAttributes = async (robotId, activityId) => {
-    const localStorage = sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH);
+    let localStorage = sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH);
     localStorage = JSON.parse(localStorage);
     const matchingActivity = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
 
@@ -28,48 +74,8 @@ const getAttributes = async (robotId, activityId) => {
 
     addedStorage.push(response);
     addedStorage = JSON.stringify(addedStorage);
-    sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, addedStorage);
+    // sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, addedStorage);
     return response;
-};
-
-/**
- * TODO
- */
-const setRpaTask = (robotId, activityId, newTask) => {
-    let localStorage = sessionStorage.getItem('appTaskLocalStorage');
-    localStorage = JSON.parse(localStorage);
-    const matchingActivity = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
-    let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
-
-    matchingActivity.rpaTask = newTask;
-
-    arrayWithoutMatchingElement.push(matchingActivity);
-    arrayWithoutMatchingElement = JSON.stringify(arrayWithoutMatchingElement);
-    sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
-};
-
-/**
- * TODO
- */
-const setRpaApplication = async (robotId, activityId, newApplication) => {
-    let localStorage = sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH);
-    localStorage = JSON.parse(localStorage);
-    let matchingActivity = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
-    let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
-
-    if (matchingActivity) {
-        matchingActivity.rpaApplication = newApplication;
-    } else {
-        matchingActivity = {
-            activityId,
-            ssotId: robotId,
-            rpaApplication: newApplication,
-        };
-    }
-
-    arrayWithoutMatchingElement.push(matchingActivity);
-    arrayWithoutMatchingElement = JSON.stringify(arrayWithoutMatchingElement);
-    sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
 };
 
 /**
@@ -78,11 +84,11 @@ const setRpaApplication = async (robotId, activityId, newApplication) => {
 const getParameters = async (robotId, activityId) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
     localStorage = JSON.parse(localStorage);
-    const matchingParameterObject = localStorage.find( (element) => (element.ssotId === robotId && element.activityId === activityId));
+    const matchingParameterObject = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
 
     if (matchingParameterObject.rpaParameters) {
         return matchingParameterObject.rpaParameters;
-    } 
+    }
 
     const requestString = `/ssot/getVariables?botId=${robotId}&activityId=${activityId}`;
     const response = await fetch(requestString);
@@ -105,12 +111,12 @@ const getParameters = async (robotId, activityId) => {
         };
         responseObject.rpaParameters = [];
         variableResponse.inputVars.forEach((element) => {
-            let elementCopy = element;
+            const elementCopy = element;
             elementCopy.value = '';
             responseObject.rpaParameters.push(elementCopy);
         });
 
-        if (variableResponse.outputValue) responseObject.outputVariable = activityId + '_output';
+        if (variableResponse.outputValue) responseObject.outputVariable = `${activityId}_output`;
 
         let addedStorage = localStorage;
         addedStorage.push(responseObject);
@@ -126,12 +132,12 @@ const getParameters = async (robotId, activityId) => {
 const setParameter = (robotId, activityId, newParameterObject) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
     localStorage = JSON.parse(localStorage);
-    let matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
+    const matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
     let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
 
     if (matchingElement) {
         const parametersWithoutMatch = matchingElement.rpaParameters.filter((element) => (
-            element.name !== newParameterObject.name && 
+            element.name !== newParameterObject.name &&
             element.type !== newParameterObject.type &&
             element.index !== newParameterObject.index
         ));
@@ -142,20 +148,20 @@ const setParameter = (robotId, activityId, newParameterObject) => {
     matchingElement.rpaParameters = parametersWithoutMatch;
     arrayWithoutMatchingElement.push(matchingElement);
     arrayWithoutMatchingElement = JSON.stringify(arrayWithoutMatchingElement);
-    sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
+    // sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
 };
 
 /**
  * TODO
  */
-const getOutputValue = (robotId, activityId) => {
+const getOutputValue = async (robotId, activityId) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
     localStorage = JSON.parse(localStorage);
-    const matchingParameterObject = localStorage.find( (element) => (element.ssotId === robotId && element.activityId === activityId));
+    const matchingParameterObject = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
 
     if (matchingParameterObject.outputVariable) {
         return matchingParameterObject.outputVariable;
-    } 
+    }
 
     const requestString = `/ssot/getVariables?botId=${robotId}&activityId=${activityId}`;
     const response = await fetch(requestString);
@@ -179,12 +185,12 @@ const getOutputValue = (robotId, activityId) => {
         };
         responseObject.rpaParameters = [];
         variableResponse.inputVars.forEach((element) => {
-            let elementCopy = element;
+            const elementCopy = element;
             elementCopy.value = '';
             responseObject.rpaParameters.push(elementCopy);
         });
 
-        if (variableResponse.outputValue) responseObject.outputVariable = activityId + '_output';
+        if (variableResponse.outputValue) responseObject.outputVariable = `${activityId}_output`;
 
         let addedStorage = localStorage;
         addedStorage.push(responseObject);
@@ -200,7 +206,7 @@ const getOutputValue = (robotId, activityId) => {
 const setOutputValue = (robotId, activityId, newValueName) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
     localStorage = JSON.parse(localStorage);
-    let matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
+    const matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
     let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
 
     if (matchingElement) {
@@ -211,7 +217,7 @@ const setOutputValue = (robotId, activityId, newValueName) => {
 
     arrayWithoutMatchingElement.push(matchingElement);
     arrayWithoutMatchingElement = JSON.stringify(arrayWithoutMatchingElement);
-    sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
+    // sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
 };
 
 module.exports = {
