@@ -148,7 +148,7 @@ const setParameter = (robotId, activityId, newParameterObject) => {
 /**
  * TODO
  */
-const getOutputValue = (robotId, activityId) => {
+const getOutputValue = async (robotId, activityId) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
     localStorage = JSON.parse(localStorage);
     const matchingParameterObject = localStorage.find( (element) => (element.ssotId === robotId && element.activityId === activityId));

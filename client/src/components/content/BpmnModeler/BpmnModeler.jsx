@@ -12,6 +12,7 @@ import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 import { parseBpmnToSsot } from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
+import { parseSsotToBpmn } from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
 import { updateSsot } from '../../../api/ssotRetrieval'
 
 const { Content } = Layout;
@@ -58,6 +59,7 @@ const BpmnModeler = (props) => {
       });
     };
     openBpmnDiagram(emptyBpmn);
+    parseSsotToBpmn(newModeler);
   }, []);
 
   /**
