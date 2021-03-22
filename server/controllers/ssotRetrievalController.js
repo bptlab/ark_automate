@@ -19,9 +19,9 @@ exports.getSingleSourceOfTruth = async (req, res) => {
 // GET /getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
 exports.getRobotList = async (req, res) => {
   try {
-    // res.set('Content-Type', 'application/json');
-    const { userid } = req.params;
-    const usableUserId = mongoose.Types.ObjectId(userid);
+    res.set('Content-Type', 'application/json');
+    const { userId } = req.params;
+    const usableUserId = mongoose.Types.ObjectId(userId);
 
     const userAccessObjs = await mongoose
       .model('userAccessObject')

@@ -3,27 +3,9 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const ssotModels = require('../../models/singleSourceOfTruthModel.js');
 const uaoModels = require('../../models/userAccessObjectModel');
 
-const setupSsot = (conn, uri) => {
-  const ssot = conn.model('SSoT'); // define model
-  conn.openUri(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  ssot.createCollection().then(() => {
-    ssot.insertMany({
-      starterId: 'starterId1',
-      robotName: 'testRobot',
-      elements: [
-        {
-          type: 'MARKER',
-          name: 'startEvent',
-          predecessorIds: [],
-          successorIds: [],
-        },
-      ],
-    });
-  });
-  console.log('Created ssot');
+const mongooseOpts = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 };
 
 const setupUao = (conn, uri) => {
@@ -54,19 +36,9 @@ const mongod = new MongoMemoryServer({
  */
 module.exports.connect = async () => {
   const uri = await mongod.getUri();
-  const mongooseOpts = {
-    useNewUrlParser: true,
-    autoReconnect: true,
-    reconnectTries: Number.MAX_VALUE,
-    reconnectInterval: 1000,
-    useUnifiedTopology: true,
-  };
-  const conn = await mongoose.createConnection(uri, mongooseOpts);
-  await mongoose.connect(uri);
-  console.log(mongoose.connection.readyState);
+  await mongoose.createConnection(uri, mongooseOpts);
+  await mongoose.connect(uri, mongooseOpts);
   console.log('Connected to MongoDB with uri:', uri);
-  //setupSsot(conn, uri);
-  setupUao(conn, uri);
 };
 
 /**
@@ -74,13 +46,11 @@ module.exports.connect = async () => {
  */
 module.exports.closeDatabase = async () => {
   const uri = await mongod.getUri();
-  //  await mongoose.connect(uri);
 
   await mongoose.connection.dropDatabase();
-  console.log(mongoose.connection.readyState);
   console.log('Dropped Database of :', uri);
   await mongoose.connection.close();
-  mongoose.disconnect();
+  await mongoose.disconnect();
   await mongod.stop();
 };
 
@@ -90,7 +60,6 @@ module.exports.closeDatabase = async () => {
 module.exports.clearDatabase = async () => {
   const { collections } = mongoose.connection;
   const uri = await mongod.getUri();
-  //  await mongoose.connect(uri);
 
   // fix according to https://docs.w3cub.com/eslint/rules/no-await-in-loop.html
   const result = [];
@@ -98,20 +67,6 @@ module.exports.clearDatabase = async () => {
     const collection = collections[key];
     result.push(collection.deleteMany());
   }
-
   console.log('Emptied Database of :', uri);
-
   return Promise.all(result);
 };
-
-module.exports.wrapper = async () => {
-  await this.connect();
-  let end = Date.now() + 5000;
-  while (Date.now() < end);
-  await this.clearDatabase();
-  end = Date.now() + 5000;
-  while (Date.now() < end);
-  await this.closeDatabase();
-};
-
-// this.wrapper();
