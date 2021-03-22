@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 const userAccessModels = require('../models/userAccessObjectModel.js');
+const rpaModels = require('../models/rpaTaskModel');
 
 const retrieveParameterObject = async (botId, activityParameterId) => (
     mongoose.model('parameter').findOne(
@@ -152,6 +153,28 @@ exports.getVariables = async (req, res) => {
             {
                 ssotId: botId,
                 activityId
+            }
+        ).exec()
+        
+        res.send(variables);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// GET /ssot/getVariablesForTaskApplication/?task=6045eccf&application=ActivityId123
+exports.getVariablesForTaskApp = async (req, res) => {
+    try {
+        res.set('Content-Type', 'application/json');
+        const {application} = req.query;
+        const applicationWithEmptyspace = application.replace(/\+/g, ' ');
+        const {task} = req.query;
+        const taskWithEmptyspace = task.replace(/\+/g, ' ');
+
+        const variables = await mongoose.model('rpa-task').findOne(
+            {
+                Task: taskWithEmptyspace,
+                Application: applicationWithEmptyspace
             }
         ).exec()
         

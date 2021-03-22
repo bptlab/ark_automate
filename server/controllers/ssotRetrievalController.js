@@ -174,7 +174,6 @@ exports.overwriteRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
     const updatedSsot = req.body;
-    const { robotId } = req.params;
     
     const ssotData = await mongoose
       .model('SSoT')
