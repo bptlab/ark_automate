@@ -11,18 +11,27 @@ const { Option } = Select;
  * @component
  */
 const PPApplicationDropdown = ({
-  onApplicationSelection,
   currentSelection,
+  onApplicationSelection,
   applications,
 }) => {
-  const [applications2, setApplications] = useState([""]);
+  /*   const [currentSelection, setCurrentSelection] = useState([]);
+    const [exampleState, setExampleState] = useState([]); */
+
+  console.log(currentSelection)
+
+  /* useEffect(() => {
+    getCurrentApplicationForActivity().then(response => {
+      setCurrentSelection(response);
+    })
+  }, [])
 
   useEffect(() => {
-    applications().then(response => {
-      setApplications(response)
-    })
-
-  }, [])
+    if (currentSelection && currentSelection.length > 0) {
+      setCurrentSelection(currentSelection)
+      console.log(currentSelection)
+    }
+  }, [currentSelection]) */
 
   return (
     <>
@@ -33,7 +42,7 @@ const PPApplicationDropdown = ({
         onChange={onApplicationSelection}
         defaultValue={currentSelection}
       >
-        {applications2.map((applicaton) => (
+        {applications.map((applicaton) => (
           <Option key={applicaton} value={applicaton}>
             {applicaton}
           </Option>

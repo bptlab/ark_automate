@@ -27,6 +27,7 @@ const { Sider } = Layout;
 const ModelerSidebar = ({ modeler, robotId }) => {
   const [variableList, setvariableList] = useState([]);
   const [outputVariableName, setOutputVariableName] = useState();
+  const [currentSelection, setCurrentSelection] = useState([]);
 
   const [elementState, setElementState] = useState({
     selectedElements: [],
@@ -38,6 +39,16 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     setTasksForSelectedApplication,
   ] = useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
+
+  const getCurrentApplicationForActivity = async () => {
+    console.log("...")
+    getAttributes(robotId, elementState.currentElement.id)
+      .then((result) => {
+        if (typeof result.rpaApplication !== 'undefined') {
+          setCurrentSelection(result.rpaApplication)
+        }
+      })
+  }
 
   /**
    * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
@@ -77,6 +88,9 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             setOutputVariableName(data ? data.outputVariable : null);
           })
       }
+      if (elementState.currentElement) {
+        getCurrentApplicationForActivity();
+      }
     });
 
     modeler.on('element.changed', (event) => {
@@ -90,6 +104,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         });
       }
     });
+
+
   }, [modeler]);
 
   /**
@@ -254,16 +270,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     console.log("save to cloud")
   };
 
-  const getCurrentApplicationForActivity = async () => {
-    console.log("...")
-    return getAttributes(robotId, elementState.currentElement.id)
-      .then((result) => {
-        if (typeof result.rpaApplication !== 'undefined') {
-          return result.rpaApplication
-        }
-        return ''
-      })
-  }
 
   const getCurrentTaskForActivity = () =>
     // return getRpaTask(robotId,elementState.currentElement.id)
@@ -284,7 +290,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
               this
             )}
             taskSelectionUpdated={selectTaskUpdatedHandler.bind(this)}
-            getCurrentApplicationForActivity={getCurrentApplicationForActivity}
+            getCurrentApplicationForActivity={currentSelection}
             getCurrentTaskForActivity={getCurrentTaskForActivity}
             tasksForSelectedApplication={tasksForSelectedApplication}
             disableTaskSelection={disableTaskSelection}
