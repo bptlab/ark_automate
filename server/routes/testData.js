@@ -18,7 +18,7 @@ const exampleSsot = {
 const userAccessObject = {
   AccessLevel: '0',
   robotId: '604a3ba6561e2d1fad4eda10',
-  userId: userId,
+  userId,
 };
 
 module.exports = { exampleSsot, userAccessObject, userId, ssotId };

@@ -8,22 +8,6 @@ const mongooseOpts = {
   useUnifiedTopology: true,
 };
 
-const setupUao = (conn, uri) => {
-  const uao = conn.model('userAccessObject'); // define model
-  conn.openUri(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  uao.createCollection().then(() => {
-    uao.insertMany({
-      AccessLevel: '0',
-      robotId: '604a3ba6561e2d1fad4eda20',
-      userId: '604a3ba6561e2d1fad4eda60',
-    });
-  });
-  console.log('Created user access object');
-};
-
 const mongod = new MongoMemoryServer({
   instance: {
     dbName: 'ark-automate',
