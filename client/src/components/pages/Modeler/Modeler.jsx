@@ -30,7 +30,7 @@ const Modeler = (match) => {
     getAvailableApplications()
       .then((response) => response.json())
       .then((data) => {
-        sessionStorage.setItem('AvailableApplications', data);
+        sessionStorage.setItem('AvailableApplications', JSON.stringify(data));
       })
       .catch((error) => {
         console.error(error);
@@ -44,7 +44,7 @@ const Modeler = (match) => {
     fetchSsot(robotId)
       .then((response) => response.json())
       .then((data) => {
-        sessionStorage.setItem('ssotLocal', data);
+        sessionStorage.setItem('ssotLocal', JSON.stringify(data));
         sessionStorage.setItem('robotName', data.robotName);
         setRobotName(data.robotName)
       })
@@ -52,8 +52,10 @@ const Modeler = (match) => {
         console.error(error);
       });
     initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
-    initSessionStorage('AvailableApplications', []);
-    const applicationList = sessionStorage.getItem('AvailableApplications');
+    initSessionStorage('AvailableApplications', JSON.stringify([]));
+    initSessionStorage('appTaskLocalStorage', JSON.stringify([]));
+    let applicationList = sessionStorage.getItem('AvailableApplications');
+    applicationList = JSON.parse(applicationList)
     if (applicationList.length < 1) saveAvailableApplicationsToSessionStorage();
   }, []);
 

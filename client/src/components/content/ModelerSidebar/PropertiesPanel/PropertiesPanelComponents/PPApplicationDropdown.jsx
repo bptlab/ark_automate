@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
 import styles from '../../ModelerSidebar.module.css';
 
@@ -14,22 +14,33 @@ const PPApplicationDropdown = ({
   onApplicationSelection,
   currentSelection,
   applications,
-}) => (
-  <>
-    <Select
-      className={styles['properties-panel-dropdown']}
-      showSearch
-      placeholder='Please select application'
-      onChange={onApplicationSelection}
-      defaultValue={currentSelection}
-    >
-      {applications.map((application) => (
-        <Option key={application} value={application}>
-          {application}
-        </Option>
-      ))}
-    </Select>
-  </>
-);
+}) => {
+  const [applications2, setApplications] = useState([""]);
+
+  useEffect(() => {
+    applications().then(response => {
+      setApplications(response)
+    })
+
+  }, [])
+
+  return (
+    <>
+      <Select
+        className={styles['properties-panel-dropdown']}
+        showSearch
+        placeholder='Please select application'
+        onChange={onApplicationSelection}
+        defaultValue={currentSelection}
+      >
+        {applications2.map((applicaton) => (
+          <Option key={applicaton} value={applicaton}>
+            {applicaton}
+          </Option>
+        ))}
+      </Select>
+    </>
+  )
+};
 
 export default PPApplicationDropdown;

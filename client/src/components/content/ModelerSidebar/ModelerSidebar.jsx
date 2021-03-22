@@ -13,6 +13,7 @@ import {
 } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
+import { getAttributes, setRpaApplication } from '../../../utils/attributeAndParamUtils';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -157,7 +158,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       selectedElements: elementState.selectedElements,
       currentElement: elementState.currentElement,
     });
-    // TODO: setRpaApplication(value) (from ERIK)
+    setRpaApplication(robotId, elementState.currentElement.id, value)
     setSelectedApplication(value);
     getTasksForApplication(value);
   };
@@ -253,10 +254,16 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     console.log("save to cloud")
   };
 
-  const getCurrentApplicationForActivity = () =>
-    // return getRpaApplication(robotId,elementState.currentElement.id)
-    // TODO: ERIK
-    'initial'
+  const getCurrentApplicationForActivity = async () => {
+    console.log("...")
+    return getAttributes(robotId, elementState.currentElement.id)
+      .then((result) => {
+        if (typeof result.rpaApplication !== 'undefined') {
+          return result.rpaApplication
+        }
+        return ''
+      })
+  }
 
   const getCurrentTaskForActivity = () =>
     // return getRpaTask(robotId,elementState.currentElement.id)

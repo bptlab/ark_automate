@@ -12,31 +12,34 @@
 /**
  * TODO
  */
- const findMatchingActivity = (robotId, activityId) => {
-    
+const findMatchingActivity = (robotId, activityId) => {
+
 };
 
 /**
  * TODO
  */
 const getAttributes = async (robotId, activityId) => {
-    const localStorage = sessionStorage.getItem('appTaskLocalStorage');
-    const matchingActivity = localStorage.find( (element) => (element.ssotId === robotId && element.activityId === activityId));
+    let localStorage = sessionStorage.getItem('appTaskLocalStorage');
+    localStorage = await JSON.parse(localStorage)
+    const matchingActivity = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
 
     if (matchingActivity) {
         return matchingActivity;
-    } 
+    }
 
     const requestString = `/ssot/getAttributes?botId=${robotId}&activityId=${activityId}`;
     const response = await fetch(requestString);
     const attributeObject = {
         activityId,
-        ssotId:robotId,
+        ssotId: robotId,
         rpaApplication: response.rpaApplication,
         rpaTask: response.rpaTask
     }
-    const addedStorage = localStorage;
+    let addedStorage = localStorage;
+
     addedStorage.push(attributeObject);
+    addedStorage = await JSON.stringify(addedStorage)
     sessionStorage.setItem('appTaskLocalStorage', addedStorage);
     return attributeObject;
 };
@@ -46,8 +49,8 @@ const getAttributes = async (robotId, activityId) => {
  */
 const setRpaTask = (robotId, activityId, newTask) => {
     const localStorage = sessionStorage.getItem('appTaskLocalStorage');
-    const matchingActivity = localStorage.find( (element) => (element.ssotId === robotId && element.activityId === activityId));
-    const arrayWithoutMatchingElement = localStorage.filter( (element) => element.ssotId !== robotId && element.activityId !== activityId);
+    const matchingActivity = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
+    const arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
 
     matchingActivity.rpaTask = newTask;
 
@@ -58,46 +61,56 @@ const setRpaTask = (robotId, activityId, newTask) => {
 /**
  * TODO
  */
-const setRpaApplication = (robotId, activityId, newApplication) => {
-    const localStorage = sessionStorage.getItem('appTaskLocalStorage');
-    const matchingActivity = localStorage.find( (element) => (element.ssotId === robotId && element.activityId === activityId));
-    const arrayWithoutMatchingElement = localStorage.filter( (element) => element.ssotId !== robotId && element.activityId !== activityId);
+const setRpaApplication = async (robotId, activityId, newApplication) => {
+    let localStorage = sessionStorage.getItem('appTaskLocalStorage');
+    localStorage = JSON.parse(localStorage)
+    let matchingActivity = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
+    let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
 
-    matchingActivity.rpaApplication = newApplication;
+    if (matchingActivity) {
+        matchingActivity.rpaApplication = newApplication;
+    } else {
+        matchingActivity = {
+            activityId,
+            ssotId: robotId,
+            rpaApplication: newApplication,
+        };
+    }
 
     arrayWithoutMatchingElement.push(matchingActivity);
+    arrayWithoutMatchingElement = JSON.stringify(arrayWithoutMatchingElement)
     sessionStorage.setItem('appTaskLocalStorage', arrayWithoutMatchingElement);
-    
+
 };
 
 /**
  * TODO
  */
 const getParameters = (robotId, activityId) => {
-    
+
 };
 
 /**
  * TODO
  */
 const setParameter = (robotId, activityId, newParameterObject) => {
-    
+
 };
 
 /**
  * TODO
  */
 const getOutputValue = (robotId, activityId) => {
-    
+
 };
 
 /**
  * TODO
  */
 const setOutputValue = (robotId, activityId, newValueName) => {
-    
+
 };
-  
+
 module.exports = {
     getAttributes,
     setRpaTask,
