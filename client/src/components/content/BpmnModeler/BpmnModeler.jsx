@@ -50,7 +50,7 @@ const BpmnModeler = (props) => {
     const openBpmnDiagram = (xml) => {
       newModeler.importXML(xml, error => {
         if (error) {
-          return console.error('fail import xml');
+          console.error('fail import xml');
         }
         const canvas = newModeler.get('canvas');
         canvas.zoom('fit-viewport');
@@ -72,6 +72,8 @@ const BpmnModeler = (props) => {
           parseBpmnToSsot(xml, props.robotId)
             .then((result) => {
               ssot = result
+              sessionStorage.setItem('ssotLocal', ssot);
+              console.log(sessionStorage.ssotLocal)
               console.log(ssot)
               // TODO: push ssot to DB
             })

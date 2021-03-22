@@ -1,5 +1,4 @@
 /* eslint-disable no-alert */
-const { elementType } = require('prop-types');
 const { parseString } = require('xmljs2');
 
 /**
@@ -142,18 +141,20 @@ const getStartEventId = (bpmnJson) => {
     alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
   } else if (startEventIds.length > 1) {
     alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-  } else if (startEventIds.length === 1)
-    return startEventIds;
+  }
+  return startEventIds;
 }
 
 /**
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
- * @returns {string} JSON that has to be put in single source of truth file
+ * @returns {string} XML that has to be put in single source of truth file
  */
 const parseBpmnToSsot = async (bpmnXml, robotId) => {
   let bpmnJson;
   let startEventId;
   let ssot;
+
+  const robotName = sessionStorage.getItem('robotName')
 
   return parseString(bpmnXml.xml)
     .then((result) => {
@@ -164,21 +165,24 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
       ssot = {
         _id: robotId,
         starterId: startEventId,
-        // TODO: Must be retrieved from DB
-        robotName: 'exampleRobot',
+        robotName,
       };
     })
+    // This part of the code calls the real parsing steps 
+    // => maybe we should rename & refactor it (incl. parseString())
     .then(() => {
       let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
       if (typeof flows === 'undefined') {
         flows = [];
       }
+      // eslint-disable-next-line no-console
       console.log(`Anzahl Kanten: ${flows.length}`)
 
       let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
       if (typeof bpmnActivities === 'undefined') {
         bpmnActivities = [];
       }
+      // eslint-disable-next-line no-console
       console.log(`Anzahl Aktivitäten: ${bpmnActivities.length}`)
 
       let elementsArray = findElements(flows);
@@ -186,12 +190,9 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
       elementsArray = enrichMarkerElements(elementsArray);
 
       ssot.elements = elementsArray;
-      console.log(ssot)
-      // JSON.stringify(ssot, null, 2);
       return ssot;
     })
     .then(() => ssot)
 }
-
 
 module.exports = { parseBpmnToSsot };
