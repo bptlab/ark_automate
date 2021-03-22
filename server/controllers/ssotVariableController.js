@@ -72,7 +72,7 @@ const checkForOutputValue = async (botId, activityParameterId) => {
     return !!parameterObject.outputVariable
 }
 
-const updateParametersForActivity2 = async (botId, activityParameterId, updatedParameters, updatedOutput, hasOutput) => {
+const updateParametersForActivity = async (botId, activityParameterId, updatedParameters, updatedOutput, hasOutput) => {
     if (hasOutput) {
         return mongoose.model('parameter').findOneAndUpdate(
             {
@@ -141,6 +141,26 @@ exports.getVariablesForNewTask = async (req, res) => {
     }
 };
 
+// GET /ssot/getVariables/?botId=6045eccf&activityId=ActivityId123
+exports.getVariables = async (req, res) => {
+    try {
+        res.set('Content-Type', 'application/json');
+        const { botId } = req.query;
+        const { activityId } = req.query;
+
+        const variables = await mongoose.model('parameter').findOne(
+            {
+                ssotId: botId,
+                activityId
+            }
+        ).exec()
+        
+        res.send(variables);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 // GET /ssot/checkForExistingVariables/?botId=6045eccfa9a07940e5763f0b&activityId=Activity_1groimk
 exports.checkForExistingVariables = async (req, res) => {
     try {
@@ -156,7 +176,7 @@ exports.checkForExistingVariables = async (req, res) => {
     }
 };
 
-// POST /ssot/updateVariables/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
+// POST /ssot/updateInputAndOutput/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
 // do not forget the payload in the body for this request
 exports.updateVariables = async (req, res) => {
     try {
@@ -168,13 +188,75 @@ exports.updateVariables = async (req, res) => {
         const {output} = updatedInfo;
         
         const hasOutput = await checkForOutputValue(botId, activityId);
-        const updatedParameterObject = await updateParametersForActivity2(
+        const updatedParameterObject = await updateParametersForActivity(
             botId,
             activityId,
             parameters,
             output,
             hasOutput
         );
+
+        res.send(updatedParameterObject);
+
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// POST /ssot/updateInputParameter/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
+// do not forget the payload in the body for this request
+exports.updateOnlyInputParams = async (req, res) => {
+    try {
+        res.set('Content-Type', 'application/json');
+        const { botId } = req.query;
+        const {activityId} = req.query;
+        const parameters = req.body;
+        
+        const updatedParameterObject = await mongoose.model('parameter').findOneAndUpdate(
+            {
+                ssotId: botId,
+                activityId
+            },
+            { 
+                rpaParameters: parameters
+            },
+            {
+                new: true,
+                useFindAndModify: false,
+                upsert: true
+            }
+        ).exec()
+
+        res.send(updatedParameterObject);
+
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// POST /ssot/updateOutputVariableName/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
+// do not forget the payload in the body for this request
+exports.updateOnlyOutputVarName = async (req, res) => {
+    try {
+        res.set('Content-Type', 'application/json');
+        const { botId } = req.query;
+        const {activityId} = req.query;
+        const outputVarName = req.body;
+        
+        const updatedParameterObject = await mongoose.model('parameter').findOneAndUpdate(
+            {
+                ssotId: botId,
+                activityId
+            },
+            { 
+                outputVariable: outputVarName
+            },
+            {
+                new: true,
+                useFindAndModify: false,
+                upsert: true
+            }
+        ).exec()
 
         res.send(updatedParameterObject);
 

@@ -24,9 +24,14 @@ const instructionSchema = new Schema({
   name: String,
   predecessorIds: [String],
   successorIds: [String],
+  id: String
+});
+
+const rpaAttributesObjectSchema = new Schema({
+  ssotId: mongoose.Types.ObjectId,
+  activityId: String,
   rpaApplication: String,
   rpaTask: String,
-  id: String
 });
 
 const markerSchema = new Schema({
@@ -43,4 +48,5 @@ const ssotSchema = new Schema({
 });
 
 mongoose.model('parameter', parameterObjectSchema);
+mongoose.model('rpaAttributes', rpaAttributesObjectSchema);
 mongoose.model('SSoT', ssotSchema);

@@ -6,6 +6,7 @@ const router = express.Router();
 const parsingController = require('../controllers/ssotParsingController');
 const retrievalController = require('../controllers/ssotRetrievalController');
 const variableController = require('../controllers/ssotVariableController');
+const rpaAttributesController = require('../controllers/ssotRpaAttributes');
 
 /// PARSING ROUTES ///
 router.get('/parser/get-robot-code', parsingController.getRobotCode);
@@ -22,7 +23,14 @@ router.post('/overwriteRobot/:robotId', retrievalController.overwriteRobot);
 
 /// VARIABLE ROUTES ///
 router.get('/getVariablesForNewTask', variableController.getVariablesForNewTask);
+router.get('/getVariables', variableController.getVariables);
 router.get('/checkForExistingVariables', variableController.checkForExistingVariables);
-router.post('/updateVariables', variableController.updateVariables);
+router.post('/updateInputAndOutput', variableController.updateVariables);
+router.post('/updateInputParameter', variableController.updateOnlyInputParams);
+router.post('/updateOutputVariableName', variableController.updateOnlyOutputVarName);
+
+/// RPA ATTRIBUTES ROUTES ///
+router.get('/getAttributes', rpaAttributesController.getAttributes);
+router.post('/updateAttributes', rpaAttributesController.updateAttributes);
 
 module.exports = router;
