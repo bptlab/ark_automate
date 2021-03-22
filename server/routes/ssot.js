@@ -24,6 +24,7 @@ router.post('/overwriteRobot/:robotId', retrievalController.overwriteRobot);
 /// VARIABLE ROUTES ///
 router.get('/getVariablesForNewTask', variableController.getVariablesForNewTask);
 router.get('/getVariables', variableController.getVariables);
+router.get('/getVariables', variableController.getVariablesForTaskApp);
 router.get('/checkForExistingVariables', variableController.checkForExistingVariables);
 router.post('/updateInputAndOutput', variableController.updateVariables);
 router.post('/updateInputParameter', variableController.updateOnlyInputParams);
