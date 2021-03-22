@@ -23,7 +23,13 @@ const RobotContainer = (props) => {
    * @description Sends a job to the server to execute a specfic robot for a specific user
    */
   const startRobot = () => {
-    socket.emit('robotExecutionJobs', { robotId, userId });
+    // isBotExecutable funtion is to be implemented
+    const isBotExecutable = true;
+    if (isBotExecutable) {
+      socket.emit('robotExecutionJobs', { robotId, userId });
+    } else {
+      alert('Your Bot is not ready to be executed!');
+    }
   };
 
   /**
