@@ -5,11 +5,7 @@ import PropTypes from 'prop-types'
 // import bpmnModeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
-import initSessionStorage from '../../../utils/sessionStorage';
-import {
-  fetchTasksFromDB,
-  getAvailableApplications,
-} from '../../../api/applicationAndTaskSelection';
+import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
 import {
   variablesForNewTask,
   updateVariablesForBot,
@@ -17,7 +13,6 @@ import {
 } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
-import { fetchSsot } from '../../../api/ssotRetrieval';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -28,7 +23,7 @@ const { Sider } = Layout;
  * @category Client
  * @component
  */
-const ModelerSidebar = ({ modeler, robotId, robotName }) => {
+const ModelerSidebar = ({ modeler, robotId }) => {
   const [variableList, setvariableList] = useState([]);
   const [outputVariableName, setOutputVariableName] = useState();
 
@@ -42,8 +37,6 @@ const ModelerSidebar = ({ modeler, robotId, robotName }) => {
     setTasksForSelectedApplication,
   ] = useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
-
-  console.log(robotName)
 
   /**
    * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
@@ -74,12 +67,12 @@ const ModelerSidebar = ({ modeler, robotId, robotName }) => {
 
       if (event.newSelection[0] && event.newSelection[0].type === 'bpmn:Task') {
         checkBotForExistingVariables(robotId, event.newSelection[0].id)
-        .then((response) => {if (response) response.json()})
-        .then((data) => {
-          console.log(data);
-          setvariableList(data ? data.rpaParameters : []);
-          setOutputVariableName(data ? data.outputVariable : null);
-        })
+          .then((response) => { if (response) response.json() })
+          .then((data) => {
+            console.log(data);
+            setvariableList(data ? data.rpaParameters : []);
+            setOutputVariableName(data ? data.outputVariable : null);
+          })
       }
     });
 
@@ -179,12 +172,12 @@ const ModelerSidebar = ({ modeler, robotId, robotName }) => {
       selectedApplication,
       value
     )
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      setvariableList(data.rpaParameters);
-      setOutputVariableName(data.outputVariable);
-    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setvariableList(data.rpaParameters);
+        setOutputVariableName(data.outputVariable);
+      })
   };
 
   /**
@@ -244,7 +237,7 @@ const ModelerSidebar = ({ modeler, robotId, robotName }) => {
     <Sider className={styles.sider}>
       <Space direction='vertical' size='small' style={{ width: '100%' }}>
         <Title level={3} className={styles.title}>
-          {robotName}
+          {sessionStorage.getItem('robotName')}
         </Title>
         {elementState.selectedElements.length === 1 && (
           <PropertiesPanel
@@ -285,7 +278,7 @@ const ModelerSidebar = ({ modeler, robotId, robotName }) => {
 
 ModelerSidebar.propTypes = {
   modeler: PropTypes.objectOf(PropTypes.shape).isRequired,
-  robotId: PropTypes.string.isRequired
+  robotId: PropTypes.string.isRequired,
 };
 
 export default ModelerSidebar;
