@@ -10,8 +10,6 @@ import PPParameterSection from './PropertiesPanelSections/PPParameterSection';
 import PPRpaSection from './PropertiesPanelSections/PPRpaSection';
 import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection'
 
-const outputVariableText = 'GetCell returns the value of the specified cell!';
-
 /**
  * @description Shows PropertiesPanel for one selected BPMN-Element.
  * @category Client
@@ -26,7 +24,9 @@ const PropertiesPanel = ({
   disableTaskSelection,
   robotId,
   variableList,
-  parameterUpdated
+  parameterUpdated,
+  outputVariableName,
+  outputNameUpdated
 }) => (
   < div className='element-properties' key={element.id} >
     <Space direction='vertical' style={{ width: '100%' }}>
@@ -44,7 +44,7 @@ const PropertiesPanel = ({
             disableTaskSelection={disableTaskSelection}
           />
           {((variableList.length > 0) && <PPParameterSection variableList={variableList} onValueChange={parameterUpdated} />)}
-          {(outputVariableText && <PPOutputValueSection outputVariableText={outputVariableText} />)}
+          {(outputVariableName && <PPOutputValueSection outputVariableText={outputVariableName} onNameChange={outputNameUpdated}/>)}
         </>
       )}
     </Space>
@@ -59,7 +59,9 @@ PropertiesPanel.propTypes = {
   taskSelectionUpdated: PropTypes.func.isRequired,
   disableTaskSelection: PropTypes.bool.isRequired,
   variableList: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  parameterUpdated: PropTypes.func.isRequired
+  parameterUpdated: PropTypes.func.isRequired,
+  outputVariableName: PropTypes.string.isRequired,
+  outputNameUpdated: PropTypes.func.isRequired,
 };
 
 export default PropertiesPanel;

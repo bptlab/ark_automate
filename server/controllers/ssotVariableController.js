@@ -3,38 +3,110 @@ const mongoose = require('mongoose');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 const userAccessModels = require('../models/userAccessObjectModel.js');
 
-const retrieveElementsAndMatchingElement = async (botId, activityId) => {
-    let matchingElement = {};
-
-    const ssot = await mongoose.model('SSoT').findOne(
+const retrieveParameterObject = async (botId, activityParameterId) => (
+    mongoose.model('parameter').findOne(
         {
-            _id: botId
-        },
-        {
-            elements: 1,
-            _id: 0
+            ssotId: botId,
+            activityId: activityParameterId,
         }
-    ).exec();
-
-    const elementList = ssot.elements;
-    elementList.forEach((singleElement) => {
-        if (singleElement.id === activityId) {
-            matchingElement = singleElement;
-        }
-    });
-
-    const returnObject = {
-        'elementList': elementList,
-        'matchingElement': matchingElement
-    };
-
-    return returnObject;
-}
-
-const checkIfElementIsEmpty = (element) => (
-    element && Object.keys(element).length === 0 && element.constructor === Object
+    ).exec()
 )
 
+const findParametersForTask = async (applicationName, taskName) => (
+    mongoose.model('rpa-task').findOne(
+        {
+            Application: applicationName,
+            Task: taskName,
+        },
+        {
+            inputVars: 1,
+            outputValue: 1,
+            _id: 0
+        }
+    ).exec()
+)
+
+const initiateParametersForActivity = async (botId, activityParameterId, updatedParameters, hasOutput) => {
+    if (hasOutput) {
+        return mongoose.model('parameter').findOneAndUpdate(
+            {
+                ssotId: botId,
+                activityId: activityParameterId,
+            },
+            { 
+                rpaParameters: updatedParameters,
+                outputVariable: `${activityParameterId}_output`
+            },
+            {
+                new: true,
+                useFindAndModify: false,
+                upsert: true
+            }
+        ).exec()
+    } 
+    
+    return mongoose.model('parameter').findOneAndUpdate(
+        {
+            ssotId: botId,
+            activityId: activityParameterId,
+        },
+        { 
+            rpaParameters: updatedParameters,
+            $unset: { outputVariable: 1 }
+        },
+        {
+            new: true,
+            useFindAndModify: false,
+            upsert: true
+        }
+    ).exec()    
+}
+
+const checkForOutputValue = async (botId, activityParameterId) => {
+    const parameterObject = await  mongoose.model('parameter').findOne(
+        {
+            ssotId: botId,
+            activityId: activityParameterId,
+        }
+    ).exec();
+    return !!parameterObject.outputVariable
+}
+
+const updateParametersForActivity2 = async (botId, activityParameterId, updatedParameters, updatedOutput, hasOutput) => {
+    if (hasOutput) {
+        return mongoose.model('parameter').findOneAndUpdate(
+            {
+                ssotId: botId,
+                activityId: activityParameterId,
+            },
+            { 
+                rpaParameters: updatedParameters,
+                outputVariable: updatedOutput
+            },
+            {
+                new: true,
+                useFindAndModify: false,
+                upsert: true
+            }
+        ).exec()
+    } 
+    
+    return mongoose.model('parameter').findOneAndUpdate(
+        {
+            ssotId: botId,
+            activityId: activityParameterId,
+        },
+        { 
+            rpaParameters: updatedParameters,
+            $unset: { outputVariable: 1 }
+        },
+        {
+            new: true,
+            useFindAndModify: false,
+            upsert: true
+        }
+    ).exec()    
+}
 
 // GET /ssot/getVariablesForNewTask/?botId=6045eccf&activityId=ActivityId123&application=MS+Excel&task=Open+Application
 exports.getVariablesForNewTask = async (req, res) => {
@@ -47,16 +119,7 @@ exports.getVariablesForNewTask = async (req, res) => {
         const { task } = req.query;
         const taskWithEmptyspace = task.replace(/\+/g, ' ');
 
-        const rpaTaskVariables = await mongoose.model('rpa-task').findOne(
-            {
-                Application: applicationWithEmptyspace,
-                Task: taskWithEmptyspace,
-            },
-            {
-                inputVars: 1,
-                _id: 0
-            }
-        ).exec();
+        const rpaTaskVariables = await findParametersForTask(applicationWithEmptyspace, taskWithEmptyspace);
 
         const inputVars = [];
         rpaTaskVariables.get('inputVars').forEach((singleVar) => {
@@ -65,21 +128,14 @@ exports.getVariablesForNewTask = async (req, res) => {
             inputVars.push(varWithValue);
         });
 
-        const listAndElement = await retrieveElementsAndMatchingElement(botId, activityId);
-        const { elementList } = listAndElement;
-        const { matchingElement } = listAndElement;
-        matchingElement.rpaParameters = inputVars;
-
-        const updatesSsot = await mongoose.model('SSoT').findByIdAndUpdate(
-            { _id: botId },
-            { elements: elementList },
-            {
-                new: true,
-                useFindAndModify: false
-            }
-        ).exec();
-
-        res.send(inputVars);
+        const updatedParameterObject = await initiateParametersForActivity(
+            botId,
+            activityId,
+            inputVars,
+            rpaTaskVariables.outputValue
+        );
+        
+        res.send(updatedParameterObject);
     } catch (err) {
         console.error(err);
     }
@@ -92,42 +148,35 @@ exports.checkForExistingVariables = async (req, res) => {
         const { botId } = req.query;
         const { activityId } = req.query;
 
-        const element = (await retrieveElementsAndMatchingElement(botId, activityId)).matchingElement;
+        const element = await retrieveParameterObject(botId, activityId);
 
-        if (checkIfElementIsEmpty(element)) {
-            res.status(403).send('No matching activity could be found');
-        } else {
-            res.send(element.rpaParameters);
-        }
-
+        res.send(element);
     } catch (err) {
         console.error(err);
     }
 };
 
-// GET /ssot/updateVariables/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
+// POST /ssot/updateVariables/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
 // do not forget the payload in the body for this request
 exports.updateVariables = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const { botId } = req.query;
-        const { activityId } = req.query;
+        const {activityId} = req.query;
+        const updatedInfo = req.body;
+        const {parameters} = updatedInfo;
+        const {output} = updatedInfo;
+        
+        const hasOutput = await checkForOutputValue(botId, activityId);
+        const updatedParameterObject = await updateParametersForActivity2(
+            botId,
+            activityId,
+            parameters,
+            output,
+            hasOutput
+        );
 
-        const listAndElement = await retrieveElementsAndMatchingElement(botId, activityId);
-        const { elementList } = listAndElement;
-        const { matchingElement } = listAndElement;
-        matchingElement.rpaParameters = req.body;
-
-        const updatesSsot = await mongoose.model('SSoT').findByIdAndUpdate(
-            { _id: botId },
-            { elements: elementList },
-            {
-                new: true,
-                useFindAndModify: false
-            }
-        ).exec();
-
-        res.send(updatesSsot);
+        res.send(updatedParameterObject);
 
     } catch (err) {
         console.error(err);
