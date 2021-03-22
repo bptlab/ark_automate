@@ -1,12 +1,24 @@
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const fetch = require('node-fetch');
 const express = require('express');
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const ssotRetrievalController = require('../controllers/ssotRetrievalController');
-const ssotModel = require('../models/singleSourceOfTruthModel');
-const uaoModel = require('../models/userAccessObjectModel');
+const ssotParsingController = require('../controllers/ssotParsingController');
+const SsotModel = require('../models/singleSourceOfTruthModel');
+const UaoModel = require('../models/userAccessObjectModel');
 const testData = require('./testData');
+
+const loadSsotInDb = async () => {
+  const ssot = new SsotModel(testData.testSsot);
+  await ssot.save();
+};
+
+const loadUserAccessObjectInDb = async () => {
+  const uao = new UaoModel(testData.testUserAccessObject);
+  await uao.save();
+};
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -23,16 +35,6 @@ afterEach(async () => dbHandler.clearDatabase());
  */
 afterAll(async () => dbHandler.closeDatabase());
 
-const loadSsotInDb = async () => {
-  const ssot = new ssotModel(testData.exampleSsot);
-  await ssot.save();
-};
-
-const loadUserAccessObjectInDb = async () => {
-  const uao = new uaoModel(testData.userAccessObject);
-  await uao.save();
-};
-
 describe('/ssot/getAvailableRobotsForUser', () => {
   it('retreives the list of robots for user correctly', async () => {
     await loadSsotInDb();
@@ -46,7 +48,6 @@ describe('/ssot/getAvailableRobotsForUser', () => {
       },
     });
     const response = httpMocks.createResponse();
-
     await ssotRetrievalController.getRobotList(request, response);
     const data = await response._getData();
     expect(response.statusCode).toBe(200);
@@ -101,6 +102,7 @@ describe('ssot/renameRobot', () => {
       JSON.stringify('newTestRobot')
     );
 
+    // verify if really in DB
     const request2 = httpMocks.createRequest({
       method: 'GET',
       url: '/ssot/get/',
@@ -119,7 +121,7 @@ describe('ssot/renameRobot', () => {
 });
 
 describe('ssot/retrieveRobotMetadata', () => {
-  it('sets the robotName to the requested string', async () => {
+  it('gets the correct robot metadata', async () => {
     await loadSsotInDb();
 
     const request = httpMocks.createRequest({
@@ -136,10 +138,10 @@ describe('ssot/retrieveRobotMetadata', () => {
 
     expect(response.statusCode).toBe(200);
     expect(JSON.stringify(data.robotName)).toEqual(
-      JSON.stringify(testData.exampleSsot.robotName)
+      JSON.stringify(testData.testSsot.robotName)
     );
     expect(JSON.stringify(data.starterId)).toEqual(
-      JSON.stringify(testData.exampleSsot.starterId)
+      JSON.stringify(testData.testSsot.starterId)
     );
   });
 });
@@ -167,9 +169,11 @@ describe('ssot/shareRobotWithUser', () => {
       JSON.stringify(testData.ssotId)
     );
 
-    const uao = await uaoModel
-      .find({ userId: testData.userId, robotId: testData.ssotId })
-      .exec();
+    // verify if really in DB
+    const uao = await UaoModel.find({
+      userId: testData.userId,
+      robotId: testData.ssotId,
+    }).exec();
     expect(JSON.stringify(uao[0].robotId)).toBe(
       JSON.stringify(testData.ssotId)
     );
@@ -186,7 +190,7 @@ describe('ssot/createNewRobot', () => {
       url: '/ssot/createNewRobot',
       query: {
         userId: testData.userId,
-        robotName: testData.exampleSsot.robotName,
+        robotName: testData.testSsot.robotName,
       },
     });
     const response = httpMocks.createResponse();
@@ -197,6 +201,7 @@ describe('ssot/createNewRobot', () => {
     const data = await response._getData();
     const newSsotId = data.robotId;
 
+    // verify if really in DB
     const request2 = httpMocks.createRequest({
       method: 'GET',
       url: '/ssot/getAvailableRobotsForUser',
@@ -210,5 +215,25 @@ describe('ssot/createNewRobot', () => {
     const data2 = await response2._getData();
     expect(response.statusCode).toBe(200);
     expect(JSON.stringify(data2[0]._id)).toEqual(JSON.stringify(newSsotId));
+  });
+});
+
+describe('ssot/getRobotCode', () => {
+  it('successfully retrieves parsed code for ssot', async () => {
+    const request = httpMocks.createRequest({
+      method: 'GET',
+      url: '/ssot/getRobotCode',
+      query: {
+        robotId: testData.ssotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotParsingController.getRobotCode(request, response);
+    expect(response.statusCode).toBe(200);
+
+    const data = await response._getData();
+    expect(data).toMatch('*** Settings ***');
+    expect(data).toMatch('*** Tasks ***');
   });
 });

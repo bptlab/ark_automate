@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const ssotModels = require('../../models/singleSourceOfTruthModel.js');
-const uaoModels = require('../../models/userAccessObjectModel');
 
 const mongooseOpts = {
   useNewUrlParser: true,
@@ -22,17 +20,13 @@ module.exports.connect = async () => {
   const uri = await mongod.getUri();
   await mongoose.createConnection(uri, mongooseOpts);
   await mongoose.connect(uri, mongooseOpts);
-  console.log('Connected to MongoDB with uri:', uri);
 };
 
 /**
  * Drop database, close the connection and stop mongod.
  */
 module.exports.closeDatabase = async () => {
-  const uri = await mongod.getUri();
-
   await mongoose.connection.dropDatabase();
-  console.log('Dropped Database of :', uri);
   await mongoose.connection.close();
   await mongoose.disconnect();
   await mongod.stop();
@@ -43,7 +37,6 @@ module.exports.closeDatabase = async () => {
  */
 module.exports.clearDatabase = async () => {
   const { collections } = mongoose.connection;
-  const uri = await mongod.getUri();
 
   // fix according to https://docs.w3cub.com/eslint/rules/no-await-in-loop.html
   const result = [];
@@ -51,6 +44,5 @@ module.exports.clearDatabase = async () => {
     const collection = collections[key];
     result.push(collection.deleteMany());
   }
-  console.log('Emptied Database of :', uri);
   return Promise.all(result);
 };
