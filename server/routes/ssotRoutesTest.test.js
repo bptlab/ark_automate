@@ -1,7 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-const mongoose = require('mongoose');
-const fetch = require('node-fetch');
-const express = require('express');
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const ssotRetrievalController = require('../controllers/ssotRetrievalController');
