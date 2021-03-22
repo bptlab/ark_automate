@@ -1,5 +1,4 @@
 /* eslint-disable no-alert */
-const { elementType } = require('prop-types');
 const { parseString } = require('xmljs2');
 
 /**
@@ -126,55 +125,64 @@ const enrichMarkerElements = (elementsArray) => {
   return elementsArray;
 };
 
+const getStartEventId = (bpmnJson) => {
+  let startEvents;
+  const startEventIds = [];
+
+  startEvents = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
+  if (typeof startEvents === 'undefined') {
+    startEvents = [];
+  }
+  startEvents.forEach(singleStartEvent => {
+    startEventIds.push(singleStartEvent.$.id);
+  });
+
+  if (startEventIds.length === 0) {
+    alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+  } else if (startEventIds.length > 1) {
+    alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+  }
+  return startEventIds;
+}
+
 /**
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
- * @returns {string} JSON that has to be put in single source of truth file
+ * @returns {string} XML that has to be put in single source of truth file
  */
-const parseBpmnToSsot = (xml2, robotId) => {
+const parseBpmnToSsot = async (bpmnXml, robotId) => {
   let bpmnJson;
   let startEventId;
   let ssot;
 
-  parseString(xml2.xml)
+  const robotName = sessionStorage.getItem('robotName')
+
+  return parseString(bpmnXml.xml)
     .then((result) => {
-      let startEvents;
-      const startEventIds = [];
-
       bpmnJson = result;
-      startEvents = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
-      if (typeof startEvents === 'undefined') {
-        startEvents = [];
-      }
-      startEvents.forEach(singleStartEvent => {
-        startEventIds.push(singleStartEvent.$.id);
-      });
+      startEventId = getStartEventId(bpmnJson);
 
-      if (startEventIds.length === 0) {
-        alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-      } else if (startEventIds.length > 1) {
-        alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-      } else if (startEventIds.length === 1)
-        [startEventId] = startEventIds;
-    })
-    .then(() => {
+      // Build basic ssot-frame
       ssot = {
         _id: robotId,
         starterId: startEventId,
-        // Must be retrieved from DB
-        robotName: 'exampleRobot',
+        robotName,
       };
     })
+    // This part of the code calls the real parsing steps 
+    // => maybe we should rename & refactor it (incl. parseString())
     .then(() => {
       let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
       if (typeof flows === 'undefined') {
         flows = [];
       }
+      // eslint-disable-next-line no-console
       console.log(`Anzahl Kanten: ${flows.length}`)
 
       let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
       if (typeof bpmnActivities === 'undefined') {
         bpmnActivities = [];
       }
+      // eslint-disable-next-line no-console
       console.log(`Anzahl Aktivitäten: ${bpmnActivities.length}`)
 
       let elementsArray = findElements(flows);
@@ -182,9 +190,9 @@ const parseBpmnToSsot = (xml2, robotId) => {
       elementsArray = enrichMarkerElements(elementsArray);
 
       ssot.elements = elementsArray;
-      console.log(ssot)
       return ssot;
     })
-};
+    .then(() => ssot)
+}
 
 module.exports = { parseBpmnToSsot };

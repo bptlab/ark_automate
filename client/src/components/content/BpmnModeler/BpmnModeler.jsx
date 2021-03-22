@@ -48,34 +48,42 @@ const BpmnModeler = (props) => {
     props.onModelerUpdate(newModeler)
 
     const openBpmnDiagram = (xml) => {
-      newModeler.importXML(xml, (error) => {
+      newModeler.importXML(xml, error => {
         if (error) {
-          return console.error('fail import xml');
+          console.error('fail import xml');
         }
         const canvas = newModeler.get('canvas');
         canvas.zoom('fit-viewport');
       });
     };
-
     openBpmnDiagram(emptyBpmn);
   }, []);
 
-
-  // trigger rerendering of Ssot on every update
+  /**
+   * @description Equivalent to ComponentDidMount in class based components 
+   * => This useEffect() triggers rerendering of the local Ssot on every XML update
+   */
   useEffect(() => {
     newModeler.on('selection.changed', () => {
+      let ssot = [];
       newModeler
         .saveXML({ format: true })
         .then((xml) => {
           parseBpmnToSsot(xml, props.robotId)
+            .then((result) => {
+              ssot = result
+              sessionStorage.setItem('ssotLocal', ssot);
+              console.log(sessionStorage.ssotLocal)
+              console.log(ssot)
+              // TODO: push ssot to DB
+            })
         })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch((err) =>
+          console.error(err)
+        );
     });
 
-    newModeler.on('element.changed', () => {
-    });
+    newModeler.on('element.changed', () => { });
   }, [newModeler]);
 
   return (

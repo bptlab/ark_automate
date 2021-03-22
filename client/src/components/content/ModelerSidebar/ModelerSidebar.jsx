@@ -28,7 +28,7 @@ const { Sider } = Layout;
  * @category Client
  * @component
  */
-const ModelerSidebar = ({ modeler, robotId }) => {
+const ModelerSidebar = ({ modeler, robotId, robotName }) => {
   const [variableList, setvariableList] = useState([]);
   const [outputVariableName, setOutputVariableName] = useState();
 
@@ -43,37 +43,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   ] = useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
 
-  /**
-   * @description Fetch all applications from MongoDB and save in session storage.
-   */
-  const saveAvailableApplicationsToSessionStorage = async () => {
-    getAvailableApplications()
-      .then((response) => response.json())
-      .then((data) => {
-        sessionStorage.setItem('AvailableApplications', data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  /**
-   * @description Equivalent to ComponentDidMount in class based components
-   */
-  useEffect(() => {
-    fetchSsot(robotId)
-      .then((response) => response.json())
-      .then((data) => {
-        sessionStorage.setItem('ssotLocal', data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
-    initSessionStorage('AvailableApplications', []);
-    const applicationList = sessionStorage.getItem('AvailableApplications');
-    if (applicationList.length < 1) saveAvailableApplicationsToSessionStorage();
-  }, []);
+  console.log(robotName)
 
   /**
    * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
@@ -273,8 +243,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   return (
     <Sider className={styles.sider}>
       <Space direction='vertical' size='small' style={{ width: '100%' }}>
-        <Title level={5} className={styles.title}>
-          Robot: {robotId}
+        <Title level={3} className={styles.title}>
+          {robotName}
         </Title>
         {elementState.selectedElements.length === 1 && (
           <PropertiesPanel
