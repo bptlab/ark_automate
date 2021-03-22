@@ -12,12 +12,14 @@ const { Text } = Typography;
  * @category Client
  * @component
  */
-const PPNameSection = ({
+const PPRpaSection = ({
     element,
     applicationSelectionUpdated,
     tasksForSelectedApplication,
     taskSelectionUpdated,
     disableTaskSelection,
+    getCurrentApplicationForActivity,
+    getCurrentTaskForActivity,
 }) => (
     <>
         <Text className={styles[`label-on-dark-background`]}>Actions: </Text>
@@ -27,26 +29,26 @@ const PPNameSection = ({
                 applications={sessionStorage
                     .getItem('AvailableApplications')
                     .split(',')}
-                currentSelection={
-                    element.businessObject.$attrs['arkRPA:application']
-                }
+                currentSelection={getCurrentApplicationForActivity}
             />
             <PropertiesPanelTaskDropdown
                 listOfTasks={tasksForSelectedApplication}
                 onTaskSelection={taskSelectionUpdated}
                 disabled={disableTaskSelection}
-                currentSelection={element.businessObject.$attrs['arkRPA:task']}
+                currentSelection={getCurrentTaskForActivity}
             />
         </Space>
     </>
 );
 
-PPNameSection.propTypes = {
+PPRpaSection.propTypes = {
     element: PropTypes.objectOf(PropTypes.shape).isRequired,
     applicationSelectionUpdated: PropTypes.func.isRequired,
+    getCurrentApplicationForActivity: PropTypes.func.isRequired,
+    getCurrentTaskForActivity: PropTypes.func.isRequired,
     tasksForSelectedApplication: PropTypes.arrayOf(PropTypes.shape).isRequired,
     taskSelectionUpdated: PropTypes.func.isRequired,
     disableTaskSelection: PropTypes.bool.isRequired
 };
 
-export default PPNameSection;
+export default PPRpaSection;

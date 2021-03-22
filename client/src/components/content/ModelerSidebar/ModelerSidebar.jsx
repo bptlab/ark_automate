@@ -43,6 +43,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   useEffect(() => {
     modeler.on('selection.changed', (event) => {
+      console.log(event.newSelection[0]);
+
       setElementState({
         selectedElements: event.newSelection,
         currentElement: event.newSelection[0],
@@ -52,7 +54,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       elementState.selectedElements = event.newSelection;
       const currentElement = event.newSelection[0];
       elementState.currentElement = currentElement;
-      console.log(event.newSelection[0]);
+      console.log(elementState.currentElement)
+      // console.log(event.newSelection[0].id);
       if (
         event.newSelection[0] &&
         !event.newSelection[0].businessObject.$attrs['arkRPA:application']
@@ -69,7 +72,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         checkBotForExistingVariables(robotId, event.newSelection[0].id)
           .then((response) => { if (response) response.json() })
           .then((data) => {
-            console.log(data);
             setvariableList(data ? data.rpaParameters : []);
             setOutputVariableName(data ? data.outputVariable : null);
           })
@@ -101,7 +103,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   /**
    * @description Checks if tasks for selected application are already stored in session storage.
    * Otherwise, fetch tasklist from MongoDB.
-   * @param {*} application Application for which to get the tasks for.
+   * @param {String} application Application for which to get the tasks for.
    */
   const getTasksForApplication = async (application) => {
     const currentSavedTasksObject = JSON.parse(
@@ -143,11 +145,11 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   };
 
   /**
-   * @description Gets called when a new application was selected in the dropwdown in the sidebar. Updates the state of the component
-   * and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar. 
+   * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
    * @param {Object} value new value of the ApplicationDropdown
    */
-  const selectApplicationUpdatedHandler = (value) => {
+  const applicationChangedHandler = (value) => {
     elementState.currentElement.businessObject.$attrs[
       'arkRPA:application'
     ] = value;
@@ -155,6 +157,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       selectedElements: elementState.selectedElements,
       currentElement: elementState.currentElement,
     });
+    // TODO: setRpaApplication(value) (from ERIK)
     setSelectedApplication(value);
     getTasksForApplication(value);
   };
@@ -222,9 +225,9 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   };
 
   /**
-  * @description Will parse a given xml file into a .robot file and download it
-  * @param {string} xml String that sets the xml to be parsed
-  */
+   * @description Will parse a given xml file into a .robot file and download it
+   * @param {string} xml String that sets the xml to be parsed
+   */
   const downloadRobotFile = () => {
     getParsedRobotFile(robotId)
       .then((response) => response.text())
@@ -232,6 +235,34 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         downloadString(robotCode, 'text/robot', 'testRobot.robot');
       });
   };
+
+  /**
+  * @description Will parse a given xml file into a .robot file and download it
+  * @param {string} xml String that sets the xml to be parsed
+  */
+  const saveToCloud = () => {
+    /** 
+    *   TODO
+    *   1. save ssot
+    *   2. save Attribute-Object
+    *   3. save Param-Object
+    *     => everything with sessionStorage.getItem('ssotLocal'/'attributeObject'/'paramObject')
+    */
+
+    // eslint-disable-next-line no-console
+    console.log("save to cloud")
+  };
+
+  const getCurrentApplicationForActivity = () =>
+    // return getRpaApplication(robotId,elementState.currentElement.id)
+    // TODO: ERIK
+    'initial'
+
+  const getCurrentTaskForActivity = () =>
+    // return getRpaTask(robotId,elementState.currentElement.id)
+    // TODO: ERIK
+    'initial'
+
 
   return (
     <Sider className={styles.sider}>
@@ -242,10 +273,12 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         {elementState.selectedElements.length === 1 && (
           <PropertiesPanel
             nameChanged={nameChangedHandler.bind(this)}
-            applicationSelectionUpdated={selectApplicationUpdatedHandler.bind(
+            applicationSelectionUpdated={applicationChangedHandler.bind(
               this
             )}
             taskSelectionUpdated={selectTaskUpdatedHandler.bind(this)}
+            getCurrentApplicationForActivity={getCurrentApplicationForActivity}
+            getCurrentTaskForActivity={getCurrentTaskForActivity}
             tasksForSelectedApplication={tasksForSelectedApplication}
             disableTaskSelection={disableTaskSelection}
             element={elementState.currentElement}
@@ -270,6 +303,9 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         )}
         <Button type='primary' className={styles.button} onClick={downloadRobotFile}>
           Get Robot file
+        </Button>
+        <Button type='primary' className={styles.button} onClick={saveToCloud}>
+          Save changes to cloud
         </Button>
       </Space>
     </Sider>

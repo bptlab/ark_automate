@@ -115,7 +115,31 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
  * @description Enriches elements in the elementsArray that should be of type marker
  * @returns {Array}  Array of elements for single source of truth
  */
-const enrichMarkerElements = (elementsArray) => {
+const enrichMarkerElements = (elementsArray, bpmnStartEvent, bpmnEndEvent) => {
+
+  let matchingElement
+
+  if (typeof bpmnStartEvent !== 'undefined') {
+    matchingElement = elementsArray.find((element) => (
+      element.id === bpmnStartEvent[0].$.id
+    ));
+    if (typeof matchingElement !== 'undefined') {
+      matchingElement.name = bpmnStartEvent[0].$.name
+    }
+  }
+
+  // currently this is kind of "hard coded" (we only use the first name of the EndEvent-Array)
+  // if we implement branches, we have to change this to support multiple EndEvents
+  if (typeof bpmnEndEvent !== 'undefined') {
+    matchingElement = elementsArray.find((element) => (
+      element.id === bpmnEndEvent[0].$.id
+    ));
+    if (typeof matchingElement !== 'undefined') {
+      matchingElement.name = bpmnEndEvent[0].$.name
+    }
+  }
+
+
   const eventRegularExpression = new RegExp('^Event_.*$');
   elementsArray.forEach((element) => {
     if (eventRegularExpression.test(element.id)) {
@@ -159,6 +183,7 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   return parseString(bpmnXml.xml)
     .then((result) => {
       bpmnJson = result;
+      console.log(bpmnJson)
       startEventId = getStartEventId(bpmnJson);
 
       // Build basic ssot-frame
@@ -181,9 +206,12 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
         bpmnActivities = [];
       }
 
+      const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
+      const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
+
       let elementsArray = findElements(flows);
       elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
-      elementsArray = enrichMarkerElements(elementsArray);
+      elementsArray = enrichMarkerElements(elementsArray, bpmnStartEvent, bpmnEndEvent);
 
       ssot.elements = elementsArray;
       return ssot;
