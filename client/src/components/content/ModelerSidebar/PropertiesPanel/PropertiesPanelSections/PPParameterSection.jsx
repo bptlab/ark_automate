@@ -22,7 +22,7 @@ const PPParameterSection = ({ onValueChange, variableList }) => (
                     variableName={singleInput.name}
                     isRequired={singleInput.isRequired}
                     dataType={singleInput.type}
-                    value={singleInput.name}
+                    value={singleInput.value}
                 />
             ))}
         </Space>

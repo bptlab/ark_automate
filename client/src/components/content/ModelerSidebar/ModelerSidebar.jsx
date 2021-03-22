@@ -4,7 +4,6 @@ import { Typography, Layout, Space, Button } from 'antd';
 import PropTypes from 'prop-types'
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
-import fetchTaskParametersAndUpdateRPAProperties from '../../../utils/xmlUtils';
 import initSessionStorage from '../../../utils/sessionStorage';
 import {
   fetchTasksFromDB,
@@ -12,7 +11,8 @@ import {
 } from '../../../api/applicationAndTaskSelection';
 import {
   variablesForNewTask,
-  updateVariablesForBot
+  updateVariablesForBot,
+  checkBotForExistingVariables
 } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
@@ -30,6 +30,7 @@ const { Sider } = Layout;
  */
 const ModelerSidebar = ({ modeler, robotId }) => {
   const [variableList, setvariableList] = useState([]);
+  const [outputVariableName, setOutputVariableName] = useState();
 
   const [elementState, setElementState] = useState({
     selectedElements: [],
@@ -88,7 +89,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       elementState.selectedElements = event.newSelection;
       const currentElement = event.newSelection[0];
       elementState.currentElement = currentElement;
-
+      console.log(event.newSelection[0]);
       if (
         event.newSelection[0] &&
         !event.newSelection[0].businessObject.$attrs['arkRPA:application']
@@ -99,6 +100,16 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         event.newSelection[0].businessObject.$attrs['arkRPA:application']
       ) {
         setDisableTaskSelection(false);
+      }
+
+      if (event.newSelection[0] && event.newSelection[0].type === 'bpmn:Task') {
+        checkBotForExistingVariables(robotId, event.newSelection[0].id)
+        .then((response) => {if (response) response.json()})
+        .then((data) => {
+          console.log(data);
+          setvariableList(data ? data.rpaParameters : []);
+          setOutputVariableName(data ? data.outputVariable : null);
+        })
       }
     });
 
@@ -192,20 +203,18 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   const selectTaskUpdatedHandler = (value) => {
     const modeling = modeler.get('modeling');
-    fetchTaskParametersAndUpdateRPAProperties(
-      selectedApplication,
-      value,
-      modeling,
-      elementState.currentElement
-    );
     variablesForNewTask(
       robotId,
       elementState.currentElement.businessObject.id,
       selectedApplication,
       value
     )
-      .then((response) => response.json())
-      .then((data) => setvariableList(data))
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      setvariableList(data.rpaParameters);
+      setOutputVariableName(data.outputVariable);
+    })
   };
 
   /**
@@ -229,7 +238,23 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     updateVariablesForBot(
       robotId,
       elementState.currentElement.businessObject.id,
-      editedVariableList
+      editedVariableList,
+      outputVariableName
+    );
+  };
+
+  /**
+   * @description Gets called when the name of the output variable has been changed and updates
+   * the output variables name in the SSOT
+   * @param {Object} newValue new value of the output variables name
+   */
+  const handleOutputVarNameChange = (newValue) => {
+    setOutputVariableName(newValue);
+    updateVariablesForBot(
+      robotId,
+      elementState.currentElement.businessObject.id,
+      variableList,
+      newValue
     );
   };
 
@@ -238,7 +263,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   * @param {string} xml String that sets the xml to be parsed
   */
   const downloadRobotFile = () => {
-    getParsedRobotFile()
+    getParsedRobotFile(robotId)
       .then((response) => response.text())
       .then((robotCode) => {
         downloadString(robotCode, 'text/robot', 'testRobot.robot');
@@ -264,6 +289,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             robotId={robotId}
             variableList={variableList}
             parameterUpdated={handleInputParameterChange.bind(this)}
+            outputVariableName={outputVariableName}
+            outputNameUpdated={handleOutputVarNameChange}
           />
         )}
 

@@ -45,10 +45,15 @@ const checkBotForExistingVariables = async (
 const updateVariablesForBot = async (
   botId,
   activityId,
-  newVariableList) => {
+  newVariableList,
+  outputVariableName) => {
   const requestString = `/ssot/updateVariables/?botId=${botId}&activityId=${activityId}`;
+  const updateObject = {
+    parameters: newVariableList,
+    output: outputVariableName
+  };
   const response = await fetch(requestString, {
-    body: JSON.stringify(newVariableList),
+    body: JSON.stringify(updateObject),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'

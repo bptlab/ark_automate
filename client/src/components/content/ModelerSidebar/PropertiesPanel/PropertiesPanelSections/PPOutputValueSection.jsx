@@ -12,10 +12,10 @@ const { Text } = Typography;
  * @category Client
  * @component
  */
-const PPOutputValueSection = ({ outputVariableText }) => {
+const PPOutputValueSection = ({ outputVariableText, onNameChange }) => {
   const handleOutputVariableChange = (event) => {
     const outputValueName = event.target.value.replace(/\$/g, '')
-    console.log(outputValueName)
+    onNameChange(outputValueName);
   }
 
   return (<>
@@ -31,8 +31,9 @@ const PPOutputValueSection = ({ outputVariableText }) => {
 
     <Input
       placeholder='Please type in your outputValue name'
+      defaultValue={outputVariableText}
       suffix={
-        <Tooltip title={outputVariableText}>
+        <Tooltip title={outputVariableText}> 
           <InfoCircleOutlined style={{ color: corporateDesign.colorPrimaryInverted }} />
         </Tooltip>
       }
@@ -43,7 +44,8 @@ const PPOutputValueSection = ({ outputVariableText }) => {
 }
 
 PPOutputValueSection.propTypes = {
-  outputVariableText: PropTypes.string.isRequired
+  outputVariableText: PropTypes.string.isRequired,
+  onNameChange: PropTypes.func.isRequired,
 };
 
 export default PPOutputValueSection;
