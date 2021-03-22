@@ -44,13 +44,13 @@ const findElements = (flows) => {
   const localElementsArray = [];
 
   flows.forEach((flow) => {
-
     const flowSource = flow.$.sourceRef;
     const flowTarget = flow.$.targetRef;
 
     if (!isElementTracked(localElementsArray, flowSource)) {
       const newElement = createBaseElement(flowSource);
       newElement.successorIds.push(flowTarget);
+      console.log(newElement)
       localElementsArray.push(newElement);
     } else {
       const sourceElement = localElementsArray.find((element) =>
@@ -69,6 +69,7 @@ const findElements = (flows) => {
       );
       targetElement.predecessorIds.push(flowSource);
     }
+    console.log(localElementsArray)
   });
   return localElementsArray;
 };
@@ -159,6 +160,7 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   return parseString(bpmnXml.xml)
     .then((result) => {
       bpmnJson = result;
+      console.log(bpmnJson)
       startEventId = getStartEventId(bpmnJson);
 
       // Build basic ssot-frame
