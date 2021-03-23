@@ -78,7 +78,7 @@ const drawStartElement = (cli, element) => {
     test = test.replaceAll(startElement, 'testId');
     cli.elements().startElement = test
     // if (element.name) cli.setLabel(startElement, element.name);
-    console.log(cli.elements());
+    // console.log(cli.elements());
     return startElement;
 };
 
@@ -97,7 +97,7 @@ const parseSsotToBpmn = (modeler, ssot) => {
         lastDrawnElement = drawElement(cli, sortedElements[i], lastDrawnElement)
     }
 
-    return cli.save('bpmn');
+    // return cli.save('bpmn');
 };
 
 export default parseSsotToBpmn;

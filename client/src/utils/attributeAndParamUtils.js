@@ -75,7 +75,8 @@ const setRpaTask = (robotId, activityId, newTask) => {
 };
 
 /**
- * TODO 
+ * @param {*} activityId id of the currently selected activity
+ * @returns the selected RPA application for the selected activity from localStorage
  */
 const getRpaApplication = (activityId) => {
     const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
@@ -89,7 +90,9 @@ const getRpaApplication = (activityId) => {
 };
 
 /**
- * TODO 
+ * 
+ * @param {*} activityId id of the currently selected activity
+ * @returns the selected RPA task for the selected activity from localStorage
  */
 const getRpaTask = (activityId) => {
     const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
@@ -110,8 +113,7 @@ const getRpaTask = (activityId) => {
  * @returns {Array} Array of the different parameter objects the activity has
  */
 const getParameters = async (robotId, activityId) => {
-    let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
-    localStorage = JSON.parse(localStorage);
+    const localStorage = JSON.parse(sessionStorage.getItem(PARAMETER_STORAGE_PATH));
     const matchingParameterObject = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
 
     if (matchingParameterObject.rpaParameters) {
@@ -160,8 +162,27 @@ const getParameters = async (robotId, activityId) => {
  * @param {String} newParameterObject The new parameter object
  */
 const setParameter = (robotId, activityId, newParameterObject) => {
-    let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
-    localStorage = JSON.parse(localStorage);
+    const localStorage = JSON.parse(sessionStorage.getItem(PARAMETER_STORAGE_PATH));
+
+    const parameterArray = [{
+        name: 'soll Fenster offen bleiben?',
+        value: 'true',
+        requireUserInput: true,
+        type: 'String',
+        isRequired: true,
+        infoText: 'dies ist ein Infotext',
+        index: '1'
+    }];
+
+    const parameterObject = {
+        robotId,
+        activityId,
+        outputVariable: '$$Output$$',
+        rpaParameters: [parameterArray],
+    };
+
+    console.log(parameterObject)
+
     const matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
     let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
 
@@ -197,8 +218,7 @@ const getAttributesFromDB = async (robotId) => {
  * @param {String} newValueName The new value for the name of the output variable
  */
 const setOutputValue = (robotId, activityId, newValueName) => {
-    let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
-    localStorage = JSON.parse(localStorage);
+    const localStorage = JSON.parse(sessionStorage.getItem(PARAMETER_STORAGE_PATH));
     const matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
     let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
 

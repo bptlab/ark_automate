@@ -13,7 +13,7 @@ import {
 } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
-import { setRpaApplication, setRpaTask, upsert } from '../../../utils/attributeAndParamUtils';
+import { setParameter, setRpaApplication, setRpaTask, upsert } from '../../../utils/attributeAndParamUtils';
 import parseSsotToBpmn from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
 
 const { Title } = Typography;
@@ -220,6 +220,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * @param {Object} value new value of input field
    */
   const handleInputParameterChange = (value) => {
+    setParameter(robotId, elementState.currentElement.id, undefined)
     console.log(value.target.value);
     const variableName = value.target.placeholder;
     const variableValue = value.target.value;
@@ -294,7 +295,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             element={elementState.currentElement}
             robotId={robotId}
             variableList={variableList}
-            parameterUpdated={handleInputParameterChange.bind(this)}
+            parameterSelectionUpdated={handleInputParameterChange.bind(this)}
             outputVariableName={outputVariableName}
             outputNameUpdated={handleOutputVarNameChange}
           />
