@@ -33,11 +33,30 @@ const isElementTracked = (elementsArray, id) => {
 };
 
 /**
- * @description Creates the array full of elements by iterating over the
- * referenced ids in the flow and adding new elements if they have not been added yet
- * @returns {Array}  Array of elements with their id, successors and predecessors
+ * 
+ * @param {Array} bpmnShapes all shapes of the BPMN diagram
+ * @param {Array} localElementsArray current version of the localElementsArray with all elements
+ * @returns {Array}  Array of elements with their id, successors, predecessors and name
  */
-const findElements = (flows) => {
+const returnElementsArrayWithNameLabel = (bpmnShapes, localElementsArray) => {
+  const updatedLocalElementsArray = [];
+
+  localElementsArray.forEach((element) => {
+    const matchingElement = bpmnShapes.find((shape) => element.id === shape.$.id)
+    const newElement = element;
+    newElement.name = matchingElement.$.name;
+    updatedLocalElementsArray.push(newElement)
+  })
+
+  return updatedLocalElementsArray;
+}
+
+/**
+ * @description Creates the array full of elements by iterating over the
+ * referenced ids in the flow and adding new elements (incl. name) if they have not been added yet
+ * @returns {Array}  Array of elements with their id, successors, predecessors and name
+ */
+const findElements = (flows, bpmnShapes) => {
   if (typeof flows === 'undefined') {
     return []
   }
@@ -70,7 +89,7 @@ const findElements = (flows) => {
       targetElement.predecessorIds.push(flowSource);
     }
   });
-  return localElementsArray;
+  return returnElementsArrayWithNameLabel(bpmnShapes, localElementsArray)
 };
 
 /**
@@ -86,8 +105,10 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
     const instructionElement = elementsArray.find(
       (element) => element.id === activity.$.id
     );
-    instructionElement.name = activity.$.name;
-    instructionElement.type = 'INSTRUCTION';
+    if (instructionElement) {
+      instructionElement.type = 'INSTRUCTION';
+      instructionElement.outputVariable = '';
+    }
 
     if (activity.$['arkRPA:application']) {
       instructionElement.rpaApplication =
@@ -106,7 +127,6 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
       instructionElement.rpaParameters = parameterArray;
     }
 
-    instructionElement.outputVariable = '';
   });
   return elementsArray;
 };
@@ -115,30 +135,7 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
  * @description Enriches elements in the elementsArray that should be of type marker
  * @returns {Array}  Array of elements for single source of truth
  */
-const enrichMarkerElements = (elementsArray, bpmnStartEvent, bpmnEndEvent) => {
-  let matchingElement
-
-  if (typeof bpmnStartEvent !== 'undefined') {
-    matchingElement = elementsArray.find((element) => (
-      element.id === bpmnStartEvent[0].$.id
-    ));
-    if (typeof matchingElement !== 'undefined') {
-      matchingElement.name = bpmnStartEvent[0].$.name
-    }
-  }
-
-  // currently this is kind of "hard coded" (we only use the first name of the EndEvent-Array)
-  // if we implement branches, we have to change this to support multiple EndEvents
-  if (typeof bpmnEndEvent !== 'undefined') {
-    matchingElement = elementsArray.find((element) => (
-      element.id === bpmnEndEvent[0].$.id
-    ));
-    if (typeof matchingElement !== 'undefined') {
-      matchingElement.name = bpmnEndEvent[0].$.name
-    }
-  }
-
-
+const enrichMarkerElements = (elementsArray) => {
   const eventRegularExpression = new RegExp('^Event_.*$');
   elementsArray.forEach((element) => {
     if (eventRegularExpression.test(element.id)) {
@@ -183,6 +180,7 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   return parseString(bpmnXml.xml)
     .then((result) => {
       bpmnJson = result;
+      console.log(bpmnJson)
       startEventId = getStartEventId(bpmnJson);
 
       // Build basic ssot-frame
@@ -207,8 +205,11 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
 
       const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
       const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
+      const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
+        .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'])
+        .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'])
 
-      let elementsArray = findElements(flows);
+      let elementsArray = findElements(flows, bpmnShapes);
       elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
       elementsArray = enrichMarkerElements(elementsArray, bpmnStartEvent, bpmnEndEvent);
 

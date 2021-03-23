@@ -12,7 +12,6 @@ import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 import { parseBpmnToSsot } from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
-import { updateSsot } from '../../../api/ssotRetrieval'
 
 const { Content } = Layout;
 
@@ -71,7 +70,6 @@ const BpmnModeler = (props) => {
             .then((result) => {
               const ssot = JSON.stringify(result)
               sessionStorage.setItem('ssotLocal', ssot);
-              updateSsot(props.robotId, ssot);
             })
         })
         .catch((err) =>

@@ -56,25 +56,6 @@ const createNewRobot = async (userid, newName) => {
   return response;
 };
 
-/**
- * @description will send the call to the backend to overwrite the ssot stored in the database with the given one
- * @param {String} botId - String including the robotId
- * @param {Object} newSsot - the ssot to overwrite the existing one
- */
-const updateSsot = async (
-  botId,
-  newSsot) => {
-  const requestString = `/ssot/overwriteRobot/${botId}`;
-  const response = await fetch(requestString,
-    {
-      body: JSON.stringify(newSsot),
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      }
-    });
-  return response;
-};
 
 export {
   getSsotFromDB,
@@ -82,5 +63,4 @@ export {
   changeSsotName,
   retrieveMetadataForBot,
   createNewRobot,
-  updateSsot,
 };
