@@ -10,7 +10,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
 const rpaFrameworkRouter = require('./routes/rpaFramework');
 const ssotRouter = require('./routes/ssot');
-const socketManager = require('./socket/socketManager');
+const { socketManager } = require('./socket/socketManager');
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -28,6 +28,8 @@ if (!isDev && cluster.isMaster) {
   });
 } else {
   const app = express();
+
+  // Setup socket.io connection
   const { createServer } = http;
   const { Server } = socketio;
   const httpServer = createServer(app);
@@ -39,11 +41,11 @@ if (!isDev && cluster.isMaster) {
   });
 
   io.on('connection', (socket) => {
-    socketManager.socketManager(io, socket);
+    socketManager(io, socket);
   });
 
   httpServer.listen(Number(PORT) + 1, () => {
-    console.error(`Node socket server: listening on port ${Number(PORT) + 1}`);
+    console.error(`Socket server: listening on port ${Number(PORT) + 1}`);
   });
 
   mongoose.connect(process.env.MONGODB_URI, {
