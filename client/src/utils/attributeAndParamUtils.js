@@ -214,12 +214,12 @@ const getAttributesFromDB = async (robotId) => {
 /**
  * TODO
  */
-const getParameterFromDB = async (robotId) => {
-    /* const variableReqString = `/ssot/getAllAttributes/${robotId}`;
-    const variableResponse = await fetch(variableReqString); */
-    const variableResponse = 'MockObject'
-    return variableResponse;
+const getParameterFromDB = async () => {
+    const reqString = `/rpa-framework/commands/getAllParameters`;
+    const response = await fetch(reqString);
+    return response;
 };
+
 
 /**
  * @description Will set the new value as the name of the output variable in local session storage
@@ -285,15 +285,6 @@ const upsert = async () => {
 /**
  * TODO
  */
-const getParameterFromDB = async () => {
-    const reqString = `/rpa-framework/commands/getAllParameters`;
-    const response = await fetch(reqString);
-    return response;
-};
-
-/**
- * TODO
- */
 const getParameterForRobotFromDB = async (robotId) => {
     const reqString = `/ssot/getAllParameters/${robotId}`;
     const response = await fetch(reqString);
@@ -313,6 +304,5 @@ module.exports = {
     setOutputValue,
     getRpaApplication,
     upsert,
-    getParameterFromDB,
     getParameterForRobotFromDB
 }

@@ -2,15 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Layout, Space, Button } from 'antd';
 import PropTypes from 'prop-types'
-// import bpmnModeler from 'bpmn-js/lib/Modeler';
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
 import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
-import {
-  variablesForNewTask,
-  updateVariablesForBot,
-  checkBotForExistingVariables
-} from '../../../api/variableRetrieval'
+import { updateVariablesForBot } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
 import { setParameter, setRpaApplication, setRpaTask, upsert } from '../../../utils/attributeAndParamUtils';
@@ -26,14 +21,17 @@ const { Sider } = Layout;
  * @component
  */
 const ModelerSidebar = ({ modeler, robotId }) => {
+  // is needed for passing params to sidebar issue
+  // eslint-disable-next-line no-unused-vars
   const [variableList, setvariableList] = useState([]);
   const [outputVariableName, setOutputVariableName] = useState();
-  const [currentSelection, setCurrentSelection] = useState([]);
 
   const [elementState, setElementState] = useState({
     selectedElements: [],
     currentElement: null,
   });
+  // is needed for passing params to sidebar issue
+  // eslint-disable-next-line no-unused-vars
   const [selectedApplication, setSelectedApplication] = useState('');
   const [
     tasksForSelectedApplication,
@@ -55,8 +53,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   useEffect(() => {
     modeler.on('selection.changed', (event) => {
-      updateParamSection();
-
       setElementState({
         selectedElements: event.newSelection,
         currentElement: event.newSelection[0],
@@ -79,12 +75,10 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       }
 
       if (event.newSelection[0] && event.newSelection[0].type === 'bpmn:Task') {
-        checkBotForExistingVariables(robotId, event.newSelection[0].id)
-          .then((response) => { if (response) response.json() })
-          .then((data) => {
-            setvariableList(data ? data.rpaParameters : []);
-            setOutputVariableName(data ? data.outputVariable : null);
-          })
+        /* TODO: Fixing Issue "pass parameters to sidebar"
+        const data = updateParamSection(event.newSelection[0].id)
+        setvariableList(data ? data.rpaParameters : []);
+        setOutputVariableName(data ? data.outputVariable : null); */
       }
     });
 
@@ -195,9 +189,47 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   /**
  * @description TODO
  */
-  const updateParamSection = () => {
-    console.log('updateParamSection')
-  };
+  const updateParamSection = (activityId) =>
+    /* this part of code is WIP for implementing the param section
+    const localAttributeObject = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
+    const localParameterObject = JSON.parse(sessionStorage.getItem('parameterLocalStorage'));
+    const localTaskAplicationCombination = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
+
+    const matchingActivity = localAttributeObject.find((element) => (element.activityId === activityId));
+    const matchingParameterObject = localParameterObject.find((element) => (element.activityId === activityId));
+
+    if (matchingParameterObject) {
+      const matchingCombination = localTaskAplicationCombination.find((element) => (element.Application === matchingActivity.rpaApplication && element.Task === matchingActivity.rpaTask));
+      const copy = matchingParameterObject;
+      copy.rpaParameters.forEach((element) => delete element.value)
+      matchingCombination.inputVars.forEach((element) => copy.rpaParameters.includes(element))
+      return matchingParameterObject;
+    }
+
+
+    // const matchingParameterObject = localParameterObject.find((element) => (element.activityId === activityId && element.matchingActivity.rpaApplication));
+    if (matchingParameterObject) {
+      return matchingParameterObject
+    }
+
+    const inputVars = [];
+    matchingCombination.inputVars.forEach((singleVar) => {
+      const varWithValue = singleVar;
+      varWithValue.value = '';
+      inputVars.push(varWithValue);
+    });
+    const outputVariable = matchingCombination.outputValue ? `${activityId}_output` : null;
+    const newParameterObject = {
+      ssotId: robotId,
+      activityId,
+      outputVariable,
+      rpaParameters: inputVars
+    }
+    localParameterObject.push(newParameterObject);
+    sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParameterObject));
+    return newParameterObject; */
+    activityId
+    ;
 
 
   /**
@@ -207,7 +239,9 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   const taskChangedHandler = (value) => {
     setRpaTask(robotId, elementState.currentElement.id, value);
+    /* TODO: Fixing Issue "pass parameters to sidebar"
     const modeling = modeler.get('modeling');
+    */
     updateParamSection()
   };
 
