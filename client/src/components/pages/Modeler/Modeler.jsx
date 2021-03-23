@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
-import { fetchSsot } from '../../../api/ssotRetrieval';
+import { getSsotFromDB } from '../../../api/ssotRetrieval';
 import { getAvailableApplications } from '../../../api/applicationAndTaskSelection';
 import { setRobotId, getAttributesFromDB, getParameterFromDB, getParameterForRobotFromDB } from '../../../utils/attributeAndParamUtils';
 import initSessionStorage from '../../../utils/sessionStorage';
@@ -25,24 +25,10 @@ const Modeler = (match) => {
   }
 
   /**
-   * @description Fetch all applications from MongoDB and save in session storage.
-   */
-  const saveAvailableApplicationsToSessionStorage = async () => {
-    getAvailableApplications()
-      .then((response) => response.json())
-      .then((data) => {
-        sessionStorage.setItem('AvailableApplications', JSON.stringify(data));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  /**
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
-    fetchSsot(robotId)
+    getSsotFromDB(robotId)
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('ssotLocal', JSON.stringify(data));
@@ -70,12 +56,21 @@ const Modeler = (match) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
       })
+
     setRobotId(robotId);
     initSessionStorage('taskToApplicationCache', JSON.stringify({}));
     initSessionStorage('availableApplications', JSON.stringify([]));
-    let applicationList = sessionStorage.getItem('AvailableApplications');
+    let applicationList = sessionStorage.getItem('availableApplications');
     applicationList = JSON.parse(applicationList)
-    if (applicationList.length < 1) saveAvailableApplicationsToSessionStorage();
+    if (applicationList && applicationList.length < 1)
+      getAvailableApplications()
+        .then((response) => response.json())
+        .then((data) => {
+          sessionStorage.setItem('AvailableApplications', JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.error(error);
+        });
   }, []);
 
   return (

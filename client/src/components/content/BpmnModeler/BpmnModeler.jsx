@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
@@ -22,11 +22,10 @@ const { Content } = Layout;
  * @component
  */
 const BpmnModeler = (props) => {
-  const [modeler, setModeler] = useState(null);
   let newModeler;
 
   /**
-   * @description Equivalent to ComponentDidMount in class based components
+   * @description while the components were mounted, the BPMN-Modeler get's initialized
    */
   useEffect(() => {
     newModeler = new CamundaBpmnModeler({
@@ -61,19 +60,16 @@ const BpmnModeler = (props) => {
   }, []);
 
   /**
-   * @description Equivalent to ComponentDidMount in class based components 
-   * => This useEffect() triggers rerendering of the local Ssot on every XML update
+   * @description This useEffect() triggers end executes rerendering of the local Ssot on every selection change in the Modeler
    */
   useEffect(() => {
     newModeler.on('selection.changed', () => {
-      let ssot = [];
       newModeler
         .saveXML({ format: true })
         .then((xml) => {
           parseBpmnToSsot(xml, props.robotId)
             .then((result) => {
-              console.log(result)
-              ssot = JSON.stringify(result)
+              const ssot = JSON.stringify(result)
               sessionStorage.setItem('ssotLocal', ssot);
               updateSsot(props.robotId, ssot);
             })
