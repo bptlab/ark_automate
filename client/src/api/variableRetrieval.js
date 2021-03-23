@@ -5,7 +5,7 @@
 
 /**
 * @description Will retrieve the needed variables for a new application/task tuple and return that, as well as updating the SSOT with those new variables
-* @param {String} robotId - String including the Id of the bot
+* @param {String} robotId - String including the Id of the robot
 * @param {String} activityId - String including the Id of the activity
 * @param {String} application - String including the application
 * @param {String} task - String including the task
@@ -25,7 +25,7 @@ const variablesForNewTask = async (
 
 /**
  * @description Fetch all variables for an existing activity
- * @param {String} robotId - String including the Id of the bot
+ * @param {String} robotId - String including the Id of the robot
  * @param {String} activityId - String including the Id of the activity
  */
 const checkBotForExistingVariables = async (
@@ -38,7 +38,7 @@ const checkBotForExistingVariables = async (
 
 /**
  * @description Will update the variables for the specified activity
- * @param {String} robotId - String including the Id of the bot
+ * @param {String} robotId - String including the Id of the robbot
  * @param {String} activityId - String including the Id of the activity
  * @param {Array} newVariableList - Array of the variables which will be used to update the SSOT
  */
