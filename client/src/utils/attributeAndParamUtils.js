@@ -212,6 +212,16 @@ const getAttributesFromDB = async (robotId) => {
 };
 
 /**
+ * TODO
+ */
+const getParameterFromDB = async (robotId) => {
+    /* const variableReqString = `/ssot/getAllAttributes/${robotId}`;
+    const variableResponse = await fetch(variableReqString); */
+    const variableResponse = 'MockObject'
+    return variableResponse;
+};
+
+/**
  * @description Will set the new value as the name of the output variable in local session storage
  * @param {String} robotId Id of the robot/ssot for which to change the value
  * @param {String} activityId Id of the activity for which to change the value for
@@ -281,6 +291,7 @@ module.exports = {
     getParameters,
     setParameter,
     getAttributesFromDB,
+    getParameterFromDB,
     setOutputValue,
     getRpaApplication,
     upsert

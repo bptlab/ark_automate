@@ -5,7 +5,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
 import { fetchSsot } from '../../../api/ssotRetrieval';
 import { getAvailableApplications } from '../../../api/applicationAndTaskSelection';
-import { setRobotId, getAttributesFromDB } from '../../../utils/attributeAndParamUtils';
+import { setRobotId, getAttributesFromDB, getParameterFromDB } from '../../../utils/attributeAndParamUtils';
 import initSessionStorage from '../../../utils/sessionStorage';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
@@ -58,10 +58,16 @@ const Modeler = (match) => {
         initSessionStorage('attributeLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
       })
+    /*     getParameterFromDB(robotId)
+          .then((response) => response.json())
+          .then((data) => {
+            initSessionStorage('parameterLocalStorage', JSON.stringify([]));
+            sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
+          })
+     */
     setRobotId(robotId);
-    initSessionStorage('TaskToApplicationCache', JSON.stringify({}));
-    initSessionStorage('AvailableApplications', JSON.stringify([]));
-    initSessionStorage('parameterLocalStorage', JSON.stringify([]));
+    initSessionStorage('taskToApplicationCache', JSON.stringify({}));
+    initSessionStorage('availableApplications', JSON.stringify([]));
     let applicationList = sessionStorage.getItem('AvailableApplications');
     applicationList = JSON.parse(applicationList)
     if (applicationList.length < 1) saveAvailableApplicationsToSessionStorage();

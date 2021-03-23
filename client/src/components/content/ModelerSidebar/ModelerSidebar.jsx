@@ -55,6 +55,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   useEffect(() => {
     modeler.on('selection.changed', (event) => {
+      updateParamSection();
 
       setElementState({
         selectedElements: event.newSelection,
@@ -65,7 +66,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       elementState.selectedElements = event.newSelection;
       const currentElement = event.newSelection[0];
       elementState.currentElement = currentElement;
-      // console.log(event.newSelection[0].id);
       if (
         event.newSelection[0] &&
         !event.newSelection[0].businessObject.$attrs['arkRPA:application']
@@ -193,25 +193,22 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   };
 
   /**
+ * @description TODO
+ */
+  const updateParamSection = () => {
+    console.log('updateParamSection')
+  };
+
+
+  /**
    * @description Gets called when a new task was selected in the dropwdown in the sidebar. Updates the state of the component
    * and gets the parameters of the task and updates the XML RPA properties (adds the application and the task).
    * @param {Object} value new value of the TaskDropdown
    */
   const taskChangedHandler = (value) => {
-    setRpaTask(robotId, elementState.currentElement.id, value)
+    setRpaTask(robotId, elementState.currentElement.id, value);
     const modeling = modeler.get('modeling');
-    variablesForNewTask(
-      robotId,
-      elementState.currentElement.businessObject.id,
-      selectedApplication,
-      value
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setvariableList(data.rpaParameters);
-        setOutputVariableName(data.outputVariable);
-      })
+    updateParamSection()
   };
 
   /**
@@ -268,14 +265,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       });
   };
 
-  /**
-  * @description Will parse a given xml file into a .robot file and download it
-  * @param {string} xml String that sets the xml to be parsed
-  */
-  const saveToCloud = () => {
-    upsert().then(console.log("saved to cloud"))
-  };
-
   return (
     <Sider className={styles.sider}>
       <Space direction='vertical' size='small' style={{ width: '100%' }}>
@@ -315,7 +304,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         <Button type='primary' className={styles.button} onClick={downloadRobotFile}>
           Get Robot file
         </Button>
-        <Button type='primary' className={styles.button} onClick={saveToCloud}>
+        <Button type='primary' className={styles.button} onClick={upsert()}>
           Save changes to cloud
         </Button>
       </Space>
