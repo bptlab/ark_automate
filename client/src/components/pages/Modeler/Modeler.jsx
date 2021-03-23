@@ -28,6 +28,7 @@ const Modeler = (match) => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
+    setRobotId(robotId);
     getSsotFromDB(robotId)
       .then((response) => response.json())
       .then((data) => {
@@ -56,8 +57,6 @@ const Modeler = (match) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
       })
-
-    setRobotId(robotId);
     initSessionStorage('taskToApplicationCache', JSON.stringify({}));
     initSessionStorage('availableApplications', JSON.stringify([]));
     let applicationList = sessionStorage.getItem('availableApplications');
@@ -66,7 +65,7 @@ const Modeler = (match) => {
       getAvailableApplications()
         .then((response) => response.json())
         .then((data) => {
-          sessionStorage.setItem('AvailableApplications', JSON.stringify(data));
+          sessionStorage.setItem('availableApplications', JSON.stringify(data));
         })
         .catch((error) => {
           console.error(error);
