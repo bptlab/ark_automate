@@ -2,6 +2,7 @@ import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types'
 import styles from '../../ModelerSidebar.module.css';
+import { getRpaApplication } from '../../../../../utils/attributeAndParamUtils';
 
 const { Option } = Select;
 
@@ -14,33 +15,23 @@ const PPApplicationDropdown = ({
   selectedActivity,
   onApplicationSelection,
   applications,
-}) => {
-  const localStorage = JSON.parse(sessionStorage.getItem('appTaskLocalStorage'));
-  const matchingEntry = localStorage.find((element) => (element.activityId === selectedActivity));
-
-  let defaultValue;
-  if (matchingEntry) {
-    defaultValue = matchingEntry.rpaApplication;
-  }
-
-  return (
-    <>
-      <Select
-        className={styles['properties-panel-dropdown']}
-        showSearch
-        placeholder='Please select application'
-        onChange={onApplicationSelection}
-        defaultValue={defaultValue}
-      >
-        {applications.map((applicaton) => (
-          <Option key={applicaton} value={applicaton}>
-            {applicaton}
-          </Option>
-        ))}
-      </Select>
-    </>
-  )
-};
+}) => (
+  <>
+    <Select
+      className={styles['properties-panel-dropdown']}
+      showSearch
+      placeholder='Please select application'
+      onChange={onApplicationSelection}
+      defaultValue={getRpaApplication(selectedActivity)}
+    >
+      {applications.map((applicaton) => (
+        <Option key={applicaton} value={applicaton}>
+          {applicaton}
+        </Option>
+      ))}
+    </Select>
+  </>
+);
 
 PPApplicationDropdown.propTypes = {
   applications: PropTypes.arrayOf(PropTypes.shape).isRequired,

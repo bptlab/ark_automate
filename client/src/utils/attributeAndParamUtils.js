@@ -7,8 +7,26 @@
  * appTaskLocalStorage
  */
 
+const ROBOT_ID_PATH = 'robotId';
 const APPLICATION_TASK_STORAGE_PATH = 'appTaskLocalStorage';
 const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
+
+/**
+ * @description this function returns the robotId of the currently opened robot from the session storage
+ * @returns currently saved robotId from session storage
+ */
+const getRobotId = () => {
+    const localStorage = JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
+    return localStorage;
+};
+
+/**
+ * @description this function writes the robotId of the currently opened robot to the session storage
+ * @param {String} robotId the robotId ot the currently opened robot
+ */
+const setRobotId = (robotId) => {
+    sessionStorage.setItem(ROBOT_ID_PATH, JSON.stringify(robotId));
+};
 
 /**
  * @description stores the RPA Application for the currently selected activity in the session storage
@@ -57,25 +75,31 @@ const setRpaTask = (robotId, activityId, newTask) => {
 };
 
 /**
- * TODO => kann weg
+ * TODO 
  */
-const getAttributes = async (robotId, activityId) => {
-    let localStorage = sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH);
-    localStorage = JSON.parse(localStorage);
-    const matchingActivity = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
+const getRpaApplication = (activityId) => {
+    const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
+    const matchingEntry = localStorage.find((element) => (element.activityId === activityId));
 
-    if (matchingActivity) {
-        return matchingActivity;
+    let selectedApplication;
+    if (matchingEntry) {
+        selectedApplication = matchingEntry.rpaApplication;
     }
+    return selectedApplication;
+};
 
-    const requestString = `/ssot/getAttributes?botId=${robotId}&activityId=${activityId}`;
-    const response = await fetch(requestString);
-    let addedStorage = localStorage;
+/**
+ * TODO 
+ */
+const getRpaTask = (activityId) => {
+    const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
+    const matchingEntry = localStorage.find((element) => (element.activityId === activityId));
 
-    addedStorage.push(response);
-    addedStorage = JSON.stringify(addedStorage);
-    // sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, addedStorage);
-    return response;
+    let selectedTask;
+    if (matchingEntry) {
+        selectedTask = matchingEntry.rpaTask;
+    }
+    return selectedTask;
 };
 
 /**
@@ -221,11 +245,14 @@ const setOutputValue = (robotId, activityId, newValueName) => {
 };
 
 module.exports = {
-    getAttributes,
+    getRobotId,
+    getRpaTask,
+    setRobotId,
     setRpaTask,
     setRpaApplication,
     getParameters,
     setParameter,
     getOutputValue,
-    setOutputValue
+    setOutputValue,
+    getRpaApplication
 }
