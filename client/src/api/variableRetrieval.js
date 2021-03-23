@@ -4,7 +4,7 @@
  */
 
 /**
-* @description Will retrieve the needed variables for a new application/task tuple and return that, as well as updating the SSOT with those new variables
+* @description Will retrieve the needed variables for a new application/task tuple and return that, as well as updating the ssot with those new variables
 * @param {String} robotId - String including the Id of the robot
 * @param {String} activityId - String including the Id of the activity
 * @param {String} application - String including the application
@@ -19,6 +19,7 @@ const variablesForNewTask = async (
   const applicationWithoutEmptyspaces = application.replace(/\s/g, '+');
   const taskWithoutEmptyspaces = task.replace(/\s/g, '+');
   const requestString = `/ssot/getVariablesForNewTask/?botId=${robotId}&activityId=${activityId}&application=${applicationWithoutEmptyspaces}&task=${taskWithoutEmptyspaces}`;
+  
   const response = await fetch(requestString);
   return response;
 };

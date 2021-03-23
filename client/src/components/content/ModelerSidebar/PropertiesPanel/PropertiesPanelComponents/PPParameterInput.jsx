@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import corporateDesign from '../../../../../layout/corporateDesign';
 
 /**
- * @description Renders the task-dropdown based on passed list of task.
+ * @description Renders a parameter input field for a given variable
  * @category Client
  * @component
  */

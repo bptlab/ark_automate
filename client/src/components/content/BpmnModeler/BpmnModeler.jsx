@@ -60,7 +60,7 @@ const BpmnModeler = (props) => {
   }, []);
 
   /**
-   * @description this useEffect() triggers end executes rerendering of the local Ssot on every selection change in the Modeler
+   * @description this useEffect() triggers end executes rerendering of the local ssot on every selection change in the Modeler
    */
   useEffect(() => {
     newModeler.on('selection.changed', () => {
