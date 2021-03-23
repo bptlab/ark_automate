@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');

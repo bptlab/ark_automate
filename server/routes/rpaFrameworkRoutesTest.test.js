@@ -1,9 +1,9 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const rpaController = require('../controllers/rpaFrameworkCommandsController');
-const rpaTaskModel = require('../models/rpaTaskModel');
 const testData = require('./testData');
 
 const loadTasksInDb = async () => {
