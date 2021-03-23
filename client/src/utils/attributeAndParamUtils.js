@@ -73,7 +73,11 @@ const setRpaApplication = async (robotId, activityId, newApplication) => {
 };
 
 /**
- * TODO
+ * @description Will retrieve the value of the input variables name from either session storage, 
+ * an existing object in the database or create a new one and will save it in local session storage
+ * @param {String} robotId Id of the robot/ssot for which to retrieve the value
+ * @param {String} activityId Id of the activity for which to retrieve the value for
+ * @returns {Array} Array of the different parameter objects the activity has
  */
 const getParameters = async (robotId, activityId) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
@@ -110,7 +114,7 @@ const getParameters = async (robotId, activityId) => {
             responseObject.rpaParameters.push(elementCopy);
         });
 
-        if (variableResponse.outputValue) responseObject.outputVariable = activityId + '_output';
+        if (variableResponse.outputValue) responseObject.outputVariable = `${activityId  }_output`;
 
         let addedStorage = localStorage;
         addedStorage.push(responseObject);
@@ -121,12 +125,15 @@ const getParameters = async (robotId, activityId) => {
 };
 
 /**
- * TODO
+ * @description Will set the parameters in local session storage
+ * @param {String} robotId Id of the robot/ssot for which to change the value
+ * @param {String} activityId Id of the activity for which to change the value for
+ * @param {String} newParameterObject The new parameter object
  */
 const setParameter = (robotId, activityId, newParameterObject) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
     localStorage = JSON.parse(localStorage);
-    let matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
+    const matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
     let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
 
     if (matchingElement) {
@@ -146,7 +153,11 @@ const setParameter = (robotId, activityId, newParameterObject) => {
 };
 
 /**
- * TODO
+ * @description Will retrieve the value of the output variables name from either session storage, 
+ * an existing object in the database or create a new one and will save it in local session storage
+ * @param {String} robotId Id of the robot/ssot for which to retrieve the value
+ * @param {String} activityId Id of the activity for which to retrieve the value for
+ * @returns {String} The value for the name of the output variable
  */
 const getOutputValue = async (robotId, activityId) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
@@ -184,7 +195,7 @@ const getOutputValue = async (robotId, activityId) => {
             responseObject.rpaParameters.push(elementCopy);
         });
 
-        if (variableResponse.outputValue) responseObject.outputVariable = activityId + '_output';
+        if (variableResponse.outputValue) responseObject.outputVariable = `${activityId  }_output`;
 
         let addedStorage = localStorage;
         addedStorage.push(responseObject);
@@ -195,7 +206,10 @@ const getOutputValue = async (robotId, activityId) => {
 };
 
 /**
- * TODO
+ * @description Will set the new value as the name of the output variable in local session storage
+ * @param {String} robotId Id of the robot/ssot for which to change the value
+ * @param {String} activityId Id of the activity for which to change the value for
+ * @param {String} newValueName The new value for the name of the output variable
  */
 const setOutputValue = (robotId, activityId, newValueName) => {
     let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
@@ -214,6 +228,44 @@ const setOutputValue = (robotId, activityId, newValueName) => {
     sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
 };
 
+/**
+ * TODO
+ */
+const upsert = async () => {
+    const ssot = sessionStorage.getItem('ssotLocal');
+    const requestStringSsot = `/ssot/overwriteRobot/${botId}`;
+    const responseSsot = await fetch(requestStringSsot, {
+        body: ssot,
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+        }
+    });
+    console.log('ssot answer: ' + responseSsot);
+
+    const attributes = sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH);
+    const requestStringAttributes = `/ssot/updateManyAttributes`;
+    const responseAttributes = await fetch(requestStringAttributes, {
+        body: attributes,
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+        }
+    });
+    console.log('attribute answer: ' + responseAttributes);
+
+    const parameterObject = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
+    const requestStringParameters = `/ssot/updateManyParameters`;
+    const responseParameters = await fetch(requestStringParameters, {
+        body: parameterObject,
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+        }
+    });
+    console.log('parameter answer: ' + responseParameters);
+};
+
 module.exports = {
     getAttributes,
     setRpaTask,
@@ -221,5 +273,6 @@ module.exports = {
     getParameters,
     setParameter,
     getOutputValue,
-    setOutputValue
+    setOutputValue,
+    upsert
 }

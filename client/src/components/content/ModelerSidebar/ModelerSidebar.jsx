@@ -13,7 +13,9 @@ import {
 } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
-import { getAttributes, setRpaApplication } from '../../../utils/attributeAndParamUtils';
+import { getAttributes, setRpaApplication, upsert } from '../../../utils/attributeAndParamUtils';
+import parseSsotToBpmn from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
+import { fetchSsot } from '../../../api/ssotRetrieval';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -38,6 +40,15 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     setTasksForSelectedApplication,
   ] = useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
+
+  /**
+   * @description Equivalent to ComponentDidMount in class based components
+   */
+   useEffect(() => {
+    let ssot = sessionStorage.getItem('ssotLocal');
+    ssot = JSON.parse(ssot);
+    parseSsotToBpmn(modeler, ssot);
+  }, []);
 
   /**
    * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
@@ -242,17 +253,13 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   * @param {string} xml String that sets the xml to be parsed
   */
   const saveToCloud = () => {
-    /** 
-    *   TODO
-    *   1. save ssot
-    *   2. save Attribute-Object
-    *   3. save Param-Object
-    *     => everything with sessionStorage.getItem('ssotLocal'/'attributeObject'/'paramObject')
-    */
-
-    // eslint-disable-next-line no-console
-    console.log("save to cloud")
+    upsert().then(console.log("saved to cloud"))
   };
+
+  const runParser = () => {
+    const ssotMock = JSON.parse('{"_id":{"$oid":"604f537ed699a2eb47433184"},"starterId":"exampleId","robotName":"Eriks TestBot","elements":[{"predecessorIds":["Event_0jcqjs1"],"successorIds":["Activity_1vb45u8"],"_id":{"$oid":"604f53977754eb7968dc342e"},"type":"INSTRUCTION","name":"AAA","id":"Activity_13ej6vf","rpaApplication":"Word.Files","rpaTask":"TestTask123"},{"predecessorIds":["Activity_1vb45u8"],"successorIds":[],"_id":{"$oid":"604f53977754eb7968dc3434"},"type":"MARKER","name":"Ende gut, alles gut","id":"Event_0otufrj"},{"predecessorIds":["Activity_13ej6vf"],"successorIds":["Event_0otufrj"],"_id":{"$oid":"604f53977754eb7968dc3430"},"type":"INSTRUCTION","name":"BBB","id":"Activity_1vb45u8","rpaApplication":"Excel.Files","rpaTask":"Set Worksheet Value"},{"predecessorIds":[],"successorIds":["Activity_13ej6vf"],"_id":{"$oid":"604f53977754eb7968dc342d"},"type":"MARKER","name":"Awesome Start Event","id":"Event_0jcqjs1"}]}');
+    parseSsotToBpmn(modeler, ssotMock)
+  }
 
   const getCurrentApplicationForActivity = async () => {
     console.log("...")
@@ -313,6 +320,9 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         </Button>
         <Button type='primary' className={styles.button} onClick={saveToCloud}>
           Save changes to cloud
+        </Button>
+        <Button type='primary' className={styles.button} onClick={runParser}>
+          Run Parser
         </Button>
       </Space>
     </Sider>
