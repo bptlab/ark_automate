@@ -41,15 +41,9 @@ const RobotOverview = () => {
    */
   useEffect(() => {
     socket.emit('joinUserRoom', userId);
-    socket.on('successUserRoomConnection', (message) => {
-      console.log(message);
-    });
-    socket.on('errorUserRoomConnection', (message) => {
-      console.log(message);
-    });
-    socket.on('newClientJoinedUserRoom', (message) => {
-      console.log(message);
-    });
+    socket.on('successUserRoomConnection', (message) => message);
+    socket.on('errorUserRoomConnection', (message) => message);
+    socket.on('newClientJoinedUserRoom', (message) => message);
     initSessionStorage('CurrentUserId', '80625d115100a2ee8d8e695b');
     retrieveBotList(userId);
   }, []);
@@ -105,10 +99,10 @@ const RobotOverview = () => {
     return (
       <>
         {filteredBotList.map((val) => (
-          // eslint-disable-next-line dot-notation
           <RobotContainer
             userId={userId}
-            robotId={val['_id']}
+            // eslint-disable-next-line no-underscore-dangle
+            robotId={val._id}
             robotName={val.robotName}
           />
         ))}
