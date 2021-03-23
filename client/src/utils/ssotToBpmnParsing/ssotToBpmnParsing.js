@@ -33,13 +33,25 @@ const buildCorrectOrder = (ssot) => {
 };
 
 /**
+ * TODO
+ */
+const updateIdForElement = (modeling, element, cliResult) => {
+    const bpmnObject = cli.element(cliResult);
+    const newId = element.id;
+
+    const updatedIdProperty = { id: newId }
+    modeling.updateProperties(bpmnObject, updatedIdProperty);
+    return newId;
+};
+
+/**
  * @description Will create the first element in the BPMN diagram as a start event
  * @param {*} cli The modeling cli extension
  * @param {Object} element The first element (start element) to process
  * @param {String} previousElement The id of the previous element
  * @returns {String} The id of the element created in the diagram
  */
-const drawElement = (cli, element, previousElement) => {
+const drawElement = (cli, modeling, element, previousElement) => {
     let createdElement;
     switch (element.type) {
         case 'INSTRUCTION':
@@ -52,8 +64,9 @@ const drawElement = (cli, element, previousElement) => {
         default:
             break;
     }
-    if (element.name) cli.setLabel(createdElement, element.name);
-    return createdElement;
+    const newId = updateIdForElement(modeling, element, createdElement);
+    if (element.name) cli.setLabel(newId, element.name);
+    return newId;
 };
 
 /**
@@ -70,16 +83,13 @@ const removeDefaultStarter = (cli) => {
  * @param {Object} element The first element (start element) to process
  * @returns {String} The id of the element created in the diagram
  */
-const drawStartElement = (cli, element) => {
-    // TODO
+const drawStartElement = (cli, modeling, element) => {
     removeDefaultStarter(cli);
     const startElement = cli.create('bpmn:StartEvent', DEFAULT_STARTEVENT_POSITION, DEFAULT_PARENT);
-    let test = JSON.stringify(cli.element(startElement));
-    test = test.replaceAll(startElement, 'testId');
-    cli.elements().startElement = test
-    // if (element.name) cli.setLabel(startElement, element.name);
-    // console.log(cli.elements());
-    return startElement;
+    const newId = updateIdForElement(modeling, element, startElement);
+
+    if (element.name) cli.setLabel(newId, element.name);
+    return newId;
 };
 
 /**
@@ -91,10 +101,11 @@ const drawStartElement = (cli, element) => {
 const parseSsotToBpmn = (modeler, ssot) => {
     const sortedElements = buildCorrectOrder(ssot);
     const cli = modeler.get('cli');
+    const modeling = modeler.get('modeling');
 
-    let lastDrawnElement = drawStartElement(cli, sortedElements[0]);
+    let lastDrawnElement = drawStartElement(cli, modeling, sortedElements[0]);
     for (let i = 1; i < sortedElements.length; i++) {
-        lastDrawnElement = drawElement(cli, sortedElements[i], lastDrawnElement)
+        lastDrawnElement = drawElement(cli, modeling, sortedElements[i], lastDrawnElement)
     }
 
     // return cli.save('bpmn');
