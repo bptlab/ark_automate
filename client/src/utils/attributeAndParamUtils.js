@@ -8,7 +8,7 @@
  */
 
 const ROBOT_ID_PATH = 'robotId';
-const APPLICATION_TASK_STORAGE_PATH = 'appTaskLocalStorage';
+const APPLICATION_TASK_STORAGE_PATH = 'attributeLocalStorage';
 const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
 
 /**
@@ -182,56 +182,12 @@ const setParameter = (robotId, activityId, newParameterObject) => {
 };
 
 /**
- * @description Will retrieve the value of the output variables name from either session storage, 
- * an existing object in the database or create a new one and will save it in local session storage
- * @param {String} robotId Id of the robot/ssot for which to retrieve the value
- * @param {String} activityId Id of the activity for which to retrieve the value for
- * @returns {String} The value for the name of the output variable
+ * TODO
  */
-const getOutputValue = async (robotId, activityId) => {
-    let localStorage = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
-    localStorage = JSON.parse(localStorage);
-    const matchingParameterObject = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
-
-    if (matchingParameterObject.outputVariable) {
-        return matchingParameterObject.outputVariable;
-    }
-
-    const requestString = `/ssot/getVariables?botId=${robotId}&activityId=${activityId}`;
-    const response = await fetch(requestString);
-
-    if (response && response.outputVariable) {
-        let addedStorage = localStorage;
-        addedStorage.push(response);
-        addedStorage = JSON.stringify(addedStorage);
-        sessionStorage.setItem(PARAMETER_STORAGE_PATH, addedStorage);
-        return response.outputVariable;
-    }
-
-    const attributes = await getAttributes(robotId, activityId);
-    const variableReqString = `/ssot/getVariablesForTaskApplication?task=${attributes.task}&application=${attributes.rpaApplication}`;
+const getAttributesFromDB = async (robotId) => {
+    const variableReqString = `/ssot/getAllAttributes/${robotId}`;
     const variableResponse = await fetch(variableReqString);
-    if (variableResponse) {
-        const responseObject = {
-            rpaParameters: [],
-            ssotId: robotId,
-            activityId
-        };
-        responseObject.rpaParameters = [];
-        variableResponse.inputVars.forEach((element) => {
-            const elementCopy = element;
-            elementCopy.value = '';
-            responseObject.rpaParameters.push(elementCopy);
-        });
-        if (variableResponse.outputValue) responseObject.outputVariable = `${activityId}_output`;
-
-
-        let addedStorage = localStorage;
-        addedStorage.push(responseObject);
-        addedStorage = JSON.stringify(addedStorage);
-        sessionStorage.setItem(PARAMETER_STORAGE_PATH, addedStorage);
-        return responseObject.outputVariable;
-    }
+    return variableResponse;
 };
 
 /**
@@ -304,7 +260,7 @@ module.exports = {
     setRpaApplication,
     getParameters,
     setParameter,
-    getOutputValue,
+    getAttributesFromDB,
     setOutputValue,
     getRpaApplication,
     upsert

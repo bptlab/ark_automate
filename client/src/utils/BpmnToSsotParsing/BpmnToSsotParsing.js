@@ -157,6 +157,7 @@ const getStartEventId = (bpmnJson) => {
   if (typeof startEvents === 'undefined') {
     startEvents = [];
   }
+
   startEvents.forEach(singleStartEvent => {
     startEventIds.push(singleStartEvent.$.id);
   });

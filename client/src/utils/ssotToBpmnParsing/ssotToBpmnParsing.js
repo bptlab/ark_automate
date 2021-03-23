@@ -13,20 +13,20 @@ const DEFAULT_STARTEVENT_POSITION = '200,330';
  * @param {Object} ssot The ssot to process
  */
 const findStartElement = (ssot) => (
-    ssot.elements.find( (element) => (element.type === 'MARKER' && element.predecessorIds.length < 1 )
-));
+    ssot.elements.find((element) => (element.type === 'MARKER' && element.predecessorIds.length < 1)
+    ));
 
 /**
  * @description Will create an order within the elements based on their positioning in the flow
  * @param {Object} ssot The ssot to process
  * @returns {Array} The elements of the ssot in the correct order in which they appear in the flow
  */
- const buildCorrectOrder = (ssot) => {
+const buildCorrectOrder = (ssot) => {
     const startElement = findStartElement(ssot);
-    let elementsInOrder = [startElement];
+    const elementsInOrder = [startElement];
     let currentElement = startElement;
-    for ( let i = 1; i < ssot.elements.length; i++ ) {
-        currentElement = ssot.elements.find( (element) => (element.id === currentElement.successorIds[0]) );
+    for (let i = 1; i < ssot.elements.length; i++) {
+        currentElement = ssot.elements.find((element) => (element.id === currentElement.successorIds[0]));
         elementsInOrder.push(currentElement);
     }
     return elementsInOrder;
@@ -39,14 +39,14 @@ const findStartElement = (ssot) => (
  * @param {String} previousElement The id of the previous element
  * @returns {String} The id of the element created in the diagram
  */
- const drawElement = (cli, element, previousElement) => {
+const drawElement = (cli, element, previousElement) => {
     let createdElement;
     switch (element.type) {
         case 'INSTRUCTION':
-            createdElement = cli.append(previousElement, 'bpmn:Task', DEFAULT_SPACING);            
+            createdElement = cli.append(previousElement, 'bpmn:Task', DEFAULT_SPACING);
             break;
         case 'MARKER':
-            //currently this is can only be an end event; in the future ther eshould be another switch here
+            // currently this is can only be an end event; in the future ther eshould be another switch here
             createdElement = cli.append(previousElement, 'bpmn:EndEvent', DEFAULT_SPACING);
             break;
         default:
@@ -60,7 +60,7 @@ const findStartElement = (ssot) => (
  * @description Will check if the default start event is still present and will remove if so
  * @param {*} cli The modeling cli extension
  */
- const removeDefaultStarter = (cli) => {
+const removeDefaultStarter = (cli) => {
     if (cli.elements().includes(DEFAULT_STARTER)) cli.removeShape(DEFAULT_STARTER);
 };
 
@@ -70,10 +70,15 @@ const findStartElement = (ssot) => (
  * @param {Object} element The first element (start element) to process
  * @returns {String} The id of the element created in the diagram
  */
- const drawStartElement = (cli, element) => {
+const drawStartElement = (cli, element) => {
+    // TODO
     removeDefaultStarter(cli);
     const startElement = cli.create('bpmn:StartEvent', DEFAULT_STARTEVENT_POSITION, DEFAULT_PARENT);
-    if (element.name) cli.setLabel(startElement, element.name);
+    let test = JSON.stringify(cli.element(startElement));
+    test = test.replaceAll(startElement, 'testId');
+    cli.elements().startElement = test
+    // if (element.name) cli.setLabel(startElement, element.name);
+    console.log(cli.elements());
     return startElement;
 };
 
@@ -86,12 +91,12 @@ const findStartElement = (ssot) => (
 const parseSsotToBpmn = (modeler, ssot) => {
     const sortedElements = buildCorrectOrder(ssot);
     const cli = modeler.get('cli');
-    
+
     let lastDrawnElement = drawStartElement(cli, sortedElements[0]);
-    for ( let i = 1; i < sortedElements.length; i++) {
+    for (let i = 1; i < sortedElements.length; i++) {
         lastDrawnElement = drawElement(cli, sortedElements[i], lastDrawnElement)
     }
-   
+
     return cli.save('bpmn');
 };
 

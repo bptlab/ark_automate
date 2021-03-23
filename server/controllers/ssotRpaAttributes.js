@@ -7,7 +7,7 @@ exports.getAttributes = async (req, res) => {
         res.set('Content-Type', 'application/json');
         const { botId } = req.query;
         const { activityId } = req.query;
-        
+
         const attributes = await mongoose.model('rpaAttributes').findOne(
             {
                 activityId,
@@ -19,7 +19,7 @@ exports.getAttributes = async (req, res) => {
                 _id: 0
             }
         ).exec()
-        
+
         res.send(attributes);
     } catch (err) {
         console.error(err);
@@ -34,26 +34,26 @@ exports.updateAttributes = async (req, res) => {
         const updatedInfo = req.body;
         console.log(updatedInfo);
         const botId = updatedInfo.ssotId;
-        const {activityId} = updatedInfo;
+        const { activityId } = updatedInfo;
         console.log(botId);
         console.log(activityId);
-        
+
         const updatedAttributes = await mongoose
-        .model('rpaAttributes')
-        .findOneAndUpdate(
-            {
-                activityId,
-                ssotId: botId,
-            }, 
-            updatedInfo,
-            {
-                new: true,
-                useFindAndModify: false,
-                upsert: true
-            }
+            .model('rpaAttributes')
+            .findOneAndUpdate(
+                {
+                    activityId,
+                    ssotId: botId,
+                },
+                updatedInfo,
+                {
+                    new: true,
+                    useFindAndModify: false,
+                    upsert: true
+                }
             )
-        .exec();
-        
+            .exec();
+
         res.send(updatedAttributes);
     } catch (err) {
         console.error(err);
@@ -68,7 +68,7 @@ exports.updateMany = async (req, res) => {
         const attributeList = req.body;
 
         const updateList = [];
-        attributeList.forEach( (element) => {
+        attributeList.forEach((element) => {
             const updateElement = {
                 updateOne: {
                     filter: {
@@ -81,11 +81,29 @@ exports.updateMany = async (req, res) => {
             };
             updateList.push(updateElement);
         });
-        
+
         const updatedObjects = await mongoose.model('rpaAttributes').bulkWrite(updateList).exec()
 
         res.send(updatedObjects);
     } catch (err) {
         console.error(err);
     }
+};
+
+/**
+ * @description TODO
+ */
+exports.retrieveAttributesForRobot = async (req, res) => {
+    const { robotId } = req.params;
+
+    const parameterObjects = await mongoose
+        .model('rpaAttributes')
+        .find(
+            {
+                ssotId: robotId
+            }
+        )
+        .exec();
+
+    res.send(parameterObjects);
 };

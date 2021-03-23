@@ -35,5 +35,6 @@ router.post('/updateManyParameters', variableController.updateMany);
 router.get('/getAttributes', rpaAttributesController.getAttributes);
 router.post('/updateAttributes', rpaAttributesController.updateAttributes);
 router.post('/updateManyAttributes', rpaAttributesController.updateMany);
+router.get('/getAllAttributes/:robotId', rpaAttributesController.retrieveAttributesForRobot);
 
 module.exports = router;
