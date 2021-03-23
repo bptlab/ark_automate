@@ -28,7 +28,7 @@ const RobotContainer = (props) => {
     if (isBotExecutable) {
       socket.emit('robotExecutionJobs', { robotId, userId });
     } else {
-      alert('Your Bot is not ready to be executed!');
+      alert('Your Bot is not fully configured and can not be executed!');
     }
   };
 
