@@ -25,7 +25,6 @@ const PPTaskDropdown = ({
       onChange={onTaskSelection}
       disabled={disabled ? true : null}
       defaultValue={getRpaTask(selectedActivity)}
-      value={getRpaTask(selectedActivity)}
     >
       {listOfTasks.map((task) => (
         <Option key={task} value={task}>
