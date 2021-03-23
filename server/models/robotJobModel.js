@@ -15,5 +15,5 @@ const Job_Schema = new Schema({
   parameters: [inputParameterSchema],
 });
 
-const Job = mongoose.model('jobs', Job_Schema);
+const Job = mongoose.model('job', Job_Schema);
 module.exports = { Job };

@@ -9,7 +9,7 @@ const jobsModel = require('../models/robotJobModel.js');
 mongoose.set('useFindAndModify', false);
 
 /**
- * @description Fetches the ssot from the database and parses the ssot to robot code
+ * @description Fetches the ssot of a given robot from the database and parses the ssot to robot code
  * @param {String} robotId the id of the robot we want the robot code for
  */
 exports.getRobotCode = async (robotId) => {
@@ -62,8 +62,8 @@ exports.createJob = async (userId, robotId, status, parameters) => {
     parameters,
   });
   try {
-    const obj = await job.save();
-    const { _id: objId } = obj;
+    const jobObj = await job.save();
+    const { _id: objId } = jobObj;
     return objId;
   } catch (err) {
     if (err) {
