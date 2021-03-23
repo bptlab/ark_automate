@@ -53,12 +53,12 @@ I looked at several possible technologies/concepts that be applied in our case.
 
 ### Polling and Long-Polling
 
-Polling is an approach where the desktop app would permenantly 'ask' the there is a new robot to execute. Although it is quite easy to implement, the performance is bad.
-Long Polling aims to solve the performance issue by just 'asking' one time and waiting for an answer. The desktop app would 'ask' the server again after a fixed periode of time if the server does not have any new robots to execute. In principle a great approach but it lacks support of frameworks one could use and implementing it from scretch would be too time consuming
+Polling is an approach where the desktop app would permenantly 'ask' that there is a new robot to execute. Although it is quite easy to implement, the performance is bad.
+Long Polling aims to solve the performance issue by just 'asking' one time and waiting for an answer. The desktop app would 'ask' the server again after a fixed periode of time if the server does not have any new robots to execute. In principle a great approach but it lacks support of frameworks one could use and implementing it from scratch would be too time consuming
 
 ### Websockets
 
-When using websockets we would open a bidirectional communication channel between the server side and the client side.Thus a great solution because real time communication is possible. Still, it is time consuming to implement and a successful connection is not always garantued as either element (proxy, firewall, …) prevent WebSocket connections between the client and the server or the browser does not support it yet.
+When using websockets we would open a bidirectional communication channel between the server side and the client side. This is a great solution because real time communication is possible. Still, it is time consuming to implement and a successful connection is not always guaranteed as either element (proxy, firewall, …) prevent WebSocket connections between the client and the server or the browser does not support it yet.
 
 ### Server-sent events
 
@@ -77,13 +77,13 @@ To get started I can recommend reading [this](https://socket.io/docs/v4/index.ht
 ## How the new approach with socket.io was implemented in the ark automate product
 
 **Desktop app:**
-Here we implemented a CLI that reads the userId the user enters, saves the userId and uses the userId as an authentication for the communication with the web app server. Once started, the desktop app connects with the server by using a socket connection. A socket connection is this bidirectional connection that exist between every client and server. Moreover we use the userId the user entered and ask the server if this socket connection can join the room userId (we have one room for every userId). Once the socket connection was added to the userId room we wait for robots to be executed. Because we are in the userId room we just receive robot execution jobs of web frontends that are connected to the same room.
+Here we implemented a CLI that reads the userId the user enters, saves the userId and uses the userId as an authentication for the communication with the web app server. Once started, the desktop app connects with the server by using a socket connection. A socket connection is this bidirectional connection that exist between every client and server. Moreover we use the userId the user entered and ask the server if this socket connection can join the room userId (we have one room for every userId). Once the socket connection was added to the userId room we wait for robots to be executed. Because we are in the userId room we receive robot execution jobs of web frontends that are connected to the same room.
 
 **Database/Server:**
 We implemented a jobs collection in MongoDB as well as a Mongoose jobs model. Every job has a robot_id, a user_id, a status (waiting/executing/success/failed) and an array of parameters that contains the arguments the user entered in the web frontend when starting the robot execution.
 
 **Server:**
-The 'heart' of this user story. Sets up a socket specific server instance, establishes socket connection with the web frontend and the desktop app, groups sockets by userIds (by using the room concept), reacts on robot execution commands and forwards this command to the desktop app and updates the jobs collection in MongoDB continiously.
+Sets up a socket specific server instance, establishes socket connection with the web frontend and the desktop app, groups sockets by userIds (by using the room concept), reacts on robot execution commands and forwards this command to the desktop app and updates the jobs collection in MongoDB continiously.
 
 **Web Frontend:**
-Connects with the server by using a socket connection. Also, like the with the dektop app, we join a userId specific room whenever the robot overview is rendered. Additionally, we send a robot execution job to the backend when the user clicks on the play button in the robot container.
+Connects with the server using a socket connection. Also, like the dektop app, we join a userId specific room whenever the robot overview is rendered. Additionally, we send a robot execution job to the backend when the user clicks on the play button in the robot container.
