@@ -33,7 +33,11 @@ const buildCorrectOrder = (ssot) => {
 };
 
 /**
- * TODO
+ * @description The bpmn js cli extension will just create elements, but not ensure their Id to match the one in the ssot.
+ * Because of that this workaround is needed, which takes in the created element and updates its id to the one saved in the ssot
+ * @param {*} modeling The modeling extension
+ * @param {Object} element The first element (start element) to process
+ * @returns {String} The now set id of the shape
  */
 const updateIdForElement = (modeling, element, cliResult) => {
     const bpmnObject = cli.element(cliResult);
@@ -47,6 +51,7 @@ const updateIdForElement = (modeling, element, cliResult) => {
 /**
  * @description Will create the first element in the BPMN diagram as a start event
  * @param {*} cli The modeling cli extension
+ * @param {*} modeling The modeling extension
  * @param {Object} element The first element (start element) to process
  * @param {String} previousElement The id of the previous element
  * @returns {String} The id of the element created in the diagram
@@ -80,6 +85,7 @@ const removeDefaultStarter = (cli) => {
 /**
  * @description Will create the first element in the BPMN diagram as a start event
  * @param {*} cli The modeling cli extension
+ * @param {*} modeling The modeling extension
  * @param {Object} element The first element (start element) to process
  * @returns {String} The id of the element created in the diagram
  */

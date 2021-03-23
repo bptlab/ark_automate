@@ -57,7 +57,9 @@ const createNewRobot = async (userid, newName) => {
 };
 
 /**
- * TODO
+ * @description will send the call to the backend to overwrite the ssot stored in the database with the given one
+ * @param {String} botId - String including the robotId
+ * @param {Object} newSsot - the ssot to overwrite the existing one
  */
 const updateSsot = async (
   botId,

@@ -59,7 +59,7 @@ exports.getVarsForTask = async (req, res) => {
   }
 };
 
-// TODO
+// GET /rpa-framework/commands/getAllParameters
 exports.getAllParameters = async (req, res) => {
   const parameterObjects = await mongoose
     .model('rpa-task')

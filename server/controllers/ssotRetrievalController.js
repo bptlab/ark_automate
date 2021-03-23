@@ -188,7 +188,7 @@ exports.overwriteRobot = async (req, res) => {
         )
       .exec();
 
-    res.send('ssotData');
+    res.send(ssotData);
   } catch (err) {
     console.error(err);
   }

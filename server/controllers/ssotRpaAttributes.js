@@ -88,9 +88,7 @@ exports.updateMany = async (req, res) => {
     }
 };
 
-/**
- * @description TODO
- */
+// GET /getAllAttributes/604f537ed699a2eb47433184'
 exports.retrieveAttributesForRobot = async (req, res) => {
     const { robotId } = req.params;
 

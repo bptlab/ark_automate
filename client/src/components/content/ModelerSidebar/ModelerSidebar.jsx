@@ -187,7 +187,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   };
 
   /**
- * @description TODO
+   * @description Will update the parameters and output variable in the state for the given activity
+   * @param {String} activityId Id of the activity to process
  */
   const updateParamSection = (activityId) =>
     /* this part of code is WIP for implementing the param section

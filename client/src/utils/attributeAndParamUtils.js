@@ -203,7 +203,9 @@ const setParameter = (robotId, activityId, newParameterObject) => {
 };
 
 /**
- * TODO
+ * @description Will send a backend call to retrieve all attribute objects related to the provided robotId
+ * @param {String} robotId Id of the robot for which to retrieve the values
+ * @returns {Array} Array of attribute objects related to the robot
  */
 const getAttributesFromDB = async (robotId) => {
     const reqString = `/ssot/getAllAttributes/${robotId}`;
@@ -212,7 +214,8 @@ const getAttributesFromDB = async (robotId) => {
 };
 
 /**
- * TODO
+ * @description Will send a backend call to retrieve all rpa-task objects for the purpose of retrieving the related parameter and possibly output value
+ * @returns {Array} Array of all rpa-task objects
  */
 const getParameterFromDB = async () => {
     const reqString = `/rpa-framework/commands/getAllParameters`;
@@ -244,7 +247,8 @@ const setOutputValue = (robotId, activityId, newValueName) => {
 };
 
 /**
- * TODO
+ * @description Will send three backend calls to upsert the ssot, the attribute objects and the parameter objects to the database.
+ * The objects are taken from the session storage, so no parameters are required
  */
 const upsert = async () => {
     const ssot = sessionStorage.getItem('ssotLocal');
@@ -283,7 +287,9 @@ const upsert = async () => {
 };
 
 /**
- * TODO
+ * @description Will send a backend call to retrieve all parameter objects related to the provided robotId
+ * @param {String} robotId Id of the robot for which to retrieve the values
+ * @returns {Array} Array of parameter objects related to the robot
  */
 const getParameterForRobotFromDB = async (robotId) => {
     const reqString = `/ssot/getAllParameters/${robotId}`;

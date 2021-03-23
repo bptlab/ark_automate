@@ -110,20 +110,48 @@ User information about a robot (creator, released for etc.) is stored in an addi
   "predecessorIds": ["randomId"],
   "successorIds": ["randomId"],
   "rpaApplication": "e.g. Excel.Files",
-  "rpaTask": "e.g. Open Workbook",
+  "rpaTask": "e.g. Open Workbook"
+}
+```
+
+**parameter object extending the INSTRUCTION:**
+
+```json
+{
+  "ssotId": "604f537ed699a2eb47274184",
+  "activityId": "Activity_47II",
+  "outputVariable": "exampleId",
   "rpaParameters": [
     {
       "name": "Filename",
+      "type": "Boolean",
       "value": "",
-      "requireUserInput": true
+      "requireUserInput": true,
+      "infoText": "The name of the file",
+      "isRequired": true,
+      "index": 0
     },
     {
       "name": "Path",
       "value": "C:/RPA-folder/",
-      "requireUserInput": false
+      "type": "Boolean",
+      "requireUserInput": false,
+      "infoText": "The path where the file is located on the machine",
+      "isRequired": true,
+      "index": 1
     }
-  ],
-  "outputVariable": ""
+  ]
+}
+```
+
+**attribute object extending the INSTRUCTION:**
+
+```json
+{
+  "ssotId": "604f537ed699a2eb47274184",
+  "activityId": "Activity_47II",
+  "rpaApplication": "Excel.Files",
+  "rpaTask": "Open Workbook"
 }
 ```
 
@@ -136,6 +164,9 @@ User information about a robot (creator, released for etc.) is stored in an addi
 - ~~position~~ -> calculated :heavy_check_mark:
 - ~~size~~ -> `config.json` :heavy_check_mark:
 - _RPA-Task & Application & Parameters_ :heavy_check_mark:
+
+By using separate external objects we allow for a more consistent updating of the ssot, since it is only required to carry the information about the name of single elements, as well as their predecessors and successors.
+Splitting the required information again into parameter and attributes has benefits when working with only one of the both in situations where many of those objects are needed, but only the attribute or parameter information is needed at that point.
 
 ### Element: CASE
 
@@ -530,61 +561,15 @@ Modelled process
             "name": "#+# First activity",
             "id": "Activity_0a128t6",
             "predecessorIds": ["StartEvent_1"],
-            "successorIds": ["Activity_0ascvdr"],
-            "outputVariable": ""
+            "successorIds": ["Activity_0ascvdr"]
         },
-        // RPA activity
+        // second activity
         {
             "type": "INSTRUCTION",
             "name": "#+#+# RPA Activity",
             "id": "Activity_0ascvdr",
             "predecessorIds": ["Activity_0a128t6"],
-            "successorIds": ["Event_0wghmrz"],
-            "rpaApplication": "Browser",
-            "rpaTask": "Open Browser",
-            "parameters": [
-                {
-                    "name": "url",
-                    "value": "TestString",
-                    "requireUserInput": true
-                },
-                {
-                    "name": "browser",
-                    "value": "TestString",
-                    "requireUserInput": true
-                },
-                {
-                    "name": "remote_url",
-                    "value": "true",
-                    "requireUserInput": true
-                },
-                {
-                    "name": "desired_capabilities",
-                    "value": "TestString",
-                    "requireUserInput": true
-                },
-                {
-                    "name": "ff_profile_dir",
-                    "value": "TestString",
-                    "requireUserInput": true
-                },
-                {
-                    "name": "options",
-                    "value": "TestString",
-                    "requireUserInput": true
-                },
-                {
-                    "name": "service_log_path",
-                    "value": "TestString",
-                    "requireUserInput": true
-                },
-                {
-                    "name": "executable_path",
-                    "value": "TestString",
-                    "requireUserInput": true
-                },
-            ],
-            "outputVariable": ""
+            "successorIds": ["Event_0wghmrz"]
         },
         // Endevent
         {
