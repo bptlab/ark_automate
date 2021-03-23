@@ -15,23 +15,29 @@ const PPApplicationDropdown = ({
   selectedActivity,
   onApplicationSelection,
   applications,
-}) => (
-  <>
-    <Select
-      className={styles['properties-panel-dropdown']}
-      showSearch
-      placeholder='Please select application'
-      onChange={onApplicationSelection}
-      defaultValue={getRpaApplication(selectedActivity)}
-    >
-      {applications.map((applicaton) => (
-        <Option key={applicaton} value={applicaton}>
-          {applicaton}
-        </Option>
-      ))}
-    </Select>
-  </>
-);
+}) => {
+  if (!applications) {
+    applications = []
+  }
+
+  return (
+    <>
+      <Select
+        className={styles['properties-panel-dropdown']}
+        showSearch
+        placeholder='Please select application'
+        onChange={onApplicationSelection}
+        defaultValue={getRpaApplication(selectedActivity)}
+      >
+        {applications.map((applicaton) => (
+          <Option key={applicaton} value={applicaton}>
+            {applicaton}
+          </Option>
+        ))}
+      </Select>
+    </>
+  )
+};
 
 PPApplicationDropdown.propTypes = {
   applications: PropTypes.arrayOf(PropTypes.shape).isRequired,

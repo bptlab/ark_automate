@@ -25,7 +25,7 @@ const PPRpaSection = ({
         <Space direction='vertical' style={{ width: '100%' }}>
             <PropertiesPanelApplicationDropdown
                 onApplicationSelection={applicationSelectionUpdated}
-                applications={JSON.parse(sessionStorage.getItem('AvailableApplications'))}
+                applications={JSON.parse(sessionStorage.getItem('availableApplications'))}
                 selectedActivity={selectedActivity}
             />
             <PropertiesPanelTaskDropdown

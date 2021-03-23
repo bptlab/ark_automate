@@ -58,7 +58,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         currentElement: event.newSelection[0],
       });
 
-      // the updated elementState isn't automatically used in useEffect() therefore we need the following workaround
+      // INFO: the updated elementState isn't automatically used in useEffect() therefore we need the following workaround
       elementState.selectedElements = event.newSelection;
       const currentElement = event.newSelection[0];
       elementState.currentElement = currentElement;
@@ -127,7 +127,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   const getTasksForApplication = async (application) => {
     const currentSavedTasksObject = JSON.parse(
-      sessionStorage.getItem('TaskToApplicationCache')
+      sessionStorage.getItem('taskToApplicationCache')
     );
 
     if (application in currentSavedTasksObject) {
@@ -140,7 +140,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         .then((data) => {
           currentSavedTasksObject[application] = data;
           sessionStorage.setItem(
-            'TaskToApplicationCache',
+            'taskToApplicationCache',
             JSON.stringify(currentSavedTasksObject)
           );
           setTasksForSelectedApplication(data);
@@ -252,7 +252,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   const handleInputParameterChange = (value) => {
     setParameter(robotId, elementState.currentElement.id, undefined)
-    console.log(value.target.value);
     const variableName = value.target.placeholder;
     const variableValue = value.target.value;
     const editedVariableList = [];
