@@ -1,11 +1,13 @@
 /* eslint-disable no-underscore-dangle */
+const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const ssotRetrievalController = require('../controllers/ssotRetrievalController');
 const ssotParsingController = require('../controllers/ssotParsingController');
-const SsotModel = require('../models/singleSourceOfTruthModel');
-const UaoModel = require('../models/userAccessObjectModel');
 const testData = require('./testData');
+
+const SsotModel = mongoose.model('SSoT');
+const UaoModel = mongoose.model('userAccessObject');
 
 const loadSsotInDb = async () => {
   const ssot = new SsotModel(testData.testSsot);

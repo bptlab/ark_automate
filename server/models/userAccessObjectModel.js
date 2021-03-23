@@ -8,4 +8,4 @@ const userAccessSchema = new Schema({
   userId: mongoose.Types.ObjectId,
 });
 
-module.exports = mongoose.model('userAccessObject', userAccessSchema);
+mongoose.model('userAccessObject', userAccessSchema);

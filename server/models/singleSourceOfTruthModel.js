@@ -33,4 +33,4 @@ const SSoT_Schema = new Schema({
   elements: [instructionSchema, markerSchema],
 });
 
-module.exports = mongoose.model('SSoT', SSoT_Schema);
+mongoose.model('SSoT', SSoT_Schema);
