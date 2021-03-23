@@ -20,8 +20,10 @@ exports.getAvailableTasksForApplications = async (req, res) => {
     res.set('Content-Type', 'application/json');
     if (application != null) {
       await mongoose
-        res.send(tasks);
-      });
+        .model('rpa-task')
+        .distinct('Task', { Application: application }, (err, tasks) => {
+          res.send(tasks);
+        });
     } else {
       res.send('Please set a valid application parameter.');
     }
