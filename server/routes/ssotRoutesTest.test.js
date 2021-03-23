@@ -170,12 +170,10 @@ describe('ssot/shareRobotWithUser', () => {
     );
 
     // verify if really in DB
-    const userAccessObject = awaitserAccessObject
-      .find({
-        userId: testData.userId,
-        robotId: testData.ssotId,
-      })
-      .exec();
+    const userAccessObject = await UserAccessObjectModel.find({
+      userId: testData.userId,
+      robotId: testData.ssotId,
+    }).exec();
     expect(JSON.stringify(userAccessObject[0].robotId)).toBe(
       JSON.stringify(testData.ssotId)
     );
