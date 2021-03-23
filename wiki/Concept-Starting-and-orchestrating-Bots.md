@@ -44,7 +44,7 @@ My recommendation would be to not take care of the orchestration in-house, but r
 
 # Communication with ark automate dektop app
 
-I looked at several possible technologies/concepts that be applied in our case.
+Multiple concepts could be applied in the case of ark_automate
 
 1. Polling and Long-Polling
 2. Websockets
@@ -66,13 +66,13 @@ This is an approach based on the concept of publish-subscribe. The client (deskt
 
 ### Higher Abstraction Frameworks
 
-There are some frameworks using one (or more) of these basic approaches but are one abstraction layer higher for the user. In particular, I looked at pusher and socket.io.
+There are some frameworks using one (or more) of these basic approaches but are one abstraction layer higher for the user. In particular, pusher and socket.io were looked at.
 Pusher is based on a publish subscribe approach simular to SSE and it seems to be very easy to use. The biggest disadvantage was that it is not open-source but ultimatly one would have to pay for it. Socket.io is a highly popular (> 4 Mio. weekly npm downloads) open source framework. It is mainly based on websocket communication but is also able to seamlessly switch to a long polling approach in the background if websockets do not work.
 
 ### Decision
 
-In the end, I decided for socket.io as it is open-cource, well-supported, 'easy' to use, robust and websocket based enabling a bidirectional communication.
-To get started I can recommend reading [this](https://socket.io/docs/v4/index.html) introduction to socket.io. Especially these two subpages [1](https://socket.io/docs/v4/server-socket-instance/) & [2](https://socket.io/docs/v4/client-socket-instance/) are relevant for our usecase.
+In the end, we decided for socket.io as it is open-cource, well-supported, 'easy' to use, robust and websocket based enabling a bidirectional communication.
+To get started it is recommended reading [this](https://socket.io/docs/v4/index.html) introduction to socket.io. Especially these two subpages [1](https://socket.io/docs/v4/server-socket-instance/) & [2](https://socket.io/docs/v4/client-socket-instance/) are relevant for this usecase.
 
 ## How the new approach with socket.io was implemented in the ark automate product
 
@@ -83,7 +83,7 @@ Here we implemented a CLI that reads the userId the user enters, saves the userI
 We implemented a jobs collection in MongoDB as well as a Mongoose jobs model. Every job has a robot_id, a user_id, a status (waiting/executing/success/failed) and an array of parameters that contains the arguments the user entered in the web frontend when starting the robot execution.
 
 **Server:**
-Sets up a socket specific server instance, establishes socket connection with the web frontend and the desktop app, groups sockets by userIds (by using the room concept), reacts on robot execution commands and forwards this command to the desktop app and updates the jobs collection in MongoDB continiously.
+Sets up a server and socket instance, establishes socket connection with the web frontend and the desktop app, groups sockets by userIds (by using the room concept), reacts on robot execution commands and forwards this command to the desktop app and updates the jobs collection in MongoDB continiously.
 
 **Web Frontend:**
 Connects with the server using a socket connection. Also, like the dektop app, we join a userId specific room whenever the robot overview is rendered. Additionally, we send a robot execution job to the backend when the user clicks on the play button in the robot container.
