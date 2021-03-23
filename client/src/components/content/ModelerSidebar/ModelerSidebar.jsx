@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
 import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
-import { updateVariablesForBot } from '../../../api/variableRetrieval'
+import { updateVariablesForRobot } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
 import { setParameter, setRpaApplication, setRpaTask, upsert } from '../../../utils/attributeAndParamUtils';
@@ -264,7 +264,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       editedVariableList.push(variableToAdd);
     })
 
-    updateVariablesForBot(
+    updateVariablesForRobot(
       robotId,
       elementState.currentElement.businessObject.id,
       editedVariableList,
@@ -279,7 +279,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   const handleOutputVarNameChange = (newValue) => {
     setOutputVariableName(newValue);
-    updateVariablesForBot(
+    updateVariablesForRobot(
       robotId,
       elementState.currentElement.businessObject.id,
       variableList,

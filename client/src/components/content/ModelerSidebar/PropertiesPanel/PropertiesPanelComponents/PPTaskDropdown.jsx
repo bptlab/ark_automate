@@ -42,5 +42,4 @@ PPTaskDropdown.propTypes = {
   selectedActivity: PropTypes.string.isRequired
 };
 
-
 export default PPTaskDropdown;

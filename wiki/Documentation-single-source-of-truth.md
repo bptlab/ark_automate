@@ -264,7 +264,7 @@ Modelled process
 <td>
 
 ```json
-  {
+{
   "_declaration": {
     "_attributes": {
       "version": "1.0",
@@ -315,20 +315,7 @@ Modelled process
         {
           "_attributes": {
             "id": "Activity_0ascvdr",
-            "name": "#+#+# RPA Activity",
-            "arkRPA:application": "Browser",
-            "arkRPA:task": "Open Browser",
-// added linebreaks for readability
-            "arkRPA:inputVars": "{\"url\":\"TestString\",
-\"browser\":\"TestString\",
-\"alias\":\"TestString\",
-\"remote_url\":true,
-\"desired_capabilities\":\"TestString\",
-\"ff_profile_dir\":\"TestString\",
-\"options\":\"TestString\",
-\"service_log_path\":\"TestString\",
-\"executable_path\":\"TestString\"}",
-            "arkRPA:outputVars": ""
+            "name": "#+#+# RPA Activity"
           },
           "bpmn2:incoming": {
             "_text": "Flow_0sg07kn"

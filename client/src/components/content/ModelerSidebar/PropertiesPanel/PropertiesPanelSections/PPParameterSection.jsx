@@ -27,7 +27,6 @@ const PPParameterSection = ({ onValueChange, variableList }) => (
             ))}
         </Space>
     </>
-
 );
 
 PPParameterSection.propTypes = {

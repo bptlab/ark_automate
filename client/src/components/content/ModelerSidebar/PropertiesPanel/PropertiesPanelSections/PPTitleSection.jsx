@@ -21,7 +21,6 @@ const PPTitleSection = (element) => {
             {title}
         </Text>
     );
-
 }
 
 export default PPTitleSection;

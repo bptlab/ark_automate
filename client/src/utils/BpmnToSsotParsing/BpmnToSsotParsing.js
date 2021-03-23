@@ -116,7 +116,6 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
  * @returns {Array}  Array of elements for single source of truth
  */
 const enrichMarkerElements = (elementsArray, bpmnStartEvent, bpmnEndEvent) => {
-
   let matchingElement
 
   if (typeof bpmnStartEvent !== 'undefined') {

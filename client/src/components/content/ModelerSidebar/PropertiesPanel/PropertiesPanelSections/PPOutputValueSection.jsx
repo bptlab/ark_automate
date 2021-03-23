@@ -37,7 +37,6 @@ const PPOutputValueSection = ({ outputVariableText, onNameChange }) => {
           <InfoCircleOutlined style={{ color: corporateDesign.colorPrimaryInverted }} />
         </Tooltip>
       }
-      /* value={element.businessObject.name || ''} */
       onPressEnter={handleOutputVariableChange}
     />
   </>)
