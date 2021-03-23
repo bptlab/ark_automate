@@ -4,6 +4,7 @@ import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
 import setRobotJob from '../../../api/robotExecutionJobs';
@@ -17,24 +18,30 @@ const { Title } = Typography;
  * @category Client
  */
 const RobotContainer = (props) => {
-  const { robotId, robotName } = props;
+  const { robotId, robotName, userId } = props;
   const [name, setRobotName] = useState(robotName);
 
   /**
-   * @description Will add a new job with the current robot id to the job list on the server side
+   * @description Sends a job to the server to execute a specfic robot for a specific user
    */
   const startRobot = () => {
-    if (isBotExecutable()) {
-      setRobotJob(robotId);
+    // isBotExecutable function is to be implemented
+    const isBotExecutable = true;
+    if (isBotExecutable) {
+      socket.emit('robotExecutionJobs', { robotId, userId });
     } else {
-      alert('Your Bot is not ready to be executed!');
+      alert('Your Bot is not fully configured and can not be executed!');
     }
   };
 
-  const renameRobot = (value) => {
-    changeSsotName(robotId, value)
+  /**
+   * @description Updates the name of the robot in the backend and in the robot container
+   * @param {String} newRobotName New name of the robot
+   */
+  const renameRobot = (newRobotName) => {
+    changeSsotName(robotId, newRobotName)
       .then(() => {
-        setRobotName(value);
+        setRobotName(newRobotName);
       })
       .catch((error) => {
         console.error(error);
@@ -75,6 +82,7 @@ const RobotContainer = (props) => {
 RobotContainer.propTypes = {
   robotName: PropTypes.string.isRequired,
   robotId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 export default RobotContainer;

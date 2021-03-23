@@ -74,7 +74,11 @@ const BpmnModeler = (props) => {
           <div className={styles['bpmn-modeler-container']} id='bpmnview' />
         </div>
       </Content>
-      <ModelerSidebar robotId={robotId} modeler={modeler} getRobotFile={downloadRobotFile} />
+      <ModelerSidebar
+        modeler={modeler}
+        robotId={robotId}
+        getRobotFile={downloadRobotFile}
+      />
     </Layout>
   );
 };

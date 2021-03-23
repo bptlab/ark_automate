@@ -84,17 +84,19 @@ const writeCodeForElement = (
  * @returns {string} Generated .robot code for the tasks section
  */
 const generateCodeForRpaTasks = (elements) => {
-  const startElement = elements.find(
-    (element) => element.predecessorIds.length === 0
-  );
+  let codeForRpaTasks = '';
+  if (elements.length > 0) {
+    const startElement = elements.find(
+      (element) => element.predecessorIds.length === 0
+    );
 
-  const codeForRpaTasks = writeCodeForElement(
-    startElement.id,
-    elements,
-    '',
-    'None'
-  );
-
+    codeForRpaTasks = writeCodeForElement(
+      startElement.id,
+      elements,
+      '',
+      'None'
+    );
+  }
   return codeForRpaTasks;
 };
 
@@ -104,8 +106,8 @@ const generateCodeForRpaTasks = (elements) => {
  * @returns {Array} All unique Applications that occur in the ssot
  */
 const collectApplications = (elements) => {
+  const applications = [];
   if (elements !== undefined && elements.length > 0) {
-    const applications = [];
     elements.forEach((element) => {
       if (element.rpaApplication !== undefined) {
         if (!applications.includes(element.rpaApplication)) {
@@ -113,9 +115,8 @@ const collectApplications = (elements) => {
         }
       }
     });
-
-    return applications;
   }
+  return applications;
 };
 
 /**
@@ -126,9 +127,11 @@ const collectApplications = (elements) => {
 const generateCodeForLibraryImports = (elements) => {
   let libraryImports = '';
   const applications = collectApplications(elements);
-  Object.values(applications).forEach((application) => {
-    libraryImports += `${'Library    RPA.'}${application}\n`;
-  });
+  if (applications.length > 0) {
+    Object.values(applications).forEach((application) => {
+      libraryImports += `${'Library    RPA.'}${application}\n`;
+    });
+  }
 
   return libraryImports;
 };
