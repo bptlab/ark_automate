@@ -1,112 +1,65 @@
 {
-  "_id": "6045eccfa9a07940e5763f0b",
-  "starterId": "exampleID",
-  "robotName": "exampleRobot",
-  "elements": [
-    {
-      "type": "INSTRUCTION",
-      "name": "SecondActivity",
-      "id": "Activity_0frqu31",
-      "predecessorIds": ["Activity_02jyuh0"],
-      "successorIds": ["Activity_00ydbo0"],
-      "rpaApplication": "Excel.Files",
-      "rpaTask": "Find Empty Row",
-      "rpaParameters": [
-        {
-          "name": "name",
-          "value": "TestString",
-          "requireUserInput": true
-        }
-      ],
-      "outputVariable": ""
-    },
-    {
-      "type": "INSTRUCTION",
-      "name": "ThirdActivity",
-      "id": "Activity_00ydbo0",
-      "predecessorIds": ["Activity_0frqu31"],
-      "successorIds": ["Event_1wphn90"],
-      "rpaApplication": "Browser",
-      "rpaTask": "Open Browser",
-      "rpaParameters": [
-        {
-          "name": "url",
-          "value": "TestString",
-          "requireUserInput": true
-        },
-        {
-          "name": "browser",
-          "value": "TestString",
-          "requireUserInput": true
-        },
-        {
-          "name": "alias",
-          "value": "TestString",
-          "requireUserInput": true
-        },
-        {
-          "name": "remote_url",
-          "value": true,
-          "requireUserInput": true
-        },
-        {
-          "name": "desired_capabilities",
-          "value": "TestString",
-          "requireUserInput": true
-        },
-        {
-          "name": "ff_profile_dir",
-          "value": "TestString",
-          "requireUserInput": true
-        },
-        {
-          "name": "options",
-          "value": "TestString",
-          "requireUserInput": true
-        },
-        {
-          "name": "service_log_path",
-          "value": "TestString",
-          "requireUserInput": true
-        },
-        {
-          "name": "executable_path",
-          "value": "TestString",
-          "requireUserInput": true
-        }
-      ],
-      "outputVariable": ""
-    },
-    {
-      "type": "MARKER",
-      "name": "",
-      "id": "Event_1cnr8ow",
-      "predecessorIds": [],
-      "successorIds": ["Activity_02jyuh0"]
-    },
-    {
-      "type": "INSTRUCTION",
-      "name": "FirstActivity",
-      "id": "Activity_02jyuh0",
-      "predecessorIds": ["Event_1cnr8ow"],
-      "successorIds": ["Activity_0frqu31"],
-      "rpaApplication": "Excel.Files",
-      "rpaTask": "Open Workbook",
-      "rpaParameters": [
-        {
-          "name": "path",
-          "value": "TestString",
-          "requireUserInput": true
-        }
-      ],
-      "outputVariable": ""
-    },
-    {
-      "type": "MARKER",
-      "name": "",
-      "id": "Event_1wphn90",
-      "predecessorIds": ["Activity_00ydbo0"],
-      "successorIds": []
-    }
-  ]
+  "_id":"54ab2d30eb3cc402041ac60f",
+  "elements":[
+     {
+        "id":"Event_1wm4a0f",
+        "name":"Start Event",
+        "predecessorIds":[
+           
+        ],
+        "successorIds":[
+           "Activity_0fzxlxj"
+        ],
+        "type":"MARKER"
+     },
+     {
+        "id":"Activity_0fzxlxj",
+        "name":"activity One",
+        "outputVariable":"",
+        "predecessorIds":[
+           "Event_1wm4a0f"
+        ],
+        "successorIds":[
+           "Activity_0zh1dbs"
+        ],
+        "type":"INSTRUCTION"
+     },
+     {
+        "id":"Activity_0zh1dbs",
+        "name":"activity Two",
+        "outputVariable":"",
+        "predecessorIds":[
+           "Activity_0fzxlxj"
+        ],
+        "successorIds":[
+           "Activity_0tjwovm"
+        ],
+        "type":"INSTRUCTION"
+     },
+     {
+        "id":"Activity_0tjwovm",
+        "name":"activity Three",
+        "outputVariable":"",
+        "predecessorIds":[
+           "Activity_0zh1dbs"
+        ],
+        "successorIds":[
+           "Event_1itdshy"
+        ],
+        "type":"INSTRUCTION"
+     },
+     {
+        "id":"Event_1itdshy",
+        "name":"finished",
+        "predecessorIds":[
+           "Activity_0tjwovm"
+        ],
+        "successorIds":[
+           
+        ],
+        "type":"MARKER"
+     }
+  ],
+  "robotName":null,
+  "starterId":"Event_1wm4a0f"
 }
