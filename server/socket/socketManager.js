@@ -26,7 +26,7 @@ exports.socketManager = (io, socket) => {
                 socketHelperFunctions
                   .getRobotCode(robot_id)
                   .then((robotCode) => {
-                    socketHelperFunctions.updateRobotJob(id, 'executing');
+                    socketHelperFunctions.updateRobotJobStatus(id, 'executing');
                     io.to(userId).emit('robotExecution', {
                       robotCode,
                       jobId: id,
