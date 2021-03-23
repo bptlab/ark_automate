@@ -113,8 +113,6 @@ const parseSsotToBpmn = (modeler, ssot) => {
     for (let i = 1; i < sortedElements.length; i++) {
         lastDrawnElement = drawElement(cli, modeling, sortedElements[i], lastDrawnElement)
     }
-
-    // return cli.save('bpmn');
 };
 
 export default parseSsotToBpmn;
