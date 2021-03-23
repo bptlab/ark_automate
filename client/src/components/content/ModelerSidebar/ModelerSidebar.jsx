@@ -13,7 +13,8 @@ import {
 } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
-import { setRpaApplication, setRpaTask } from '../../../utils/attributeAndParamUtils';
+import { setRpaApplication, setRpaTask, upsert } from '../../../utils/attributeAndParamUtils';
+import parseSsotToBpmn from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -39,6 +40,15 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     setTasksForSelectedApplication,
   ] = useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
+
+  /**
+   * @description Equivalent to ComponentDidMount in class based components
+   */
+  useEffect(() => {
+    let ssot = sessionStorage.getItem('ssotLocal');
+    ssot = JSON.parse(ssot);
+    parseSsotToBpmn(modeler, ssot);
+  }, []);
 
   /**
    * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
@@ -128,6 +138,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
 
     if (application in currentSavedTasksObject) {
       setTasksForSelectedApplication(currentSavedTasksObject[application]);
+      // TODO FIX DROPDOWN BUG HERE
       setDisableTaskSelection(false);
     } else {
       fetchTasksFromDB(application)
@@ -261,18 +272,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   * @param {string} xml String that sets the xml to be parsed
   */
   const saveToCloud = () => {
-    /** 
-    *   TODO
-    *   1. save ssot
-    *   2. save Attribute-Object
-    *   3. save Param-Object
-    *     => everything with sessionStorage.getItem('ssotLocal'/'attributeObject'/'paramObject')
-    */
-
-    // eslint-disable-next-line no-console
-    console.log("save to cloud")
+    upsert().then(console.log("saved to cloud"))
   };
-
 
   return (
     <Sider className={styles.sider}>

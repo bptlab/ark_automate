@@ -29,9 +29,11 @@ router.get('/checkForExistingVariables', variableController.checkForExistingVari
 router.post('/updateInputAndOutput', variableController.updateVariables);
 router.post('/updateInputParameter', variableController.updateOnlyInputParams);
 router.post('/updateOutputVariableName', variableController.updateOnlyOutputVarName);
+router.post('/updateManyParameters', variableController.updateMany);
 
 /// RPA ATTRIBUTES ROUTES ///
 router.get('/getAttributes', rpaAttributesController.getAttributes);
 router.post('/updateAttributes', rpaAttributesController.updateAttributes);
+router.post('/updateManyAttributes', rpaAttributesController.updateMany);
 
 module.exports = router;

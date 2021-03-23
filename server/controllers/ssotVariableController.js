@@ -287,3 +287,33 @@ exports.updateOnlyOutputVarName = async (req, res) => {
         console.error(err);
     }
 };
+
+// POST /ssot/updateManyParameters/
+// do not forget the payload in the body for this request
+exports.updateMany = async (req, res) => {
+    try {
+        res.set('Content-Type', 'application/json');
+        const parameterList = req.body;
+
+        const updateList = [];
+        parameterList.forEach( (element) => {
+            const updateElement = {
+                updateOne: {
+                    filter: {
+                        ssotId: element.ssotId,
+                        activityId: element.activityId
+                    },
+                    update: element,
+                    upsert: true
+                }
+            };
+            updateList.push(updateElement);
+        });
+        
+        const updatedObjects = await mongoose.model('parameter').bulkWrite(updateList).exec()
+
+        res.send(updatedObjects);
+    } catch (err) {
+        console.error(err);
+    }
+};
