@@ -206,9 +206,9 @@ const setParameter = (robotId, activityId, newParameterObject) => {
  * TODO
  */
 const getAttributesFromDB = async (robotId) => {
-    const variableReqString = `/ssot/getAllAttributes/${robotId}`;
-    const variableResponse = await fetch(variableReqString);
-    return variableResponse;
+    const reqString = `/ssot/getAllAttributes/${robotId}`;
+    const response = await fetch(reqString);
+    return response;
 };
 
 /**
@@ -282,6 +282,24 @@ const upsert = async () => {
     console.log(`parameter answer: ${responseParameters}`);
 };
 
+/**
+ * TODO
+ */
+const getParameterFromDB = async () => {
+    const reqString = `/rpa-framework/commands/getAllParameters`;
+    const response = await fetch(reqString);
+    return response;
+};
+
+/**
+ * TODO
+ */
+const getParameterForRobotFromDB = async (robotId) => {
+    const reqString = `/ssot/getAllParameters/${robotId}`;
+    const response = await fetch(reqString);
+    return response;
+};
+
 module.exports = {
     getRobotId,
     getRpaTask,
@@ -294,5 +312,7 @@ module.exports = {
     getParameterFromDB,
     setOutputValue,
     getRpaApplication,
-    upsert
+    upsert,
+    getParameterFromDB,
+    getParameterForRobotFromDB
 }

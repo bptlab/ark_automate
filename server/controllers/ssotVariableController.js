@@ -317,3 +317,21 @@ exports.updateMany = async (req, res) => {
         console.error(err);
     }
 };
+
+/**
+ * @description TODO
+ */
+exports.retrieveParametersForRobot = async (req, res) => {
+    const { robotId } = req.params;
+
+    const parameterObjects = await mongoose
+        .model('parameter')
+        .find(
+            {
+                ssotId: robotId
+            }
+        )
+        .exec();
+
+    res.send(parameterObjects);
+};

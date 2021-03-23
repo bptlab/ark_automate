@@ -30,6 +30,7 @@ router.post('/updateInputAndOutput', variableController.updateVariables);
 router.post('/updateInputParameter', variableController.updateOnlyInputParams);
 router.post('/updateOutputVariableName', variableController.updateOnlyOutputVarName);
 router.post('/updateManyParameters', variableController.updateMany);
+router.get('/getAllParameters/:robotId', variableController.retrieveParametersForRobot);
 
 /// RPA ATTRIBUTES ROUTES ///
 router.get('/getAttributes', rpaAttributesController.getAttributes);
