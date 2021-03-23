@@ -180,7 +180,6 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   return parseString(bpmnXml.xml)
     .then((result) => {
       bpmnJson = result;
-      console.log(bpmnJson)
       startEventId = getStartEventId(bpmnJson);
 
       // Build basic ssot-frame

@@ -209,7 +209,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
 
   /**
    * @description Gets called when the value in a single input field for the parameters has been changed and updates
-   * the values in the SSOT
+   * the values in the ssot
    * @param {Object} value new value of input field
    */
   const handleInputParameterChange = (value) => {
@@ -235,7 +235,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
 
   /**
    * @description Gets called when the name of the output variable has been changed and updates
-   * the output variables name in the SSOT
+   * the output variables name in the ssot
    * @param {Object} newValue new value of the output variables name
    */
   const handleOutputVarNameChange = (newValue) => {

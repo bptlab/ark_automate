@@ -56,7 +56,6 @@ const createNewRobot = async (userid, newName) => {
   return response;
 };
 
-
 export {
   getSsotFromDB,
   fetchSsotsForUser,
