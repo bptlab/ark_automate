@@ -96,7 +96,7 @@ exports.updateMany = async (req, res) => {
 exports.retrieveAttributesForRobot = async (req, res) => {
     const { robotId } = req.params;
 
-    const parameterObjects = await mongoose
+    const attributeObjects = await mongoose
         .model('rpaAttributes')
         .find(
             {
@@ -105,5 +105,5 @@ exports.retrieveAttributesForRobot = async (req, res) => {
         )
         .exec();
 
-    res.send(parameterObjects);
+    res.send(attributeObjects);
 };

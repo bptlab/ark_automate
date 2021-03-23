@@ -57,3 +57,13 @@ exports.getVarsForTask = async (req, res) => {
     console.error(err);
   }
 };
+
+// TODO
+exports.getAllParameters = async (req, res) => {
+  const parameterObjects = await mongoose
+      .model('rpa-task')
+      .find()
+      .exec();
+
+  res.send(parameterObjects);
+};
