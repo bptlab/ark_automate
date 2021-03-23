@@ -8,7 +8,7 @@ const ssotParsingController = require('../controllers/ssotParsingController');
 const testData = require('./testData');
 
 const SsotModel = mongoose.model('SSoT');
-const UaoModel = mongoose.model('userAccessObject');
+const UserAccessObjectModel = mongoose.model('userAccessObject');
 
 const loadSsotInDb = async () => {
   const ssot = new SsotModel(testData.testSsot);
@@ -16,8 +16,8 @@ const loadSsotInDb = async () => {
 };
 
 const loadUserAccessObjectInDb = async () => {
-  const uao = new UaoModel(testData.testUserAccessObject);
-  await uao.save();
+  const userAccessObject = UserAccessObjectModel(testData.testUserAccessObject);
+  await userAccessObject.save();
 };
 
 /**
@@ -170,14 +170,16 @@ describe('ssot/shareRobotWithUser', () => {
     );
 
     // verify if really in DB
-    const uao = await UaoModel.find({
-      userId: testData.userId,
-      robotId: testData.ssotId,
-    }).exec();
-    expect(JSON.stringify(uao[0].robotId)).toBe(
+    const userAccessObject = awaitserAccessObject
+      .find({
+        userId: testData.userId,
+        robotId: testData.ssotId,
+      })
+      .exec();
+    expect(JSON.stringify(userAccessObject[0].robotId)).toBe(
       JSON.stringify(testData.ssotId)
     );
-    expect(JSON.stringify(uao[0].userId)).toEqual(
+    expect(JSON.stringify(userAccessObject[0].userId)).toEqual(
       JSON.stringify(testData.userId)
     );
   });

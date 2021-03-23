@@ -14,8 +14,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "mongodb": "^3.6.5",
-    "mongoose": "^5.12.1",
-    "sinon": "^9.2.4"
+    "mongoose": "^5.12.1"
   },
   "devDependencies": {
     "eslint": "^7.17.0",

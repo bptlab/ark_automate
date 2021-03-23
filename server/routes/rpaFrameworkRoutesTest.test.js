@@ -53,7 +53,7 @@ describe('/commands/get-available-applications', () => {
 });
 
 describe('/commands/get-available-tasks-for-application', () => {
-  it('retreives the list of all available tasks for an application correctly', async () => {
+  it('retrieves the list of all available tasks for an application correctly', async () => {
     await loadTasksInDb();
 
     const request = httpMocks.createRequest({
