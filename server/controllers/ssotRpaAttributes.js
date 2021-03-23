@@ -82,7 +82,7 @@ exports.updateMany = async (req, res) => {
             updateList.push(updateElement);
         });
 
-        const updatedObjects = await mongoose.model('rpaAttributes').bulkWrite(updateList).exec()
+        const updatedObjects = await mongoose.model('rpaAttributes').bulkWrite(updateList)
 
         res.send(updatedObjects);
     } catch (err) {
