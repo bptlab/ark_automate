@@ -5,7 +5,7 @@ const rpaModels = require('../models/rpaTaskModel');
 exports.getAvailableApplications = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json'); 
-    mongoose.model('rpa-task').distinct('Application', (err, tasks) => {
+    await mongoose.model('rpa-task').distinct('Application', (err, tasks) => {
       res.send(tasks);
     });
   } catch (err) {
@@ -19,7 +19,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
     const {application} = req.query;
     res.set('Content-Type', 'application/json');
     if (application != null) {
-      mongoose.model('rpa-task').distinct('Task', { Application: application }, (err, tasks) => {
+      await mongoose
         res.send(tasks);
       });
     } else {
@@ -38,7 +38,7 @@ exports.getVarsForTask = async (req, res) => {
     res.set('Content-Type', 'application/json');
 
     if (application != null && task != null) {
-      mongoose.model('rpa-task').findOne(
+      await mongoose.model('rpa-task').findOne(
       {
         Application: application,
         Task: task,
