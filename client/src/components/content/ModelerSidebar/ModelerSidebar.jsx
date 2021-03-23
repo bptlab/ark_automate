@@ -190,47 +190,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * @description Will update the parameters and output variable in the state for the given activity
    * @param {String} activityId Id of the activity to process
  */
-  const updateParamSection = (activityId) =>
-    /* this part of code is WIP for implementing the param section
-    const localAttributeObject = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
-    const localParameterObject = JSON.parse(sessionStorage.getItem('parameterLocalStorage'));
-    const localTaskAplicationCombination = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
-
-    const matchingActivity = localAttributeObject.find((element) => (element.activityId === activityId));
-    const matchingParameterObject = localParameterObject.find((element) => (element.activityId === activityId));
-
-    if (matchingParameterObject) {
-      const matchingCombination = localTaskAplicationCombination.find((element) => (element.Application === matchingActivity.rpaApplication && element.Task === matchingActivity.rpaTask));
-      const copy = matchingParameterObject;
-      copy.rpaParameters.forEach((element) => delete element.value)
-      matchingCombination.inputVars.forEach((element) => copy.rpaParameters.includes(element))
-      return matchingParameterObject;
-    }
-
-
-    // const matchingParameterObject = localParameterObject.find((element) => (element.activityId === activityId && element.matchingActivity.rpaApplication));
-    if (matchingParameterObject) {
-      return matchingParameterObject
-    }
-
-    const inputVars = [];
-    matchingCombination.inputVars.forEach((singleVar) => {
-      const varWithValue = singleVar;
-      varWithValue.value = '';
-      inputVars.push(varWithValue);
-    });
-    const outputVariable = matchingCombination.outputValue ? `${activityId}_output` : null;
-    const newParameterObject = {
-      ssotId: robotId,
-      activityId,
-      outputVariable,
-      rpaParameters: inputVars
-    }
-    localParameterObject.push(newParameterObject);
-    sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParameterObject));
-    return newParameterObject; */
-    activityId
-    ;
+  const updateParamSection = (activityId) => activityId
+  /* this method stub is related to issue #8 */
 
 
   /**
