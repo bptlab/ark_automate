@@ -23,7 +23,6 @@ const PropertiesPanel = ({
   selectedActivity,
   taskSelectionUpdated,
   disableTaskSelection,
-  robotId,
   variableList,
   parameterSelectionUpdated,
   outputVariableName,

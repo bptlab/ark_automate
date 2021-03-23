@@ -13,7 +13,6 @@ const { Text } = Typography;
  * @component
  */
 const PPRpaSection = ({
-    element,
     applicationSelectionUpdated,
     tasksForSelectedApplication,
     taskSelectionUpdated,
@@ -39,7 +38,6 @@ const PPRpaSection = ({
 );
 
 PPRpaSection.propTypes = {
-    element: PropTypes.objectOf(PropTypes.shape).isRequired,
     applicationSelectionUpdated: PropTypes.func.isRequired,
     selectedActivity: PropTypes.string.isRequired,
     tasksForSelectedApplication: PropTypes.arrayOf(PropTypes.shape).isRequired,

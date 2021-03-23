@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// eslint-disable-next-line no-unused-vars
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 
 // GET /ssot/getAttributes/?botId=6045eccf&activityId=ActivityId123
@@ -32,11 +33,8 @@ exports.updateAttributes = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const updatedInfo = req.body;
-        console.log(updatedInfo);
         const botId = updatedInfo.ssotId;
         const { activityId } = updatedInfo;
-        console.log(botId);
-        console.log(activityId);
 
         const updatedAttributes = await mongoose
             .model('rpaAttributes')
