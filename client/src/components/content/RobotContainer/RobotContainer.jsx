@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
-import setRobotJob from '../../../api/robotExecutionJobs';
-import isBotExecutable from '../../../utils/botExecution';
 
 const { Title } = Typography;
 

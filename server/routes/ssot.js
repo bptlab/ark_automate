@@ -9,9 +9,15 @@ const retrievalController = require('../controllers/ssotRetrievalController');
 /// SSOTPARSING ROUTES ///
 router.get('/parser/get-robot-code', parsingController.getRobotCode);
 router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
-router.get('/getAvailableRobotsForUser/:userid', retrievalController.getRobotList);
+router.get(
+  '/getAvailableRobotsForUser/:userId',
+  retrievalController.getRobotList
+);
 router.get('/renameRobot', retrievalController.renameRobot);
-router.get('/retrieveMetadataForRobot/:botId', retrievalController.retrieveRobotMetadata);
+router.get(
+  '/retrieveMetadataForRobot/:botId',
+  retrievalController.retrieveRobotMetadata
+);
 router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser);
 router.get('/createNewRobot', retrievalController.createNewRobot);
 
