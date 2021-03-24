@@ -16,19 +16,7 @@
  * @returns {Boolean} Value specifies if object is of type instruction and contains rpa attributes
  */
 const isAnRpaInstruction = (currentElement) => (
-  currentElement.rpaTask !== undefined &&
-  currentElement.rpaApplication !== undefined &&
   currentElement.type === ACTIVITY_IDENTIFIER
-)
-
-/**
- * @description Checks whether the given element contains rpa parameters
- * @param {Object} currentElement Element to check
- * @returns {Boolean} Value specifies if object contains rpa parameters
- */
-const rpaParametersExist = (currentElement) => (
-  currentElement.rpaParameters !== undefined &&
-  currentElement.rpaParameters.length !== 0
 )
 
 /**
@@ -85,6 +73,7 @@ const writeCodeForElement = (
   id,
   elements,
   parameters,
+  attributes,
   codeToAppend,
   previousApplication
 ) => {
@@ -93,13 +82,14 @@ const writeCodeForElement = (
   let newCodeLine = '';
   let newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
-    if (currentElement.rpaApplication !== previousApplication) {
+    const matchingAttributeObject = attributes.find((attribute) => attribute.activityId === id);
+    if (matchingAttributeObject.rpaApplication !== previousApplication) {
       newPreviousApplication = currentElement.rpaApplication;
     }
     const matchingParameterObject = parameters.find((parameter) => parameter.activityId === id);
     newCodeLine += currentElement.name + LINEBREAK;
     newCodeLine += setOutputVar(matchingParameterObject);
-    newCodeLine += currentElement.rpaTask;
+    newCodeLine += matchingAttributeObject.rpaTask;
 
     newCodeLine += appendRpaInputParameter(matchingParameterObject);
     
@@ -114,6 +104,7 @@ const writeCodeForElement = (
         successorId,
         elements,
         parameters,
+        attributes,
         combinedCode,
         newPreviousApplication
       );
@@ -128,7 +119,7 @@ const writeCodeForElement = (
  * @param {Object} metaData MetaData of the robot
  * @returns {string} Generated .robot code for the tasks section
  */
-const generateCodeForRpaTasks = (elements, parameters) => {
+const generateCodeForRpaTasks = (elements, parameters, attributes) => {
   const startElement = elements.find(
     (element) => element.predecessorIds.length === 0
   );
@@ -137,6 +128,7 @@ const generateCodeForRpaTasks = (elements, parameters) => {
     startElement.id,
     elements,
     parameters,
+    attributes,
     '',
     'None'
   );
@@ -151,7 +143,6 @@ const generateCodeForRpaTasks = (elements, parameters) => {
  */
 const collectApplications = (elements) => {
   const applications = [];
-
   if (elements !== undefined && elements.length > 0) {
     elements.forEach((element) => {
       if (element.rpaApplication !== undefined && 
@@ -212,6 +203,34 @@ const retrieveParameters = async (ssot) => {
 };
 
 /**
+ * @description For all activities in the ssot this method will retrieve the associated parameter objects
+ * @param {Object} ssot The ssot for which the parameters should be retrieved
+ * @returns {Array} Array of attribute objects
+ */
+const retrieveAttributes = async (ssot) => {
+  const { id } = ssot;
+  const { elements } = ssot;
+  const listOfActivityIds = [];
+
+  elements.forEach( (element) => {
+    if (element.type === ACTIVITY_IDENTIFIER) {
+      listOfActivityIds.push(element.id);
+    }
+  });
+
+  const attributeObjects = await mongoose
+    .model('rpaAttributes')
+    .find(
+      { ssotId: id,
+        activityId: { $in: listOfActivityIds}
+      }
+    )
+  .exec();
+
+  return attributeObjects;
+};
+
+/**
  * @description Parses the given SSoT to an executable .robot file
  * @param {Object} ssot The SSoT
  * @returns {string} Code that has to be put in .robot file
@@ -220,11 +239,12 @@ const parseSsotToRobotCode = async (ssot) => {
   const { elements } = ssot;
   let parsedCode = '';
   parsedCode += `*** Settings ***${LINEBREAK}`;
-  parsedCode += generateCodeForLibraryImports(elements);
+  const attributeObjects = await retrieveAttributes(ssot);
+  parsedCode += generateCodeForLibraryImports(attributeObjects);
   // ideally we use the keyword statement for each task, currently not working out of the box
   parsedCode += `${LINEBREAK}*** Tasks ***${LINEBREAK}`;
   const parameters = await retrieveParameters(ssot);
-  parsedCode += generateCodeForRpaTasks(elements, parameters);
+  parsedCode += generateCodeForRpaTasks(elements, parameters, attributeObjects);
 
   return parsedCode;
 };
