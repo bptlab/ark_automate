@@ -6,12 +6,9 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import PropTypes from 'prop-types'
 import CliModule from 'bpmn-js-cli';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
-// eslint-disable-next-line camelcase
-import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa.json';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
-import { parseBpmnToSsot } from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
 
 const { Content } = Layout;
 
@@ -37,8 +34,7 @@ const BpmnModeler = (props) => {
         CliModule
       ],
       moddleExtensions: {
-        camunda: camundaModdleDescriptor,
-        arkRPA: arkRPA_ModdleDescriptor,
+        camunda: camundaModdleDescriptor
       },
       cli: {
         bindTo: 'cli'
@@ -57,28 +53,6 @@ const BpmnModeler = (props) => {
     };
     openBpmnDiagram(emptyBpmn);
   }, []);
-
-  /**
-   * @description this useEffect() triggers end executes rerendering of the local ssot on every selection change in the Modeler
-   */
-  useEffect(() => {
-    newModeler.on('selection.changed', () => {
-      newModeler
-        .saveXML({ format: true })
-        .then((xml) => {
-          parseBpmnToSsot(xml, props.robotId)
-            .then((result) => {
-              const ssot = JSON.stringify(result)
-              sessionStorage.setItem('ssotLocal', ssot);
-            })
-        })
-        .catch((err) =>
-          console.error(err)
-        );
-    });
-
-    newModeler.on('element.changed', () => { });
-  }, [newModeler]);
 
   return (
     <Content className={styles.bpmncontainer}>

@@ -29,12 +29,13 @@ const setRobotId = (robotId) => {
 };
 
 /**
- * @description stores the RPA Application for the currently selected activity in the session storage
+ * @description Retireves or creates a new attribute object for the given activity and will set the task to undefined.
+ * Use this function to reset the associated task for that activity.
  * @param {string} robotId id of the currently opened robot
  * @param {string} activityId id of the currently selected activity
  * @param {string} newApplication name of the selected application from dropdown
  */
-const setRpaApplication = async (robotId, activityId, newApplication) => {
+const resetRpaApplication = (robotId, activityId, newApplication) => {
     const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
 
     let matchingActivity = localStorage.find((element) => (element.activityId === activityId));
@@ -46,10 +47,11 @@ const setRpaApplication = async (robotId, activityId, newApplication) => {
         matchingActivity = {
             activityId,
             ssotId: robotId,
-            rpaApplication: newApplication,
+            rpaApplication: newApplication
         };
     }
 
+    matchingActivity.rpaTask = undefined;
     arrayWithoutMatchingElement.push(matchingActivity);
     sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, JSON.stringify(arrayWithoutMatchingElement));
 };
@@ -58,16 +60,27 @@ const setRpaApplication = async (robotId, activityId, newApplication) => {
  * @description stores the RPA Task for the currently selected activity in the session storage
  * @param {string} robotId id of the currently opened robot
  * @param {string} activityId id of the currently selected activity
+ * @param {string} application name of the selected application
  * @param {string} newTask name of the selected task from dropdown
  */
-const setRpaTask = (robotId, activityId, newTask) => {
+const setRpaTask = (robotId, activityId, application, newTask) => {
     const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
 
-    const matchingActivity = localStorage.find((element) => (element.activityId === activityId));
-    const arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId === robotId && element.activityId !== activityId);
+    let matchingActivity = localStorage.find((element) => (element.activityId === activityId));
+    const arrayWithoutMatchingElement = localStorage.filter((element) => (
+        element.ssotId === robotId && 
+        element.activityId !== activityId
+    ));
 
     if (matchingActivity) {
         matchingActivity.rpaTask = newTask;
+    } else {
+        matchingActivity = {
+            activityId,
+            ssotId: robotId,
+            rpaApplication: application,
+            rpaTask: newTask
+        }
     }
 
     arrayWithoutMatchingElement.push(matchingActivity);
@@ -105,101 +118,100 @@ const getRpaTask = (activityId) => {
     return selectedTask;
 };
 
-/**
+/** 
  * @description Will retrieve the value of the input variables name from either session storage, 
- * an existing object in the database or create a new one and will save it in local session storage
+ * or create a new one and will save it in local session storage. 
+ * If an existing prameter object has been found there will be a check happening, if the signature matches 
+ * the one specified for that activities task and application. If not, then something must have been out of sync
+ * and a new object will be created and saved to sessionStorage. 
  * @param {String} robotId Id of the robot/ssot for which to retrieve the value
  * @param {String} activityId Id of the activity for which to retrieve the value for
- * @returns {Array} Array of the different parameter objects the activity has
+ * @returns {Object} The parameter object the activity has
  */
-const getParameters = async (robotId, activityId) => {
-    const localStorage = JSON.parse(sessionStorage.getItem(PARAMETER_STORAGE_PATH));
-    const matchingParameterObject = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
+const getParameterObject = (robotId, activityId) => {
+    let localParameterStorage = JSON.parse(sessionStorage.getItem('parameterLocalStorage'));
+    let matchingParameterObject = localParameterStorage.find((element) => (element.activityId === activityId));
 
-    if (matchingParameterObject.rpaParameters) {
-        return matchingParameterObject.rpaParameters;
+    if (matchingParameterObject) {
+      const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
+      const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === activityId));
+      const application = matchingAttributeObject.rpaApplication;
+      const task = matchingAttributeObject.rpaTask;
+      
+      const localComboStorage = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
+      const matchingComboObject = localComboStorage.find((element) => (
+        element.Application === application &&
+        element.Task === task
+      ));
+
+      if (matchingComboObject) {
+        // In the future there could be a need for a more advanced signature check, but fur the current use cases this should be sufficient
+        const comboParameterLength = matchingComboObject.inputVars.length;
+        const parameterObjectLength = matchingParameterObject.rpaParameters.length;
+        const comboFirstParamInfoText = matchingComboObject.inputVars.find((element) => (element.index === 0)).infoText;
+        const firstParamInfoText = matchingParameterObject.rpaParameters.find((element) => (element.index === 0)).infoText;
+        
+        if (comboParameterLength === parameterObjectLength && comboFirstParamInfoText === firstParamInfoText) {
+          return matchingParameterObject;
+        }
+      }
     }
+    
+    localParameterStorage = localParameterStorage.filter((element) => element.activityId !== activityId);
+    const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
 
-    const requestString = `/ssot/getVariables?botId=${robotId}&activityId=${activityId}`;
-    const response = await fetch(requestString);
-    if (response && response.rpaParameters) {
-        let addedStorage = localStorage;
-        addedStorage.push(response);
-        addedStorage = JSON.stringify(addedStorage);
-        sessionStorage.setItem(PARAMETER_STORAGE_PATH, addedStorage);
-        return response.rpaParameters;
-    }
+    const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === activityId));
+    const application = matchingAttributeObject.rpaApplication;
+    const task = matchingAttributeObject.rpaTask;
+    
+    if (application && task) {
+      const localComboStorage = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
+      const matchingComboObject = localComboStorage.find((element) => (
+        element.Application === application &&
+        element.Task === task
+      ));
 
-    const attributes = await getAttributes(robotId, activityId);
-    const variableReqString = `/ssot/getVariablesForTaskApplication?task=${attributes.task}&application=${attributes.rpaApplication}`;
-    const variableResponse = await fetch(variableReqString);
-    if (variableResponse) {
-        const responseObject = {
-            rpaParameters: [],
-            ssotId: robotId,
-            activityId
-        };
-        responseObject.rpaParameters = [];
-        variableResponse.inputVars.forEach((element) => {
-            const elementCopy = element;
-            elementCopy.value = '';
-            responseObject.rpaParameters.push(elementCopy);
-        });
-        if (variableResponse.outputValue) responseObject.outputVariable = `${activityId}_output`;
+      const rpaParameters = [];
+      matchingComboObject.inputVars.forEach( (element) => {
+        const elementCopy = element;
+        elementCopy.value = '';
+        rpaParameters.push(elementCopy);
+      });
+      matchingParameterObject = {
+        activityId,
+        outputVariable: matchingComboObject.outputValue ? `${activityId}_output` : undefined,
+        rpaParameters,
+        ssotId: robotId,
+      }
 
-        let addedStorage = localStorage;
-        addedStorage.push(responseObject);
-        addedStorage = JSON.stringify(addedStorage);
-        sessionStorage.setItem(PARAMETER_STORAGE_PATH, addedStorage);
-        return responseObject.rpaParameters;
+      localParameterStorage.push(matchingParameterObject);
+      sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParameterStorage));
+      return matchingParameterObject;
     }
 };
 
 /**
- * @description Will set the parameters in local session storage
- * @param {String} robotId Id of the robot/ssot for which to change the value
+ * @description Will set the single parameter in local session storage
  * @param {String} activityId Id of the activity for which to change the value for
- * @param {String} newParameterObject The new parameter object
+ * @param {Object} value The value object returned by the dropdown selection
  */
-const setParameter = (robotId, activityId, newParameterObject) => {
-    const localStorage = JSON.parse(sessionStorage.getItem(PARAMETER_STORAGE_PATH));
+const setSingleParameter = (activityId, value) => {
+    const localParameterStorage = JSON.parse(sessionStorage.getItem('parameterLocalStorage'));
+    const matchingParameterObject = localParameterStorage.find((element) => (element.activityId === activityId));
+    const localParametersWithoutMatch = localParameterStorage.filter((element) => element.activityId !== activityId);
+    
+    const matchingSingleParameter = matchingParameterObject.rpaParameters.find((element) => (element.name === value.target.placeholder));
+    const singleParametersWithoutMatch = matchingParameterObject.rpaParameters.filter((element) => element.name !== value.target.placeholder);
 
-    const parameterArray = [{
-        name: 'soll Fenster offen bleiben?',
-        value: 'true',
-        requireUserInput: true,
-        type: 'String',
-        isRequired: true,
-        infoText: 'dies ist ein Infotext',
-        index: '1'
-    }];
+    const editedPrameter = matchingSingleParameter;
+    editedPrameter.value = value.target.value;
+    singleParametersWithoutMatch.push(editedPrameter);
 
-    const parameterObject = {
-        robotId,
-        activityId,
-        outputVariable: '$$Output$$',
-        rpaParameters: [parameterArray],
-    };
+    const editedParameterObject = matchingParameterObject;
+    editedParameterObject.rpaParameters = singleParametersWithoutMatch;
+    localParametersWithoutMatch.push(editedParameterObject);
 
-    console.log(parameterObject)
-
-    const matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
-    let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
-
-    if (matchingElement) {
-        const parametersWithoutMatch = matchingElement.rpaParameters.filter((element) => (
-            element.name !== newParameterObject.name &&
-            element.type !== newParameterObject.type &&
-            element.index !== newParameterObject.index
-        ));
-        parametersWithoutMatch.push(newParameterObject);
-    } else {
-        alert('There has been an error setting the parameter!');
-    }
-    matchingElement.rpaParameters = parametersWithoutMatch;
-    arrayWithoutMatchingElement.push(matchingElement);
-    arrayWithoutMatchingElement = JSON.stringify(arrayWithoutMatchingElement);
-    // sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
+    sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParametersWithoutMatch));
 };
 
 /**
@@ -230,20 +242,16 @@ const getParameterFromDB = async () => {
  * @param {String} activityId Id of the activity for which to change the value for
  * @param {String} newValueName The new value for the name of the output variable
  */
-const setOutputValue = (robotId, activityId, newValueName) => {
-    const localStorage = JSON.parse(sessionStorage.getItem(PARAMETER_STORAGE_PATH));
-    const matchingElement = localStorage.find((element) => (element.ssotId === robotId && element.activityId === activityId));
-    let arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId !== robotId && element.activityId !== activityId);
+const setOutputValueName = (activityId, value) => {
+    const localParameterStorage = JSON.parse(sessionStorage.getItem('parameterLocalStorage'));
+    const matchingParameterObject = localParameterStorage.find((element) => (element.activityId === activityId));
+    const localParametersWithoutMatch = localParameterStorage.filter((element) => element.activityId !== activityId);
 
-    if (matchingElement) {
-        matchingElement.outputVariable = newValueName;
-    } else {
-        alert('There has been an error setting the output variable name!');
-    }
+    const editedParameterObject = matchingParameterObject;
+    editedParameterObject.outputVariable = value;
+    localParametersWithoutMatch.push(editedParameterObject);
 
-    arrayWithoutMatchingElement.push(matchingElement);
-    arrayWithoutMatchingElement = JSON.stringify(arrayWithoutMatchingElement);
-    // sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, arrayWithoutMatchingElement);
+    sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParametersWithoutMatch));
 };
 
 /**
@@ -254,6 +262,7 @@ const upsert = async () => {
     const ssot = sessionStorage.getItem('ssotLocal');
     const robotId = JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
     const requestStringSsot = `/ssot/overwriteRobot/${robotId}`;
+    // eslint-disable-next-line no-unused-vars
     const responseSsot = await fetch(requestStringSsot, {
         body: ssot,
         method: 'POST',
@@ -261,10 +270,10 @@ const upsert = async () => {
             'Content-Type': 'application/json;charset=utf-8'
         }
     });
-    console.log(`ssot answer: ${responseSsot}`);
 
     const attributes = sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH);
     const requestStringAttributes = `/ssot/updateManyAttributes`;
+    // eslint-disable-next-line no-unused-vars
     const responseAttributes = await fetch(requestStringAttributes, {
         body: attributes,
         method: 'POST',
@@ -272,18 +281,17 @@ const upsert = async () => {
             'Content-Type': 'application/json;charset=utf-8'
         }
     });
-    console.log(`attribute answer: ${responseAttributes}`);
 
     const parameterObject = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
     const requestStringParameters = `/ssot/updateManyParameters`;
+    // eslint-disable-next-line no-unused-vars
     const responseParameters = await fetch(requestStringParameters, {
         body: parameterObject,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         }
-    });
-    console.log(`parameter answer: ${responseParameters}`);
+    }); 
 };
 
 /**
@@ -302,12 +310,12 @@ module.exports = {
     getRpaTask,
     setRobotId,
     setRpaTask,
-    setRpaApplication,
-    getParameters,
-    setParameter,
+    resetRpaApplication,
+    getParameterObject,
+    setSingleParameter,
     getAttributesFromDB,
     getParameterFromDB,
-    setOutputValue,
+    setOutputValueName,
     getRpaApplication,
     upsert,
     getParameterForRobotFromDB

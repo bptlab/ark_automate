@@ -150,9 +150,7 @@ const getStartEventId = (bpmnJson) => {
   const startEventIds = [];
 
   startEvents = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
-  if (typeof startEvents === 'undefined') {
-    startEvents = [];
-  }
+  if (typeof startEvents === 'undefined') startEvents = [];
 
   startEvents.forEach(singleStartEvent => {
     startEventIds.push(singleStartEvent.$.id);
@@ -171,51 +169,35 @@ const getStartEventId = (bpmnJson) => {
  * @returns {string} XML that has to be put in single source of truth file
  */
 const parseBpmnToSsot = async (bpmnXml, robotId) => {
-  let bpmnJson;
-  let startEventId;
-  let ssot;
+  const robotName = sessionStorage.getItem('robotName');
+  const bpmnJson = await parseString(bpmnXml.xml);
+  const startEventId = getStartEventId(bpmnJson);
 
-  const robotName = sessionStorage.getItem('robotName')
+  // Build basic ssot-frame
+  const ssot = {
+    _id: robotId,
+    starterId: startEventId[0],
+    robotName,
+  }; 
 
-  return parseString(bpmnXml.xml)
-    .then((result) => {
-      bpmnJson = result;
-      startEventId = getStartEventId(bpmnJson);
+  let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
+  if (typeof flows === 'undefined') flows = [];
 
-      // Build basic ssot-frame
-      ssot = {
-        _id: robotId,
-        starterId: startEventId[0],
-        robotName,
-      };
-    })
-    // This part of the code calls the real parsing steps 
-    // => maybe we should rename & refactor it (incl. parseString())
-    .then(() => {
-      let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
-      if (typeof flows === 'undefined') {
-        flows = [];
-      }
+  let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
+  if (typeof bpmnActivities === 'undefined') bpmnActivities = [];
 
-      let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
-      if (typeof bpmnActivities === 'undefined') {
-        bpmnActivities = [];
-      }
+  const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
+  const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
+  const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
+    .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'])
+    .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'])
 
-      const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
-      const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
-      const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
-        .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'])
-        .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'])
+  let elementsArray = findElements(flows, bpmnShapes);
+  elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
+  elementsArray = enrichMarkerElements(elementsArray, bpmnStartEvent, bpmnEndEvent);
 
-      let elementsArray = findElements(flows, bpmnShapes);
-      elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
-      elementsArray = enrichMarkerElements(elementsArray, bpmnStartEvent, bpmnEndEvent);
-
-      ssot.elements = elementsArray;
-      return ssot;
-    })
-    .then(() => ssot)
+  ssot.elements = elementsArray;
+  return ssot;
 }
 
 module.exports = { parseBpmnToSsot };

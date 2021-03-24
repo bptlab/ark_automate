@@ -39,24 +39,28 @@ const Modeler = (match) => {
       .catch((error) => {
         console.error(error);
       });
+
     getAttributesFromDB(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('attributeLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
       })
+
     getParameterFromDB(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
         sessionStorage.setItem('TaskApplicationCombinations', JSON.stringify(data));
       })
+
     getParameterForRobotFromDB(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
       })
+      
     initSessionStorage('taskToApplicationCache', JSON.stringify({}));
     initSessionStorage('availableApplications', JSON.stringify([]));
     let applicationList = sessionStorage.getItem('availableApplications');

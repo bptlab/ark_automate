@@ -5,11 +5,11 @@ import PropTypes from 'prop-types'
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
 import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
-import { updateVariablesForRobot } from '../../../api/variableRetrieval'
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
-import { setParameter, setRpaApplication, setRpaTask, upsert } from '../../../utils/attributeAndParamUtils';
+import { setSingleParameter, resetRpaApplication, setRpaTask, upsert, getParameterObject, setOutputValueName } from '../../../utils/attributeAndParamUtils';
 import parseSsotToBpmn from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
+import { parseBpmnToSsot } from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -30,7 +30,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     selectedElements: [],
     currentElement: null,
   });
-  // is needed for passing params to sidebar issue
   // eslint-disable-next-line no-unused-vars
   const [selectedApplication, setSelectedApplication] = useState('');
   const [
@@ -49,78 +48,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   }, []);
 
   /**
-   * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
-   */
-  useEffect(() => {
-    modeler.on('selection.changed', (event) => {
-      setElementState({
-        selectedElements: event.newSelection,
-        currentElement: event.newSelection[0],
-      });
-
-      // INFO: the updated elementState isn't automatically used in useEffect() therefore we need the following workaround
-      elementState.selectedElements = event.newSelection;
-      const currentElement = event.newSelection[0];
-      elementState.currentElement = currentElement;
-      if (
-        event.newSelection[0] &&
-        !event.newSelection[0].businessObject.$attrs['arkRPA:application']
-      ) {
-        setDisableTaskSelection(true);
-      } else if (
-        event.newSelection[0] &&
-        event.newSelection[0].businessObject.$attrs['arkRPA:application']
-      ) {
-        setDisableTaskSelection(false);
-      }
-
-      if (event.newSelection[0] && event.newSelection[0].type === 'bpmn:Task') {
-        /* TODO: Fixing Issue "pass parameters to sidebar"
-        const data = updateParamSection(event.newSelection[0].id)
-        setvariableList(data ? data.rpaParameters : []);
-        setOutputVariableName(data ? data.outputVariable : null); */
-      }
-    });
-
-    modeler.on('element.changed', (event) => {
-      if (!elementState.currentElement) {
-        return;
-      }
-      if (event.element.id === elementState.currentElement.id) {
-        setElementState({
-          selectedElements: elementState.selectedElements,
-          currentElement: event.element,
-        });
-      }
-    });
-
-
-  }, [modeler]);
-
-  /**
-   * @description Update name in modeler of currently selected element
-   * @param {String} name new name for currently selected element
-   */
-  const updateName = (name) => {
-    const modeling = modeler.get('modeling');
-    modeling.updateLabel(elementState.currentElement, name);
-  };
-
-  /**
-   * @description Gets called when a new application was selected in the dropwdown in the sidebar. 
-   * Resets the task to default value
-   */
-  const resetTask = () => {
-    setRpaTask(robotId, elementState.currentElement.id, undefined)
-    elementState.currentElement.businessObject.$attrs['arkRPA:task'] =
-      'Please select task';
-    setElementState({
-      selectedElements: elementState.selectedElements,
-      currentElement: elementState.currentElement,
-    });
-  };
-
-  /**
    * @description Checks if tasks for selected application are already stored in session storage.
    * Otherwise, fetch tasklist from MongoDB.
    * @param {String} application Application for which to get the tasks for.
@@ -132,7 +59,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
 
     if (application in currentSavedTasksObject) {
       setTasksForSelectedApplication(currentSavedTasksObject[application]);
-      // TODO FIX DROPDOWN BUG HERE
       setDisableTaskSelection(false);
     } else {
       fetchTasksFromDB(application)
@@ -153,6 +79,81 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   };
 
   /**
+   * @description Will check for the given activity, if it has been configured with an application and/or task.
+   * This can be used to trigger the disablement of the task dropdown.
+   * @returns {Boolean} Boolean if there is an object found and an application has been previously configured
+   */
+  const checkForApplicationTask = (activityId) => {
+    const currentAttributes = JSON.parse(
+      sessionStorage.getItem('attributeLocalStorage')
+    );
+    const matchingActivity = currentAttributes.find((element) => (element.activityId === activityId));
+
+    if (matchingActivity) {
+      setSelectedApplication(matchingActivity.rpaApplication);
+      getTasksForApplication(matchingActivity.rpaApplication);
+    }
+    return (!!matchingActivity && !!matchingActivity.rpaApplication);
+  };
+
+  /**
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar. 
+   * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
+   * @param {Object} value new value of the ApplicationDropdown
+   */
+  const updateParamSection = (activityId) => {    
+    setOutputVariableName(undefined);
+    const paramObj = getParameterObject(robotId, activityId);
+    if (paramObj) {
+      const paramsInOrder = paramObj.rpaParameters.sort( (a, b) => a.index - b.index);
+      setvariableList(paramsInOrder);
+      if (paramObj.outputVariable) setOutputVariableName(paramObj.outputVariable)
+    }
+  };
+
+  /**
+   * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
+   */
+  useEffect(() => {
+    modeler.on('selection.changed', (event) => {
+      setElementState({
+        selectedElements: event.newSelection,
+        currentElement: event.newSelection[0],
+      });
+      setOutputVariableName(undefined);
+      setvariableList([]);
+
+      // INFO: the updated elementState isn't automatically used in useEffect() therefore we need the following workaround
+      elementState.selectedElements = event.newSelection;
+      const currentElement = event.newSelection[0];
+      elementState.currentElement = currentElement;
+      
+
+      if (event.newSelection[0] && event.newSelection[0].type === 'bpmn:Task') {
+        setDisableTaskSelection(!checkForApplicationTask(event.newSelection[0].id));
+        
+        const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
+        const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === event.newSelection[0].id));
+        if (matchingAttributeObject) updateParamSection(event.newSelection[0].id);
+      }
+    });
+
+    modeler.on('element.changed', (event) => {
+      if (!elementState.currentElement) {
+        return;
+      }
+      if (event.element.id === elementState.currentElement.id) {
+        setElementState({
+          selectedElements: elementState.selectedElements,
+          currentElement: event.element,
+        });
+      }
+    });
+
+
+  }, [modeler]);
+
+  /**
    * @description Gets called when the name of the selected element got updated in the sidebar. Updates the state of the component.
    * @param {Object} event changed value in input field
    */
@@ -162,7 +163,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       selectedElements: elementState.selectedElements,
       currentElement: elementState.currentElement,
     });
-    updateName(elementState.currentElement.businessObject.name);
+    const modeling = modeler.get('modeling');
+    modeling.updateLabel(elementState.currentElement, event.target.value);
   };
 
   /**
@@ -170,29 +172,19 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
    * @param {Object} value new value of the ApplicationDropdown
    */
-  const applicationChangedHandler = (value) => {
-    elementState.currentElement.businessObject.$attrs[
-      'arkRPA:application'
-    ] = value;
+  const applicationChangedHandler = (value) => {    
     setElementState({
       selectedElements: elementState.selectedElements,
       currentElement: elementState.currentElement,
     });
-    if (value) {
-      setRpaApplication(robotId, elementState.currentElement.id, value)
-    }
+
     setSelectedApplication(value);
-    resetTask()
+    resetRpaApplication(robotId, elementState.currentElement.id, value);
     getTasksForApplication(value);
+
+    setOutputVariableName(undefined);
+    setvariableList([]);
   };
-
-  /**
-   * @description Will update the parameters and output variable in the state for the given activity
-   * @param {String} activityId Id of the activity to process
- */
-  const updateParamSection = (activityId) => activityId
-  /* this method stub is related to issue #8 */
-
 
   /**
    * @description Gets called when a new task was selected in the dropwdown in the sidebar. Updates the state of the component
@@ -200,11 +192,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * @param {Object} value new value of the TaskDropdown
    */
   const taskChangedHandler = (value) => {
-    setRpaTask(robotId, elementState.currentElement.id, value);
-    /* TODO: Fixing Issue "pass parameters to sidebar"
-    const modeling = modeler.get('modeling');
-    */
-    updateParamSection()
+    setRpaTask(robotId, elementState.currentElement.id, selectedApplication, value);
+    if (value) updateParamSection(elementState.currentElement.id)
   };
 
   /**
@@ -213,24 +202,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * @param {Object} value new value of input field
    */
   const handleInputParameterChange = (value) => {
-    setParameter(robotId, elementState.currentElement.id, undefined)
-    const variableName = value.target.placeholder;
-    const variableValue = value.target.value;
-    const editedVariableList = [];
-    variableList.forEach((singleVariable) => {
-      const variableToAdd = singleVariable;
-      if (variableToAdd.name === variableName) {
-        variableToAdd.value = variableValue;
-      }
-      editedVariableList.push(variableToAdd);
-    })
-
-    updateVariablesForRobot(
-      robotId,
-      elementState.currentElement.businessObject.id,
-      editedVariableList,
-      outputVariableName
-    );
+    setSingleParameter(elementState.currentElement.id, value);
   };
 
   /**
@@ -239,24 +211,40 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * @param {Object} newValue new value of the output variables name
    */
   const handleOutputVarNameChange = (newValue) => {
-    setOutputVariableName(newValue);
-    updateVariablesForRobot(
-      robotId,
-      elementState.currentElement.businessObject.id,
-      variableList,
-      newValue
-    );
+    setOutputValueName(elementState.currentElement.id, newValue);
   };
 
   /**
-   * @description Will parse a given xml file into a .robot file and download it
+   * @description Gets called when the the button is pressed to save to the cloud.
+   * This function will retrieve the xml from the parser, parse that xml to a ssot and write the 
+   * resulting ssot into the sessionStorage.
+   */
+  const onSaveToCloud = async () => {
+    modeler.saveXML({ format: true })
+      .then((xml) => {
+        parseBpmnToSsot(xml, robotId)
+          .then((result) => {
+            const ssot = JSON.stringify(result);
+            sessionStorage.setItem('ssotLocal', ssot);
+            
+            upsert();
+          })
+      })
+      .catch((err) =>
+         console.error(err)
+      );
+  };
+
+  /**
+   * @description Will parse the ssot which can be found in the database correlating to the specified id
    * @param {string} xml String that sets the xml to be parsed
    */
   const downloadRobotFile = () => {
     getParsedRobotFile(robotId)
       .then((response) => response.text())
       .then((robotCode) => {
-        downloadString(robotCode, 'text/robot', 'testRobot.robot');
+        const fileName = `${sessionStorage.getItem('robotName')}.robot`;
+        downloadString(robotCode, 'text/robot', fileName);
       });
   };
 
@@ -268,18 +256,16 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         </Title>
         {elementState.selectedElements.length === 1 && (
           <PropertiesPanel
-            nameChanged={nameChangedHandler.bind(this)}
-            applicationSelectionUpdated={applicationChangedHandler.bind(
-              this
-            )}
-            taskSelectionUpdated={taskChangedHandler.bind(this)}
+            nameChanged={nameChangedHandler}
+            applicationSelectionUpdated={applicationChangedHandler}
+            taskSelectionUpdated={taskChangedHandler}
             selectedActivity={elementState.currentElement.id}
             tasksForSelectedApplication={tasksForSelectedApplication}
             disableTaskSelection={disableTaskSelection}
             element={elementState.currentElement}
             robotId={robotId}
             variableList={variableList}
-            parameterSelectionUpdated={handleInputParameterChange.bind(this)}
+            parameterSelectionUpdated={handleInputParameterChange}
             outputVariableName={outputVariableName}
             outputNameUpdated={handleOutputVarNameChange}
           />
@@ -299,7 +285,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         <Button type='primary' className={styles.button} onClick={downloadRobotFile}>
           Get Robot file
         </Button>
-        <Button type='primary' className={styles.button} onClick={upsert()}>
+        <Button type='primary' className={styles.button} onClick={onSaveToCloud}>
           Save changes to cloud
         </Button>
       </Space>

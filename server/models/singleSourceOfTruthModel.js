@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const singleParameterSchema = new Schema({
   name: String,
-  value: Schema.Types.Mixed,
+  value: String,
   requireUserInput: Boolean,
   type: String,
   isRequired: Boolean,
