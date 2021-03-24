@@ -14,9 +14,15 @@ router.get('/parser/getForId/:botId', parsingController.getRobotCodeForId);
 
 /// SSOT ROUTES ///
 router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
-router.get('/getAvailableRobotsForUser/:userid', retrievalController.getRobotList);
+router.get(
+  '/getAvailableRobotsForUser/:userId',
+  retrievalController.getRobotList
+);
 router.get('/renameRobot', retrievalController.renameRobot);
-router.get('/retrieveMetadataForRobot/:botId', retrievalController.retrieveRobotMetadata);
+router.get(
+  '/retrieveMetadataForRobot/:botId',
+  retrievalController.retrieveRobotMetadata
+);
 router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser);
 router.get('/createNewRobot', retrievalController.createNewRobot);
 router.post('/overwriteRobot/:robotId', retrievalController.overwriteRobot);
