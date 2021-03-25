@@ -5,7 +5,7 @@ const httpMocks = require('node-mocks-http');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const ssotRetrievalController = require('../controllers/ssotRetrievalController');
 const ssotParsingController = require('../controllers/ssotParsingController');
-const testData = require('./testData');
+const testData = require('../utils/TestingUtils/testData');
 
 const SsotModel = mongoose.model('SSoT');
 const UserAccessObjectModel = mongoose.model('userAccessObject');

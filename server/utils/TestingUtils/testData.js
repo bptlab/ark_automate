@@ -1,4 +1,6 @@
 const userId = '604a3ba6561e2d1fad4eda60';
+const user2Id = '604a3ba6561e2d1fad4eda00';
+
 const ssotId = '604a3ba6561e2d1fad4eda10';
 
 const testSsot = {
@@ -19,6 +21,12 @@ const testUserAccessObject = {
   AccessLevel: '0',
   robotId: '604a3ba6561e2d1fad4eda10',
   userId,
+};
+
+const testUserAccessObject2 = {
+  AccessLevel: '0',
+  robotId: '604a3ba6561e2d1fad4eda11',
+  userId: user2Id,
 };
 
 const testRpaTask1 = {
@@ -44,12 +52,24 @@ const testRpaTask3 = {
   outputVars: {},
 };
 
+const testJob = {
+  _id: '605c68a86d596e0d6bed0077',
+  __v: 0,
+  user_id: userId,
+  robot_id: '604a3ba6561e2d1fad4eda10',
+  status: 'waiting',
+  parameters: [],
+};
+
 module.exports = {
   testSsot,
   testUserAccessObject,
+  testUserAccessObject2,
   userId,
+  user2Id,
   ssotId,
   testRpaTask1,
   testRpaTask2,
   testRpaTask3,
+  testJob,
 };

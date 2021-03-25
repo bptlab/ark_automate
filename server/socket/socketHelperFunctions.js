@@ -14,10 +14,6 @@ mongoose.set('useFindAndModify', false);
  */
 exports.getRobotCode = async (robotId) => {
   try {
-    mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
     const ssot = await mongoose.model('SSoT').findById(robotId).exec();
     const robotCode = ssotToRobotParser.parseSsotToRobotCode(ssot);
     return robotCode;
@@ -32,10 +28,6 @@ exports.getRobotCode = async (robotId) => {
  */
 exports.getAllUserIds = async () => {
   try {
-    mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
     const userObjs = await mongoose.model('userAccessObject').find();
     let userIds = [];
     if (userObjs.length > 0) {
@@ -77,8 +69,8 @@ exports.createJob = async (userId, robotId, status, parameters) => {
  * @param {String} jobId the id of the job that we want to update
  * @param {String} status the current status of the job (either waiting, executing, success or failed)
  */
-exports.updateRobotJobStatus = (jobId, status) => {
-  jobsModel.Job.findByIdAndUpdate(jobId, { status }, (err) => {
+exports.updateRobotJobStatus = async (jobId, status) => {
+  await jobsModel.Job.findByIdAndUpdate(jobId, { status }, (err) => {
     if (err) {
       console.error(err);
     }

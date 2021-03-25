@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const rpaController = require('../controllers/rpaFrameworkCommandsController');
-const testData = require('./testData');
+const testData = require('../utils/TestingUtils/testData');
 
 const loadTasksInDb = async () => {
   const RpaTask = mongoose.model('rpa-task');
