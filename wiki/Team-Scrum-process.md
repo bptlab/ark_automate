@@ -43,3 +43,11 @@ All the relevant scrum artifacts are stored here in this GitHub project.
 ### Agreements
 
 We agreed on having a **Pull Request freeze on 14:00** the day before the sprint review. This means, that no further Pull Requests may be created until then, if the changes are supposed to be merged for the current sprint goal. The same day **at 18:00 we agreed on a merge freeze**, which means no further pull requests from feature branches are to be merged into dev for the release presented at the sprint review the next day. User stories that are merged after 18:00 will be presented at the next sprint review.
+
+### Action Points for this Sprint
+
+During our last retrospective we agreed on tackling the following action points:
+* Pull Requests that introduce more than 500 lines of changes need a more detailed description so that reviewers can understand the components, not only check for syntax.
+* Work on spike issues is supposed to be stopped as soon as the estimated time has passed
+* We want to figure out ways to find a balance between time spent on our bachelors project and the bachelors thesis. Other bachelor project teams are allowed to reserve time in their sprint for their Bachelors thesis. Further interrogation is needed to check if we are allowed to do this as well.
+* We need to define our programming style for issues, wether it's closer to extreme programming or more future proof implementations
