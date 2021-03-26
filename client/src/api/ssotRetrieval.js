@@ -39,7 +39,7 @@ const changeSsotName = async (ssotId, newName) => {
  * @description Fetches all the Metadata for a single Robot
  * @param {String} robotId - String including the robotId
  */
-const retrieveMetadataForBot = async (robotId) => {
+const retrieveMetadataForRobot = async (robotId) => {
   const requestString = `/ssot/retrieveMetadataForRobot/${robotId}`;
   const response = await fetch(requestString);
   return response;
@@ -60,6 +60,6 @@ export {
   getSsotFromDB,
   fetchSsotsForUser,
   changeSsotName,
-  retrieveMetadataForBot,
+  retrieveMetadataForRobot,
   createNewRobot,
 };

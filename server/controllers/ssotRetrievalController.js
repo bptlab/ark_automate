@@ -174,18 +174,18 @@ exports.overwriteRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
     const updatedSsot = req.body;
-    
+
     const ssotData = await mongoose
       .model('SSoT')
       .findByIdAndUpdate(
-        updatedSsot['_id'], 
+        updatedSsot.id,
         updatedSsot,
         {
-            new: true,
-            useFindAndModify: false,
-            upsert: true
+          new: true,
+          useFindAndModify: false,
+          upsert: true
         }
-        )
+      )
       .exec();
 
     res.send(ssotData);

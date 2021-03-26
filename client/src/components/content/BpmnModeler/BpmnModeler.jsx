@@ -63,7 +63,6 @@ const BpmnModeler = (props) => {
 
 BpmnModeler.propTypes = {
   onModelerUpdate: PropTypes.func.isRequired,
-  robotId: PropTypes.string.isRequired,
 };
 
 export default BpmnModeler;

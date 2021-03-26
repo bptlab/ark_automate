@@ -21,8 +21,6 @@ const { Sider } = Layout;
  * @component
  */
 const ModelerSidebar = ({ modeler, robotId }) => {
-  // is needed for passing params to sidebar issue
-  // eslint-disable-next-line no-unused-vars
   const [variableList, setvariableList] = useState([]);
   const [outputVariableName, setOutputVariableName] = useState();
 
@@ -30,7 +28,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     selectedElements: [],
     currentElement: null,
   });
-  // eslint-disable-next-line no-unused-vars
   const [selectedApplication, setSelectedApplication] = useState('');
   const [
     tasksForSelectedApplication,
@@ -101,11 +98,11 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
    * @param {Object} value new value of the ApplicationDropdown
    */
-  const updateParamSection = (activityId) => {    
+  const updateParamSection = (activityId) => {
     setOutputVariableName(undefined);
     const paramObj = getParameterObject(robotId, activityId);
     if (paramObj) {
-      const paramsInOrder = paramObj.rpaParameters.sort( (a, b) => a.index - b.index);
+      const paramsInOrder = paramObj.rpaParameters.sort((a, b) => a.index - b.index);
       setvariableList(paramsInOrder);
       if (paramObj.outputVariable) setOutputVariableName(paramObj.outputVariable)
     }
@@ -127,11 +124,11 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       elementState.selectedElements = event.newSelection;
       const currentElement = event.newSelection[0];
       elementState.currentElement = currentElement;
-      
+
 
       if (event.newSelection[0] && event.newSelection[0].type === 'bpmn:Task') {
         setDisableTaskSelection(!checkForApplicationTask(event.newSelection[0].id));
-        
+
         const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
         const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === event.newSelection[0].id));
         if (matchingAttributeObject) updateParamSection(event.newSelection[0].id);
@@ -172,7 +169,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
    * @param {Object} value new value of the ApplicationDropdown
    */
-  const applicationChangedHandler = (value) => {    
+  const applicationChangedHandler = (value) => {
     setElementState({
       selectedElements: elementState.selectedElements,
       currentElement: elementState.currentElement,
@@ -226,12 +223,12 @@ const ModelerSidebar = ({ modeler, robotId }) => {
           .then((result) => {
             const ssot = JSON.stringify(result);
             sessionStorage.setItem('ssotLocal', ssot);
-            
+
             upsert();
           })
       })
       .catch((err) =>
-         console.error(err)
+        console.error(err)
       );
   };
 

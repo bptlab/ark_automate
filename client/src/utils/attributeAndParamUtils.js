@@ -15,10 +15,7 @@ const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
  * @description this function returns the robotId of the currently opened robot from the session storage
  * @returns currently saved robotId from session storage
  */
-const getRobotId = () => {
-    const localStorage = JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
-    return localStorage;
-};
+const getRobotId = () => JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
 
 /**
  * @description this function writes the robotId of the currently opened robot to the session storage
@@ -36,9 +33,9 @@ const setRobotId = (robotId) => {
  * @param {string} newApplication name of the selected application from dropdown
  */
 const resetRpaApplication = (robotId, activityId, newApplication) => {
-    const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
+    const localApplicationTaskStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
 
-    let matchingActivity = localStorage.find((element) => (element.activityId === activityId));
+    let matchingActivity = localApplicationTaskStorage.find((element) => (element.activityId === activityId));
     const arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId === robotId && element.activityId !== activityId);
 
     if (matchingActivity) {
@@ -64,11 +61,11 @@ const resetRpaApplication = (robotId, activityId, newApplication) => {
  * @param {string} newTask name of the selected task from dropdown
  */
 const setRpaTask = (robotId, activityId, application, newTask) => {
-    const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
+    const localApplicationTaskStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
 
-    let matchingActivity = localStorage.find((element) => (element.activityId === activityId));
+    let matchingActivity = localApplicationTaskStorage.find((element) => (element.activityId === activityId));
     const arrayWithoutMatchingElement = localStorage.filter((element) => (
-        element.ssotId === robotId && 
+        element.ssotId === robotId &&
         element.activityId !== activityId
     ));
 
@@ -88,12 +85,13 @@ const setRpaTask = (robotId, activityId, application, newTask) => {
 };
 
 /**
- * @param {*} activityId id of the currently selected activity
+ * @param {String} activityId id of the currently selected activity
+ * @description this util function returns the RPA application for the selected activity
  * @returns the selected RPA application for the selected activity from localStorage
  */
 const getRpaApplication = (activityId) => {
-    const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
-    const matchingEntry = localStorage.find((element) => (element.activityId === activityId));
+    const localApplicationTaskStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
+    const matchingEntry = localApplicationTaskStorage.find((element) => (element.activityId === activityId));
 
     let selectedApplication;
     if (matchingEntry) {
@@ -105,11 +103,12 @@ const getRpaApplication = (activityId) => {
 /**
  * 
  * @param {*} activityId id of the currently selected activity
+ * @description this util function returns the activityId for the selected activity
  * @returns the selected RPA task for the selected activity from localStorage
  */
 const getRpaTask = (activityId) => {
-    const localStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
-    const matchingEntry = localStorage.find((element) => (element.activityId === activityId));
+    const localApplicationTaskStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
+    const matchingEntry = localApplicationTaskStorage.find((element) => (element.activityId === activityId));
 
     let selectedTask;
     if (matchingEntry) {
@@ -133,60 +132,60 @@ const getParameterObject = (robotId, activityId) => {
     let matchingParameterObject = localParameterStorage.find((element) => (element.activityId === activityId));
 
     if (matchingParameterObject) {
-      const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
-      const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === activityId));
-      const application = matchingAttributeObject.rpaApplication;
-      const task = matchingAttributeObject.rpaTask;
-      
-      const localComboStorage = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
-      const matchingComboObject = localComboStorage.find((element) => (
-        element.Application === application &&
-        element.Task === task
-      ));
+        const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
+        const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === activityId));
+        const application = matchingAttributeObject.rpaApplication;
+        const task = matchingAttributeObject.rpaTask;
 
-      if (matchingComboObject) {
-        // In the future there could be a need for a more advanced signature check, but fur the current use cases this should be sufficient
-        const comboParameterLength = matchingComboObject.inputVars.length;
-        const parameterObjectLength = matchingParameterObject.rpaParameters.length;
-        const comboFirstParamInfoText = matchingComboObject.inputVars.find((element) => (element.index === 0)).infoText;
-        const firstParamInfoText = matchingParameterObject.rpaParameters.find((element) => (element.index === 0)).infoText;
-        
-        if (comboParameterLength === parameterObjectLength && comboFirstParamInfoText === firstParamInfoText) {
-          return matchingParameterObject;
+        const localComboStorage = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
+        const matchingComboObject = localComboStorage.find((element) => (
+            element.Application === application &&
+            element.Task === task
+        ));
+
+        if (matchingComboObject) {
+            // In the future there could be a need for a more advanced signature check, but fur the current use cases this should be sufficient
+            const comboParameterLength = matchingComboObject.inputVars.length;
+            const parameterObjectLength = matchingParameterObject.rpaParameters.length;
+            const comboFirstParamInfoText = matchingComboObject.inputVars.find((element) => (element.index === 0)).infoText;
+            const firstParamInfoText = matchingParameterObject.rpaParameters.find((element) => (element.index === 0)).infoText;
+
+            if (comboParameterLength === parameterObjectLength && comboFirstParamInfoText === firstParamInfoText) {
+                return matchingParameterObject;
+            }
         }
-      }
     }
-    
+
     localParameterStorage = localParameterStorage.filter((element) => element.activityId !== activityId);
     const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
 
     const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === activityId));
     const application = matchingAttributeObject.rpaApplication;
     const task = matchingAttributeObject.rpaTask;
-    
+
     if (application && task) {
-      const localComboStorage = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
-      const matchingComboObject = localComboStorage.find((element) => (
-        element.Application === application &&
-        element.Task === task
-      ));
+        const localComboStorage = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
+        const matchingComboObject = localComboStorage.find((element) => (
+            element.Application === application &&
+            element.Task === task
+        ));
 
-      const rpaParameters = [];
-      matchingComboObject.inputVars.forEach( (element) => {
-        const elementCopy = element;
-        elementCopy.value = '';
-        rpaParameters.push(elementCopy);
-      });
-      matchingParameterObject = {
-        activityId,
-        outputVariable: matchingComboObject.outputValue ? `${activityId}_output` : undefined,
-        rpaParameters,
-        ssotId: robotId,
-      }
+        const rpaParameters = [];
+        matchingComboObject.inputVars.forEach((element) => {
+            const elementCopy = element;
+            elementCopy.value = '';
+            rpaParameters.push(elementCopy);
+        });
+        matchingParameterObject = {
+            activityId,
+            outputVariable: matchingComboObject.outputValue ? `${activityId}_output` : undefined,
+            rpaParameters,
+            ssotId: robotId,
+        }
 
-      localParameterStorage.push(matchingParameterObject);
-      sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParameterStorage));
-      return matchingParameterObject;
+        localParameterStorage.push(matchingParameterObject);
+        sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParameterStorage));
+        return matchingParameterObject;
     }
 };
 
@@ -199,7 +198,7 @@ const setSingleParameter = (activityId, value) => {
     const localParameterStorage = JSON.parse(sessionStorage.getItem('parameterLocalStorage'));
     const matchingParameterObject = localParameterStorage.find((element) => (element.activityId === activityId));
     const localParametersWithoutMatch = localParameterStorage.filter((element) => element.activityId !== activityId);
-    
+
     const matchingSingleParameter = matchingParameterObject.rpaParameters.find((element) => (element.name === value.target.placeholder));
     const singleParametersWithoutMatch = matchingParameterObject.rpaParameters.filter((element) => element.name !== value.target.placeholder);
 
@@ -291,7 +290,7 @@ const upsert = async () => {
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         }
-    }); 
+    });
 };
 
 /**
