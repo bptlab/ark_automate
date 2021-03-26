@@ -49,9 +49,9 @@ const retrieveMetadataForBot = async (robotId) => {
  * @description Create a new robot with the specified name for the specified user
  * @param {String} newName - String including the user Id
  */
-const createNewRobot = async (userid, newName) => {
+const createNewRobot = async (userId, newName) => {
   const adjustedName = newName.replace(/\s/g, '+');
-  const requestString = `/ssot/createNewRobot?userid=${userid}&robotName=${adjustedName}`;
+  const requestString = `/ssot/createNewRobot?userId=${userId}&robotName=${adjustedName}`;
   const response = await fetch(requestString);
   return response;
 };

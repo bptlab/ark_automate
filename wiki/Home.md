@@ -6,6 +6,7 @@ In our Wiki you can find the following:
 
 - our [vision](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate) for this project including a [pitch](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Pitch), the [features to be implemented](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Until-summer-2021-we-want-to-implement-a-first-working-web-app-for-our-use-case) in the summer of 2021, the [architecture](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Architecture) and the [user interaction](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Using-Ark_automate)
 - documentation regarding [the structure](https://github.com/bptlab/ark_automate/wiki/Documentation-Folder-structure) of this project
+- our [code documentation](https://github.com/bptlab/ark_automate/wiki/Documentation-Folder-structure) hostet on GitHub Pages grouped by modules and classes
 - documentation regarding [our single source of truth](https://github.com/bptlab/ark_automate/wiki/Documentation-single-source-of-truth)
 - documentation the [corporate identity of Ark_automate](https://github.com/bptlab/ark_automate/wiki/Documentation-Corporate-Identity)
 - documentation regarding our [team work](https://github.com/bptlab/ark_automate/wiki/Team-Scrum-process)

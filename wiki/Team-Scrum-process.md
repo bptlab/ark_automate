@@ -38,3 +38,8 @@ All the relevant scrum artifacts are stored here in this GitHub project.
 * Can be found in the "Projects" tab under "Kanban Board".
 * For every user story, the definition of done is defined under the point "Conditions of satisfaction".
 * New ideas for user stories can be sent to the product owner directly or an issue can be created in the column "User Story Ideas / Bug Reporting" 
+
+
+### Agreements
+
+We agreed on having a **Pull Request freeze on 14:00** the day before the sprint review. This means, that no further Pull Requests may be created until then, if the changes are supposed to be merged for the current sprint goal. The same day **at 18:00 we agreed on a merge freeze**, which means no further pull requests from feature branches are to be merged into dev for the release presented at the sprint review the next day. User stories that are merged after 18:00 will be presented at the next sprint review.
