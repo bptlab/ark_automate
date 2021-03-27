@@ -82,16 +82,16 @@ const writeCodeForElement = (
   let newCodeLine = '';
   let newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
-    const matchingAttributeObject = attributes.find((attribute) => attribute.activityId === id);
-    if (matchingAttributeObject.rpaApplication !== previousApplication) {
+    const currentAttributeObject = attributes.find((attribute) => attribute.activityId === id);
+    if (currentAttributeObject.rpaApplication !== previousApplication) {
       newPreviousApplication = currentElement.rpaApplication;
     }
-    const matchingParameterObject = parameters.find((parameter) => parameter.activityId === id);
+    const currentParameterObject = parameters.find((parameter) => parameter.activityId === id);
     newCodeLine += currentElement.name + LINEBREAK;
-    newCodeLine += setOutputVar(matchingParameterObject);
-    newCodeLine += matchingAttributeObject.rpaTask;
+    newCodeLine += setOutputVar(currentParameterObject);
+    newCodeLine += currentAttributeObject.rpaTask;
 
-    newCodeLine += appendRpaInputParameter(matchingParameterObject);
+    newCodeLine += appendRpaInputParameter(currentParameterObject);
     
     newCodeLine += LINEBREAK;
     combinedCode += newCodeLine;

@@ -27,16 +27,16 @@ const findParametersForTask = async (applicationName, taskName) => (
     ).exec()
 )
 
-const initiateParametersForActivity = async (botId, activityParameterId, updatedParameters, hasOutput) => {
+const initiateParametersForActivity = async (botId, activityId, updatedParameters, hasOutput) => {
     if (hasOutput) {
         return mongoose.model('parameter').findOneAndUpdate(
             {
                 ssotId: botId,
-                activityId: activityParameterId,
+                activityId,
             },
             { 
                 rpaParameters: updatedParameters,
-                outputVariable: `${activityParameterId}_output`
+                outputVariable: `${activityId}_output`
             },
             {
                 new: true,
@@ -49,7 +49,7 @@ const initiateParametersForActivity = async (botId, activityParameterId, updated
     return mongoose.model('parameter').findOneAndUpdate(
         {
             ssotId: botId,
-            activityId: activityParameterId,
+            activityId,
         },
         { 
             rpaParameters: updatedParameters,
@@ -63,22 +63,22 @@ const initiateParametersForActivity = async (botId, activityParameterId, updated
     ).exec()    
 }
 
-const checkForOutputValue = async (botId, activityParameterId) => {
+const checkForOutputValue = async (botId, activityId) => {
     const parameterObject = await  mongoose.model('parameter').findOne(
         {
             ssotId: botId,
-            activityId: activityParameterId,
+            activityId,
         }
     ).exec();
     return !!parameterObject.outputVariable
 }
 
-const updateParametersForActivity = async (botId, activityParameterId, updatedParameters, updatedOutput, hasOutput) => {
+const updateParametersForActivity = async (botId, activityId, updatedParameters, updatedOutput, hasOutput) => {
     if (hasOutput) {
         return mongoose.model('parameter').findOneAndUpdate(
             {
                 ssotId: botId,
-                activityId: activityParameterId,
+                activityId,
             },
             { 
                 rpaParameters: updatedParameters,
@@ -95,7 +95,7 @@ const updateParametersForActivity = async (botId, activityParameterId, updatedPa
     return mongoose.model('parameter').findOneAndUpdate(
         {
             ssotId: botId,
-            activityId: activityParameterId,
+            activityId,
         },
         { 
             rpaParameters: updatedParameters,

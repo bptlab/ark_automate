@@ -178,7 +178,7 @@ exports.overwriteRobot = async (req, res) => {
     const ssotData = await mongoose
       .model('SSoT')
       .findByIdAndUpdate(
-        updatedSsot.id,
+        updatedSsot['_id'],
         updatedSsot,
         {
           new: true,
