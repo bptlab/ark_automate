@@ -39,7 +39,7 @@ const buildCorrectOrder = (ssot) => {
  * @param {Object} element The first element (start element) to process
  * @returns {String} The now set id of the shape
  */
-const updateIdForElement = (modeling, element, cliResult) => {
+const updateIdForElement = (modeling, cli, element, cliResult) => {
     const bpmnObject = cli.element(cliResult);
     const newId = element.id;
 
@@ -69,7 +69,8 @@ const drawElement = (cli, modeling, element, previousElement) => {
         default:
             break;
     }
-    const newId = updateIdForElement(modeling, element, createdElement);
+
+    const newId = updateIdForElement(modeling, cli, element, createdElement);
     if (element.name) cli.setLabel(newId, element.name);
     return newId;
 };
@@ -92,7 +93,7 @@ const removeDefaultStarter = (cli) => {
 const drawStartElement = (cli, modeling, element) => {
     removeDefaultStarter(cli);
     const startElement = cli.create('bpmn:StartEvent', DEFAULT_STARTEVENT_POSITION, DEFAULT_PARENT);
-    const newId = updateIdForElement(modeling, element, startElement);
+    const newId = updateIdForElement(modeling, cli, element, startElement);
 
     if (element.name) cli.setLabel(newId, element.name);
     return newId;
@@ -109,10 +110,10 @@ const parseSsotToBpmn = (modeler, ssot) => {
     const cli = modeler.get('cli');
     const modeling = modeler.get('modeling');
 
-    let lastDrawnElement = drawStartElement(cli, modeling, sortedElements[0]);
-    for (let i = 1; i < sortedElements.length; i++) {
-        lastDrawnElement = drawElement(cli, modeling, sortedElements[i], lastDrawnElement)
-    }
+    let lastDrawnElement = drawStartElement(cli, modeling, sortedElements.shift());
+    sortedElements.forEach( (elementToDraw) => {
+        lastDrawnElement = drawElement(cli, modeling, elementToDraw, lastDrawnElement);
+    });
 };
 
 export default parseSsotToBpmn;

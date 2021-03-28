@@ -64,7 +64,7 @@ const setRpaTask = (robotId, activityId, application, newTask) => {
     const localApplicationTaskStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
 
     let matchingActivity = localApplicationTaskStorage.find((element) => (element.activityId === activityId));
-    const arrayWithoutMatchingElement = localStorage.filter((element) => (
+    const arrayWithoutMatchingElement = localApplicationTaskStorage.filter((element) => (
         element.ssotId === robotId &&
         element.activityId !== activityId
     ));

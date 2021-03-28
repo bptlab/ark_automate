@@ -16,9 +16,9 @@ const variablesForNewTask = async (
   application,
   task
 ) => {
-  const applicationWithoutEmptyspaces = application.replace(/\s/g, '+');
-  const taskWithoutEmptyspaces = task.replace(/\s/g, '+');
-  const requestString = `/ssot/getVariablesForNewTask/?botId=${robotId}&activityId=${activityId}&application=${applicationWithoutEmptyspaces}&task=${taskWithoutEmptyspaces}`;
+  const applicationWithoutEmptySpaces = application.replace(/\s/g, '+');
+  const taskWithoutEmptySpaces = task.replace(/\s/g, '+');
+  const requestString = `/ssot/getVariablesForNewTask/?botId=${robotId}&activityId=${activityId}&application=${applicationWithoutEmptySpaces}&task=${taskWithoutEmptySpaces}`;
 
   const response = await fetch(requestString);
   return response;
