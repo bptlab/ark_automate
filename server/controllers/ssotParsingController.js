@@ -9,3 +9,13 @@ exports.getRobotCode = async (req, res) => {
     console.error(err);
   }
 };
+
+exports.getRobotCodeForId = async (req, res) => {
+  try {
+    const { botId } = req.params;
+    const robotCode = await ssotToRobotparser.parseSsotById(botId);
+    res.send(robotCode);
+  } catch (err) {
+    console.error(err);
+  }
+};

@@ -2,21 +2,36 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const inputParameterSchema = new Schema({
+const singleParameterSchema = new Schema({
   name: String,
-  value: Schema.Types.Mixed,
+  value: String,
   requireUserInput: Boolean,
+  type: String,
+  isRequired: Boolean,
+  infoText: String,
+  index: Number
+});
+
+const parameterObjectSchema = new Schema({
+  ssotId: mongoose.Types.ObjectId,
+  activityId: String,
+  outputVariable: String,
+  rpaParameters: [ singleParameterSchema ],
 });
 
 const instructionSchema = new Schema({
   type: String,
   name: String,
-  predecessorIds: [mongoose.Types.ObjectId],
-  successorIds: [mongoose.Types.ObjectId],
+  predecessorIds: [String],
+  successorIds: [String],
+  id: String
+});
+
+const rpaAttributesObjectSchema = new Schema({
+  ssotId: mongoose.Types.ObjectId,
+  activityId: String,
   rpaApplication: String,
   rpaTask: String,
-  rpaParameters: [inputParameterSchema],
-  outputVariable: Schema.Types.Mixed,
 });
 
 const markerSchema = new Schema({
@@ -26,11 +41,12 @@ const markerSchema = new Schema({
   successorIds: [mongoose.Types.ObjectId],
 });
 
-// eslint-disable-next-line camelcase
-const SSoT_Schema = new Schema({
+const ssotSchema = new Schema({
   starterId: String,
   robotName: {type: String, required: [true, 'robotName required']},
   elements: {type: [instructionSchema, markerSchema]},
 });
 
-mongoose.model('SSoT', SSoT_Schema);
+mongoose.model('parameter', parameterObjectSchema);
+mongoose.model('rpaAttributes', rpaAttributesObjectSchema);
+mongoose.model('SSoT', ssotSchema);
