@@ -181,7 +181,7 @@ const getParameterObject = (robotId, activityId) => {
 
         matchingParameterObject = {
             activityId,
-            outputVariable: matchingComboObject.outputValue ? `${activityId}_output` : undefined,
+            outputVariable: matchingComboObject && matchingComboObject.outputValue ? `${activityId}_output` : undefined,
             rpaParameters,
             ssotId: robotId,
         }
