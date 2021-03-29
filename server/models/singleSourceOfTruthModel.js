@@ -29,8 +29,8 @@ const markerSchema = new Schema({
 // eslint-disable-next-line camelcase
 const SSoT_Schema = new Schema({
   starterId: String,
-  robotName: String,
-  elements: [instructionSchema, markerSchema],
+  robotName: {type: String, required: [true, 'robotName required']},
+  elements: {type: [instructionSchema, markerSchema]},
 });
 
 mongoose.model('SSoT', SSoT_Schema);

@@ -28,7 +28,7 @@ describe('jobs can be created', () => {
   });
 });
 
-describe('jobs have validation for missingparameters', () => {
+describe('jobs have validation for missing parameters', () => {
   const job = new mongoose.model('job')({
     parameters: [],
   });

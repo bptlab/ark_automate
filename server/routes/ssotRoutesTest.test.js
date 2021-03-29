@@ -7,6 +7,7 @@ const ssotRetrievalController = require('../controllers/ssotRetrievalController'
 const ssotParsingController = require('../controllers/ssotParsingController');
 const testData = require('../utils/TestingUtils/testData');
 
+
 const SsotModel = mongoose.model('SSoT');
 const UserAccessObjectModel = mongoose.model('userAccessObject');
 
@@ -56,6 +57,22 @@ describe('/ssot/getAvailableRobotsForUser', () => {
     expect(JSON.stringify(data[0]._id)).toEqual(
       JSON.stringify(testData.ssotId)
     );
+  });
+
+  it('throws an error when bad param passed', async () => {
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    const request = httpMocks.createRequest({
+      method: 'GET',
+      url: '/ssot/getAvailableRobotsForUser',
+      params: {
+        userId: "123"
+      },
+    });
+    const response = httpMocks.createResponse();
+    await ssotRetrievalController.getRobotList(request, response)
+    expect(console.error).toHaveBeenCalledTimes(1);
+    spy.mockRestore();
   });
 });
 
