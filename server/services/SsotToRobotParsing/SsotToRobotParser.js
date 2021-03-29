@@ -2,13 +2,15 @@
  * @category Client
  * @module
  */
- const mongoose = require('mongoose');
- const ssotModels = require('../../models/singleSourceOfTruthModel.js');
+const mongoose = require('mongoose');
+// eslint-disable-next-line no-unused-vars
+const ssotModels = require('../../models/singleSourceOfTruthModel.js');
 
- const ACTIVITY_IDENTIFIER = 'INSTRUCTION';
- const LINEBREAK = '\n';
- const DOUBLESPACE = '  ';
- const FOURSPACE = '    ';
+const ACTIVITY_IDENTIFIER = 'INSTRUCTION';
+const LINEBREAK = '\n';
+// eslint-disable-next-line no-unused-vars
+const DOUBLESPACE = '  ';
+const FOURSPACE = '    ';
 
 /**
  * @description Checks whether the given element is of type instruction and contains rpa attributes
@@ -36,11 +38,11 @@ const successorTasksExist = (currentElement) => (
  */
 const appendRpaInputParameter = (parameterObject) => {
   let newCodeLine = '';
-  
-  const sortedInputs = parameterObject.rpaParameters.sort((a, b) => ( a.index - b.index ));
+
+  const sortedInputs = parameterObject.rpaParameters.sort((a, b) => (a.index - b.index));
   sortedInputs.forEach((parameter) => {
-    //regex will return -1 if no $$text$$ was found
-    newCodeLine += (parameter.value.search(/\$\$(.*?)\$\$/) < 0) ?  `${FOURSPACE}${parameter.value}` : `${FOURSPACE}$\{${ parameter.value.split('$$')[1] }\}`;
+    // regex will return -1 if no $$text$$ was found
+    newCodeLine += (parameter.value.search(/\$\$(.*?)\$\$/) < 0) ? `${FOURSPACE}${parameter.value}` : `${FOURSPACE}$\{${parameter.value.split('$$')[1]}\}`;
   });
 
   return newCodeLine;
@@ -53,7 +55,7 @@ const appendRpaInputParameter = (parameterObject) => {
  */
 const setOutputVar = (paramObject) => {
   let newCodeLine = FOURSPACE;
-  
+
   if (paramObject.outputVariable) {
     newCodeLine += `\${${paramObject.outputVariable}} =${FOURSPACE}`;
   }
@@ -92,7 +94,7 @@ const writeCodeForElement = (
     newCodeLine += currentAttributeObject.rpaTask;
 
     newCodeLine += appendRpaInputParameter(currentParameterObject);
-    
+
     newCodeLine += LINEBREAK;
     combinedCode += newCodeLine;
   }
@@ -145,9 +147,9 @@ const collectApplications = (elements) => {
   const applications = [];
   if (elements !== undefined && elements.length > 0) {
     elements.forEach((element) => {
-      if (element.rpaApplication !== undefined && 
+      if (element.rpaApplication !== undefined &&
         !applications.includes(element.rpaApplication)) {
-          applications.push(element.rpaApplication);
+        applications.push(element.rpaApplication);
       }
     });
   }
@@ -162,9 +164,11 @@ const collectApplications = (elements) => {
 const generateCodeForLibraryImports = (elements) => {
   let libraryImports = '';
   const applications = collectApplications(elements);
-  Object.values(applications).forEach((application) => {
-    libraryImports += `Library${FOURSPACE}RPA.${application}${LINEBREAK}`;
-  });
+  if (applications.length > 0) {
+    Object.values(applications).forEach((application) => {
+      libraryImports += `Library${FOURSPACE}RPA.${application}${LINEBREAK}`;
+    });
+  }
 
   return libraryImports;
 };
@@ -179,7 +183,7 @@ const retrieveParameters = async (ssot) => {
   const { elements } = ssot;
   const listOfActivityIds = [];
 
-  elements.forEach( (element) => {
+  elements.forEach((element) => {
     if (element.type === ACTIVITY_IDENTIFIER) {
       listOfActivityIds.push(element.id);
     }
@@ -188,8 +192,9 @@ const retrieveParameters = async (ssot) => {
   const parameterObjects = await mongoose
     .model('parameter')
     .find(
-      { ssotId: id,
-        activityId: { $in: listOfActivityIds}
+      {
+        ssotId: id,
+        activityId: { $in: listOfActivityIds }
       },
       {
         activityId: 1,
@@ -197,7 +202,7 @@ const retrieveParameters = async (ssot) => {
         outputVariable: 1
       }
     )
-  .exec();
+    .exec();
 
   return parameterObjects;
 };
@@ -212,7 +217,7 @@ const retrieveAttributes = async (ssot) => {
   const { elements } = ssot;
   const listOfActivityIds = [];
 
-  elements.forEach( (element) => {
+  elements.forEach((element) => {
     if (element.type === ACTIVITY_IDENTIFIER) {
       listOfActivityIds.push(element.id);
     }
@@ -221,11 +226,12 @@ const retrieveAttributes = async (ssot) => {
   const attributeObjects = await mongoose
     .model('rpaAttributes')
     .find(
-      { ssotId: id,
-        activityId: { $in: listOfActivityIds}
+      {
+        ssotId: id,
+        activityId: { $in: listOfActivityIds }
       }
     )
-  .exec();
+    .exec();
 
   return attributeObjects;
 };
