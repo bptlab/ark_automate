@@ -25,7 +25,7 @@ const buildCorrectOrder = (ssot) => {
     const startElement = findStartElement(ssot);
     const elementsInOrder = [startElement];
     let currentElement = startElement;
-    for (let i = 1; i < ssot.elements.length; i++) {
+    for (let i = 1; i < ssot.elements.length; i += 1) {
         currentElement = ssot.elements.find((element) => (element.id === currentElement.successorIds[0]));
         elementsInOrder.push(currentElement);
     }
@@ -111,7 +111,7 @@ const parseSsotToBpmn = (modeler, ssot) => {
     const modeling = modeler.get('modeling');
 
     let lastDrawnElement = drawStartElement(cli, modeling, sortedElements.shift());
-    sortedElements.forEach( (elementToDraw) => {
+    sortedElements.forEach((elementToDraw) => {
         lastDrawnElement = drawElement(cli, modeling, elementToDraw, lastDrawnElement);
     });
 };
