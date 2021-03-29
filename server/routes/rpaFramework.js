@@ -17,6 +17,11 @@ router.get(
   commandsController.getAvailableTasksForApplications
 );
 
+router.get(
+  '/commands/getAllParameters',
+  commandsController.getAllParameters
+);
+
 router.get('/commands/get-vars-for-task', commandsController.getVarsForTask);
 
 module.exports = router;

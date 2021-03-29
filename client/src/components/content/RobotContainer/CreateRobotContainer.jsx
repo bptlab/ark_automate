@@ -15,7 +15,7 @@ const { Title } = Typography;
  */
 const CreateRobotContainer = (props) => {
 
-    const addRobot = () => props.createNewRobot();
+    const addRobot = () => alert('Unfortunately this is currently not supported.'); //props.createNewRobot();
 
     return (
         <Col xs={24} sm={12} md={8} xl={6} xxl={4}>

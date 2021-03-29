@@ -1,7 +1,8 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { Select } from 'antd';
-import styles from '../PropertiesPanel.module.css';
+import PropTypes from 'prop-types'
+import styles from '../../ModelerSidebar.module.css';
+import { getRpaTask } from '../../../../../utils/attributeAndParamUtils';
 
 const { Option } = Select;
 
@@ -10,11 +11,11 @@ const { Option } = Select;
  * @category Client
  * @component
  */
-const PropertiesPanelTaskDropdown = ({
+const PPTaskDropdown = ({
   onTaskSelection,
   disabled,
-  currentSelection,
   listOfTasks,
+  selectedActivity
 }) => (
   <>
     <Select
@@ -23,8 +24,7 @@ const PropertiesPanelTaskDropdown = ({
       placeholder='Please select task'
       onChange={onTaskSelection}
       disabled={disabled ? true : null}
-      defaultValue={currentSelection}
-      value={currentSelection}
+      defaultValue={getRpaTask(selectedActivity)}
     >
       {listOfTasks.map((task) => (
         <Option key={task} value={task}>
@@ -35,4 +35,11 @@ const PropertiesPanelTaskDropdown = ({
   </>
 );
 
-export default PropertiesPanelTaskDropdown;
+PPTaskDropdown.propTypes = {
+  listOfTasks: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  onTaskSelection: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  selectedActivity: PropTypes.string.isRequired
+};
+
+export default PPTaskDropdown;

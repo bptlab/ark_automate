@@ -2,35 +2,66 @@
  * @category Client
  * @module
  */
+const mongoose = require('mongoose');
+// eslint-disable-next-line no-unused-vars
+const ssotModels = require('../../models/singleSourceOfTruthModel.js');
 
-/* eslint-disable dot-notation */
+const ACTIVITY_IDENTIFIER = 'INSTRUCTION';
+const LINEBREAK = '\n';
+// eslint-disable-next-line no-unused-vars
+const DOUBLESPACE = '  ';
+const FOURSPACE = '    ';
 
 /**
  * @description Checks whether the given element is of type instruction and contains rpa attributes
  * @param {Object} currentElement Element to check
  * @returns {Boolean} Value specifies if object is of type instruction and contains rpa attributes
  */
-const isAnRpaInstruction = (currentElement) =>
-  currentElement.rpaTask !== undefined &&
-  currentElement.rpaApplication !== undefined;
-
-/**
- * @description Checks whether the given element contains rpa parameters
- * @param {Object} currentElement Element to check
- * @returns {Boolean} Value specifies if object contains rpa parameters
- */
-const rpaParametersExist = (currentElement) =>
-  currentElement.rpaParameters !== undefined &&
-  currentElement.rpaParameters.length !== 0;
+const isAnRpaInstruction = (currentElement) => (
+  currentElement.type === ACTIVITY_IDENTIFIER
+)
 
 /**
  * @description Checks whether the given element has a successor element
  * @param {Object} currentElement Element to check
  * @returns {Boolean} Value specifies if element has a successor element
  */
-const successorTasksExist = (currentElement) =>
+const successorTasksExist = (currentElement) => (
   currentElement.successorIds !== undefined &&
-  currentElement.successorIds[0] !== '';
+  currentElement.successorIds[0] !== ''
+)
+
+/**
+ * @description Will append all provided parameters to a string which can be used to generate the RPAf file
+ * @param {Object} parameterObject The parameter object to check and loop through
+ * @returns {String} String specifying the input parameters with the needed spacing in between
+ */
+const appendRpaInputParameter = (parameterObject) => {
+  let newCodeLine = '';
+
+  const sortedInputs = parameterObject.rpaParameters.sort((a, b) => (a.index - b.index));
+  sortedInputs.forEach((parameter) => {
+    // regex will return -1 if no $$text$$ was found
+    newCodeLine += (parameter.value.search(/\$\$(.*?)\$\$/) < 0) ? `${FOURSPACE}${parameter.value}` : `${FOURSPACE}$\{${parameter.value.split('$$')[1]}\}`;
+  });
+
+  return newCodeLine;
+};
+
+/**
+ * @description Will create a prefix to catch the output variable of an activity, if one is present
+ * @param {Object} paramObject The parameter object to check and loop through
+ * @returns {String} String specifying the output variables name
+ */
+const setOutputVar = (paramObject) => {
+  let newCodeLine = FOURSPACE;
+
+  if (paramObject.outputVariable) {
+    newCodeLine += `\${${paramObject.outputVariable}} =${FOURSPACE}`;
+  }
+
+  return newCodeLine;
+};
 
 /**
  * @description Receives an array of all elements and generates the .robot code for the elements recursively.
@@ -43,24 +74,29 @@ const successorTasksExist = (currentElement) =>
 const writeCodeForElement = (
   id,
   elements,
+  parameters,
+  attributes,
   codeToAppend,
   previousApplication
 ) => {
   const currentElement = elements.find((element) => element.id === id);
   let combinedCode = codeToAppend;
+  let newCodeLine = '';
   let newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
-    if (currentElement.rpaApplication !== previousApplication) {
-      combinedCode += `${currentElement.name}\n`;
+    const currentAttributeObject = attributes.find((attribute) => attribute.activityId === id);
+    if (currentAttributeObject.rpaApplication !== previousApplication) {
       newPreviousApplication = currentElement.rpaApplication;
     }
-    combinedCode += `  ${currentElement.rpaTask}`;
-    if (rpaParametersExist(currentElement)) {
-      currentElement.rpaParameters.forEach((parameter) => {
-        combinedCode += `  ${parameter.value}`;
-      });
-    }
-    combinedCode += '\n';
+    const currentParameterObject = parameters.find((parameter) => parameter.activityId === id);
+    newCodeLine += currentElement.name + LINEBREAK;
+    newCodeLine += setOutputVar(currentParameterObject);
+    newCodeLine += currentAttributeObject.rpaTask;
+
+    newCodeLine += appendRpaInputParameter(currentParameterObject);
+
+    newCodeLine += LINEBREAK;
+    combinedCode += newCodeLine;
   }
 
   if (successorTasksExist(currentElement)) {
@@ -69,6 +105,8 @@ const writeCodeForElement = (
       combinedCode = writeCodeForElement(
         successorId,
         elements,
+        parameters,
+        attributes,
         combinedCode,
         newPreviousApplication
       );
@@ -83,20 +121,20 @@ const writeCodeForElement = (
  * @param {Object} metaData MetaData of the robot
  * @returns {string} Generated .robot code for the tasks section
  */
-const generateCodeForRpaTasks = (elements) => {
-  let codeForRpaTasks = '';
-  if (elements.length > 0) {
-    const startElement = elements.find(
-      (element) => element.predecessorIds.length === 0
-    );
+const generateCodeForRpaTasks = (elements, parameters, attributes) => {
+  const startElement = elements.find(
+    (element) => element.predecessorIds.length === 0
+  );
 
-    codeForRpaTasks = writeCodeForElement(
-      startElement.id,
-      elements,
-      '',
-      'None'
-    );
-  }
+  const codeForRpaTasks = writeCodeForElement(
+    startElement.id,
+    elements,
+    parameters,
+    attributes,
+    '',
+    'None'
+  );
+
   return codeForRpaTasks;
 };
 
@@ -109,10 +147,9 @@ const collectApplications = (elements) => {
   const applications = [];
   if (elements !== undefined && elements.length > 0) {
     elements.forEach((element) => {
-      if (element.rpaApplication !== undefined) {
-        if (!applications.includes(element.rpaApplication)) {
-          applications.push(element.rpaApplication);
-        }
+      if (element.rpaApplication !== undefined &&
+        !applications.includes(element.rpaApplication)) {
+        applications.push(element.rpaApplication);
       }
     });
   }
@@ -129,7 +166,7 @@ const generateCodeForLibraryImports = (elements) => {
   const applications = collectApplications(elements);
   if (applications.length > 0) {
     Object.values(applications).forEach((application) => {
-      libraryImports += `${'Library    RPA.'}${application}\n`;
+      libraryImports += `Library${FOURSPACE}RPA.${application}${LINEBREAK}`;
     });
   }
 
@@ -137,23 +174,99 @@ const generateCodeForLibraryImports = (elements) => {
 };
 
 /**
- * @description Parses the SSoT to an executable .robot file
+ * @description For all activities in the ssot this method will retrieve the associated parameter objects
+ * @param {Object} ssot The ssot for which the parameters should be retrieved
+ * @returns {Array} Array of parameter objects
+ */
+const retrieveParameters = async (ssot) => {
+  const { id } = ssot;
+  const { elements } = ssot;
+  const listOfActivityIds = [];
+
+  elements.forEach((element) => {
+    if (element.type === ACTIVITY_IDENTIFIER) {
+      listOfActivityIds.push(element.id);
+    }
+  });
+
+  const parameterObjects = await mongoose
+    .model('parameter')
+    .find(
+      {
+        ssotId: id,
+        activityId: { $in: listOfActivityIds }
+      },
+      {
+        activityId: 1,
+        rpaParameters: 1,
+        outputVariable: 1
+      }
+    )
+    .exec();
+
+  return parameterObjects;
+};
+
+/**
+ * @description For all activities in the ssot this method will retrieve the associated parameter objects
+ * @param {Object} ssot The ssot for which the parameters should be retrieved
+ * @returns {Array} Array of attribute objects
+ */
+const retrieveAttributes = async (ssot) => {
+  const { id } = ssot;
+  const { elements } = ssot;
+  const listOfActivityIds = [];
+
+  elements.forEach((element) => {
+    if (element.type === ACTIVITY_IDENTIFIER) {
+      listOfActivityIds.push(element.id);
+    }
+  });
+
+  const attributeObjects = await mongoose
+    .model('rpaAttributes')
+    .find(
+      {
+        ssotId: id,
+        activityId: { $in: listOfActivityIds }
+      }
+    )
+    .exec();
+
+  return attributeObjects;
+};
+
+/**
+ * @description Parses the given SSoT to an executable .robot file
  * @param {Object} ssot The SSoT
  * @returns {string} Code that has to be put in .robot file
  */
-const parseSsotToRobotCode = (ssot) => {
+const parseSsotToRobotCode = async (ssot) => {
   const { elements } = ssot;
   let parsedCode = '';
-  parsedCode += '*** Settings ***\n';
-  parsedCode += 'Documentation  Our first parsed RPA\n';
-  parsedCode += generateCodeForLibraryImports(elements);
+  parsedCode += `*** Settings ***${LINEBREAK}`;
+  const attributeObjects = await retrieveAttributes(ssot);
+  parsedCode += generateCodeForLibraryImports(attributeObjects);
   // ideally we use the keyword statement for each task, currently not working out of the box
-  parsedCode += '\n*** Tasks ***\n';
-  parsedCode += generateCodeForRpaTasks(elements);
+  parsedCode += `${LINEBREAK}*** Tasks ***${LINEBREAK}`;
+  const parameters = await retrieveParameters(ssot);
+  parsedCode += generateCodeForRpaTasks(elements, parameters, attributeObjects);
 
   return parsedCode;
 };
 
+/**
+ * @description Parses the SSoT provided by its id to an executable .robot file
+ * @param {String} ssotId The id of the ssot which should be parsed
+ * @returns {string} Code that has to be put in .robot file
+ */
+const parseSsotById = async (ssotId) => {
+  const ssot = await mongoose.model('SSoT').findById(ssotId).exec();
+
+  return parseSsotToRobotCode(ssot);
+};
+
 module.exports = {
   parseSsotToRobotCode,
+  parseSsotById
 };
