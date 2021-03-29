@@ -13,13 +13,17 @@ const { Header } = Layout;
  */
 const HeaderNavbar = (props) => {
   const { selectedKey } = props;
+  const robotOverviewPageKey = 1;
+  const bpmnModelerPageKey = 2;
+  const robotFilePageKey = 3;
+
   let onOverview = true;
-  if (selectedKey === 1) {
+  if (selectedKey === robotOverviewPageKey) {
     onOverview = false;
   }
 
   let bpmnModelerLink = '/modeler';
-  if (selectedKey === 2 || selectedKey === 3) {
+  if (selectedKey === bpmnModelerPageKey || selectedKey === robotFilePageKey) {
     const robotId = JSON.parse(sessionStorage.getItem('robotId'));
     bpmnModelerLink += `/${robotId}`;
   }
@@ -38,18 +42,18 @@ const HeaderNavbar = (props) => {
             alt='ark_automate Icon'
           />
         </Link>
-        <Menu.Item key='1'>
+        <Menu.Item key={robotOverviewPageKey}>
           Overview
         <Link to='/robot_overview' />
         </Menu.Item>
         {onOverview && (
-          <Menu.Item key='2'>
+          <Menu.Item key={bpmnModelerPageKey}>
             Modeler
             <Link to={bpmnModelerLink} />
           </Menu.Item>
         )}
         {onOverview && (
-          <Menu.Item key='3'>
+          <Menu.Item key={robotFilePageKey}>
             Robot File
             <Link to='/robotfile' />
           </Menu.Item>
