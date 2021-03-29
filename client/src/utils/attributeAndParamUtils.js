@@ -36,7 +36,7 @@ const resetRpaApplication = (robotId, activityId, newApplication) => {
     const localApplicationTaskStorage = JSON.parse(sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH));
 
     let matchingActivity = localApplicationTaskStorage.find((element) => (element.activityId === activityId));
-    const arrayWithoutMatchingElement = localStorage.filter((element) => element.ssotId === robotId && element.activityId !== activityId);
+    const arrayWithoutMatchingElement = localApplicationTaskStorage.filter((element) => element.ssotId === robotId && element.activityId !== activityId);
 
     if (matchingActivity) {
         matchingActivity.rpaApplication = newApplication;
@@ -171,11 +171,14 @@ const getParameterObject = (robotId, activityId) => {
         ));
 
         const rpaParameters = [];
-        matchingComboObject.inputVars.forEach((element) => {
-            const elementCopy = element;
-            elementCopy.value = '';
-            rpaParameters.push(elementCopy);
-        });
+        if (matchingComboObject) {
+            matchingComboObject.inputVars.forEach((element) => {
+                const elementCopy = element;
+                elementCopy.value = '';
+                rpaParameters.push(elementCopy);
+            });
+        }
+
         matchingParameterObject = {
             activityId,
             outputVariable: matchingComboObject.outputValue ? `${activityId}_output` : undefined,
