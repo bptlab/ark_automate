@@ -18,6 +18,11 @@ const HeaderNavbar = (props) => {
     onOverview = false;
   }
 
+  let bpmnModelerLink = '/modeler';
+  if (selectedKey === 2 || selectedKey === 3) {
+    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
+    bpmnModelerLink += `/${robotId}`;
+  }
 
   return (
     <Header>
@@ -40,7 +45,7 @@ const HeaderNavbar = (props) => {
         {onOverview && (
           <Menu.Item key='2'>
             Modeler
-            <Link to='/modeler' />
+            <Link to={bpmnModelerLink} />
           </Menu.Item>
         )}
         {onOverview && (
