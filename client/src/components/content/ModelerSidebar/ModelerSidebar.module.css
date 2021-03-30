@@ -1,5 +1,5 @@
 .label-on-dark-background {
-  color: var(--colorPrimaryInvertedText);
+  color: var(--colorPrimaryInvertedText) !important;
 }
 
 .title {
