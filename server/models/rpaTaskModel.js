@@ -15,7 +15,7 @@ const rpaTaskSchema = new Schema({
   Task: String,
   Code: String,
   outputValue: Boolean,
-  InputVars: [rpaVariableSchema],
+  inputVars: [rpaVariableSchema],
   Output: rpaVariableSchema
 });
 
