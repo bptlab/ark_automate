@@ -24,6 +24,7 @@ afterAll(async () => dbHandler.closeDatabase());
 
 describe('/commands/get-available-applications', () => {
   it('retreives the list of all available apps correctly', async () => {
+    // TODO - check out why this test failes sometimes
     await dbLoader.loadTasksInDb();
 
     const request = httpMocks.createRequest({

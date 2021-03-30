@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { expect } = require('chai');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
-const { testRpaTask } = require('../utils/TestingUtils/testData');
+const { testRpaTask1 } = require('../utils/TestingUtils/testData');
 const taskModel = require('./rpaTaskModel.js');
 
 /**
@@ -20,7 +20,7 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('tasks can be created', () => {
-  const task = new mongoose.model('rpa-task')(testRpaTask);
+  const task = new mongoose.model('rpa-task')(testRpaTask1);
   it('should throw no errors for correct job', async () => {
     task.save((err) => {
       expect(err).to.not.exist;
