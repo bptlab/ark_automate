@@ -23,21 +23,21 @@ const TASK_STRING = '*** Tasks ***';
 
 const loadAttributesInDb = async () => {
   const RpaAttribute = mongoose.model('rpaAttributes');
-  const rpaAttribute = await new RpaAttribute(testData.testAttributes1);
+  const rpaAttribute = new RpaAttribute(testData.testAttributes1);
   await rpaAttribute.save();
-  const rpaAttribute2 = await new RpaAttribute(testData.testAttributes2);
+  const rpaAttribute2 = new RpaAttribute(testData.testAttributes2);
   await rpaAttribute2.save();
-  const rpaAttribute3 = await new RpaAttribute(testData.testAttributes3);
+  const rpaAttribute3 = new RpaAttribute(testData.testAttributes3);
   await rpaAttribute3.save();
 };
 
 const loadParametersInDb = async () => {
   const RpaParam = mongoose.model('parameter');
-  const rpaParamter = await new RpaParam(testData.testParameter1);
+  const rpaParamter = new RpaParam(testData.testParameter1);
   await rpaParamter.save();
-  const rpaParamter2 = await new RpaParam(testData.testParameter2);
+  const rpaParamter2 = new RpaParam(testData.testParameter2);
   await rpaParamter2.save();
-  const rpaParamter3 = await new RpaParam(testData.testParameter3);
+  const rpaParamter3 = new RpaParam(testData.testParameter3);
   await rpaParamter3.save();
 };
 
