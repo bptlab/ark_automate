@@ -36,10 +36,13 @@ const RobotFile = () => {
    * resulting ssot into the sessionStorage.
    */
   const onSaveToCloud = async () => {
+    // eslint-disable-next-line no-unused-vars
     const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    console.log(robotId);
-    console.log(code);
-    //please parse here to ssot and upsert
+
+    /**
+     * please parse here to ssot and upsert
+     * use the variables robotId and code for parsing.
+     */
   };
 
   return (
