@@ -3,18 +3,9 @@
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbLoader = require('../utils/TestingUtils/databaseLoader');
 const rpaController = require('../controllers/rpaFrameworkCommandsController');
 const testData = require('../utils/TestingUtils/testData');
-
-const loadTasksInDb = async () => {
-  const RpaTask = mongoose.model('rpa-task');
-  const rpaTask = await new RpaTask(testData.testRpaTask1);
-  await rpaTask.save();
-  const rpaTask2 = await new RpaTask(testData.testRpaTask2);
-  await rpaTask2.save();
-  const rpaTask3 = await new RpaTask(testData.testRpaTask3);
-  await rpaTask3.save();
-};
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -33,7 +24,7 @@ afterAll(async () => dbHandler.closeDatabase());
 
 describe('/commands/get-available-applications', () => {
   it('retreives the list of all available apps correctly', async () => {
-    await loadTasksInDb();
+    await dbLoader.loadTasksInDb();
 
     const request = httpMocks.createRequest({
       method: 'GET',
@@ -54,7 +45,7 @@ describe('/commands/get-available-applications', () => {
 
 describe('/commands/get-available-tasks-for-application', () => {
   it('retrieves the list of all available tasks for an application correctly', async () => {
-    await loadTasksInDb();
+    await dbLoader.loadTasksInDb();
 
     const request = httpMocks.createRequest({
       method: 'GET',

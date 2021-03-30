@@ -4,29 +4,7 @@ const mongoose = require('mongoose');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const socketHelperFunctions = require('./socketHelperFunctions');
 const testData = require('../utils/TestingUtils/testData');
-
-const SsotModel = mongoose.model('SSoT');
-const UserAccessObjectModel = mongoose.model('userAccessObject');
-const JobModel = mongoose.model('job');
-
-const loadSsotInDb = async () => {
-  const ssot = new SsotModel(testData.testSsot);
-  await ssot.save();
-};
-
-const loadUserAccessObjectsInDb = async () => {
-  const userAccessObject = UserAccessObjectModel(testData.testUserAccessObject);
-  await userAccessObject.save();
-  const userAccessObject2 = UserAccessObjectModel(
-    testData.testUserAccessObject2
-  );
-  await userAccessObject2.save();
-};
-
-const loadJobInDb = async () => {
-  const job = new JobModel(testData.testJob);
-  await job.save();
-};
+const dbLoader = require('../utils/TestingUtils/databaseLoader');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -45,7 +23,9 @@ afterAll(async () => dbHandler.closeDatabase());
 
 describe('robot code retrieval', () => {
   it('sucessfully retreives the roboto code', async () => {
-    await loadSsotInDb();
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
 
     const robotCode = await socketHelperFunctions.getRobotCode(testData.ssotId);
     expect(robotCode).not.toBeUndefined();
@@ -57,7 +37,7 @@ describe('robot code retrieval', () => {
 
 describe('user id retrieval', () => {
   it('sucessfully retreives all the user ids from the existing user access objects', async () => {
-    await loadUserAccessObjectsInDb();
+    await dbLoader.loadUserAccessObjectsInDb();
 
     const userIds = await socketHelperFunctions.getAllUserIds();
     expect(userIds).not.toBeUndefined();
@@ -86,7 +66,7 @@ describe('job creation', () => {
 
 describe('updating of job status', () => {
   it('sucessfully updates a job', async () => {
-    await loadJobInDb();
+    await dbLoader.loadJobInDb();
 
     await socketHelperFunctions.updateRobotJobStatus(
       testData.testJob._id,
@@ -103,7 +83,7 @@ describe('updating of job status', () => {
 
 describe('getting all jobs for user', () => {
   it('sucessfully gets all jobs for user', async () => {
-    await loadJobInDb();
+    await dbLoader.loadJobInDb();
 
     const jobList = await socketHelperFunctions.getAllWaitingJobsForUser(
       testData.userId

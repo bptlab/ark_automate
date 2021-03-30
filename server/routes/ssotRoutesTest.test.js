@@ -3,42 +3,10 @@
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbLoader = require('../utils/TestingUtils/databaseLoader');
 const ssotRetrievalController = require('../controllers/ssotRetrievalController');
 const ssotParsingController = require('../controllers/ssotParsingController');
 const testData = require('../utils/TestingUtils/testData');
-
-const SsotModel = mongoose.model('SSoT');
-const UserAccessObjectModel = mongoose.model('userAccessObject');
-
-const loadSsotInDb = async () => {
-  const ssot = new SsotModel(testData.testSsot);
-  await ssot.save();
-};
-
-const loadUserAccessObjectInDb = async () => {
-  const userAccessObject = UserAccessObjectModel(testData.testUserAccessObject);
-  await userAccessObject.save();
-};
-
-const loadAttributesInDb = async () => {
-  const RpaAttribute = mongoose.model('rpaAttributes');
-  const rpaAttribute = new RpaAttribute(testData.testAttributes1);
-  await rpaAttribute.save();
-  const rpaAttribute2 = new RpaAttribute(testData.testAttributes2);
-  await rpaAttribute2.save();
-  const rpaAttribute3 = new RpaAttribute(testData.testAttributes3);
-  await rpaAttribute3.save();
-};
-
-const loadParametersInDb = async () => {
-  const RpaParam = mongoose.model('parameter');
-  const rpaParamter = new RpaParam(testData.testParameter1);
-  await rpaParamter.save();
-  const rpaParamter2 = new RpaParam(testData.testParameter2);
-  await rpaParamter2.save();
-  const rpaParamter3 = new RpaParam(testData.testParameter3);
-  await rpaParamter3.save();
-};
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -57,8 +25,8 @@ afterAll(async () => dbHandler.closeDatabase());
 
 describe('/ssot/getAvailableRobotsForUser', () => {
   it('retreives the list of robots for user correctly', async () => {
-    await loadSsotInDb();
-    await loadUserAccessObjectInDb();
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadUserAccessObjectsInDb();
 
     const request = httpMocks.createRequest({
       method: 'GET',
@@ -97,7 +65,7 @@ describe('/ssot/getAvailableRobotsForUser', () => {
 
 describe('ssot/get/:id', () => {
   it('retreives a ssot by id correctly', async () => {
-    await loadSsotInDb();
+    await dbLoader.loadSsotInDb();
 
     const request = httpMocks.createRequest({
       method: 'GET',
@@ -118,7 +86,7 @@ describe('ssot/get/:id', () => {
 
 describe('ssot/renameRobot', () => {
   it('sets the robotName to the requested string', async () => {
-    await loadSsotInDb();
+    await dbLoader.loadSsotInDb();
 
     const request = httpMocks.createRequest({
       method: 'GET',
@@ -158,7 +126,7 @@ describe('ssot/renameRobot', () => {
 
 describe('ssot/retrieveRobotMetadata', () => {
   it('gets the correct robot metadata', async () => {
-    await loadSsotInDb();
+    await dbLoader.loadSsotInDb();
 
     const request = httpMocks.createRequest({
       method: 'GET',
@@ -206,10 +174,13 @@ describe('ssot/shareRobotWithUser', () => {
     );
 
     // verify if really in DB
-    const userAccessObject = await UserAccessObjectModel.find({
-      userId: testData.userId,
-      robotId: testData.ssotId,
-    }).exec();
+    const userAccessObject = await mongoose
+      .model('userAccessObject')
+      .find({
+        userId: testData.userId,
+        robotId: testData.ssotId,
+      })
+      .exec();
     expect(JSON.stringify(userAccessObject[0].robotId)).toBe(
       JSON.stringify(testData.ssotId)
     );
@@ -256,8 +227,8 @@ describe('ssot/createNewRobot', () => {
 
 describe('ssot/getRobotCode', () => {
   it('successfully retrieves parsed code for ssot', async () => {
-    await loadAttributesInDb();
-    await loadParametersInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
 
     const request = httpMocks.createRequest({
       method: 'GET',

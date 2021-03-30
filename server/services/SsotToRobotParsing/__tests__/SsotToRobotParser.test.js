@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const parser = require('../SsotToRobotParser');
 const testSsot = require('./SsotForTesting.json');
 const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');
-const testData = require('../../../utils/TestingUtils/testData');
+const dbLoader = require('../../../utils/TestingUtils/databaseLoader')
 
 const EXCEL1_ACTIVITY_NAME = 'FirstActivity';
 const OPEN_WORKBOOK_CMD = 'Open Workbook';
@@ -21,26 +21,6 @@ const LIBRARY_BROWSER = 'Library    RPA.Browser';
 const SETTING_STRING = '*** Settings ***';
 const TASK_STRING = '*** Tasks ***';
 
-const loadAttributesInDb = async () => {
-  const RpaAttribute = mongoose.model('rpaAttributes');
-  const rpaAttribute = new RpaAttribute(testData.testAttributes1);
-  await rpaAttribute.save();
-  const rpaAttribute2 = new RpaAttribute(testData.testAttributes2);
-  await rpaAttribute2.save();
-  const rpaAttribute3 = new RpaAttribute(testData.testAttributes3);
-  await rpaAttribute3.save();
-};
-
-const loadParametersInDb = async () => {
-  const RpaParam = mongoose.model('parameter');
-  const rpaParamter = new RpaParam(testData.testParameter1);
-  await rpaParamter.save();
-  const rpaParamter2 = new RpaParam(testData.testParameter2);
-  await rpaParamter2.save();
-  const rpaParamter3 = new RpaParam(testData.testParameter3);
-  await rpaParamter3.save();
-};
-
 /**
  * Connect to a new in-memory database before running any tests.
  */
@@ -58,8 +38,8 @@ afterAll(async () => dbHandler.closeDatabase());
 
 describe('Ssot Parsing', () => {
   it('parses all the elements of the ssot correctly', async () => {
-    await loadAttributesInDb();
-    await loadParametersInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
 
     const parserResultString = await parser.parseSsotToRobotCode(testSsot);
 
@@ -80,8 +60,8 @@ describe('Ssot Parsing', () => {
   });
 
   it('parses all the elements of the ssot in the correct order', async () => {
-    await loadAttributesInDb();
-    await loadParametersInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
 
     const parserResultString = await parser.parseSsotToRobotCode(testSsot);
 
