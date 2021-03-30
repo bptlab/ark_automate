@@ -40,13 +40,21 @@ const RobotOverview = () => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
-    socket.emit('joinUserRoom', userId);
-    socket.on('successUserRoomConnection', (message) => message);
-    socket.on('errorUserRoomConnection', (message) => message);
-    socket.on('newClientJoinedUserRoom', (message) => message);
     initSessionStorage('CurrentUserId', '80625d115100a2ee8d8e695b');
     retrieveBotList(userId);
   }, []);
+
+  /**
+   * @description The socket will join a new user room whenever the userId state changes
+   */
+  useEffect(() => {
+    socket.emit('joinUserRoom', userId);
+    socket.on('successUserRoomConnection', (message) => {
+      console.log(message);
+    });
+    socket.on('errorUserRoomConnection', (message) => message);
+    socket.on('newClientJoinedUserRoom', (message) => message);
+  }, [userId]);
 
   /**
    * @description Updates the current user id in the session storage and sets the state variable userId to the new value
