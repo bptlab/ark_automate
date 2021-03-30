@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import styles from './RobotContainer.module.css';
 import corporateDesign from '../../../layout/corporateDesign';
 
-
 const { Title } = Typography;
 
 /**
@@ -14,8 +13,7 @@ const { Title } = Typography;
  * @category Client
  */
 const CreateRobotContainer = (props) => {
-
-    const addRobot = () => alert('Unfortunately this is currently not supported.'); //props.createNewRobot();
+  const addRobot = () => props.createNewRobot();
 
     return (
         <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
