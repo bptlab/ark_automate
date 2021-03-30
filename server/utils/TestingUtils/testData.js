@@ -61,6 +61,81 @@ const testJob = {
   parameters: [],
 };
 
+const testAttributes1 = {
+  _id: '6062f0ad1abb38158c2dfa41',
+  activityId: 'Activity_1elomab',
+  ssotId: '606199015d691786a44a608f',
+  rpaApplication: 'Excel.Application',
+  rpaTask: 'Open Workbook',
+};
+
+const testAttributes2 = {
+  _id: '6062f0ad1abb38158c2dfa42',
+  activityId: 'Activity_175v5b5',
+  ssotId:'606199015d691786a44a608f',
+  rpaApplication: 'Excel.Application',
+  rpaTask: 'Find Empty Row',
+};
+
+const testAttributes3 = {
+  _id: '6062f0ad1abb38158c2dfa43',
+  activityId: 'Activity_1x8wlwh',
+  ssotId: '606199015d691786a44a608f',
+  rpaApplication: 'Browser',
+  rpaTask: 'Open Browser',
+};
+
+const testParameter1 = {
+  _id: '6062f0ad1abb38158c2dfa69',
+  activityId: 'Activity_1elomab',
+  ssotId: '606199015d691786a44a608f',
+  rpaParameters: [
+    {
+      _id: '6062f0ad92ffd3044c6ee389',
+      name: 'filename',
+      type: 'String',
+      isRequired: true,
+      infoText: 'Path to filename',
+      index: 0,
+      value: 'C://Users/Filepath',
+    },
+  ],
+};
+
+const testParameter2 = {
+  _id: '6062f0ad1abb38158c2dfa68',
+  activityId: 'Activity_175v5b5',
+  ssotId: '606199015d691786a44a608f',
+  rpaParameters: [
+    {
+      _id: '6062f0ad92ffd3044c6ee388',
+      name: 'filename',
+      type: 'String',
+      isRequired: true,
+      infoText: 'Find Empty Row',
+      index: 0,
+      value: 'StonksOnlyGoUp.xls',
+    },
+  ],
+};
+
+const testParameter3 = {
+  _id: '6062f0ad1abb38158c2dfa67',
+  activityId: 'Activity_1x8wlwh',
+  ssotId: '606199015d691786a44a608f',
+  rpaParameters: [
+    {
+      _id: '6062f0ad92ffd3044c6ee387',
+      name: 'save_changes',
+      type: 'Boolean',
+      isRequired: true,
+      infoText: 'Open Browser',
+      index: 0,
+      value: 'http://localhost:3000',
+    },
+  ],
+};
+
 module.exports = {
   testSsot,
   testUserAccessObject,
@@ -72,4 +147,10 @@ module.exports = {
   testRpaTask2,
   testRpaTask3,
   testJob,
+  testAttributes1,
+  testAttributes2,
+  testAttributes3,
+  testParameter1,
+  testParameter2,
+  testParameter3,
 };
