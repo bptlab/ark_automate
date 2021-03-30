@@ -17,19 +17,17 @@ const FOURSPACE = '    ';
  * @param {Object} currentElement Element to check
  * @returns {Boolean} Value specifies if object is of type instruction and contains rpa attributes
  */
-const isAnRpaInstruction = (currentElement) => (
-  currentElement.type === ACTIVITY_IDENTIFIER
-)
+const isAnRpaInstruction = (currentElement) =>
+  currentElement.type === ACTIVITY_IDENTIFIER;
 
 /**
  * @description Checks whether the given element has a successor element
  * @param {Object} currentElement Element to check
  * @returns {Boolean} Value specifies if element has a successor element
  */
-const successorTasksExist = (currentElement) => (
+const successorTasksExist = (currentElement) =>
   currentElement.successorIds !== undefined &&
-  currentElement.successorIds[0] !== ''
-)
+  currentElement.successorIds[0] !== '';
 
 /**
  * @description Will append all provided parameters to a string which can be used to generate the RPAf file
@@ -39,10 +37,15 @@ const successorTasksExist = (currentElement) => (
 const appendRpaInputParameter = (parameterObject) => {
   let newCodeLine = '';
 
-  const sortedInputs = parameterObject.rpaParameters.sort((a, b) => (a.index - b.index));
+  const sortedInputs = parameterObject.rpaParameters.sort(
+    (a, b) => a.index - b.index
+  );
   sortedInputs.forEach((parameter) => {
     // regex will return -1 if no $$text$$ was found
-    newCodeLine += (parameter.value.search(/\$\$(.*?)\$\$/) < 0) ? `${FOURSPACE}${parameter.value}` : `${FOURSPACE}$\{${parameter.value.split('$$')[1]}\}`;
+    newCodeLine +=
+      parameter.value.search(/\$\$(.*?)\$\$/) < 0
+        ? `${FOURSPACE}${parameter.value}`
+        : `${FOURSPACE}$\{${parameter.value.split('$$')[1]}\}`;
   });
 
   return newCodeLine;
@@ -84,16 +87,25 @@ const writeCodeForElement = (
   let newCodeLine = '';
   let newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
-    const currentAttributeObject = attributes.find((attribute) => attribute.activityId === id);
+    const currentAttributeObject = attributes.find(
+      (attribute) => attribute.activityId === id
+    );
     if (currentAttributeObject.rpaApplication !== previousApplication) {
-      newPreviousApplication = currentElement.rpaApplication;
+      newPreviousApplication = currentAttributeObject.rpaApplication;
+      newCodeLine += currentElement.name + LINEBREAK;
+    } else {
+      newPreviousApplication = previousApplication;
     }
-    const currentParameterObject = parameters.find((parameter) => parameter.activityId === id);
-    newCodeLine += currentElement.name + LINEBREAK;
-    newCodeLine += setOutputVar(currentParameterObject);
+    const currentParameterObject = parameters.find(
+      (parameter) => parameter.activityId === id
+    );
+    if (currentParameterObject) {
+      newCodeLine += setOutputVar(currentParameterObject);
+    }
     newCodeLine += currentAttributeObject.rpaTask;
-
-    newCodeLine += appendRpaInputParameter(currentParameterObject);
+    if (currentParameterObject) {
+      newCodeLine += appendRpaInputParameter(currentParameterObject);
+    }
 
     newCodeLine += LINEBREAK;
     combinedCode += newCodeLine;
@@ -147,8 +159,10 @@ const collectApplications = (elements) => {
   const applications = [];
   if (elements !== undefined && elements.length > 0) {
     elements.forEach((element) => {
-      if (element.rpaApplication !== undefined &&
-        !applications.includes(element.rpaApplication)) {
+      if (
+        element.rpaApplication !== undefined &&
+        !applications.includes(element.rpaApplication)
+      ) {
         applications.push(element.rpaApplication);
       }
     });
@@ -194,12 +208,12 @@ const retrieveParameters = async (ssot) => {
     .find(
       {
         ssotId: id,
-        activityId: { $in: listOfActivityIds }
+        activityId: { $in: listOfActivityIds },
       },
       {
         activityId: 1,
         rpaParameters: 1,
-        outputVariable: 1
+        outputVariable: 1,
       }
     )
     .exec();
@@ -225,12 +239,10 @@ const retrieveAttributes = async (ssot) => {
 
   const attributeObjects = await mongoose
     .model('rpaAttributes')
-    .find(
-      {
-        ssotId: id,
-        activityId: { $in: listOfActivityIds }
-      }
-    )
+    .find({
+      ssotId: id,
+      activityId: { $in: listOfActivityIds },
+    })
     .exec();
 
   return attributeObjects;
@@ -268,5 +280,5 @@ const parseSsotById = async (ssotId) => {
 
 module.exports = {
   parseSsotToRobotCode,
-  parseSsotById
+  parseSsotById,
 };
