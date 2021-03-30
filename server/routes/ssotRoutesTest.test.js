@@ -7,7 +7,6 @@ const ssotRetrievalController = require('../controllers/ssotRetrievalController'
 const ssotParsingController = require('../controllers/ssotParsingController');
 const testData = require('../utils/TestingUtils/testData');
 
-
 const SsotModel = mongoose.model('SSoT');
 const UserAccessObjectModel = mongoose.model('userAccessObject');
 
@@ -19,6 +18,26 @@ const loadSsotInDb = async () => {
 const loadUserAccessObjectInDb = async () => {
   const userAccessObject = UserAccessObjectModel(testData.testUserAccessObject);
   await userAccessObject.save();
+};
+
+const loadAttributesInDb = async () => {
+  const RpaAttribute = mongoose.model('rpaAttributes');
+  const rpaAttribute = new RpaAttribute(testData.testAttributes1);
+  await rpaAttribute.save();
+  const rpaAttribute2 = new RpaAttribute(testData.testAttributes2);
+  await rpaAttribute2.save();
+  const rpaAttribute3 = new RpaAttribute(testData.testAttributes3);
+  await rpaAttribute3.save();
+};
+
+const loadParametersInDb = async () => {
+  const RpaParam = mongoose.model('parameter');
+  const rpaParamter = new RpaParam(testData.testParameter1);
+  await rpaParamter.save();
+  const rpaParamter2 = new RpaParam(testData.testParameter2);
+  await rpaParamter2.save();
+  const rpaParamter3 = new RpaParam(testData.testParameter3);
+  await rpaParamter3.save();
 };
 
 /**
@@ -66,11 +85,11 @@ describe('/ssot/getAvailableRobotsForUser', () => {
       method: 'GET',
       url: '/ssot/getAvailableRobotsForUser',
       params: {
-        userId: "123"
+        userId: '123',
       },
     });
     const response = httpMocks.createResponse();
-    await ssotRetrievalController.getRobotList(request, response)
+    await ssotRetrievalController.getRobotList(request, response);
     expect(console.error).toHaveBeenCalledTimes(1);
     spy.mockRestore();
   });
@@ -237,6 +256,9 @@ describe('ssot/createNewRobot', () => {
 
 describe('ssot/getRobotCode', () => {
   it('successfully retrieves parsed code for ssot', async () => {
+    await loadAttributesInDb();
+    await loadParametersInDb();
+
     const request = httpMocks.createRequest({
       method: 'GET',
       url: '/ssot/getRobotCode',
