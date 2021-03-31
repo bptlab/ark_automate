@@ -49,9 +49,7 @@ const RobotOverview = () => {
    */
   useEffect(() => {
     socket.emit('joinUserRoom', userId);
-    socket.on('successUserRoomConnection', (message) => {
-      console.log(message);
-    });
+    socket.on('successUserRoomConnection', (message) => message);
     socket.on('errorUserRoomConnection', (message) => message);
     socket.on('newClientJoinedUserRoom', (message) => message);
   }, [userId]);
