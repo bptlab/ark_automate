@@ -6,7 +6,7 @@ const { parseString } = require('xmljs2');
  * @module
  */
 
-const SsotBaseObjects = require('./SsotBaseObjects');
+const SsotBaseObjects = require('../SsotBaseObjects');
 
 const ssotBaseElement = SsotBaseObjects.baseElement;
 
@@ -178,7 +178,7 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
     _id: robotId,
     starterId: startEventId[0],
     robotName,
-  }; 
+  };
 
   let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
   if (typeof flows === 'undefined') flows = [];

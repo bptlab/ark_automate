@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
+import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
 import getParsedRobotFile from '../../../api/ssot';
+import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
+import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';
 
@@ -35,9 +36,9 @@ const RobotFile = () => {
    * This function will retrieve the code from the editor, parse it to a ssot and write the
    * resulting ssot into the sessionStorage.
    */
-  const onSaveToCloud = async () => {
-    // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
+  const onSaveToCloud = /* async */ () => {
+    const ssot = parseRobotCodeToSsot(code);
+    console.log(ssot);
 
     /**
      * please parse here to ssot and upsert

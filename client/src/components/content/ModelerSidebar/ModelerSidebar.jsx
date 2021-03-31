@@ -8,8 +8,8 @@ import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
 import getParsedRobotFile from "../../../api/ssot";
 import downloadString from '../../../utils/downloadString';
 import { setSingleParameter, resetRpaApplication, setRpaTask, upsert, getParameterObject, setOutputValueName } from '../../../utils/attributeAndParamUtils';
-import parseSsotToBpmn from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
-import { parseBpmnToSsot } from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
+import parseSsotToBpmn from '../../../utils/parser/ssotToBpmnParsing/ssotToBpmnParsing';
+import { parseBpmnToSsot } from '../../../utils/parser/BpmnToSsotParsing/BpmnToSsotParsing';
 
 const { Title } = Typography;
 const { Sider } = Layout;
