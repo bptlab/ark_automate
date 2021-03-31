@@ -8,6 +8,7 @@ const ssotModels = require('../../models/singleSourceOfTruthModel.js');
 
 const ACTIVITY_IDENTIFIER = 'INSTRUCTION';
 const LINEBREAK = '\n';
+const COMMENT = '#';
 // eslint-disable-next-line no-unused-vars
 const DOUBLESPACE = '  ';
 const FOURSPACE = '    ';
@@ -92,10 +93,11 @@ const writeCodeForElement = (
     );
     if (currentAttributeObject.rpaApplication !== previousApplication) {
       newPreviousApplication = currentAttributeObject.rpaApplication;
-      newCodeLine += currentElement.name + LINEBREAK;
+      newCodeLine += currentAttributeObject.rpaApplication + LINEBREAK;
     } else {
       newPreviousApplication = previousApplication;
     }
+    newCodeLine += COMMENT + currentElement.name + LINEBREAK;
     const currentParameterObject = parameters.find(
       (parameter) => parameter.activityId === id
     );
