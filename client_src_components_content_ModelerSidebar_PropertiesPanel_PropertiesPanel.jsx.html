@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/pages/RobotFile/RobotFile.jsx</title>
+  <title> client/src/components/content/ModelerSidebar/PropertiesPanel/PropertiesPanel.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/pages/RobotFile/RobotFile.jsx</h1>
+                    <h1>client/src/components/content/ModelerSidebar/PropertiesPanel/PropertiesPanel.jsx</h1>
                 </header>
                 
 
@@ -85,88 +85,75 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
-import getParsedRobotFile from '../../../api/ssot';
-import 'prismjs/themes/prism.css';
-import styles from './RobotFile.module.css';
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { is } from 'bpmn-js/lib/util/ModelUtil';
+import { Space } from 'antd';
+import PropTypes from 'prop-types'
+
+import PPIdSection from './PropertiesPanelSections/PPIdSection';
+import PPTitle from './PropertiesPanelSections/PPTitleSection'
+import PPNameSection from './PropertiesPanelSections/PPNameSection';
+import PPParameterSection from './PropertiesPanelSections/PPParameterSection';
+import PPRpaSection from './PropertiesPanelSections/PPRpaSection';
+import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection'
 
 /**
- * @description View of the robot file
+ * @description Shows PropertiesPanel for one selected BPMN-Element.
  * @category Client
  * @component
  */
-const RobotFile = () => {
-  const [code, setCode] = useState(
-    'Please wait, your robot file is being loaded.'
-  );
+const PropertiesPanel = ({
+  element,
+  nameChanged,
+  applicationSelectionUpdated,
+  tasksForSelectedApplication,
+  selectedActivity,
+  taskSelectionUpdated,
+  disableTaskSelection,
+  variableList,
+  parameterSelectionUpdated,
+  outputVariableName,
+  outputNameUpdated
+}) => (
+  &lt; div className='element-properties' key={element.id} >
+    &lt;Space direction='vertical' style={{ width: '100%' }}>
+      &lt;PPTitle element={element} />
+      &lt;PPIdSection element={element} />
+      &lt;PPNameSection element={element} nameChanged={nameChanged} />
 
-  /**
-   * @description Equivalent to ComponentDidMount in class based components
-   */
-  useEffect(() => {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    getParsedRobotFile(robotId)
-      .then((response) => response.text())
-      .then((robotCode) => {
-        setCode(robotCode);
-      });
-  }, []);
+      {is(element, 'bpmn:Task') &amp;&amp; (
+        &lt;>
+          &lt;PPRpaSection
+            element={element}
+            applicationSelectionUpdated={applicationSelectionUpdated}
+            tasksForSelectedApplication={tasksForSelectedApplication}
+            taskSelectionUpdated={taskSelectionUpdated}
+            disableTaskSelection={disableTaskSelection}
+            selectedActivity={selectedActivity}
+          />
+          {((variableList.length > 0) &amp;&amp; &lt;PPParameterSection variableList={variableList} onValueChange={parameterSelectionUpdated} />)}
+          {(outputVariableName &amp;&amp; &lt;PPOutputValueSection outputVariableText={outputVariableName} onNameChange={outputNameUpdated} />)}
+        &lt;/>
+      )}
+    &lt;/Space>
+  &lt;/div >
+);
 
-  /**
-   * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the code from the editor, parse it to a ssot and write the
-   * resulting ssot into the sessionStorage.
-   */
-  const onSaveToCloud = async () => {
-    // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
-  };
-
-  return (
-    &lt;Layout>
-      &lt;HeaderNavbar selectedKey={3} />
-      &lt;Row justify='center' width='100%'>
-        &lt;Col xs={24} sm={24} md={20}>
-          &lt;Space
-            direction='vertical'
-            size='middle'
-            style={{ padding: '1rem', width: '100%' }}
-          >
-            &lt;Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            &lt;/Button>
-            &lt;Editor
-              value={code}
-              onValueChange={(newCode) => setCode(newCode)}
-              highlight={(highlightCode) =>
-                highlight(highlightCode, languages.robotframework)
-              }
-              padding='1rem'
-              className={styles.editor}
-              tabsize={4}
-            />
-          &lt;/Space>
-        &lt;/Col>
-      &lt;/Row>
-    &lt;/Layout>
-  );
+PropertiesPanel.propTypes = {
+  element: PropTypes.objectOf(PropTypes.shape).isRequired,
+  nameChanged: PropTypes.func.isRequired,
+  applicationSelectionUpdated: PropTypes.func.isRequired,
+  tasksForSelectedApplication: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  taskSelectionUpdated: PropTypes.func.isRequired,
+  selectedActivity: PropTypes.string.isRequired,
+  disableTaskSelection: PropTypes.bool.isRequired,
+  variableList: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  parameterSelectionUpdated: PropTypes.func.isRequired,
+  outputVariableName: PropTypes.string.isRequired,
+  outputNameUpdated: PropTypes.func.isRequired,
 };
 
-export default RobotFile;
+export default PropertiesPanel;
 </code></pre>
         </article>
     </section>

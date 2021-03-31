@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/api/applicationAndTaskSelection</title>
+  <title> client/src/api/ssotRetrieval</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>client/src/api/applicationAndTaskSelection</h1>
+                    <h1>client/src/api/ssotRetrieval</h1>
                 </header>
                 
 
@@ -121,8 +121,8 @@
 
 
     
-    <h4 class="name" id="~fetchParametersForApplicationAndTask">
-        <a class="href-link" href="#~fetchParametersForApplicationAndTask">#</a>
+    <h4 class="name" id="~changeSsotName">
+        <a class="href-link" href="#~changeSsotName">#</a>
         
             
                 <span class='tag'>async</span>
@@ -132,7 +132,7 @@
         
         <span class="code-name">
             
-                fetchParametersForApplicationAndTask<span class="signature">(application, task)</span><span class="type-signature"></span>
+                changeSsotName<span class="signature">(ssotId, newName)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -141,7 +141,7 @@
     
     
     <div class="description">
-        Fetch parameters for a specific applicationa and task
+        This function renames the robot in Ssot
     </div>
     
 
@@ -179,7 +179,7 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>application</code></td>
+      <td class="name"><code>ssotId</code></td>
   
 
   <td class="type">
@@ -195,7 +195,7 @@
 
   
 
-  <td class="description last">String with currently selected application from ApplicationDropdown</td>
+  <td class="description last">String including the ssotId</td>
 </tr>
 
 
@@ -204,7 +204,7 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>task</code></td>
+      <td class="name"><code>newName</code></td>
   
 
   <td class="type">
@@ -220,7 +220,7 @@
 
   
 
-  <td class="description last">String with currently selected task from TaskDropdown</td>
+  <td class="description last">String with the new RobotName</td>
 </tr>
 
 
@@ -266,9 +266,9 @@
 
     
         <p class="tag-source">
-            <a href="client_src_api_applicationAndTaskSelection.js.html" class="button">View Source</a>
+            <a href="client_src_api_ssotRetrieval.js.html" class="button">View Source</a>
             <span>
-                <a href="client_src_api_applicationAndTaskSelection.js.html">client/src/api/applicationAndTaskSelection.js</a>, <a href="client_src_api_applicationAndTaskSelection.js.html#line35">line 35</a>
+                <a href="client_src_api_ssotRetrieval.js.html">client/src/api/ssotRetrieval.js</a>, <a href="client_src_api_ssotRetrieval.js.html#line31">line 31</a>
             </span>
         </p>
     
@@ -300,8 +300,8 @@
 
 
     
-    <h4 class="name" id="~fetchTasksFromDB">
-        <a class="href-link" href="#~fetchTasksFromDB">#</a>
+    <h4 class="name" id="~createNewRobot">
+        <a class="href-link" href="#~createNewRobot">#</a>
         
             
                 <span class='tag'>async</span>
@@ -311,7 +311,7 @@
         
         <span class="code-name">
             
-                fetchTasksFromDB<span class="signature">(application)</span><span class="type-signature"></span>
+                createNewRobot<span class="signature">(newName)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -320,7 +320,7 @@
     
     
     <div class="description">
-        Fetch tasklist from Mongo-DB
+        Create a new robot with the specified name for the specified user
     </div>
     
 
@@ -358,7 +358,7 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>application</code></td>
+      <td class="name"><code>newName</code></td>
   
 
   <td class="type">
@@ -374,7 +374,7 @@
 
   
 
-  <td class="description last">String with currently selected application from ApplicationDropdown</td>
+  <td class="description last">String including the user Id</td>
 </tr>
 
 
@@ -420,9 +420,9 @@
 
     
         <p class="tag-source">
-            <a href="client_src_api_applicationAndTaskSelection.js.html" class="button">View Source</a>
+            <a href="client_src_api_ssotRetrieval.js.html" class="button">View Source</a>
             <span>
-                <a href="client_src_api_applicationAndTaskSelection.js.html">client/src/api/applicationAndTaskSelection.js</a>, <a href="client_src_api_applicationAndTaskSelection.js.html#line10">line 10</a>
+                <a href="client_src_api_ssotRetrieval.js.html">client/src/api/ssotRetrieval.js</a>, <a href="client_src_api_ssotRetrieval.js.html#line52">line 52</a>
             </span>
         </p>
     
@@ -454,8 +454,8 @@
 
 
     
-    <h4 class="name" id="~getAvailableApplications">
-        <a class="href-link" href="#~getAvailableApplications">#</a>
+    <h4 class="name" id="~fetchSsotsForUser">
+        <a class="href-link" href="#~fetchSsotsForUser">#</a>
         
             
                 <span class='tag'>async</span>
@@ -465,7 +465,7 @@
         
         <span class="code-name">
             
-                getAvailableApplications<span class="signature">()</span><span class="type-signature"></span>
+                fetchSsotsForUser<span class="signature">(userId)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -474,7 +474,7 @@
     
     
     <div class="description">
-        Fetch all applications from MongoDB
+        Fetch all those Ssot names and Ids, which are available for the current user
     </div>
     
 
@@ -485,6 +485,57 @@
 
 
 
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>userId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the user Id</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -523,9 +574,317 @@
 
     
         <p class="tag-source">
-            <a href="client_src_api_applicationAndTaskSelection.js.html" class="button">View Source</a>
+            <a href="client_src_api_ssotRetrieval.js.html" class="button">View Source</a>
             <span>
-                <a href="client_src_api_applicationAndTaskSelection.js.html">client/src/api/applicationAndTaskSelection.js</a>, <a href="client_src_api_applicationAndTaskSelection.js.html#line23">line 23</a>
+                <a href="client_src_api_ssotRetrieval.js.html">client/src/api/ssotRetrieval.js</a>, <a href="client_src_api_ssotRetrieval.js.html#line20">line 20</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getSsotFromDB">
+        <a class="href-link" href="#~getSsotFromDB">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getSsotFromDB<span class="signature">(robotId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Fetch the ssot correlating to the specified Id
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>robotId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the Id of the robot to be retrieved</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="client_src_api_ssotRetrieval.js.html" class="button">View Source</a>
+            <span>
+                <a href="client_src_api_ssotRetrieval.js.html">client/src/api/ssotRetrieval.js</a>, <a href="client_src_api_ssotRetrieval.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~retrieveMetadataForRobot">
+        <a class="href-link" href="#~retrieveMetadataForRobot">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                retrieveMetadataForRobot<span class="signature">(robotId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Fetches all the Metadata for a single Robot
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>robotId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the robotId</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="client_src_api_ssotRetrieval.js.html" class="button">View Source</a>
+            <span>
+                <a href="client_src_api_ssotRetrieval.js.html">client/src/api/ssotRetrieval.js</a>, <a href="client_src_api_ssotRetrieval.js.html#line42">line 42</a>
             </span>
         </p>
     

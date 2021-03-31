@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/api/applicationAndTaskSelection</title>
+  <title> client/src/api/variableRetrieval</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>client/src/api/applicationAndTaskSelection</h1>
+                    <h1>client/src/api/variableRetrieval</h1>
                 </header>
                 
 
@@ -121,8 +121,8 @@
 
 
     
-    <h4 class="name" id="~fetchParametersForApplicationAndTask">
-        <a class="href-link" href="#~fetchParametersForApplicationAndTask">#</a>
+    <h4 class="name" id="~checkRobotForExistingVariables">
+        <a class="href-link" href="#~checkRobotForExistingVariables">#</a>
         
             
                 <span class='tag'>async</span>
@@ -132,7 +132,7 @@
         
         <span class="code-name">
             
-                fetchParametersForApplicationAndTask<span class="signature">(application, task)</span><span class="type-signature"></span>
+                checkRobotForExistingVariables<span class="signature">(robotId, activityId)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -141,7 +141,7 @@
     
     
     <div class="description">
-        Fetch parameters for a specific applicationa and task
+        Fetch all variables for an existing activity
     </div>
     
 
@@ -179,6 +179,439 @@
             
 <tr class="deep-level-0">
   
+      <td class="name"><code>robotId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the Id of the robot</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>activityId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the Id of the activity</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="client_src_api_variableRetrieval.js.html" class="button">View Source</a>
+            <span>
+                <a href="client_src_api_variableRetrieval.js.html">client/src/api/variableRetrieval.js</a>, <a href="client_src_api_variableRetrieval.js.html#line32">line 32</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~updateVariablesForRobot">
+        <a class="href-link" href="#~updateVariablesForRobot">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                updateVariablesForRobot<span class="signature">(robotId, activityId, newVariableList)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Will update the variables for the specified activity
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>robotId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the Id of the robbot</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>activityId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the Id of the activity</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>newVariableList</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Array of the variables which will be used to update the ssot</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="client_src_api_variableRetrieval.js.html" class="button">View Source</a>
+            <span>
+                <a href="client_src_api_variableRetrieval.js.html">client/src/api/variableRetrieval.js</a>, <a href="client_src_api_variableRetrieval.js.html#line46">line 46</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~variablesForNewTask">
+        <a class="href-link" href="#~variablesForNewTask">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                variablesForNewTask<span class="signature">(robotId, activityId, application, task)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Will retrieve the needed variables for a new application/task tuple and return that, as well as updating the ssot with those new variables
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>robotId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the Id of the robot</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>activityId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">String including the Id of the activity</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
       <td class="name"><code>application</code></td>
   
 
@@ -195,7 +628,7 @@
 
   
 
-  <td class="description last">String with currently selected application from ApplicationDropdown</td>
+  <td class="description last">String including the application</td>
 </tr>
 
 
@@ -220,7 +653,7 @@
 
   
 
-  <td class="description last">String with currently selected task from TaskDropdown</td>
+  <td class="description last">String including the task</td>
 </tr>
 
 
@@ -266,266 +699,9 @@
 
     
         <p class="tag-source">
-            <a href="client_src_api_applicationAndTaskSelection.js.html" class="button">View Source</a>
+            <a href="client_src_api_variableRetrieval.js.html" class="button">View Source</a>
             <span>
-                <a href="client_src_api_applicationAndTaskSelection.js.html">client/src/api/applicationAndTaskSelection.js</a>, <a href="client_src_api_applicationAndTaskSelection.js.html#line35">line 35</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~fetchTasksFromDB">
-        <a class="href-link" href="#~fetchTasksFromDB">#</a>
-        
-            
-                <span class='tag'>async</span>
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                fetchTasksFromDB<span class="signature">(application)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Fetch tasklist from Mongo-DB
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-<div class="table-container">
-    <table class="params table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-
-            
-<tr class="deep-level-0">
-  
-      <td class="name"><code>application</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">String</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last">String with currently selected application from ApplicationDropdown</td>
-</tr>
-
-
-        
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="client_src_api_applicationAndTaskSelection.js.html" class="button">View Source</a>
-            <span>
-                <a href="client_src_api_applicationAndTaskSelection.js.html">client/src/api/applicationAndTaskSelection.js</a>, <a href="client_src_api_applicationAndTaskSelection.js.html#line10">line 10</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~getAvailableApplications">
-        <a class="href-link" href="#~getAvailableApplications">#</a>
-        
-            
-                <span class='tag'>async</span>
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                getAvailableApplications<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        Fetch all applications from MongoDB
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="client_src_api_applicationAndTaskSelection.js.html" class="button">View Source</a>
-            <span>
-                <a href="client_src_api_applicationAndTaskSelection.js.html">client/src/api/applicationAndTaskSelection.js</a>, <a href="client_src_api_applicationAndTaskSelection.js.html#line23">line 23</a>
+                <a href="client_src_api_variableRetrieval.js.html">client/src/api/variableRetrieval.js</a>, <a href="client_src_api_variableRetrieval.js.html#line13">line 13</a>
             </span>
         </p>
     

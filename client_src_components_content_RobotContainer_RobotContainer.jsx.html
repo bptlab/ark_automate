@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/pages/RobotFile/RobotFile.jsx</title>
+  <title> client/src/components/content/RobotContainer/RobotContainer.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/pages/RobotFile/RobotFile.jsx</h1>
+                    <h1>client/src/components/content/RobotContainer/RobotContainer.jsx</h1>
                 </header>
                 
 
@@ -85,88 +85,92 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
-import getParsedRobotFile from '../../../api/ssot';
-import 'prismjs/themes/prism.css';
-import styles from './RobotFile.module.css';
+            <pre class="prettyprint source linenums"><code>/* eslint-disable no-alert */
+import React, { useState } from 'react';
+import { Col, Row, Typography } from 'antd';
+import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import socket from '../../../utils/socket/socketConnections';
+import styles from './RobotContainer.module.css';
+import { changeSsotName } from '../../../api/ssotRetrieval';
+
+const { Title } = Typography;
 
 /**
- * @description View of the robot file
- * @category Client
  * @component
+ * @description Provides a prototype-box for all robots to be displayed in the Robot Overview
+ * @category Client
  */
-const RobotFile = () => {
-  const [code, setCode] = useState(
-    'Please wait, your robot file is being loaded.'
-  );
+const RobotContainer = (props) => {
+  const { robotId, robotName, userId } = props;
+  const [name, setRobotName] = useState(robotName);
 
   /**
-   * @description Equivalent to ComponentDidMount in class based components
+   * @description Sends a job to the server to execute a specfic robot for a specific user
    */
-  useEffect(() => {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    getParsedRobotFile(robotId)
-      .then((response) => response.text())
-      .then((robotCode) => {
-        setCode(robotCode);
+  const startRobot = () => {
+    // isBotExecutable function is to be implemented
+    const isBotExecutable = true;
+    if (isBotExecutable) {
+      socket.emit('robotExecutionJobs', { robotId, userId });
+    } else {
+      alert('Your Bot is not fully configured and can not be executed!');
+    }
+  };
+
+  /**
+   * @description Updates the name of the robot in the backend and in the robot container
+   * @param {String} newRobotName New name of the robot
+   */
+  const renameRobot = (newRobotName) => {
+    changeSsotName(robotId, newRobotName)
+      .then(() => {
+        setRobotName(newRobotName);
+      })
+      .catch((error) => {
+        console.error(error);
       });
-  }, []);
-
-  /**
-   * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the code from the editor, parse it to a ssot and write the
-   * resulting ssot into the sessionStorage.
-   */
-  const onSaveToCloud = async () => {
-    // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
   };
 
   return (
-    &lt;Layout>
-      &lt;HeaderNavbar selectedKey={3} />
-      &lt;Row justify='center' width='100%'>
-        &lt;Col xs={24} sm={24} md={20}>
-          &lt;Space
-            direction='vertical'
-            size='middle'
-            style={{ padding: '1rem', width: '100%' }}
-          >
-            &lt;Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            &lt;/Button>
-            &lt;Editor
-              value={code}
-              onValueChange={(newCode) => setCode(newCode)}
-              highlight={(highlightCode) =>
-                highlight(highlightCode, languages.robotframework)
-              }
-              padding='1rem'
-              className={styles.editor}
-              tabsize={4}
+    &lt;Col xs={24} sm={12} md={8} xl={6} xxl={4}>
+      &lt;Col className={[styles.box, styles.robotBox]}>
+        &lt;Row align='middle' style={{ height: '55%' }}>
+          &lt;Col type='flex' span={12}>
+            &lt;PlayCircleOutlined
+              onClick={startRobot}
+              className={styles.clickableIcon}
             />
-          &lt;/Space>
-        &lt;/Col>
-      &lt;/Row>
-    &lt;/Layout>
+          &lt;/Col>
+          &lt;Col type='flex' span={12}>
+            &lt;Link to={`/modeler/${robotId}`}>
+              &lt;EditOutlined className={styles.clickableIcon} />
+            &lt;/Link>
+          &lt;/Col>
+        &lt;/Row>
+
+        &lt;Row justify='space-around' align='middle' style={{ height: '45%' }}>
+          &lt;Title
+            className={styles.title}
+            level={3}
+            editable={{ onChange: renameRobot }}
+          >
+            {name}
+          &lt;/Title>
+        &lt;/Row>
+      &lt;/Col>
+    &lt;/Col>
   );
 };
 
-export default RobotFile;
+RobotContainer.propTypes = {
+  robotName: PropTypes.string.isRequired,
+  robotId: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+};
+
+export default RobotContainer;
 </code></pre>
         </article>
     </section>

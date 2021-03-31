@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/pages/RobotFile/RobotFile.jsx</title>
+  <title> client/src/components/content/ModelerSidebar/PropertiesPanel/PropertiesPanelSections/PPTitleSection.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/pages/RobotFile/RobotFile.jsx</h1>
+                    <h1>client/src/components/content/ModelerSidebar/PropertiesPanel/PropertiesPanelSections/PPTitleSection.jsx</h1>
                 </header>
                 
 
@@ -85,88 +85,32 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
-import getParsedRobotFile from '../../../api/ssot';
-import 'prismjs/themes/prism.css';
-import styles from './RobotFile.module.css';
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { Typography } from 'antd';
+import styles from '../../ModelerSidebar.module.css';
+
+const { Text } = Typography;
 
 /**
- * @description View of the robot file
+ * @description Renders the corresponding title for selected BPMN element
  * @category Client
  * @component
  */
-const RobotFile = () => {
-  const [code, setCode] = useState(
-    'Please wait, your robot file is being loaded.'
-  );
+const PPTitleSection = (element) => {
+    let title = element.element.type;
+    title = title.replace('bpmn:', '');
 
-  /**
-   * @description Equivalent to ComponentDidMount in class based components
-   */
-  useEffect(() => {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    getParsedRobotFile(robotId)
-      .then((response) => response.text())
-      .then((robotCode) => {
-        setCode(robotCode);
-      });
-  }, []);
+    return (
+        &lt;Text
+            className={styles[`label-on-dark-background`]}
+            style={{ fontSize: '24px' }}
+        >
+            {title}
+        &lt;/Text>
+    );
+}
 
-  /**
-   * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the code from the editor, parse it to a ssot and write the
-   * resulting ssot into the sessionStorage.
-   */
-  const onSaveToCloud = async () => {
-    // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
-  };
-
-  return (
-    &lt;Layout>
-      &lt;HeaderNavbar selectedKey={3} />
-      &lt;Row justify='center' width='100%'>
-        &lt;Col xs={24} sm={24} md={20}>
-          &lt;Space
-            direction='vertical'
-            size='middle'
-            style={{ padding: '1rem', width: '100%' }}
-          >
-            &lt;Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            &lt;/Button>
-            &lt;Editor
-              value={code}
-              onValueChange={(newCode) => setCode(newCode)}
-              highlight={(highlightCode) =>
-                highlight(highlightCode, languages.robotframework)
-              }
-              padding='1rem'
-              className={styles.editor}
-              tabsize={4}
-            />
-          &lt;/Space>
-        &lt;/Col>
-      &lt;/Row>
-    &lt;/Layout>
-  );
-};
-
-export default RobotFile;
+export default PPTitleSection;
 </code></pre>
         </article>
     </section>

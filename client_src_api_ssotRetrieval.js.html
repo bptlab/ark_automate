@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/pages/RobotFile/RobotFile.jsx</title>
+  <title> client/src/api/ssotRetrieval.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/pages/RobotFile/RobotFile.jsx</h1>
+                    <h1>client/src/api/ssotRetrieval.js</h1>
                 </header>
                 
 
@@ -85,88 +85,71 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
-import getParsedRobotFile from '../../../api/ssot';
-import 'prismjs/themes/prism.css';
-import styles from './RobotFile.module.css';
+            <pre class="prettyprint source linenums"><code>/**
+ * @category Client
+ * @module
+ */
 
 /**
- * @description View of the robot file
- * @category Client
- * @component
- */
-const RobotFile = () => {
-  const [code, setCode] = useState(
-    'Please wait, your robot file is being loaded.'
-  );
-
-  /**
-   * @description Equivalent to ComponentDidMount in class based components
-   */
-  useEffect(() => {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    getParsedRobotFile(robotId)
-      .then((response) => response.text())
-      .then((robotCode) => {
-        setCode(robotCode);
-      });
-  }, []);
-
-  /**
-   * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the code from the editor, parse it to a ssot and write the
-   * resulting ssot into the sessionStorage.
-   */
-  const onSaveToCloud = async () => {
-    // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
-  };
-
-  return (
-    &lt;Layout>
-      &lt;HeaderNavbar selectedKey={3} />
-      &lt;Row justify='center' width='100%'>
-        &lt;Col xs={24} sm={24} md={20}>
-          &lt;Space
-            direction='vertical'
-            size='middle'
-            style={{ padding: '1rem', width: '100%' }}
-          >
-            &lt;Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            &lt;/Button>
-            &lt;Editor
-              value={code}
-              onValueChange={(newCode) => setCode(newCode)}
-              highlight={(highlightCode) =>
-                highlight(highlightCode, languages.robotframework)
-              }
-              padding='1rem'
-              className={styles.editor}
-              tabsize={4}
-            />
-          &lt;/Space>
-        &lt;/Col>
-      &lt;/Row>
-    &lt;/Layout>
-  );
+* @description Fetch the ssot correlating to the specified Id
+* @param { String } robotId - String including the Id of the robot to be retrieved
+*/
+const getSsotFromDB = async (robotId) => {
+  const requestString = `/ssot/get/${robotId}`;
+  const response = await fetch(requestString);
+  return response;
 };
 
-export default RobotFile;
+/**
+* @description Fetch all those Ssot names and Ids, which are available for the current user
+* @param { String } userId - String including the user Id
+*/
+const fetchSsotsForUser = async (userId) => {
+  const requestString = `/ssot/getAvailableRobotsForUser/${userId}`;
+  const response = await fetch(requestString);
+  return response;
+};
+
+/** 
+* @description This function renames the robot in Ssot
+* @param { String } ssotId - String including the ssotId
+* @param { String } newName - String with the new RobotName
+*/
+const changeSsotName = async (ssotId, newName) => {
+  const adjustedName = newName.replace(/\s/g, '+');
+  const requestString = `/ssot/renameRobot?id=${ssotId}&amp;newName=${adjustedName}`;
+  const response = await fetch(requestString);
+  return response;
+};
+
+/**
+ * @description Fetches all the Metadata for a single Robot
+ * @param {String} robotId - String including the robotId
+ */
+const retrieveMetadataForRobot = async (robotId) => {
+  const requestString = `/ssot/retrieveMetadataForRobot/${robotId}`;
+  const response = await fetch(requestString);
+  return response;
+};
+
+/**
+ * @description Create a new robot with the specified name for the specified user
+ * @param {String} newName - String including the user Id
+ */
+const createNewRobot = async (userId, newName) => {
+  const adjustedName = newName.replace(/\s/g, '+');
+  const requestString = `/ssot/createNewRobot?userId=${userId}&amp;robotName=${adjustedName}`;
+  const response = await fetch(requestString);
+  return response;
+};
+
+export {
+  getSsotFromDB,
+  fetchSsotsForUser,
+  changeSsotName,
+  retrieveMetadataForRobot,
+  createNewRobot,
+};
 </code></pre>
         </article>
     </section>

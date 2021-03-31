@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#PropertiesPanelApplicationDropdown">PropertiesPanelApplicationDropdown</a></li><li><a href="global.html#PropertiesPanelTaskDropdown">PropertiesPanelTaskDropdown</a></li><li><a href="global.html#PropertiesPanelView">PropertiesPanelView</a></li><li><a href="global.html#RobotFile">RobotFile</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#clearDatabase">clearDatabase</a></li><li><a href="global.html#closeDatabase">closeDatabase</a></li><li><a href="global.html#connect">connect</a></li><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_api_ssot.html">client/src/api/ssot</a></li><li><a href="module-client_src_api_ssotRetrieval.html">client/src/api/ssotRetrieval</a></li><li><a href="module-client_src_api_variableRetrieval.html">client/src/api/variableRetrieval</a></li><li><a href="module-client_src_utils_attributeAndParamUtils.html">client/src/utils/attributeAndParamUtils</a></li><li><a href="module-client_src_utils_BpmnToSsotParsing_BpmnToSsotParsing.html">client/src/utils/BpmnToSsotParsing/BpmnToSsotParsing</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_sessionStorage.html">client/src/utils/sessionStorage</a></li><li><a href="module-client_src_utils_ssotToBpmnParsing_ssotToBpmnParsing.html">client/src/utils/ssotToBpmnParsing/ssotToBpmnParsing</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li><li><a href="module-server_services_SsotToRobotParsing_SsotToRobotParser.html">server/services/SsotToRobotParsing/SsotToRobotParser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#CreateRobotContainer">CreateRobotContainer</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PPApplicationDropdown">PPApplicationDropdown</a></li><li><a href="global.html#PPIdSection">PPIdSection</a></li><li><a href="global.html#PPNameSection">PPNameSection</a></li><li><a href="global.html#PPOutputValueSection">PPOutputValueSection</a></li><li><a href="global.html#PPParameterInput">PPParameterInput</a></li><li><a href="global.html#PPParameterSection">PPParameterSection</a></li><li><a href="global.html#PPRpaSection">PPRpaSection</a></li><li><a href="global.html#PPTaskDropdown">PPTaskDropdown</a></li><li><a href="global.html#PPTitleSection">PPTitleSection</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#RobotContainer">RobotContainer</a></li><li><a href="global.html#RobotFile">RobotFile</a></li><li><a href="global.html#RobotOverview">RobotOverview</a></li></ul></div>
                 
             </nav>
         </div>
@@ -85,20 +85,17 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+            <pre class="prettyprint source linenums"><code>import React, { useEffect } from 'react';
 import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
-import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
+import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
-import arkRPA_ModdleDescriptor from '../../../resources/modeler/modelerPropertiesExtensionRPA/ark-rpa';
-import parseDiagramJson from '../../../utils/parser/parser.js';
-import convert from 'xml-js';
-import downloadString from '../../../utils/downloadString.js';
+import PropTypes from 'prop-types';
+import CliModule from 'bpmn-js-cli';
+import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
+import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
-import ModelerSidebar from '../ModelerSidebar/ModelerSidebar';
-import styles from './BpmnModeler.module.css';
-import { Layout } from 'antd';
 
 const { Content } = Layout;
 
@@ -107,76 +104,52 @@ const { Content } = Layout;
  * @category Client
  * @component
  */
-const BpmnModeler = () => {
-  const [modeler, setModeler] = useState(null);
+const BpmnModeler = (props) => {
+  let newModeler;
 
   /**
-   * @description Equivalent to ComponentDidMount in class based components
+   * @description while the components were mounted, the BPMN-Modeler get's initialized
    */
   useEffect(() => {
-    const newModeler = new CamundaBpmnModeler({
+    newModeler = new CamundaBpmnModeler({
       container: '#bpmnview',
       keyboard: {
         bindTo: window,
       },
-      additionalModules: [propertiesProviderModule],
+      additionalModules: [
+        propertiesProviderModule,
+        CliModule
+      ],
       moddleExtensions: {
-        camunda: camundaModdleDescriptor,
-        arkRPA: arkRPA_ModdleDescriptor,
+        camunda: camundaModdleDescriptor
       },
+      cli: {
+        bindTo: 'cli'
+      }
     });
-    setModeler(newModeler);
+    props.onModelerUpdate(newModeler)
 
     const openBpmnDiagram = (xml) => {
-      newModeler.importXML(xml, (error) => {
+      newModeler.importXML(xml, error => {
         if (error) {
-          // eslint-disable-next-line no-console
-          return console.log('fail import xml');
+          console.error('fail import xml');
         }
         const canvas = newModeler.get('canvas');
         canvas.zoom('fit-viewport');
       });
     };
-
     openBpmnDiagram(emptyBpmn);
   }, []);
 
-  /**
-   * @description Will parse a given xml file into a .robot file and download it
-   * @param {string} xml String that sets the xml to be parsed
-   */
-  const downloadRobotFile = (xml) => {
-    const body = convert.xml2json(xml, { compact: true, spaces: 4 });
-    const jsonBody = JSON.parse(body);
-    const robot = parseDiagramJson(jsonBody);
-    downloadString(robot, 'text/robot', 'testRobot.robot');
-  };
-
-  /**
-   * @description Will get the underlying xml of the current bpmn diagram, parse it into a .robot file and download it.
-   */
-  const getRobotFile = () => {
-    modeler
-      .saveXML()
-      .then((json) => {
-        const { xml } = json;
-        downloadRobotFile(xml);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
-    &lt;Layout>
-      &lt;Content>
-        &lt;div id='bpmncontainer'>
-          &lt;div className={styles['bpmn-modeler-container']} id='bpmnview' />
-        &lt;/div>
-      &lt;/Content>
-      &lt;ModelerSidebar modeler={modeler} getRobotFile={getRobotFile} />
-    &lt;/Layout>
+    &lt;Content className={styles.bpmncontainer}>
+      &lt;div className={styles['bpmn-modeler-container']} id='bpmnview' />
+    &lt;/Content>
   );
+};
+
+BpmnModeler.propTypes = {
+  onModelerUpdate: PropTypes.func.isRequired,
 };
 
 export default BpmnModeler;

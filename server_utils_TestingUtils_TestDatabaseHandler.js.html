@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/pages/RobotFile/RobotFile.jsx</title>
+  <title> server/utils/TestingUtils/TestDatabaseHandler.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/pages/RobotFile/RobotFile.jsx</h1>
+                    <h1>server/utils/TestingUtils/TestDatabaseHandler.js</h1>
                 </header>
                 
 
@@ -85,88 +85,54 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
-import getParsedRobotFile from '../../../api/ssot';
-import 'prismjs/themes/prism.css';
-import styles from './RobotFile.module.css';
+            <pre class="prettyprint source linenums"><code>const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
-/**
- * @description View of the robot file
- * @category Client
- * @component
- */
-const RobotFile = () => {
-  const [code, setCode] = useState(
-    'Please wait, your robot file is being loaded.'
-  );
-
-  /**
-   * @description Equivalent to ComponentDidMount in class based components
-   */
-  useEffect(() => {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    getParsedRobotFile(robotId)
-      .then((response) => response.text())
-      .then((robotCode) => {
-        setCode(robotCode);
-      });
-  }, []);
-
-  /**
-   * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the code from the editor, parse it to a ssot and write the
-   * resulting ssot into the sessionStorage.
-   */
-  const onSaveToCloud = async () => {
-    // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
-  };
-
-  return (
-    &lt;Layout>
-      &lt;HeaderNavbar selectedKey={3} />
-      &lt;Row justify='center' width='100%'>
-        &lt;Col xs={24} sm={24} md={20}>
-          &lt;Space
-            direction='vertical'
-            size='middle'
-            style={{ padding: '1rem', width: '100%' }}
-          >
-            &lt;Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            &lt;/Button>
-            &lt;Editor
-              value={code}
-              onValueChange={(newCode) => setCode(newCode)}
-              highlight={(highlightCode) =>
-                highlight(highlightCode, languages.robotframework)
-              }
-              padding='1rem'
-              className={styles.editor}
-              tabsize={4}
-            />
-          &lt;/Space>
-        &lt;/Col>
-      &lt;/Row>
-    &lt;/Layout>
-  );
+const mongooseOpts = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 };
 
-export default RobotFile;
+const mongod = new MongoMemoryServer({
+  instance: {
+    dbName: 'ark-automate',
+    port: 59051,
+  },
+});
+
+/**
+ * Connect to the in-memory database.
+ */
+module.exports.connect = async () => {
+  const uri = await mongod.getUri();
+  await mongoose.createConnection(uri, mongooseOpts);
+  await mongoose.connect(uri, mongooseOpts);
+};
+
+/**
+ * Drop database, close the connection and stop mongod.
+ */
+module.exports.closeDatabase = async () => {
+  await mongoose.connection.dropDatabase();
+  await mongoose.connection.close();
+  await mongoose.disconnect();
+  await mongod.stop();
+};
+
+/**
+ * Remove all the data for all db collections.
+ */
+module.exports.clearDatabase = async () => {
+  const { collections } = mongoose.connection;
+
+  // fix according to https://docs.w3cub.com/eslint/rules/no-await-in-loop.html
+  const result = [];
+  for (const key in collections) {
+    const collection = collections[key];
+    result.push(collection.deleteMany());
+  }
+  return Promise.all(result);
+};
 </code></pre>
         </article>
     </section>

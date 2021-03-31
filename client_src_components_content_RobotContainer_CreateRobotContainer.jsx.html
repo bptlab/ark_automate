@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/pages/RobotFile/RobotFile.jsx</title>
+  <title> client/src/components/content/RobotContainer/CreateRobotContainer.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/pages/RobotFile/RobotFile.jsx</h1>
+                    <h1>client/src/components/content/RobotContainer/CreateRobotContainer.jsx</h1>
                 </header>
                 
 
@@ -85,88 +85,49 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
-import getParsedRobotFile from '../../../api/ssot';
-import 'prismjs/themes/prism.css';
-import styles from './RobotFile.module.css';
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { Col, Row, Typography } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
+import styles from './RobotContainer.module.css';
+import corporateDesign from '../../../layout/corporateDesign';
+
+
+const { Title } = Typography;
 
 /**
- * @description View of the robot file
- * @category Client
  * @component
+ * @description Provides the first Box of Robot Overview with the "Create new Robot"-Box
+ * @category Client
  */
-const RobotFile = () => {
-  const [code, setCode] = useState(
-    'Please wait, your robot file is being loaded.'
-  );
+const CreateRobotContainer = (props) => {
 
-  /**
-   * @description Equivalent to ComponentDidMount in class based components
-   */
-  useEffect(() => {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    getParsedRobotFile(robotId)
-      .then((response) => response.text())
-      .then((robotCode) => {
-        setCode(robotCode);
-      });
-  }, []);
+    const addRobot = () => alert('Unfortunately this is currently not supported.'); //props.createNewRobot();
 
-  /**
-   * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the code from the editor, parse it to a ssot and write the
-   * resulting ssot into the sessionStorage.
-   */
-  const onSaveToCloud = async () => {
-    // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
+    return (
+        &lt;Col xs={24} sm={12} md={8} xl={6} xxl={4}>
+            &lt;Col className={[styles.box, styles.createRobotBox]} >
+                &lt;Row align="middle" style={{ height: '70%' }}>
+                    &lt;Col type="flex" span={24}>
+                        &lt;PlusCircleOutlined onClick={addRobot} style={{ fontSize: '6rem', color: corporateDesign.colorBackground }} />
+                    &lt;/Col>
+                &lt;/Row>
 
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
-  };
-
-  return (
-    &lt;Layout>
-      &lt;HeaderNavbar selectedKey={3} />
-      &lt;Row justify='center' width='100%'>
-        &lt;Col xs={24} sm={24} md={20}>
-          &lt;Space
-            direction='vertical'
-            size='middle'
-            style={{ padding: '1rem', width: '100%' }}
-          >
-            &lt;Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            &lt;/Button>
-            &lt;Editor
-              value={code}
-              onValueChange={(newCode) => setCode(newCode)}
-              highlight={(highlightCode) =>
-                highlight(highlightCode, languages.robotframework)
-              }
-              padding='1rem'
-              className={styles.editor}
-              tabsize={4}
-            />
-          &lt;/Space>
-        &lt;/Col>
-      &lt;/Row>
-    &lt;/Layout>
-  );
+                &lt;Row justify="space-around" align="middle" style={{ height: '40%' }}>
+                    &lt;Title className={styles.title} level={3} >
+                        Create new Robot
+                    &lt;/Title>
+                &lt;/Row>
+            &lt;/Col>
+        &lt;/Col >
+    )
 };
 
-export default RobotFile;
+CreateRobotContainer.propTypes = {
+    createNewRobot: PropTypes.string.isRequired,
+};
+
+export default CreateRobotContainer;
 </code></pre>
         </article>
     </section>

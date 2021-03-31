@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_parser_parser.html">client/src/utils/parser/parser</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#PropertiesPanelApplicationDropdown">PropertiesPanelApplicationDropdown</a></li><li><a href="global.html#PropertiesPanelTaskDropdown">PropertiesPanelTaskDropdown</a></li><li><a href="global.html#PropertiesPanelView">PropertiesPanelView</a></li><li><a href="global.html#RobotFile">RobotFile</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_ActivityDataRetrieval_ActivityDataRetrieval.html">server/services/ActivityDataRetrieval/ActivityDataRetrieval</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#clearDatabase">clearDatabase</a></li><li><a href="global.html#closeDatabase">closeDatabase</a></li><li><a href="global.html#connect">connect</a></li><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_api_ssot.html">client/src/api/ssot</a></li><li><a href="module-client_src_api_ssotRetrieval.html">client/src/api/ssotRetrieval</a></li><li><a href="module-client_src_api_variableRetrieval.html">client/src/api/variableRetrieval</a></li><li><a href="module-client_src_utils_attributeAndParamUtils.html">client/src/utils/attributeAndParamUtils</a></li><li><a href="module-client_src_utils_BpmnToSsotParsing_BpmnToSsotParsing.html">client/src/utils/BpmnToSsotParsing/BpmnToSsotParsing</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_sessionStorage.html">client/src/utils/sessionStorage</a></li><li><a href="module-client_src_utils_ssotToBpmnParsing_ssotToBpmnParsing.html">client/src/utils/ssotToBpmnParsing/ssotToBpmnParsing</a></li><li><a href="module-client_src_utils_xmlUtils.html">client/src/utils/xmlUtils</a></li><li><a href="module-server_services_SsotToRobotParsing_SsotToRobotParser.html">server/services/SsotToRobotParsing/SsotToRobotParser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#CreateRobotContainer">CreateRobotContainer</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PPApplicationDropdown">PPApplicationDropdown</a></li><li><a href="global.html#PPIdSection">PPIdSection</a></li><li><a href="global.html#PPNameSection">PPNameSection</a></li><li><a href="global.html#PPOutputValueSection">PPOutputValueSection</a></li><li><a href="global.html#PPParameterInput">PPParameterInput</a></li><li><a href="global.html#PPParameterSection">PPParameterSection</a></li><li><a href="global.html#PPRpaSection">PPRpaSection</a></li><li><a href="global.html#PPTaskDropdown">PPTaskDropdown</a></li><li><a href="global.html#PPTitleSection">PPTitleSection</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#RobotContainer">RobotContainer</a></li><li><a href="global.html#RobotFile">RobotFile</a></li><li><a href="global.html#RobotOverview">RobotOverview</a></li></ul></div>
                 
             </nav>
         </div>
@@ -85,27 +85,112 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React from 'react';
-import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
+import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-
-const { Footer } = Layout;
+import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
+import { getSsotFromDB } from '../../../api/ssotRetrieval';
+import { getAvailableApplications } from '../../../api/applicationAndTaskSelection';
+import {
+  setRobotId,
+  getAttributesFromDB,
+  getParameterFromDB,
+  getParameterForRobotFromDB,
+} from '../../../utils/attributeAndParamUtils';
+import initSessionStorage from '../../../utils/sessionStorage';
+import 'bpmn-js/dist/assets/diagram-js.css';
+import 'bpmn-font/dist/css/bpmn-embedded.css';
 
 /**
  * @description Modeler page that enables the user to build a robot
  * @category Client
  * @component
  */
-const Modeler = () => (
-  &lt;div>
-    &lt;Layout>
+const Modeler = (match) => {
+  const { robotId } = match.match.params;
+  const [modeler, setModeler] = useState(null);
+  const [robotName, setRobotName] = useState();
+
+  const updateModeler = (updatedModeler) => {
+    setModeler(updatedModeler);
+  };
+
+  /**
+   * @description Equivalent to ComponentDidMount in class based components
+   */
+  useEffect(() => {
+    setRobotId(robotId);
+    getSsotFromDB(robotId)
+      .then((response) => response.json())
+      .then((data) => {
+        sessionStorage.setItem('ssotLocal', JSON.stringify(data));
+        sessionStorage.setItem('robotName', data.robotName);
+        setRobotName(data.robotName);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    getAttributesFromDB(robotId)
+      .then((response) => response.json())
+      .then((data) => {
+        initSessionStorage('attributeLocalStorage', JSON.stringify([]));
+        sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
+      });
+
+    getParameterFromDB(robotId)
+      .then((response) => response.json())
+      .then((data) => {
+        initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
+        sessionStorage.setItem(
+          'TaskApplicationCombinations',
+          JSON.stringify(data)
+        );
+      });
+
+    getParameterForRobotFromDB(robotId)
+      .then((response) => response.json())
+      .then((data) => {
+        initSessionStorage('parameterLocalStorage', JSON.stringify([]));
+        sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
+      });
+
+    initSessionStorage('taskToApplicationCache', JSON.stringify({}));
+    initSessionStorage('availableApplications', JSON.stringify([]));
+    let applicationList = sessionStorage.getItem('availableApplications');
+    applicationList = JSON.parse(applicationList);
+    if (applicationList &amp;&amp; applicationList.length &lt; 1)
+      getAvailableApplications()
+        .then((response) => response.json())
+        .then((data) => {
+          sessionStorage.setItem('availableApplications', JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  }, []);
+
+  return (
+    &lt;>
       &lt;HeaderNavbar selectedKey={2} />
-      &lt;BpmnModeler />
-      &lt;Footer>Fußzeile&lt;/Footer>
-    &lt;/Layout>
-  &lt;/div>
-);
+      &lt;Layout>
+        &lt;BpmnModeler
+          robotId={robotId}
+          robotName={robotName}
+          onModelerUpdate={updateModeler}
+        />
+        {modeler &amp;&amp; robotName &amp;&amp; (
+          &lt;ModelerSidebar
+            modeler={modeler}
+            robotId={robotId}
+            robotName={robotName}
+          />
+        )}
+      &lt;/Layout>
+    &lt;/>
+  );
+};
 
 export default Modeler;
 </code></pre>

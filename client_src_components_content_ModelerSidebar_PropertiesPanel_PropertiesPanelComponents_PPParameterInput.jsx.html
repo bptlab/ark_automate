@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> client/src/components/pages/RobotFile/RobotFile.jsx</title>
+  <title> client/src/components/content/ModelerSidebar/PropertiesPanel/PropertiesPanelComponents/PPParameterInput.jsx</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>client/src/components/pages/RobotFile/RobotFile.jsx</h1>
+                    <h1>client/src/components/content/ModelerSidebar/PropertiesPanel/PropertiesPanelComponents/PPParameterInput.jsx</h1>
                 </header>
                 
 
@@ -85,88 +85,49 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
-import { highlight, languages } from 'prismjs/components/prism-core';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
-import getParsedRobotFile from '../../../api/ssot';
-import 'prismjs/themes/prism.css';
-import styles from './RobotFile.module.css';
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import { Input, Tooltip } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types'
+import corporateDesign from '../../../../../layout/corporateDesign';
 
 /**
- * @description View of the robot file
+ * @description Renders a parameter input field for a given variable
  * @category Client
  * @component
  */
-const RobotFile = () => {
-  const [code, setCode] = useState(
-    'Please wait, your robot file is being loaded.'
-  );
-
-  /**
-   * @description Equivalent to ComponentDidMount in class based components
-   */
-  useEffect(() => {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    getParsedRobotFile(robotId)
-      .then((response) => response.text())
-      .then((robotCode) => {
-        setCode(robotCode);
-      });
-  }, []);
-
-  /**
-   * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the code from the editor, parse it to a ssot and write the
-   * resulting ssot into the sessionStorage.
-   */
-  const onSaveToCloud = async () => {
+const PPParameterInput = ({
+    onValueChange,
+    variableName,
+    isRequired,
     // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
+    dataType,
+    value
+}) => (
+    &lt;>
+        &lt;Input
+            placeholder={variableName}
+            defaultValue={value}
+            onPressEnter={onValueChange}
+            suffix={
+                isRequired &amp;&amp;
+                &lt;Tooltip title='This field is required for the task to work'>
+                    &lt;InfoCircleOutlined style={{ color: corporateDesign.colorBackgroundCta }} />
+                &lt;/Tooltip>
+            }
+        />
+    &lt;/>
+);
 
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
-  };
-
-  return (
-    &lt;Layout>
-      &lt;HeaderNavbar selectedKey={3} />
-      &lt;Row justify='center' width='100%'>
-        &lt;Col xs={24} sm={24} md={20}>
-          &lt;Space
-            direction='vertical'
-            size='middle'
-            style={{ padding: '1rem', width: '100%' }}
-          >
-            &lt;Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            &lt;/Button>
-            &lt;Editor
-              value={code}
-              onValueChange={(newCode) => setCode(newCode)}
-              highlight={(highlightCode) =>
-                highlight(highlightCode, languages.robotframework)
-              }
-              padding='1rem'
-              className={styles.editor}
-              tabsize={4}
-            />
-          &lt;/Space>
-        &lt;/Col>
-      &lt;/Row>
-    &lt;/Layout>
-  );
+PPParameterInput.propTypes = {
+    onValueChange: PropTypes.func.isRequired,
+    variableName: PropTypes.string.isRequired,
+    isRequired: PropTypes.bool.isRequired,
+    dataType: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
 };
 
-export default RobotFile;
+export default PPParameterInput;
 </code></pre>
         </article>
     </section>
