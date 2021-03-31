@@ -1,78 +1,74 @@
+/* eslint-disable func-names */
+/* eslint-disable object-shorthand */
 /* eslint-disable no-undef */
 import React from 'react';
-import {render, screen} from '@testing-library/react';
+import {act, render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import RobotOverview from './RobotOverview';
-import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 import '@testing-library/jest-dom'
 
 const USER_ID = '80625d115100a2ee8d8e695b';
 const NEW_ROBOT_NAME = 'New Robot';
 
-// eslint-disable-next-line func-names
 window.matchMedia = window.matchMedia || function() {
     return {
         matches: false,
-        addListener() {},
-        removeListener() {}
+        addListener: function() {},
+        removeListener: function() {}
     };
 };
 
+const MOCK_ROBOT_LIST = [
+        {
+            "_id": "12345678901234567890123a",
+            "robotName": "Awesome Robot"
+        },
+        {
+            "_id": "12345678901234567890123b",
+            "robotName": "Another Robot"
+        }
+    ];
 
-const mockListOfRobots = [
-    {
-        "_id": "12345678901234567890123a",
-        "robotName": "Awesome Robot"
-    },
-    {
-        "_id": "12345678901234567890123b",
-        "robotName": "Another Robot"
-    }
-];
-
-const newBotInfoMock = {
+const MOCK_ROBOT_INFO = {
     "robotName": NEW_ROBOT_NAME,
     "robotId": "12345678901234567890123c"
 };
 
-jest.mock('../../../api/ssotRetrieval')
+async function mockFetch(url) {
+    switch (url) {
+        case `/ssot/getAvailableRobotsForUser/${USER_ID}`: {
+            return {
+                ok: true,
+                status: 200,
+                json: async () => (MOCK_ROBOT_LIST),
+            }
+        }
+        case `/ssot/createNewRobot?userId=${USER_ID}&robotName=New+Robot`: {
+            return {
+                ok: true,
+                status: 200,
+                json: async () => (MOCK_ROBOT_INFO),
+            }
+        }
+        default: {
+          throw new Error(`Unhandled request: ${url}`)
+        }
+    }
+}
+    
+beforeAll(() => jest.spyOn(window, 'fetch'))
+beforeEach(() => window.fetch.mockImplementation(mockFetch))
 
 describe('Testing functionality behind button to trigger function call for new but creation', () => {
-    it('pass successful value', async () => {
-        fetchSsotsForUser.mockResolvedValueOnce(() => (mockListOfRobots))
-        createNewRobot.mockResolvedValueOnce(() => (newBotInfoMock))
-    
-    
-        expect(fetchSsotsForUser).toHaveBeenCalledTimes(0);
-        expect(createNewRobot).toHaveBeenCalledTimes(0);
-        // eslint-disable-next-line react/jsx-filename-extension
-        render(<BrowserRouter><RobotOverview /></BrowserRouter>);
-        expect(fetchSsotsForUser).toHaveBeenCalledWith(USER_ID);
-        expect(fetchSsotsForUser).toHaveBeenCalledTimes(1);
-    
-    
-        expect(createNewRobot).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByText('Create new Robot'));
-        expect(createNewRobot).toHaveBeenCalledWith(USER_ID, NEW_ROBOT_NAME);
-        expect(createNewRobot).toHaveBeenCalledTimes(1);
-    })
+    it('check if attempt to fecth occured twice', async () => {    
+        act(() => {
+            render(<BrowserRouter><RobotOverview /></BrowserRouter>);
+        });
 
-    it('pass empty list for user', async () => {
-        fetchSsotsForUser.mockResolvedValueOnce(() => ([]))
-        createNewRobot.mockResolvedValueOnce(() => (newBotInfoMock))
-    
-    
-        expect(fetchSsotsForUser).toHaveBeenCalledTimes(0);
-        expect(createNewRobot).toHaveBeenCalledTimes(0);
-        render(<BrowserRouter><RobotOverview /></BrowserRouter>);
-        expect(fetchSsotsForUser).toHaveBeenCalledWith(USER_ID);
-        expect(fetchSsotsForUser).toHaveBeenCalledTimes(1);
-    
-    
-        expect(createNewRobot).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByText('Create new Robot'));
-        expect(createNewRobot).toHaveBeenCalledWith(USER_ID, NEW_ROBOT_NAME);
-        expect(createNewRobot).toHaveBeenCalledTimes(1);
+        act(() => {
+            userEvent.click(screen.getByText('Create new Robot'));
+        });
+        expect(window.fetch).toHaveBeenCalledTimes(2);
     })
 })

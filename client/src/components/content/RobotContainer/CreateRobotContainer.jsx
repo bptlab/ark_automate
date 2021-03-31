@@ -15,27 +15,32 @@ const { Title } = Typography;
 const CreateRobotContainer = (props) => {
   const addRobot = () => props.createNewRobot();
 
-    return (
-        <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
-            <Col className={[styles.box, styles.createRobotBox]} >
-                <Row align="middle" style={{ height: '70%' }}>
-                    <Col type="flex" span={24}>
-                        <PlusCircleOutlined onClick={addRobot} style={{ fontSize: '6rem', color: corporateDesign.colorBackground }} />
-                    </Col>
-                </Row>
+  return (
+    <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
+      <Col className={[styles.box, styles.createRobotBox]} onClick={addRobot}>
+        <Row align='middle' style={{ height: '70%' }}>
+          <Col type='flex' span={24}>
+            <PlusCircleOutlined
+              style={{
+                fontSize: '6rem',
+                color: corporateDesign.colorBackground,
+              }}
+            />
+          </Col>
+        </Row>
 
-                <Row justify="space-around" align="middle" style={{ height: '40%' }}>
-                    <Title className={styles.title} level={3} >
-                        Create new Robot
-                    </Title>
-                </Row>
-            </Col>
-        </Col >
-    )
+        <Row justify='space-around' align='middle' style={{ height: '40%' }}>
+          <Title className={styles.title} level={3}>
+            Create new Robot
+          </Title>
+        </Row>
+      </Col>
+    </Col>
+  );
 };
 
 CreateRobotContainer.propTypes = {
-    createNewRobot: PropTypes.string.isRequired,
+  createNewRobot: PropTypes.func.isRequired,
 };
 
 export default CreateRobotContainer;
