@@ -5,15 +5,15 @@ export const emptyBpmn = `<?xml version="1.0" encoding="UTF-8"?>
 		<bpmn2:participant id="Participant_0cyhvx8" processRef="Process_1" />
 	</bpmn2:collaboration>
 	<bpmn2:process id="Process_1" isExecutable="false">
-		<bpmn2:startEvent id="StartEvent_1" />
+		<bpmn2:startEvent id="Event_13c1i8b" />
 	</bpmn2:process>
 	<bpmndi:BPMNDiagram id="BPMNDiagram_1">
 		<bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0czsqyr">
 			<bpmndi:BPMNShape id="Participant_0cyhvx8_di" bpmnElement="Participant_0cyhvx8">
 				<dc:Bounds x="130" y="220" width="600" height="250" />
 			</bpmndi:BPMNShape>
-			<bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-				<dc:Bounds x="412" y="240" width="36" height="36" />
+			<bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="Event_13c1i8b">
+				<dc:Bounds x="200" y="330" width="36" height="36" />
 			</bpmndi:BPMNShape>
 		</bpmndi:BPMNPlane>
 	</bpmndi:BPMNDiagram>
