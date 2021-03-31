@@ -4,7 +4,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
 import socket from '../../../utils/socket/socketConnections';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
-import initSessionStorage from '../../../utils/sessionStorage';
+import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
 import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 
 const { Search } = Input;

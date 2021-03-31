@@ -4,9 +4,9 @@ import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
 import { getSsotFromDB } from '../../../api/ssotRetrieval';
-import { getAvailableApplications } from '../../../api/applicationAndTaskSelection';
 import { setRobotId, getAttributesFromDB, getParameterFromDB, getParameterForRobotFromDB } from '../../../utils/attributeAndParamUtils';
-import initSessionStorage from '../../../utils/sessionStorage';
+import { initAvailableApplicationsSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils'
+import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 
@@ -60,20 +60,10 @@ const Modeler = (match) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
       })
-      
+
     initSessionStorage('taskToApplicationCache', JSON.stringify({}));
-    initSessionStorage('availableApplications', JSON.stringify([]));
-    let applicationList = sessionStorage.getItem('availableApplications');
-    applicationList = JSON.parse(applicationList)
-    if (applicationList && applicationList.length < 1)
-      getAvailableApplications()
-        .then((response) => response.json())
-        .then((data) => {
-          sessionStorage.setItem('availableApplications', JSON.stringify(data));
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    initAvailableApplicationsSessionStorage();
+
   }, []);
 
   return (

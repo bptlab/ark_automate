@@ -1,7 +1,5 @@
 /* eslint-disable no-alert */
 // eslint-disable-next-line no-var
-var Ids = require('ids');
-// import Ids from 'ids';
 
 const { parseString } = require('xmljs2');
 
@@ -187,27 +185,33 @@ const returnApplicationArray = (robotCodeSettingsSection) => {
     });
 
     // test if spacing in every line is correct
-    const regexForRightSpacing = new RegExp(`Library {4}Rz*`)
-    robotCode.forEach((element) => {
-        if (!regexForRightSpacing.test(element)) {
+    const regexForRightSpacing = new RegExp(`Library +Rz*`)
+    robotCode.forEach((line) => {
+        if (!regexForRightSpacing.test(line)) {
             alert('Spacing error between \'Library\' and \'RPA. ...\'');
         }
     });
 
     // test if RPA ist correct alias
-    const regexForRpaAlias = new RegExp(`Library {4}RPA[.][a-zA-Z]+`)
-    robotCode.forEach((element) => {
-        if (!regexForRpaAlias.test(element)) {
+    const regexForRpaAlias = new RegExp(`Library +RPA[.][a-zA-Z]+`)
+    robotCode.forEach((line) => {
+        if (!regexForRpaAlias.test(line)) {
             alert('Application has to start with \'RPA.\'');
         }
     });
 
     const declaredApplications = [];
-    robotCode.forEach((element) => {
-        declaredApplications.push(element.split("Library    RPA.")[1]);
+    robotCode.forEach((line) => {
+        declaredApplications.push(line.split("RPA.")[1]);
     })
 
     // test if Application is part of all applications
+    declaredApplications.forEach((application) => {
+        const availableApplications = JSON.parse(sessionStorage.getItem('availableApplications'))
+        if (!availableApplications.includes(application)) {
+            alert(`The Application ${String(application)} is currently not supported. `);
+        }
+    })
 
     return declaredApplications;
 }
@@ -236,20 +240,14 @@ const parseRobotCodeToSsot = (robotCode) => {
         robotName,
     };
 
+    const declaredApplications = returnApplicationArray(robotCodeSettingsSection)
+
 
     console.log(robotCodeSettingsSection)
     console.log(robotCodeTaskSection)
-    console.log(returnApplicationArray(robotCodeSettingsSection))
+    console.log(declaredApplications)
 
     ssot.elements = 'MARKER';
-    const ids = new Ids();
-
-    const next = ids.next(); // returns id
-
-    ids.claim('f71a81'); // claim id as already existing
-
-    ids.assigned('f71a81'); // true if id was already generated / claimed
-    console.log(next)
 
     return ssot;
 
