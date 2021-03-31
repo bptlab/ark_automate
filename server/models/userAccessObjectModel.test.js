@@ -39,7 +39,7 @@ describe('user access objects have validation for missing parameters', () => {
     });
   });
 
-  it('should be invalid if Task is empty', async () => {
+  it('should be invalid if UserId is empty', async () => {
     job.save((err) => {
       expect(err.errors.userId).to.exist;
       expect(err.errors.userId.message).equal('UserId required');

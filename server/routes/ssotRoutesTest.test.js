@@ -6,7 +6,11 @@ const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
 const ssotRetrievalController = require('../controllers/ssotRetrievalController');
 const ssotParsingController = require('../controllers/ssotParsingController');
+const ssotVariableController = require('../controllers/ssotVariableController');
+const ssotAttributesController = require('../controllers/ssotRpaAttributes');
+
 const testData = require('../utils/TestingUtils/testData');
+const rpaTaskModel = require('../models/rpaTaskModel');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -29,8 +33,6 @@ describe('/ssot/getAvailableRobotsForUser', () => {
     await dbLoader.loadUserAccessObjectsInDb();
 
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/getAvailableRobotsForUser',
       params: {
         userId: testData.userId,
       },
@@ -50,8 +52,6 @@ describe('/ssot/getAvailableRobotsForUser', () => {
     const spy = jest.spyOn(console, 'error').mockImplementation();
 
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/getAvailableRobotsForUser',
       params: {
         userId: '123',
       },
@@ -68,8 +68,6 @@ describe('ssot/get/:id', () => {
     await dbLoader.loadSsotInDb();
 
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/get/',
       params: {
         id: testData.ssotId,
       },
@@ -89,8 +87,6 @@ describe('ssot/renameRobot', () => {
     await dbLoader.loadSsotInDb();
 
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/renameRobot',
       query: {
         id: testData.ssotId,
         newName: 'newTestRobot',
@@ -108,8 +104,6 @@ describe('ssot/renameRobot', () => {
 
     // verify if really in DB
     const request2 = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/get/',
       params: {
         id: testData.ssotId,
       },
@@ -129,8 +123,6 @@ describe('ssot/retrieveRobotMetadata', () => {
     await dbLoader.loadSsotInDb();
 
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/retrieveRobotMetadata',
       params: {
         robotId: testData.ssotId,
       },
@@ -150,11 +142,9 @@ describe('ssot/retrieveRobotMetadata', () => {
   });
 });
 
-describe('ssot/shareRobotWithUser', () => {
+/* describe('ssot/shareRobotWithUser', () => {
   it('successfully creates a userAccessObject for robot and user', async () => {
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/shareRobotWithUser',
       query: {
         userId: testData.userId,
         robotId: testData.ssotId,
@@ -188,13 +178,11 @@ describe('ssot/shareRobotWithUser', () => {
       JSON.stringify(testData.userId)
     );
   });
-});
+}); */
 
 describe('ssot/createNewRobot', () => {
   it('successfully creates a new ssot', async () => {
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/createNewRobot',
       query: {
         userId: testData.userId,
         robotName: testData.testSsot.robotName,
@@ -225,14 +213,12 @@ describe('ssot/createNewRobot', () => {
   });
 });
 
-describe('ssot/getRobotCode', () => {
+/* describe('ssot/parser/get-robot-code', () => {
   it('successfully retrieves parsed code for ssot', async () => {
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
 
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/getRobotCode',
       query: {
         robotId: testData.ssotId,
       },
@@ -245,5 +231,219 @@ describe('ssot/getRobotCode', () => {
     const data = await response._getData();
     expect(data).toMatch('*** Settings ***');
     expect(data).toMatch('*** Tasks ***');
+  });
+}); */
+
+describe('ssot/parser/getForId/:botId', () => {
+  it('successfully retrieves parsed code for ssot', async () => {
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
+
+    const request = httpMocks.createRequest({
+      params: {
+        botId: testData.ssotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotParsingController.getRobotCode(request, response);
+    expect(response.statusCode).toBe(200);
+
+    const data = await response._getData();
+    expect(data).toMatch('*** Settings ***');
+    expect(data).toMatch('*** Tasks ***');
+  });
+});
+
+describe('ssot/overwriteRobot/:robotId', () => {
+  it('successfully retrieves overwritten ssot', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
+
+    const adaptedSsot = JSON.parse(JSON.stringify(testData.testSsot)); // deep copy workaround
+    adaptedSsot.elements = [
+      {
+        predecessorIds: [],
+        successorIds: [],
+        _id: '6062f0ad92ffd3044c6ee382',
+        type: 'MARKER',
+        name: 'Start Event',
+        id: 'Event_1wm4a0f',
+      },
+    ];
+    const request = httpMocks.createRequest({
+      method: 'POST',
+      params: {
+        botId: testData.ssotId,
+      },
+      body: adaptedSsot,
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.overwriteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    const data = await response._getData();
+    expect(data.elements.length).toBe(1);
+
+    // verify if really in DB
+    const newSsot = await mongoose
+      .model('SSoT')
+      .findById(testData.ssotId)
+      .exec();
+
+    expect(JSON.stringify(data)).toEqual(JSON.stringify(newSsot));
+  });
+});
+
+describe('ssot/updateManyParameters', () => {
+  it('successfully updates parameter for a task', async () => {
+    await dbLoader.loadTasksInDb();
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
+    const updatedValue = 'StonksOnlyGoDown.xls';
+
+    const request = httpMocks.createRequest({
+      method: 'POST',
+      body: [
+        {
+          activityId: testData.testSsot.elements[2].id,
+          ssotId: testData.ssotId,
+          rpaParameters: [
+            {
+              name: 'filename',
+              type: 'String',
+              isRequired: true,
+              infoText: 'Path to filename',
+              index: 0,
+              value: updatedValue,
+            },
+          ],
+        },
+      ],
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotVariableController.updateMany(request, response);
+    expect(response.statusCode).toBe(200);
+    const data = await response._getData();
+    expect(data.modifiedCount).toBe(1);
+
+    // verify if really in DB
+    const newParamObject = await mongoose
+      .model('parameter')
+      .findOne({
+        ssotId: testData.ssotId,
+        activityId: testData.testSsot.elements[2].id,
+      })
+      .exec();
+
+    expect(newParamObject.rpaParameters[0].value).toEqual(updatedValue);
+  });
+});
+
+describe('ssot/getAllParameters/:robotId', () => {
+  it('successfully retreives all parameters for a robot', async () => {
+    await dbLoader.loadTasksInDb();
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
+
+    const request = httpMocks.createRequest({
+      method: 'GET',
+      params: {
+        robotId: testData.ssotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotVariableController.retrieveParametersForRobot(request, response);
+    expect(response.statusCode).toBe(200);
+    const data = await response._getData();
+    expect(data.length).toBe(3);
+    expect(JSON.stringify(data)).toEqual(
+      JSON.stringify([
+        testData.testParameter1,
+        testData.testParameter2,
+        testData.testParameter3,
+      ])
+    );
+  });
+});
+
+describe('ssot/updateManyAttributes', () => {
+  it('successfully updates all attributes for a robot', async () => {
+    await dbLoader.loadTasksInDb();
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
+
+    const newAppValue = 'NewTestApp';
+    const newTaskValue = 'NewTestTask';
+
+    const request = httpMocks.createRequest({
+      method: 'POST',
+      body: [
+        {
+          activityId: 'Activity_175v5b5',
+          ssotId: '606199015d691786a44a608f',
+          rpaApplication: newAppValue,
+          rpaTask: newTaskValue,
+        },
+      ],
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotAttributesController.updateMany(request, response);
+    expect(response.statusCode).toBe(200);
+    const data = await response._getData();
+    expect(data.modifiedCount).toBe(1);
+
+    // verify if really in DB
+    const newAttributesObject = await mongoose
+      .model('rpaAttributes')
+      .findOne({
+        ssotId: testData.ssotId,
+        activityId: testData.testSsot.elements[2].id,
+      })
+      .exec();
+
+    expect(newAttributesObject.rpaApplication).toEqual(newAppValue);
+    expect(newAttributesObject.rpaTask).toEqual(newTaskValue);
+  });
+});
+
+describe('ssot/getAllAttributes/:robotId', () => {
+  it('successfully retreives all Attributes for a robot', async () => {
+    await dbLoader.loadTasksInDb();
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
+
+    const request = httpMocks.createRequest({
+      params: 
+        {
+          robotId: testData.ssotId,
+        },
+    
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotAttributesController.retrieveAttributesForRobot(
+      request,
+      response
+    );
+    expect(response.statusCode).toBe(200);
+    const data = await response._getData();
+    expect(data.length).toBe(3);
+    expect(JSON.stringify(data)).toEqual(
+      JSON.stringify([
+        testData.testAttributes1,
+        testData.testAttributes2,
+        testData.testAttributes3,
+      ])
+    );
   });
 });

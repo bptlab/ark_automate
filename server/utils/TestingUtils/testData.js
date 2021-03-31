@@ -68,24 +68,55 @@ const testRpaTask1 = {
   Application: 'Browser',
   Task: 'Click Button',
   Code: 'Click Button',
-  inputVars: [{ modifier: 'Boolean', locator: 'String' }],
-  outputVars: {},
+  outputValue: false,
+  inputVars: [
+    {
+      name: 'path',
+      type: 'String',
+      isRequired: true,
+      infoText: 'Path to button',
+      index: 0,
+    },
+  ],
 };
 
 const testRpaTask2 = {
   Application: 'Excel',
   Task: 'Input Text',
   Code: 'Input Text',
-  inputVars: [{ locator: 'String', text: 'String', clear: 'Boolean' }],
-  outputVars: {},
+  outputValue: false,
+  inputVars: [
+    {
+      name: 'coloumn',
+      type: 'Integer',
+      isRequired: true,
+      infoText: 'Target Coloumn',
+      index: 0,
+    },
+    {
+      name: 'row',
+      type: 'Integer',
+      isRequired: true,
+      infoText: 'Target row',
+      index: 1,
+    },
+  ],
 };
 
 const testRpaTask3 = {
   Application: 'Browser',
   Task: 'Input Password',
   Code: 'Input Password',
-  inputVars: [{ locator: 'String', password: 'String', clear: 'Boolean' }],
-  outputVars: {},
+  outputValue: false,
+  inputVars: [
+    {
+      name: 'password',
+      type: 'String',
+      isRequired: true,
+      infoText: 'password',
+      index: 0,
+    },
+  ],
 };
 
 const testJob = {
@@ -100,29 +131,33 @@ const testJob = {
 const testAttributes1 = {
   _id: '6062f0ad1abb38158c2dfa41',
   activityId: 'Activity_1elomab',
-  ssotId: '606199015d691786a44a608f',
+  ssotId: ssotId,
   rpaApplication: 'Excel.Application',
   rpaTask: 'Open Workbook',
+  __v: 0,
 };
 
 const testAttributes2 = {
   _id: '6062f0ad1abb38158c2dfa42',
   activityId: 'Activity_175v5b5',
-  ssotId: '606199015d691786a44a608f',
+  ssotId: ssotId,
   rpaApplication: 'Excel.Application',
   rpaTask: 'Find Empty Row',
+  __v: 0,
 };
 
 const testAttributes3 = {
   _id: '6062f0ad1abb38158c2dfa43',
   activityId: 'Activity_1x8wlwh',
-  ssotId: '606199015d691786a44a608f',
+  ssotId: ssotId,
   rpaApplication: 'Browser',
   rpaTask: 'Open Browser',
+  __v: 0,
 };
 
 const testParameter1 = {
   _id: '6062f0ad1abb38158c2dfa69',
+  __v: 0,
   activityId: 'Activity_1elomab',
   ssotId: '606199015d691786a44a608f',
   rpaParameters: [
@@ -140,6 +175,7 @@ const testParameter1 = {
 
 const testParameter2 = {
   _id: '6062f0ad1abb38158c2dfa68',
+  __v: 0,
   activityId: 'Activity_175v5b5',
   ssotId: '606199015d691786a44a608f',
   rpaParameters: [
@@ -157,6 +193,7 @@ const testParameter2 = {
 
 const testParameter3 = {
   _id: '6062f0ad1abb38158c2dfa67',
+  __v: 0,
   activityId: 'Activity_1x8wlwh',
   ssotId: '606199015d691786a44a608f',
   rpaParameters: [
