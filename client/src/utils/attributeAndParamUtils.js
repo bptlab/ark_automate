@@ -305,6 +305,7 @@ const setPropertyForParameter = (
     if (element.activityId === activityId) {
       element.rpaParameters.map((elem) => {
         if (elem.name === parameterName) {
+          // eslint-disable-next-line no-param-reassign
           elem[property] = value;
         }
         return elem;

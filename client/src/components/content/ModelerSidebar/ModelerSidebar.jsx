@@ -16,7 +16,7 @@ import {
   setOutputValueName,
 } from '../../../utils/attributeAndParamUtils';
 import parseSsotToBpmn from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
-import { parseBpmnToSsot } from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
+import parseBpmnToSsot from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
 
 const { Title } = Typography;
 const { Sider } = Layout;
