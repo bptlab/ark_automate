@@ -307,7 +307,7 @@ const getParameterForRobotFromDB = async (robotId) => {
     return response;
 };
 
-module.exports = {
+export {
     getRobotId,
     getRpaTask,
     setRobotId,
@@ -320,5 +320,5 @@ module.exports = {
     setOutputValueName,
     getRpaApplication,
     upsert,
-    getParameterForRobotFromDB
+    getParameterForRobotFromDB,
 }
