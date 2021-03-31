@@ -1,0 +1,5 @@
+.editor {
+  font-family: Consolas, monospace;
+  font-size: 1.25rem;
+  background-color: var(--colorBackground2);
+}
