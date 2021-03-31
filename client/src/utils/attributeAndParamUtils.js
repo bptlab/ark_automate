@@ -151,66 +151,50 @@ const getRpaTask = (activityId) => {
  * @returns {Object} The parameter object the activity has
  */
 const getParameterObject = (robotId, activityId) => {
-    let localParameterStorage = JSON.parse(sessionStorage.getItem('parameterLocalStorage'));
-    let matchingParameterObject = localParameterStorage.find((element) => (element.activityId === activityId));
+  let localParameterStorage = JSON.parse(
+    sessionStorage.getItem('parameterLocalStorage')
+  );
+  let matchingParameterObject = localParameterStorage.find(
+    (element) => element.activityId === activityId
+  );
 
-    if (matchingParameterObject) {
-        const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
-        const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === activityId));
-        const application = matchingAttributeObject.rpaApplication;
-        const task = matchingAttributeObject.rpaTask;
-
-        const localComboStorage = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
-        const matchingComboObject = localComboStorage.find((element) => (
-            element.Application === application &&
-            element.Task === task
-        ));
-
-        if (matchingComboObject && matchingComboObject.inputVars.length && matchingParameterObject.rpaParameters.length) {
-            // In the future there could be a need for a more advanced signature check, but fur the current use cases this should be sufficient
-            const comboParameterLength = matchingComboObject.inputVars.length;
-            const parameterObjectLength = matchingParameterObject.rpaParameters.length;
-            const comboFirstParamInfoText = matchingComboObject.inputVars.find((element) => (element.index === 0)).infoText;
-            const firstParamInfoText = matchingParameterObject.rpaParameters.find((element) => (element.index === 0)).infoText;
-
-            if (comboParameterLength === parameterObjectLength && comboFirstParamInfoText === firstParamInfoText) {
-                return matchingParameterObject;
-            }
-        }
-    }
-
-    localParameterStorage = localParameterStorage.filter((element) => element.activityId !== activityId);
-    const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
-
-    const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === activityId));
+  if (matchingParameterObject) {
+    const localAttributeStorage = JSON.parse(
+      sessionStorage.getItem('attributeLocalStorage')
+    );
+    const matchingAttributeObject = localAttributeStorage.find(
+      (element) => element.activityId === activityId
+    );
     const application = matchingAttributeObject.rpaApplication;
     const task = matchingAttributeObject.rpaTask;
 
-    if (application && task) {
-        const localComboStorage = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
-        const matchingComboObject = localComboStorage.find((element) => (
-            element.Application === application &&
-            element.Task === task
-        ));
+    const localComboStorage = JSON.parse(
+      sessionStorage.getItem('TaskApplicationCombinations')
+    );
+    const matchingComboObject = localComboStorage.find(
+      (element) => element.Application === application && element.Task === task
+    );
 
-        const rpaParameters = [];
-        if (matchingComboObject && matchingComboObject.inputVars) {
-            matchingComboObject.inputVars.forEach((element) => {
-                const elementCopy = element;
-                elementCopy.value = '';
-                rpaParameters.push(elementCopy);
-            });
-        }
+    if (
+      matchingComboObject &&
+      matchingComboObject.inputVars.length &&
+      matchingParameterObject.rpaParameters.length
+    ) {
+      // In the future there could be a need for a more advanced signature check, but fur the current use cases this should be sufficient
+      const comboParameterLength = matchingComboObject.inputVars.length;
+      const parameterObjectLength =
+        matchingParameterObject.rpaParameters.length;
+      const comboFirstParamInfoText = matchingComboObject.inputVars.find(
+        (element) => element.index === 0
+      ).infoText;
+      const firstParamInfoText = matchingParameterObject.rpaParameters.find(
+        (element) => element.index === 0
+      ).infoText;
 
-        matchingParameterObject = {
-            activityId,
-            outputVariable: matchingComboObject && matchingComboObject.outputValue ? `${activityId}_output` : undefined,
-            rpaParameters,
-            ssotId: robotId,
-        }
-
-        localParameterStorage.push(matchingParameterObject);
-        sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParameterStorage));
+      if (
+        comboParameterLength === parameterObjectLength &&
+        comboFirstParamInfoText === firstParamInfoText
+      ) {
         return matchingParameterObject;
       }
     }
@@ -238,7 +222,7 @@ const getParameterObject = (robotId, activityId) => {
     );
 
     const rpaParameters = [];
-    if (matchingComboObject) {
+    if (matchingComboObject && matchingComboObject.inputVars) {
       matchingComboObject.inputVars.forEach((element) => {
         const elementCopy = element;
         elementCopy.value = '';
@@ -305,9 +289,15 @@ const setSingleParameter = (activityId, value) => {
 /**
  * @description Will set the single parameter in local session storage
  * @param {String} activityId Id of the activity for which to change the value for
+ * @param {String} parameterName Name of the parameter we want to change a property for
  * @param {Object} value The value object returned by the dropdown selection
  */
-const setRequireUserInput = (activityId, parameterName, value) => {
+const setPropertyForParameter = (
+  activityId,
+  parameterName,
+  property,
+  value
+) => {
   const localParameterStorage = JSON.parse(
     sessionStorage.getItem('parameterLocalStorage')
   );
@@ -315,7 +305,7 @@ const setRequireUserInput = (activityId, parameterName, value) => {
     if (element.activityId === activityId) {
       element.rpaParameters.map((elem) => {
         if (elem.name === parameterName) {
-          elem.requireUserInput = value;
+          elem[property] = value;
         }
         return elem;
       });
@@ -326,6 +316,30 @@ const setRequireUserInput = (activityId, parameterName, value) => {
     'parameterLocalStorage',
     JSON.stringify(newLocalParameterStorage)
   );
+};
+
+/**
+ * @description Will retrieve the local parameter storage and return the current value of the userInpitRequired property
+ * @param {string} robotId id of the selected robot
+ * @param {string} activityId id of the selected activity
+ * @param {string} parameterName The name of the parameter for which we want to get an update on the status of a property
+ * @param {string} property The property of the parameters we want to get the current value of
+ */
+const parameterPropertyStatus = (
+  robotId,
+  activityId,
+  parameterName,
+  property
+) => {
+  const paramObj = getParameterObject(robotId, activityId);
+
+  const rpaParameters = paramObj.rpaParameters.filter(
+    (element) => element.name === parameterName
+  );
+  if (rpaParameters[0]) {
+    return rpaParameters[0][property];
+  }
+  return false;
 };
 
 /**
@@ -428,7 +442,6 @@ const getParameterForRobotFromDB = async (robotId) => {
 };
 
 module.exports = {
-  setRequireUserInput,
   getRobotId,
   getRpaTask,
   setRobotId,
@@ -436,6 +449,8 @@ module.exports = {
   resetRpaApplication,
   getParameterObject,
   setSingleParameter,
+  setPropertyForParameter,
+  parameterPropertyStatus,
   getAttributesFromDB,
   getParameterFromDB,
   setOutputValueName,

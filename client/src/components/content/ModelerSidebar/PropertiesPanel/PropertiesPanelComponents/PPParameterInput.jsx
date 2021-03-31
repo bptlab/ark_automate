@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Input, Tooltip } from 'antd';
+import React, { useState } from 'react';
+import { Input, Tooltip, Checkbox } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import corporateDesign from '../../../../../layout/corporateDesign';
-import { getParameterObject } from '../../../../../utils/attributeAndParamUtils';
+import styles from '../../ModelerSidebar.module.css';
+import {
+  parameterPropertyStatus,
+  setPropertyForParameter,
+} from '../../../../../utils/attributeAndParamUtils';
 
 /**
  * @description Renders a parameter input field for a given variable
@@ -20,45 +24,54 @@ const PPParameterInput = ({
   robotId,
   selectedActivity,
 }) => {
-  /**
-   * @description Will retrieve the local parameter storage and return the current value of the userInpitRequired property
-   * @param {string} robotId id of the selected robot
-   * @param {string} activityId id of the selected activity
-   */
-  const requireUserInputStatus = (robotId, activityId, parameterName) => {
-    const paramObj = getParameterObject(robotId, activityId);
-
-    const rpaParameters = paramObj.rpaParameters.filter(
-      (element) => element.name === parameterName
-    );
-    console.log('rpaParameters[0]', rpaParameters[0]);
-    if (rpaParameters[0]) {
-      console.log(
-        'rpaParameters[0].requireUserInput',
-        rpaParameters[0].requireUserInput
-      );
-      return rpaParameters[0].requireUserInput;
-    }
-    return false;
-  };
-
-  const [disabled, setDisabled] = useState(
-    requireUserInputStatus(robotId, selectedActivity, variableName)
+  const [userInputRequired, setUserInputRequired] = useState(
+    parameterPropertyStatus(
+      robotId,
+      selectedActivity,
+      variableName,
+      'requireUserInput'
+    )
+  );
+  const [parameterValue, setParameterValue] = useState(
+    parameterPropertyStatus(robotId, selectedActivity, variableName, 'value')
   );
 
-  /**
-   * @description Equivalent to ComponentDidMount in class based components
-   */
-  useEffect(() => {
-    setDisabled(
-      requireUserInputStatus(robotId, selectedActivity, variableName)
+  const changeUserInputRequirement = (event, parameterName) => {
+    if (event.target.checked) {
+      setPropertyForParameter(
+        selectedActivity,
+        parameterName,
+        'requireUserInput',
+        true
+      );
+      setUserInputRequired(true);
+    } else {
+      setPropertyForParameter(
+        selectedActivity,
+        parameterName,
+        'requireUserInput',
+        false
+      );
+      setUserInputRequired(false);
+    }
+  };
+
+  const changeParamterValue = (event, parameterName) => {
+    setPropertyForParameter(
+      selectedActivity,
+      parameterName,
+      'value',
+      event.target.value
     );
-  }, []);
+    setParameterValue(event.target.value);
+  };
   return (
     <>
       <Input
         placeholder={variableName}
         defaultValue={value}
+        value={userInputRequired ? '' : parameterValue}
+        onChange={(event) => changeParamterValue(event, variableName)}
         onPressEnter={onValueChange}
         suffix={
           isRequired && (
@@ -69,8 +82,15 @@ const PPParameterInput = ({
             </Tooltip>
           )
         }
-        disabled={disabled}
+        disabled={userInputRequired}
       />
+      <Checkbox
+        onChange={(event) => changeUserInputRequirement(event, variableName)}
+        checked={userInputRequired}
+        className={styles[`label-on-dark-background`]}
+      >
+        User Input required
+      </Checkbox>
     </>
   );
 };
