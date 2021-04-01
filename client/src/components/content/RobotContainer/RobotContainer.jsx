@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
+import isRobotExecutable from '../../../utils/botExecution';
 
 const { Title } = Typography;
 
@@ -24,8 +25,7 @@ const RobotContainer = (props) => {
    */
   const startRobot = () => {
     // isBotExecutable function is to be implemented
-    const isBotExecutable = true;
-    if (isBotExecutable) {
+    if (isRobotExecutable(robotId)) {
       socket.emit('robotExecutionJobs', { robotId, userId });
     } else {
       alert('Your Bot is not fully configured and can not be executed!');
