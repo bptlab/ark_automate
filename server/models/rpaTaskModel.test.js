@@ -4,6 +4,7 @@ const { expect } = require('chai');
 const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
 const { testRpaTask1 } = require('../utils/TestingUtils/testData');
 const taskModel = require('./rpaTaskModel.js');
+
 const RpaTask = mongoose.model('rpa-task');
 
 /**

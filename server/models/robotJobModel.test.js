@@ -1,9 +1,13 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
 const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
 const { testJob } = require('../utils/TestingUtils/testData');
+// eslint-disable-next-line no-unused-vars
 const jobsModel = require('./robotJobModel.js');
+
+const Job = mongoose.model('job')
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -21,7 +25,7 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('jobs can be created', () => {
-  const job = new mongoose.model('job')(testJob);
+  const job = new Job(testJob);
   it('should throw no errors for correct job', async () => {
     job.save((err) => {
       expect(err).to.not.exist;
@@ -30,7 +34,7 @@ describe('jobs can be created', () => {
 });
 
 describe('jobs have validation for missing parameters', () => {
-  const job = new mongoose.model('job')({
+  const job = new Job({
     parameters: [],
   });
   it('should be invalid if userId is empty', async () => {
