@@ -169,7 +169,8 @@ const getStartEventId = (bpmnJson) => {
     return startEventIds;
 }
 
-const returnApplicationArray = (robotCodeSettingsSection) => {
+// todo
+const getApplicationArray = (robotCodeSettingsSection) => {
     const robotCode = robotCodeSettingsSection.slice(1)
     for (let i = 0; i < robotCode.length; i += 1) {
         if (robotCode[i] === '') {
@@ -216,6 +217,22 @@ const returnApplicationArray = (robotCodeSettingsSection) => {
     return declaredApplications;
 }
 
+// todo
+const getInstructionElements = (instructionBlocks) => {
+    // extract InstructionBlocks from robotCodeSettingsSection (includes syntax check)
+    // return Instruction Blocks
+    const test = 'test'
+
+    return test;
+}
+
+const getInstructionBlocksFromTaskSection = (robotCodeTaskSection) => {
+
+
+    console.log("------")
+    return [robotCodeTaskSection]
+}
+
 /**
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
  * @returns {string} XML that has to be put in single source of truth file
@@ -236,18 +253,48 @@ const parseRobotCodeToSsot = (robotCode) => {
     // Build basic ssot-frame
     const ssot = {
         _id: robotId,
-        starterId: "starterID"/* startEventId[0] */,
+        starterId: 'Activity_0ay88v7'/* startEventId[0] */,
         robotName,
     };
 
-    const declaredApplications = returnApplicationArray(robotCodeSettingsSection)
+    const declaredApplications = getApplicationArray(robotCodeSettingsSection)
 
 
     console.log(robotCodeSettingsSection)
     console.log(robotCodeTaskSection)
     console.log(declaredApplications)
 
-    ssot.elements = 'MARKER';
+    const startMarker = {
+        "predecessorIds": [],
+        "successorIds": ["Activity_0ay88v7"],
+        "_id": "6065af97be67723acc8d902d",
+        "type": "MARKER",
+        "name": "Hunger bekommen",
+        "id": "Event_1wm4a0f"
+    }
+
+    const endMarker = {
+        "predecessorIds": ["Activity_1wpu7s1"],
+        "successorIds": [],
+        "_id": "6065af97be67723acc8d9031",
+        "type": "MARKER",
+        "name": "Tagesende",
+        "id": "Event_0udlir0"
+    }
+
+    const instructionBlocks = getInstructionBlocksFromTaskSection(robotCodeTaskSection)
+    console.log(instructionBlocks)
+
+    const elementsArray = []
+    elementsArray.push(startMarker)
+    console.log(getInstructionElements(instructionBlocks, declaredApplications))
+    elementsArray.push(endMarker)
+
+    ssot.elements = elementsArray;
+
+    // console.log(JSON.parse(sessionStorage.getItem('ssotLocal')));
+
+    console.log(ssot.elements);
 
     return ssot;
 
@@ -263,9 +310,9 @@ const parseRobotCodeToSsot = (robotCode) => {
         .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'])
         .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'])
 
-    let elementsArray = findElements(flows, bpmnShapes);
-    elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
-    elementsArray = enrichMarkerElements(elementsArray, bpmnStartEvent, bpmnEndEvent);
+    let elementsArrayOld = findElements(flows, bpmnShapes);
+    elementsArrayOld = enrichInstructionElements(elementsArrayOld, bpmnActivities);
+    elementsArrayOld = enrichMarkerElements(elementsArrayOld, bpmnStartEvent, bpmnEndEvent);
 }
 
 module.exports = { parseRobotCodeToSsot };
