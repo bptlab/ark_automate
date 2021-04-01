@@ -15,9 +15,9 @@ const ssotModel = require('../models/singleSourceOfTruthModel');
 beforeAll(async () => dbHandler.connect());
 
 /**
- * Clear all test data after every test.
+ * Clear all test data after every test. Not needed here because no test writes data
  */
-afterEach(async () => dbHandler.clearDatabase());
+// afterEach(async () =>  dbHandler.clearDatabase());
 
 /**
  * Remove and close the db and server.
@@ -26,16 +26,9 @@ afterAll(async () => dbHandler.closeDatabase());
 
 describe('/commands/get-available-applications', () => {
   it('retreives the list of all available apps correctly', async () => {
-    // TODO - check out why this test failes sometimes
     await dbLoader.loadTasksInDb();
-
-    const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/commands/get-available-applications',
-    });
-
     const response = httpMocks.createResponse();
-    await rpaController.getAvailableApplications(request, response);
+    await rpaController.getAvailableApplications({}, response);
     const data = await response._getData();
 
     expect(response.statusCode).toBe(200);
@@ -48,7 +41,6 @@ describe('/commands/get-available-applications', () => {
 
 describe('/commands/get-available-tasks-for-application', () => {
   it('retrieves the list of all available tasks for an application correctly', async () => {
-    await dbLoader.loadTasksInDb();
 
     const request = httpMocks.createRequest({
       method: 'GET',
@@ -72,7 +64,6 @@ describe('/commands/get-available-tasks-for-application', () => {
 
 describe('/commands/getAllParameters', () => {
   it('retrieves the list of all available tasks correctly', async () => {
-    await dbLoader.loadTasksInDb();
 
     const response = httpMocks.createResponse();
     await rpaController.getAllParameters({}, response);
@@ -91,7 +82,6 @@ describe('/commands/getAllParameters', () => {
 
 describe('/commands/get-vars-for-task', () => {
   it('retrieves the list of all available variables for a task', async () => {
-    await dbLoader.loadTasksInDb();
 
     const request = httpMocks.createRequest({
       query: {
