@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
 const ssotRetrievalController = require('../controllers/ssotRetrievalController');
 const ssotParsingController = require('../controllers/ssotParsingController');
@@ -10,6 +10,8 @@ const ssotVariableController = require('../controllers/ssotVariableController');
 const ssotAttributesController = require('../controllers/ssotRpaAttributes');
 
 const testData = require('../utils/TestingUtils/testData');
+const { testSsot, testSsotId, testUserId } = require('../utils/TestingUtils/testData');
+
 const rpaTaskModel = require('../models/rpaTaskModel');
 
 /**
@@ -34,7 +36,7 @@ describe('/ssot/getAvailableRobotsForUser', () => {
 
     const request = httpMocks.createRequest({
       params: {
-        userId: testData.userId,
+        userId: testUserId,
       },
     });
     const response = httpMocks.createResponse();
@@ -44,32 +46,18 @@ describe('/ssot/getAvailableRobotsForUser', () => {
     // Catches error "Received: serializes to the same string"
     // Solution found here https://github.com/facebook/jest/issues/8475#issuecomment-537830532
     expect(JSON.stringify(data[0]._id)).toEqual(
-      JSON.stringify(testData.ssotId)
+      JSON.stringify(testSsotId)
     );
-  });
-
-  it('throws an error when bad param passed', async () => {
-    const spy = jest.spyOn(console, 'error').mockImplementation();
-
-    const request = httpMocks.createRequest({
-      params: {
-        userId: '123',
-      },
-    });
-    const response = httpMocks.createResponse();
-    await ssotRetrievalController.getRobotList(request, response);
-    expect(console.error).toHaveBeenCalledTimes(1);
-    spy.mockRestore();
   });
 });
 
 describe('ssot/get/:id', () => {
-  it('retreives a ssot by id correctly', async () => {
+  it('retrieves a ssot by id correctly', async () => {
     await dbLoader.loadSsotInDb();
 
     const request = httpMocks.createRequest({
       params: {
-        id: testData.ssotId,
+        id: testSsotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -78,7 +66,7 @@ describe('ssot/get/:id', () => {
     const data = await response._getData();
 
     expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data._id)).toEqual(JSON.stringify(testData.ssotId));
+    expect(JSON.stringify(data._id)).toEqual(JSON.stringify(testSsotId));
   });
 });
 
@@ -88,7 +76,7 @@ describe('ssot/renameRobot', () => {
 
     const request = httpMocks.createRequest({
       query: {
-        id: testData.ssotId,
+        id: testSsotId,
         newName: 'newTestRobot',
       },
     });
@@ -103,16 +91,8 @@ describe('ssot/renameRobot', () => {
     );
 
     // verify if really in DB
-    const request2 = httpMocks.createRequest({
-      params: {
-        id: testData.ssotId,
-      },
-    });
-    const response2 = httpMocks.createResponse();
-
-    await ssotRetrievalController.getSingleSourceOfTruth(request2, response2);
-    const data2 = await response2._getData();
-    expect(JSON.stringify(data2.robotName)).toEqual(
+    const ssot = await mongoose.model('SSoT').findById(testSsotId).exec();
+    expect(JSON.stringify(ssot.robotName)).toEqual(
       JSON.stringify('newTestRobot')
     );
   });
@@ -124,7 +104,7 @@ describe('ssot/retrieveRobotMetadata', () => {
 
     const request = httpMocks.createRequest({
       params: {
-        robotId: testData.ssotId,
+        robotId: testSsotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -134,20 +114,20 @@ describe('ssot/retrieveRobotMetadata', () => {
 
     expect(response.statusCode).toBe(200);
     expect(JSON.stringify(data.robotName)).toEqual(
-      JSON.stringify(testData.testSsot.robotName)
+      JSON.stringify(testSsot.robotName)
     );
     expect(JSON.stringify(data.starterId)).toEqual(
-      JSON.stringify(testData.testSsot.starterId)
+      JSON.stringify(testSsot.starterId)
     );
   });
 });
 
-/* describe('ssot/shareRobotWithUser', () => {
+describe('ssot/shareRobotWithUser', () => {
   it('successfully creates a userAccessObject for robot and user', async () => {
     const request = httpMocks.createRequest({
       query: {
-        userId: testData.userId,
-        robotId: testData.ssotId,
+        userId: testUserId,
+        robotId: testSsotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -157,35 +137,36 @@ describe('ssot/retrieveRobotMetadata', () => {
 
     expect(response.statusCode).toBe(200);
     expect(JSON.stringify(data.userId)).toEqual(
-      JSON.stringify(testData.userId)
+      JSON.stringify(testUserId)
     );
     expect(JSON.stringify(data.robotId)).toEqual(
-      JSON.stringify(testData.ssotId)
+      JSON.stringify(testSsotId)
     );
 
     // verify if really in DB
     const userAccessObject = await mongoose
       .model('userAccessObject')
       .find({
-        userId: testData.userId,
-        robotId: testData.ssotId,
+        userId: testUserId,
+        robotId: testSsotId,
       })
       .exec();
+
     expect(JSON.stringify(userAccessObject[0].robotId)).toBe(
-      JSON.stringify(testData.ssotId)
+      JSON.stringify(testSsotId)
     );
     expect(JSON.stringify(userAccessObject[0].userId)).toEqual(
-      JSON.stringify(testData.userId)
+      JSON.stringify(testUserId)
     );
   });
-}); */
+});
 
 describe('ssot/createNewRobot', () => {
   it('successfully creates a new ssot', async () => {
     const request = httpMocks.createRequest({
       query: {
-        userId: testData.userId,
-        robotName: testData.testSsot.robotName,
+        userId: testUserId,
+        robotName: testSsot.robotName,
       },
     });
     const response = httpMocks.createResponse();
@@ -198,29 +179,28 @@ describe('ssot/createNewRobot', () => {
 
     // verify if really in DB
     const request2 = httpMocks.createRequest({
-      method: 'GET',
-      url: '/ssot/getAvailableRobotsForUser',
       params: {
-        userId: testData.userId,
+        userId: testUserId,
       },
     });
     const response2 = httpMocks.createResponse();
-
     await ssotRetrievalController.getRobotList(request2, response2);
+
     const data2 = await response2._getData();
     expect(response.statusCode).toBe(200);
     expect(JSON.stringify(data2[0]._id)).toEqual(JSON.stringify(newSsotId));
   });
 });
 
-/* describe('ssot/parser/get-robot-code', () => {
+describe('ssot/parser/get-robot-code', () => {
   it('successfully retrieves parsed code for ssot', async () => {
+    await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
 
     const request = httpMocks.createRequest({
       query: {
-        robotId: testData.ssotId,
+        robotId: testSsotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -232,7 +212,7 @@ describe('ssot/createNewRobot', () => {
     expect(data).toMatch('*** Settings ***');
     expect(data).toMatch('*** Tasks ***');
   });
-}); */
+});
 
 describe('ssot/parser/getForId/:botId', () => {
   it('successfully retrieves parsed code for ssot', async () => {
@@ -241,7 +221,7 @@ describe('ssot/parser/getForId/:botId', () => {
 
     const request = httpMocks.createRequest({
       params: {
-        botId: testData.ssotId,
+        botId: testSsotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -258,10 +238,8 @@ describe('ssot/parser/getForId/:botId', () => {
 describe('ssot/overwriteRobot/:robotId', () => {
   it('successfully retrieves overwritten ssot', async () => {
     await dbLoader.loadSsotInDb();
-    await dbLoader.loadAttributesInDb();
-    await dbLoader.loadParametersInDb();
 
-    const adaptedSsot = JSON.parse(JSON.stringify(testData.testSsot)); // deep copy workaround
+    const adaptedSsot = JSON.parse(JSON.stringify(testSsot)); // deep copy workaround
     adaptedSsot.elements = [
       {
         predecessorIds: [],
@@ -272,16 +250,17 @@ describe('ssot/overwriteRobot/:robotId', () => {
         id: 'Event_1wm4a0f',
       },
     ];
+
     const request = httpMocks.createRequest({
       method: 'POST',
       params: {
-        botId: testData.ssotId,
+        botId: testSsotId,
       },
       body: adaptedSsot,
     });
     const response = httpMocks.createResponse();
-
     await ssotRetrievalController.overwriteRobot(request, response);
+
     expect(response.statusCode).toBe(200);
 
     const data = await response._getData();
@@ -290,18 +269,14 @@ describe('ssot/overwriteRobot/:robotId', () => {
     // verify if really in DB
     const newSsot = await mongoose
       .model('SSoT')
-      .findById(testData.ssotId)
+      .findById(testSsotId)
       .exec();
-
     expect(JSON.stringify(data)).toEqual(JSON.stringify(newSsot));
   });
 });
 
 describe('ssot/updateManyParameters', () => {
   it('successfully updates parameter for a task', async () => {
-    await dbLoader.loadTasksInDb();
-    await dbLoader.loadSsotInDb();
-    await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
     const updatedValue = 'StonksOnlyGoDown.xls';
 
@@ -309,8 +284,8 @@ describe('ssot/updateManyParameters', () => {
       method: 'POST',
       body: [
         {
-          activityId: testData.testSsot.elements[2].id,
-          ssotId: testData.ssotId,
+          activityId: testSsot.elements[2].id,
+          ssotId: testSsotId,
           rpaParameters: [
             {
               name: 'filename',
@@ -335,8 +310,8 @@ describe('ssot/updateManyParameters', () => {
     const newParamObject = await mongoose
       .model('parameter')
       .findOne({
-        ssotId: testData.ssotId,
-        activityId: testData.testSsot.elements[2].id,
+        ssotId: testSsotId,
+        activityId: testSsot.elements[2].id,
       })
       .exec();
 
@@ -346,15 +321,11 @@ describe('ssot/updateManyParameters', () => {
 
 describe('ssot/getAllParameters/:robotId', () => {
   it('successfully retreives all parameters for a robot', async () => {
-    await dbLoader.loadTasksInDb();
-    await dbLoader.loadSsotInDb();
-    await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
 
     const request = httpMocks.createRequest({
-      method: 'GET',
       params: {
-        robotId: testData.ssotId,
+        robotId: testSsotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -375,10 +346,7 @@ describe('ssot/getAllParameters/:robotId', () => {
 
 describe('ssot/updateManyAttributes', () => {
   it('successfully updates all attributes for a robot', async () => {
-    await dbLoader.loadTasksInDb();
-    await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
-    await dbLoader.loadParametersInDb();
 
     const newAppValue = 'NewTestApp';
     const newTaskValue = 'NewTestTask';
@@ -405,8 +373,8 @@ describe('ssot/updateManyAttributes', () => {
     const newAttributesObject = await mongoose
       .model('rpaAttributes')
       .findOne({
-        ssotId: testData.ssotId,
-        activityId: testData.testSsot.elements[2].id,
+        ssotId: testSsotId,
+        activityId: testSsot.elements[2].id,
       })
       .exec();
 
@@ -417,17 +385,12 @@ describe('ssot/updateManyAttributes', () => {
 
 describe('ssot/getAllAttributes/:robotId', () => {
   it('successfully retreives all Attributes for a robot', async () => {
-    await dbLoader.loadTasksInDb();
-    await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
-    await dbLoader.loadParametersInDb();
 
     const request = httpMocks.createRequest({
-      params: 
-        {
-          robotId: testData.ssotId,
-        },
-    
+      params: {
+        robotId: testSsotId,
+      },
     });
     const response = httpMocks.createResponse();
 
@@ -437,6 +400,7 @@ describe('ssot/getAllAttributes/:robotId', () => {
     );
     expect(response.statusCode).toBe(200);
     const data = await response._getData();
+
     expect(data.length).toBe(3);
     expect(JSON.stringify(data)).toEqual(
       JSON.stringify([

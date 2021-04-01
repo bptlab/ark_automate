@@ -2,12 +2,10 @@
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
 const rpaController = require('../controllers/rpaFrameworkCommandsController');
 const testData = require('../utils/TestingUtils/testData');
-
-const ssotModel = require('../models/singleSourceOfTruthModel');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -41,10 +39,7 @@ describe('/commands/get-available-applications', () => {
 
 describe('/commands/get-available-tasks-for-application', () => {
   it('retrieves the list of all available tasks for an application correctly', async () => {
-
     const request = httpMocks.createRequest({
-      method: 'GET',
-      url: '/commands/get-available-tasks-for-application',
       query: {
         application: testData.testRpaTask1.Application,
       },
@@ -63,26 +58,27 @@ describe('/commands/get-available-tasks-for-application', () => {
 });
 
 describe('/commands/getAllParameters', () => {
-  it('retrieves the list of all available tasks correctly', async () => {
-
+  it('retrieves the list of all available parameter Objects correctly', async () => {
     const response = httpMocks.createResponse();
     await rpaController.getAllParameters({}, response);
     const data = await response._getData();
 
     expect(response.statusCode).toBe(200);
-    expect(data.length).toBe(3);
+    expect(data.length).toBe(testData.numberOfTestTasks);
     expect(data[0].inputVars.length).not.toBe(0);
     expect(data[0].inputVars.length).not.toBe(0);
-    expect(data[0].inputVars[0]).toHaveProperty(
-      'name',
-      testData.testRpaTask1.inputVars[0].name
+
+    const paramObjectOfTestRpaTask1 = data[0].inputVars[0];
+    const testTaskKey = testData.testRpaTask1.inputVars.keys[0];
+    expect(paramObjectOfTestRpaTask1).toHaveProperty(
+      String(testTaskKey),
+      testData.testRpaTask1.inputVars[testTaskKey]
     );
   });
 });
 
 describe('/commands/get-vars-for-task', () => {
   it('retrieves the list of all available variables for a task', async () => {
-
     const request = httpMocks.createRequest({
       query: {
         application: testData.testRpaTask1.Application,
@@ -95,10 +91,12 @@ describe('/commands/get-vars-for-task', () => {
     const data = await response._getData();
 
     expect(response.statusCode).toBe(200);
-    expect(data.inputVars.length).toBe(1);
+    expect(data.inputVars.length).toBe(testData.testRpaTask1.inputVars.length);
+
+    const testTaskKey = testData.testRpaTask1.inputVars.keys[0];
     expect(data.inputVars).toHaveProperty(
-      'name',
-      testData.testRpaTask1.inputVars.name
+      String(testTaskKey),
+      testData.testRpaTask1.inputVars[testTaskKey]
     );
   });
 });

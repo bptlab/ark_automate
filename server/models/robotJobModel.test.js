@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
 const { testJob } = require('../utils/TestingUtils/testData');
 const jobsModel = require('./robotJobModel.js');
 

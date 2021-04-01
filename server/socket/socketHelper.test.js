@@ -1,9 +1,11 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
-const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
 const socketHelperFunctions = require('./socketHelperFunctions');
 const testData = require('../utils/TestingUtils/testData');
+const {testSsotId, testUserId} = require('../utils/TestingUtils/testData');
+
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
 
 /**
@@ -27,7 +29,7 @@ describe('robot code retrieval', () => {
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
 
-    const robotCode = await socketHelperFunctions.getRobotCode(testData.ssotId);
+    const robotCode = await socketHelperFunctions.getRobotCode(testSsotId);
     expect(robotCode).not.toBeUndefined();
     expect(robotCode).not.toBeNull();
     expect(robotCode).toMatch('*** Settings ***');
@@ -43,7 +45,7 @@ describe('user id retrieval', () => {
     expect(userIds).not.toBeUndefined();
     expect(userIds).not.toBeNull();
     expect(userIds).not.toContain('undefined');
-    expect(userIds).toContain(testData.userId);
+    expect(userIds).toContain(testUserId);
     expect(userIds).toContain(testData.user2Id);
     expect(userIds.length).toEqual(2);
   });
@@ -52,13 +54,15 @@ describe('user id retrieval', () => {
 describe('job creation', () => {
   it('sucessfully creates a job', async () => {
     const jobId = await socketHelperFunctions.createJob(
-      testData.userId,
-      testData.ssotId,
+      testUserId,
+      testSsotId,
       'testStatus',
       []
     );
     expect(jobId).not.toBeUndefined();
     expect(jobId).not.toBeNull();
+
+    // verify if really in DB
     const foundJob = await mongoose.model('job').findById(jobId);
     expect(JSON.stringify(foundJob.id)).toEqual(JSON.stringify(jobId));
   });
@@ -73,6 +77,7 @@ describe('updating of job status', () => {
       'updatedStatus'
     );
 
+    // verify if really in DB
     const foundJob = await mongoose.model('job').findById(testData.testJob._id);
     expect(foundJob).not.toBeNull();
     expect(foundJob).not.toBeUndefined();
@@ -86,7 +91,7 @@ describe('getting all jobs for user', () => {
     await dbLoader.loadJobInDb();
 
     const jobList = await socketHelperFunctions.getAllWaitingJobsForUser(
-      testData.userId
+      testUserId
     );
 
     expect(jobList).not.toBeUndefined();

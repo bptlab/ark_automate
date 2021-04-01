@@ -1,9 +1,10 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
 const { testUserAccessObject } = require('../utils/TestingUtils/testData');
 const userAccessObjectModel = require('./userAccessObjectModel.js');
-
+const UserAccesObject = mongoose.model('userAccessObject')
 /**
  * Connect to a new in-memory database before running any tests.
  */
@@ -20,7 +21,7 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('user access objects can be created', () => {
-  const userAccessObject = new mongoose.model('userAccessObject')(
+  const userAccessObject = new UserAccesObject(
     testUserAccessObject
   );
   it('should throw no errors for correct job', async () => {
@@ -31,7 +32,7 @@ describe('user access objects can be created', () => {
 });
 
 describe('user access objects have validation for missing parameters', () => {
-  const job = new mongoose.model('userAccessObject')({});
+  const job = new UserAccesObject({});
   it('should be invalid if RobotId is empty', async () => {
     job.save((err) => {
       expect(err.errors.robotId).to.exist;

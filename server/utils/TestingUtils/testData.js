@@ -1,11 +1,11 @@
-const userId = '604a3ba6561e2d1fad4eda60';
+const testUserId = '604a3ba6561e2d1fad4eda60';
 const user2Id = '604a3ba6561e2d1fad4eda00';
 
-const ssotId = '606199015d691786a44a608f';
+const testSsotId = '606199015d691786a44a608f';
 
 const testSsot = {
-  id: ssotId,
-  _id: ssotId, // needed because we sometimes access the id with _id, sometimes with id
+  id: testSsotId,
+  _id: testSsotId, // needed because we sometimes access the id with _id, sometimes with id
   starterId: 'Event_1wm4a0f',
   robotName: 'Sandros Testbot',
   elements: [
@@ -54,8 +54,8 @@ const testSsot = {
 
 const testUserAccessObject = {
   AccessLevel: '0',
-  robotId: ssotId,
-  userId,
+  robotId: testSsotId,
+  userId: testUserId,
 };
 
 const testUserAccessObject2 = {
@@ -64,6 +64,7 @@ const testUserAccessObject2 = {
   userId: user2Id,
 };
 
+const numberOfTestTasks = 3;
 const testRpaTask1 = {
   Application: 'Browser',
   Task: 'Click Button',
@@ -122,8 +123,8 @@ const testRpaTask3 = {
 const testJob = {
   _id: '605c68a86d596e0d6bed0077',
   __v: 0,
-  user_id: userId,
-  robot_id: ssotId,
+  user_id: testUserId,
+  robot_id: testSsotId,
   status: 'waiting',
   parameters: [],
 };
@@ -131,7 +132,7 @@ const testJob = {
 const testAttributes1 = {
   _id: '6062f0ad1abb38158c2dfa41',
   activityId: 'Activity_1elomab',
-  ssotId: ssotId,
+  ssotId: testSsotId,
   rpaApplication: 'Excel.Application',
   rpaTask: 'Open Workbook',
   __v: 0,
@@ -140,7 +141,7 @@ const testAttributes1 = {
 const testAttributes2 = {
   _id: '6062f0ad1abb38158c2dfa42',
   activityId: 'Activity_175v5b5',
-  ssotId: ssotId,
+  ssotId: testSsotId,
   rpaApplication: 'Excel.Application',
   rpaTask: 'Find Empty Row',
   __v: 0,
@@ -149,7 +150,7 @@ const testAttributes2 = {
 const testAttributes3 = {
   _id: '6062f0ad1abb38158c2dfa43',
   activityId: 'Activity_1x8wlwh',
-  ssotId: ssotId,
+  ssotId: testSsotId,
   rpaApplication: 'Browser',
   rpaTask: 'Open Browser',
   __v: 0,
@@ -213,9 +214,10 @@ module.exports = {
   testSsot,
   testUserAccessObject,
   testUserAccessObject2,
-  userId,
+  testUserId,
   user2Id,
-  ssotId,
+  testSsotId,
+  numberOfTestTasks,
   testRpaTask1,
   testRpaTask2,
   testRpaTask3,

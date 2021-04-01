@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
-const { testRpaTask, testSsot } = require('../utils/TestingUtils/testData');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
+const { testSsot } = require('../utils/TestingUtils/testData');
 const ssotModel = require('./singleSourceOfTruthModel.js');
 
 /**
@@ -29,8 +30,7 @@ describe('Robots can be created', () => {
 });
 
 describe('Robots have validation for missing parameters', () => {
-  const job = new mongoose.model('SSoT')({
-  });
+  const job = new mongoose.model('SSoT')({});
   it('should be invalid if robotName is empty', async () => {
     job.save((err) => {
       expect(err.errors.robotName).to.exist;

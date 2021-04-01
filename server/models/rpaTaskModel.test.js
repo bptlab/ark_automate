@@ -1,8 +1,10 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
 const { testRpaTask1 } = require('../utils/TestingUtils/testData');
 const taskModel = require('./rpaTaskModel.js');
+const RpaTask = mongoose.model('rpa-task');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -20,7 +22,7 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('tasks can be created', () => {
-  const task = new mongoose.model('rpa-task')(testRpaTask1);
+  const task = new RpaTask(testRpaTask1);
   it('should throw no errors for correct job', async () => {
     task.save((err) => {
       expect(err).to.not.exist;
@@ -29,24 +31,23 @@ describe('tasks can be created', () => {
 });
 
 describe('tasks have validation for missing parameters', () => {
-  const job = new mongoose.model('rpa-task')({
-  });
+  const task = new RpaTask({});
   it('should be invalid if Application is empty', async () => {
-    job.save((err) => {
+    task.save((err) => {
       expect(err.errors.Application).to.exist;
       expect(err.errors.Application.message).equal('Application required');
     });
   });
 
   it('should be invalid if Task is empty', async () => {
-    job.save((err) => {
+    task.save((err) => {
       expect(err.errors.Task).to.exist;
       expect(err.errors.Task.message).equal('Task required');
     });
   });
 
   it('should be invalid if Code is empty', async () => {
-    job.save((err) => {
+    task.save((err) => {
       expect(err.errors.Code).to.exist;
       expect(err.errors.Code.message).equal('Code required');
     });
