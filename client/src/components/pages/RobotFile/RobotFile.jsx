@@ -9,6 +9,7 @@ import { initAvailableApplicationsSessionStorage } from '../../../utils/sessionS
 import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';
+import { upsert } from '../../../utils/attributeAndParamUtils';
 
 /**
  * @description View of the robot file
@@ -41,7 +42,9 @@ const RobotFile = () => {
    */
   const onSaveToCloud = /* async */ () => {
     const ssot = parseRobotCodeToSsot(code);
+    sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
     console.log(ssot);
+    // upsert()
 
     /**
      * please parse here to ssot and upsert

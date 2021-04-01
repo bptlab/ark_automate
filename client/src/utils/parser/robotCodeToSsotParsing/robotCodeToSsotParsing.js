@@ -170,6 +170,13 @@ const getStartEventId = (bpmnJson) => {
 }
 
 // todo
+const getUniqueId = () => {
+    const newId = JSON.parse(sessionStorage.getItem('idCounter')) + 1;
+    sessionStorage.setItem('idCounter', newId)
+    return `Activity_0ay${newId}`
+}
+
+// todo
 const getApplicationArray = (robotCodeSettingsSection) => {
     const robotCode = robotCodeSettingsSection.slice(1)
     for (let i = 0; i < robotCode.length; i += 1) {
@@ -217,21 +224,93 @@ const getApplicationArray = (robotCodeSettingsSection) => {
     return declaredApplications;
 }
 
+
+/*
+*   every construction block contains two lines (entries in the array):
+*   #elementName
+*   Task Parameter1 Parameter2
+*/
+const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredApplications) => {
+    let currentApplication;
+    const instructionBlocks = [];
+    const regexForElementNameLine = new RegExp(`#`)
+    const regexForTaskAndParamLine = new RegExp(`s`)
+
+    for (let lineNumber = 1; lineNumber < robotCodeTaskSection.length; lineNumber += 1) {
+        let currentLine = robotCodeTaskSection[lineNumber]
+
+        if (currentLine.replaceAll(' ', '') === '') {
+            continue; // ignores empty lines
+        }
+
+        if (declaredApplications.includes(currentLine)) {
+            currentApplication = currentLine;
+            continue;
+        }
+
+        if (regexForElementNameLine.test(currentLine)) {
+            instructionBlocks.push([currentApplication, currentLine.substring(1)])
+            continue;
+        }
+
+        if (regexForTaskAndParamLine.test(currentLine)) {
+            currentLine = currentLine.replaceAll('    ', ' ').trim()
+            instructionBlocks[instructionBlocks.length - 1].push(currentLine)
+            continue;
+        }
+
+        // todo implement outputVariables
+
+    }
+    return instructionBlocks
+}
+
+const buildStartMarker = () => ({
+    "predecessorIds": [],
+    "id": getUniqueId(),
+    "type": "MARKER",
+    "name": "START",
+    "successorIds": []
+})
+
+const buildEndMarker = (successor) => ({
+    "predecessorIds": [],
+    "id": getUniqueId(),
+    "type": "MARKER",
+    "name": "END",
+    "successorIds": [successor ? successor.id : 'MarkerElement']
+
+})
+
 // todo
-const getInstructionElements = (instructionBlocks) => {
-    // extract InstructionBlocks from robotCodeSettingsSection (includes syntax check)
-    // return Instruction Blocks
-    const test = 'test'
+const getInstructionElements = (robotCodeTaskSection, declaredApplications) => {
+    const instructionArray = getInstructionBlocksFromTaskSection(robotCodeTaskSection, declaredApplications)
+    const instructionElement = [];
 
-    return test;
+    instructionElement.push(buildStartMarker())
+
+    instructionArray.forEach((singleElement) => {
+        const currentElement = {}
+        currentElement.predecessorIds = []
+
+        currentElement.id = getUniqueId();
+        currentElement.type = "INSTRUCTION";
+        currentElement.name = singleElement[1];
+        const successor = instructionElement[instructionElement.length - 1]
+        currentElement.successorIds = successor && [successor.id]
+        if (successor) successor.predecessorIds = [currentElement.id];
+
+        instructionElement.push(currentElement)
+    })
+
+    instructionElement.push(buildEndMarker(instructionElement[instructionElement.length - 1]))
+    const lastElement = instructionElement[instructionElement.length - 1]
+    const secontlLstElement = instructionElement[instructionElement.length - 2]
+    secontlLstElement.predecessorIds = [lastElement.id]
+
+    return instructionElement;
 }
 
-const getInstructionBlocksFromTaskSection = (robotCodeTaskSection) => {
-
-
-    console.log("------")
-    return [robotCodeTaskSection]
-}
 
 /**
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
@@ -259,42 +338,14 @@ const parseRobotCodeToSsot = (robotCode) => {
 
     const declaredApplications = getApplicationArray(robotCodeSettingsSection)
 
-
-    console.log(robotCodeSettingsSection)
-    console.log(robotCodeTaskSection)
-    console.log(declaredApplications)
-
-    const startMarker = {
-        "predecessorIds": [],
-        "successorIds": ["Activity_0ay88v7"],
-        "_id": "6065af97be67723acc8d902d",
-        "type": "MARKER",
-        "name": "Hunger bekommen",
-        "id": "Event_1wm4a0f"
-    }
-
-    const endMarker = {
-        "predecessorIds": ["Activity_1wpu7s1"],
-        "successorIds": [],
-        "_id": "6065af97be67723acc8d9031",
-        "type": "MARKER",
-        "name": "Tagesende",
-        "id": "Event_0udlir0"
-    }
-
-    const instructionBlocks = getInstructionBlocksFromTaskSection(robotCodeTaskSection)
-    console.log(instructionBlocks)
-
-    const elementsArray = []
-    elementsArray.push(startMarker)
-    console.log(getInstructionElements(instructionBlocks, declaredApplications))
-    elementsArray.push(endMarker)
+    const elementsArray = getInstructionElements(robotCodeTaskSection, declaredApplications)
+    console.log(elementsArray)
 
     ssot.elements = elementsArray;
 
     // console.log(JSON.parse(sessionStorage.getItem('ssotLocal')));
 
-    console.log(ssot.elements);
+    console.log(ssot);
 
     return ssot;
 

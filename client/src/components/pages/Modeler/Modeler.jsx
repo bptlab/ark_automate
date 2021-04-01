@@ -30,6 +30,7 @@ const Modeler = (match) => {
    */
   useEffect(() => {
     setRobotId(robotId);
+    initSessionStorage('idCounter', JSON.stringify('541'));
     getSsotFromDB(robotId)
       .then((response) => response.json())
       .then((data) => {
