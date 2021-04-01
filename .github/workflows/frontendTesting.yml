@@ -1,0 +1,29 @@
+name: Frontend testing
+
+on:
+  push:
+    branches: [DEV]
+  pull_request:
+    branches: [DEV]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      max-parallel: 24
+      matrix:
+        node-version: [12.x, 14.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+        working-directory: client
+      - run: npm test
+        working-directory: client

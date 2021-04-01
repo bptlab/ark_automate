@@ -7,6 +7,7 @@ import { getSsotFromDB } from '../../../api/ssotRetrieval';
 import { setRobotId, getAttributesFromDB, getParameterFromDB, getParameterForRobotFromDB } from '../../../utils/attributeAndParamUtils';
 import { initAvailableApplicationsSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils'
 import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
+
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
 
@@ -22,7 +23,7 @@ const Modeler = (match) => {
 
   const updateModeler = (updatedModeler) => {
     setModeler(updatedModeler);
-  }
+  };
 
   /**
    * @description Equivalent to ComponentDidMount in class based components
@@ -34,7 +35,7 @@ const Modeler = (match) => {
       .then((data) => {
         sessionStorage.setItem('ssotLocal', JSON.stringify(data));
         sessionStorage.setItem('robotName', data.robotName);
-        setRobotName(data.robotName)
+        setRobotName(data.robotName);
       })
       .catch((error) => {
         console.error(error);
@@ -45,14 +46,17 @@ const Modeler = (match) => {
       .then((data) => {
         initSessionStorage('attributeLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
-      })
+      });
 
     getParameterFromDB(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
-        sessionStorage.setItem('TaskApplicationCombinations', JSON.stringify(data));
-      })
+        sessionStorage.setItem(
+          'TaskApplicationCombinations',
+          JSON.stringify(data)
+        );
+      });
 
     getParameterForRobotFromDB(robotId)
       .then((response) => response.json())
@@ -60,7 +64,6 @@ const Modeler = (match) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
       })
-
     initSessionStorage('taskToApplicationCache', JSON.stringify({}));
     initAvailableApplicationsSessionStorage();
 
@@ -70,11 +73,21 @@ const Modeler = (match) => {
     <>
       <HeaderNavbar selectedKey={2} />
       <Layout>
-        <BpmnModeler robotId={robotId} robotName={robotName} onModelerUpdate={updateModeler} />
-        {(modeler && robotName) && <ModelerSidebar modeler={modeler} robotId={robotId} robotName={robotName} />}
+        <BpmnModeler
+          robotId={robotId}
+          robotName={robotName}
+          onModelerUpdate={updateModeler}
+        />
+        {modeler && robotName && (
+          <ModelerSidebar
+            modeler={modeler}
+            robotId={robotId}
+            robotName={robotName}
+          />
+        )}
       </Layout>
     </>
-  )
-}
+  );
+};
 
 export default Modeler;
