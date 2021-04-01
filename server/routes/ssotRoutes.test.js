@@ -216,6 +216,7 @@ describe('ssot/parser/get-robot-code', () => {
 
 describe('ssot/parser/getForId/:botId', () => {
   it('successfully retrieves parsed code for ssot', async () => {
+    await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
 
@@ -226,7 +227,7 @@ describe('ssot/parser/getForId/:botId', () => {
     });
     const response = httpMocks.createResponse();
 
-    await ssotParsingController.getRobotCode(request, response);
+    await ssotParsingController.getRobotCodeForId(request, response);
     expect(response.statusCode).toBe(200);
 
     const data = await response._getData();
