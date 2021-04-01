@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
-import { changeSsotName } from '../../../api/ssotRetrieval';
+import {
+  changeSsotName,
+  getAllRequireUserInputParameters,
+} from '../../../api/ssotRetrieval';
 
 const { Title } = Typography;
 
@@ -26,6 +29,21 @@ const RobotContainer = (props) => {
     // isBotExecutable function is to be implemented
     const isBotExecutable = true;
     if (isBotExecutable) {
+      const parameterObjectsWaitingForUserInput = [];
+      getAllRequireUserInputParameters(robotId)
+        .then((response) => response.json())
+        .then((data) => {
+          Array.prototype.forEach.call(data, (task) => {
+            Array.prototype.forEach.call(
+              task.rpaParameters,
+              (parameterObject) => {
+                if (parameterObject.requireUserInput) {
+                  parameterObjectsWaitingForUserInput.push(parameterObject);
+                }
+              }
+            );
+          });
+        });
       socket.emit('robotExecutionJobs', { robotId, userId });
     } else {
       alert('Your Bot is not fully configured and can not be executed!');

@@ -4,9 +4,9 @@
  */
 
 /**
-* @description Fetch the ssot correlating to the specified Id
-* @param { String } robotId - String including the Id of the robot to be retrieved
-*/
+ * @description Fetch the ssot correlating to the specified Id
+ * @param { String } robotId - String including the Id of the robot to be retrieved
+ */
 const getSsotFromDB = async (robotId) => {
   const requestString = `/ssot/get/${robotId}`;
   const response = await fetch(requestString);
@@ -14,20 +14,20 @@ const getSsotFromDB = async (robotId) => {
 };
 
 /**
-* @description Fetch all those Ssot names and Ids, which are available for the current user
-* @param { String } userId - String including the user Id
-*/
+ * @description Fetch all those Ssot names and Ids, which are available for the current user
+ * @param { String } userId - String including the user Id
+ */
 const fetchSsotsForUser = async (userId) => {
   const requestString = `/ssot/getAvailableRobotsForUser/${userId}`;
   const response = await fetch(requestString);
   return response;
 };
 
-/** 
-* @description This function renames the robot in Ssot
-* @param { String } ssotId - String including the ssotId
-* @param { String } newName - String with the new RobotName
-*/
+/**
+ * @description This function renames the robot in Ssot
+ * @param { String } ssotId - String including the ssotId
+ * @param { String } newName - String with the new RobotName
+ */
 const changeSsotName = async (ssotId, newName) => {
   const adjustedName = newName.replace(/\s/g, '+');
   const requestString = `/ssot/renameRobot?id=${ssotId}&newName=${adjustedName}`;
@@ -56,10 +56,21 @@ const createNewRobot = async (userId, newName) => {
   return response;
 };
 
+/**
+ * @description Fetch the ssot correlating to the specified Id
+ * @param { String } robotId - String including the Id of the robot to be retrieved
+ */
+const getAllRequireUserInputParameters = async (robotId) => {
+  const requestString = `/ssot/getAllRequireUserInputParameters/${robotId}`;
+  const response = await fetch(requestString);
+  return response;
+};
+
 export {
   getSsotFromDB,
   fetchSsotsForUser,
   changeSsotName,
   retrieveMetadataForRobot,
   createNewRobot,
+  getAllRequireUserInputParameters,
 };
