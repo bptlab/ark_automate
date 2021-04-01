@@ -137,12 +137,7 @@ exports.getAllRequireUserInputParameters = async (req, res) => {
 
     const parameterData = await mongoose
       .model('parameter')
-      .find(
-        { ssotId: robotId },
-        {
-          rpaParameters: 1,
-        }
-      )
+      .find({ ssotId: robotId })
       .exec();
 
     res.send(parameterData);

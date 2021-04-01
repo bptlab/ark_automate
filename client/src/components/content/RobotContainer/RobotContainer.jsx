@@ -6,10 +6,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
-import {
-  changeSsotName,
-  getAllRequireUserInputParameters,
-} from '../../../api/ssotRetrieval';
+import { changeSsotName } from '../../../api/ssotRetrieval';
 
 const { Title } = Typography;
 
@@ -21,34 +18,6 @@ const { Title } = Typography;
 const RobotContainer = (props) => {
   const { robotId, robotName, userId } = props;
   const [name, setRobotName] = useState(robotName);
-
-  /**
-   * @description Sends a job to the server to execute a specfic robot for a specific user
-   */
-  const startRobot = () => {
-    // isBotExecutable function is to be implemented
-    const isBotExecutable = true;
-    if (isBotExecutable) {
-      const parameterObjectsWaitingForUserInput = [];
-      getAllRequireUserInputParameters(robotId)
-        .then((response) => response.json())
-        .then((data) => {
-          Array.prototype.forEach.call(data, (task) => {
-            Array.prototype.forEach.call(
-              task.rpaParameters,
-              (parameterObject) => {
-                if (parameterObject.requireUserInput) {
-                  parameterObjectsWaitingForUserInput.push(parameterObject);
-                }
-              }
-            );
-          });
-        });
-      socket.emit('robotExecutionJobs', { robotId, userId });
-    } else {
-      alert('Your Bot is not fully configured and can not be executed!');
-    }
-  };
 
   /**
    * @description Updates the name of the robot in the backend and in the robot container
@@ -69,10 +38,9 @@ const RobotContainer = (props) => {
       <Col className={[styles.box, styles.robotBox]}>
         <Row align='middle' style={{ height: '55%' }}>
           <Col type='flex' span={12}>
-            <PlayCircleOutlined
-              onClick={startRobot}
-              className={styles.clickableIcon}
-            />
+            <Link to={`/interaction_cockpit/${robotId}`}>
+              <PlayCircleOutlined className={styles.clickableIcon} />
+            </Link>
           </Col>
           <Col type='flex' span={12}>
             <Link to={`/modeler/${robotId}`}>
