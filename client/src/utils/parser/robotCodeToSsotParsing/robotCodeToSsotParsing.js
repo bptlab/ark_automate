@@ -234,7 +234,7 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
     let currentApplication;
     const instructionBlocks = [];
     const regexForElementNameLine = new RegExp(`#`)
-    const regexForTaskAndParamLine = new RegExp(`s`)
+    // const regexForTaskAndParamLine = new RegExp(`s`)
 
     for (let lineNumber = 1; lineNumber < robotCodeTaskSection.length; lineNumber += 1) {
         let currentLine = robotCodeTaskSection[lineNumber]
@@ -243,21 +243,36 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
             continue; // ignores empty lines
         }
 
+        // set new Application
         if (declaredApplications.includes(currentLine)) {
             currentApplication = currentLine;
             continue;
         }
 
         if (regexForElementNameLine.test(currentLine)) {
-            instructionBlocks.push([currentApplication, currentLine.substring(1)])
+            instructionBlocks.push({ rpaApplication: currentApplication, name: currentLine.substring(1) })
             continue;
         }
 
-        if (regexForTaskAndParamLine.test(currentLine)) {
-            currentLine = currentLine.trim()
-            instructionBlocks[instructionBlocks.length - 1].push(currentLine)
-            continue;
+        currentLine = currentLine.trim();
+
+        const splitPlaceholder = '§&§'
+        if (currentLine.includes(splitPlaceholder)) {
+            alert('it is not allowed to use & or § as param values')
+        } else {
+            currentLine = currentLine.replaceAll('    ', splitPlaceholder);
         }
+
+        // set RPATask
+        if (currentLine.includes(splitPlaceholder)) {
+            const rpaTask = currentLine.slice(0, currentLine.indexOf(splitPlaceholder))
+            instructionBlocks[instructionBlocks.length - 1].rpaTask = rpaTask;
+        }
+
+        // set RPAParameter
+        const parameters = currentLine.replace(instructionBlocks[instructionBlocks.length - 1].rpaTask + splitPlaceholder, '')
+        const parameterArray = parameters.split([splitPlaceholder]);
+        instructionBlocks[instructionBlocks.length - 1].paramArray = parameterArray;
 
         // todo implement outputVariables
 
@@ -283,7 +298,7 @@ const buildEndMarker = (successor) => ({
 })
 
 const buildSingleAttributeObject = (currentElement, singleElement, robotId) => {
-    let rpaTask = singleElement[2];
+    let { rpaTask } = singleElement;
     if (!rpaTask) rpaTask = ""
     if (rpaTask.includes('§&§')) {
         alert('it is not allowed to use & or § as param values')
@@ -297,46 +312,39 @@ const buildSingleAttributeObject = (currentElement, singleElement, robotId) => {
 
     return {
         activityId: currentElement.id,
-        rpaApplication: singleElement[0],
+        rpaApplication: singleElement.rpaApplication,
         rpaTask,
         ssotId: robotId
     }
 }
 
-const buildSingleParameterObject = (singleAtrributeObject, currentElement, singleElement, robotId, taskAndApplicationCombinations) => {
+const buildSingleParameterObject = (singleAtrributeObject, activityId, singleElement, robotId, taskAndApplicationCombinations) => {
     const { rpaApplication } = singleAtrributeObject;
     const { rpaTask } = singleAtrributeObject;
-    /*     console.log(rpaApplication)
-        console.log(rpaTask)
-        console.log(taskAndApplicationCombinations)
-     */
+    const singleParamArray = singleElement.paramArray;
+    const parameterArray = [];
 
     const combinationObject = taskAndApplicationCombinations.filter((singleCombinationObject) =>
         (singleCombinationObject.Application === rpaApplication && singleCombinationObject.Task === rpaTask)
     )[0]
 
-    console.log(combinationObject)
 
-    const rpaParameterArray = [];
-
-    combinationObject.inputVars.forEach((singleInputVariable) => {
+    combinationObject.inputVars.forEach((singleInputVariable, index) => {
         const singleParameterObject = {
             index: singleInputVariable.index,
             infoText: singleInputVariable.infoText,
             isRequired: singleInputVariable.isRequired,
             name: singleInputVariable.name,
             type: singleInputVariable.type,
-            value: 'TESTVALUE'
+            value: (singleParamArray[index].startsWith('%') && singleParamArray[index].endsWith('%') ? '' : singleParamArray[index])
         };
 
-        rpaParameterArray.push(singleParameterObject)
+        parameterArray.push(singleParameterObject)
     })
 
-    console.log(rpaParameterArray)
-
     return {
-        activityId: currentElement.id,
-        rpaParameters: rpaParameterArray,
+        activityId,
+        rpaParameters: parameterArray,
         ssotId: robotId
     }
 }
@@ -359,8 +367,8 @@ const getInstructionElements = (robotCodeTaskSection, declaredApplications, robo
         currentElement.successorIds = []
 
         currentElement.id = getUniqueId();
-        currentElement.type = "INSTRUCTION";
-        currentElement.name = singleElement[1];
+        currentElement.type = 'INSTRUCTION';
+        currentElement.name = singleElement.name;
         const predecessor = instructionElement[instructionElement.length - 1]
         currentElement.predecessorIds = predecessor && [predecessor.id]
         if (predecessor) predecessor.successorIds = [currentElement.id];
@@ -371,7 +379,7 @@ const getInstructionElements = (robotCodeTaskSection, declaredApplications, robo
         attributeArray.push(singleAtrributeObject)
 
         // enrich parameterObject
-        const singleParameterObject = buildSingleParameterObject(singleAtrributeObject, currentElement, singleElement, robotId, taskAndApplicationCombinations);
+        const singleParameterObject = buildSingleParameterObject(singleAtrributeObject, currentElement.id, singleElement, robotId, taskAndApplicationCombinations);
         parameterArray.push(singleParameterObject)
     })
     sessionStorage.removeItem('attributeLocalStorage')
@@ -418,7 +426,7 @@ const parseRobotCodeToSsot = (robotCode) => {
     const declaredApplications = getApplicationArray(robotCodeSettingsSection)
 
     const elementsArray = getInstructionElements(robotCodeTaskSection, declaredApplications, robotId)
-    console.log(elementsArray)
+    // console.log(elementsArray)
 
     // Build ssot
     const ssot = {
@@ -448,5 +456,7 @@ const parseRobotCodeToSsot = (robotCode) => {
     elementsArrayOld = enrichInstructionElements(elementsArrayOld, bpmnActivities);
     elementsArrayOld = enrichMarkerElements(elementsArrayOld, bpmnStartEvent, bpmnEndEvent);
 }
+
+// todo: Implement placeholder Variables to be specified at bot start
 
 module.exports = { parseRobotCodeToSsot };
