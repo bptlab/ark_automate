@@ -4,8 +4,8 @@ import { highlight, languages } from 'prismjs/components/prism-core';
 import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import getParsedRobotFile from '../../../api/ssot';
+import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils'
 import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
-import { initAvailableApplicationsSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils'
 import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';
@@ -43,13 +43,7 @@ const RobotFile = () => {
   const onSaveToCloud = /* async */ () => {
     const ssot = parseRobotCodeToSsot(code);
     sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
-    console.log(ssot);
-    // upsert()
-
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
+    upsert();
   };
 
   return (

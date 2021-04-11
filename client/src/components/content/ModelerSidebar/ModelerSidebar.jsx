@@ -7,9 +7,17 @@ import styles from './ModelerSidebar.module.css';
 import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
 import getParsedRobotFile from '../../../api/ssot';
 import downloadString from '../../../utils/downloadString';
-import { setSingleParameter, resetRpaApplication, setRpaTask, upsert, getParameterObject, setOutputValueName } from '../../../utils/attributeAndParamUtils';
 import parseSsotToBpmn from '../../../utils/parser/ssotToBpmnParsing/ssotToBpmnParsing';
 import parseBpmnToSsot from '../../../utils/parser/BpmnToSsotParsing/BpmnToSsotParsing';
+import {
+  setSingleParameter,
+  resetRpaApplication,
+  setRpaTask,
+  upsert,
+  getParameterObject,
+  setOutputValueName
+} from '../../../utils/attributeAndParamUtils';
+
 
 const { Title } = Typography;
 const { Sider } = Layout;

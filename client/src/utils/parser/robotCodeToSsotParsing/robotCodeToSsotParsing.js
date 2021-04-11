@@ -426,7 +426,6 @@ const parseRobotCodeToSsot = (robotCode) => {
     const declaredApplications = getApplicationArray(robotCodeSettingsSection)
 
     const elementsArray = getInstructionElements(robotCodeTaskSection, declaredApplications, robotId)
-    // console.log(elementsArray)
 
     // Build ssot
     const ssot = {
@@ -436,27 +435,7 @@ const parseRobotCodeToSsot = (robotCode) => {
         elements: elementsArray
     };
 
-    // console.log(JSON.parse(sessionStorage.getItem('ssotLocal')));
-
     return ssot;
-
-    let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
-    if (typeof flows === 'undefined') flows = [];
-
-    let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
-    if (typeof bpmnActivities === 'undefined') bpmnActivities = [];
-
-    const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
-    const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
-    const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
-        .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'])
-        .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'])
-
-    let elementsArrayOld = findElements(flows, bpmnShapes);
-    elementsArrayOld = enrichInstructionElements(elementsArrayOld, bpmnActivities);
-    elementsArrayOld = enrichMarkerElements(elementsArrayOld, bpmnStartEvent, bpmnEndEvent);
 }
-
-// todo: Implement placeholder Variables to be specified at bot start
 
 module.exports = { parseRobotCodeToSsot };
