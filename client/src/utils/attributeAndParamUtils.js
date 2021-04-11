@@ -190,6 +190,7 @@ const getParameterObject = (robotId, activityId) => {
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(localParameterStorage));
         return matchingParameterObject;
     }
+    return undefined;
 };
 
 /**

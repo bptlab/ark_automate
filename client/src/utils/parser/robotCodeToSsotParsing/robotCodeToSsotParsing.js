@@ -254,7 +254,7 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
         }
 
         if (regexForTaskAndParamLine.test(currentLine)) {
-            currentLine = currentLine.replaceAll('    ', ' ').trim()
+            currentLine = currentLine.trim()
             instructionBlocks[instructionBlocks.length - 1].push(currentLine)
             continue;
         }
@@ -266,49 +266,138 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
 }
 
 const buildStartMarker = () => ({
-    "predecessorIds": [],
+    "successorIds": [],
     "id": getUniqueId(),
     "type": "MARKER",
     "name": "START",
-    "successorIds": []
+    "predecessorIds": []
 })
 
 const buildEndMarker = (successor) => ({
-    "predecessorIds": [],
+    "successorIds": [],
     "id": getUniqueId(),
     "type": "MARKER",
     "name": "END",
-    "successorIds": [successor ? successor.id : 'MarkerElement']
+    "predecessorIds": [successor ? successor.id : 'MarkerElement']
 
 })
 
+const buildSingleAttributeObject = (currentElement, singleElement, robotId) => {
+    let rpaTask = singleElement[2];
+    if (!rpaTask) rpaTask = ""
+    if (rpaTask.includes('§&§')) {
+        alert('it is not allowed to use & or § as param values')
+    } else {
+        rpaTask = rpaTask.replaceAll('    ', '§&§');
+    }
+
+    if (rpaTask.includes('§&§')) {
+        rpaTask = rpaTask.slice(0, rpaTask.indexOf('§&§'))
+    }
+
+    return {
+        activityId: currentElement.id,
+        rpaApplication: singleElement[0],
+        rpaTask,
+        ssotId: robotId
+    }
+}
+
+const buildSingleParameterObject = (singleAtrributeObject, currentElement, singleElement, robotId, taskAndApplicationCombinations) => {
+    const { rpaApplication } = singleAtrributeObject;
+    const { rpaTask } = singleAtrributeObject;
+    /*     console.log(rpaApplication)
+        console.log(rpaTask)
+        console.log(taskAndApplicationCombinations)
+     */
+
+    const combinationObject = taskAndApplicationCombinations.filter((singleCombinationObject) =>
+        (singleCombinationObject.Application === rpaApplication && singleCombinationObject.Task === rpaTask)
+    )[0]
+
+    console.log(combinationObject)
+
+    const rpaParameterArray = [];
+
+    combinationObject.inputVars.forEach((singleInputVariable) => {
+        const singleParameterObject = {
+            index: singleInputVariable.index,
+            infoText: singleInputVariable.infoText,
+            isRequired: singleInputVariable.isRequired,
+            name: singleInputVariable.name,
+            type: singleInputVariable.type,
+            value: 'TESTVALUE'
+        };
+
+        rpaParameterArray.push(singleParameterObject)
+    })
+
+    console.log(rpaParameterArray)
+
+    return {
+        activityId: currentElement.id,
+        rpaParameters: rpaParameterArray,
+        ssotId: robotId
+    }
+}
+
+
+
+
 // todo
-const getInstructionElements = (robotCodeTaskSection, declaredApplications) => {
+const getInstructionElements = (robotCodeTaskSection, declaredApplications, robotId) => {
+    const taskAndApplicationCombinations = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
     const instructionArray = getInstructionBlocksFromTaskSection(robotCodeTaskSection, declaredApplications)
     const instructionElement = [];
+    const attributeArray = [];
+    const parameterArray = [];
 
     instructionElement.push(buildStartMarker())
 
     instructionArray.forEach((singleElement) => {
         const currentElement = {}
-        currentElement.predecessorIds = []
+        currentElement.successorIds = []
 
         currentElement.id = getUniqueId();
         currentElement.type = "INSTRUCTION";
         currentElement.name = singleElement[1];
-        const successor = instructionElement[instructionElement.length - 1]
-        currentElement.successorIds = successor && [successor.id]
-        if (successor) successor.predecessorIds = [currentElement.id];
+        const predecessor = instructionElement[instructionElement.length - 1]
+        currentElement.predecessorIds = predecessor && [predecessor.id]
+        if (predecessor) predecessor.successorIds = [currentElement.id];
 
         instructionElement.push(currentElement)
+
+        const singleAtrributeObject = buildSingleAttributeObject(currentElement, singleElement, robotId);
+        attributeArray.push(singleAtrributeObject)
+
+        // enrich parameterObject
+        const singleParameterObject = buildSingleParameterObject(singleAtrributeObject, currentElement, singleElement, robotId, taskAndApplicationCombinations);
+        parameterArray.push(singleParameterObject)
     })
+    sessionStorage.removeItem('attributeLocalStorage')
+    sessionStorage.setItem('attributeLocalStorage', JSON.stringify(attributeArray));
+    console.log('attributeArray')
+    console.log(attributeArray);
+    sessionStorage.setItem('parameterLocalStorage', JSON.stringify(parameterArray));
+    console.log('paramArray')
+    console.log(parameterArray)
 
     instructionElement.push(buildEndMarker(instructionElement[instructionElement.length - 1]))
     const lastElement = instructionElement[instructionElement.length - 1]
     const secontlLstElement = instructionElement[instructionElement.length - 2]
-    secontlLstElement.predecessorIds = [lastElement.id]
+    secontlLstElement.successorIds = [lastElement.id]
 
     return instructionElement;
+}
+
+const getStarterId = (elementsArray) => {
+    let starterElementId = 'noStarterElement';
+    elementsArray.forEach((singleElement) => {
+        if (singleElement.type === 'MARKER' && singleElement.predecessorIds.length === 0) {
+            starterElementId = singleElement.id;
+        }
+    })
+    return starterElementId;
 }
 
 
@@ -326,26 +415,20 @@ const parseRobotCodeToSsot = (robotCode) => {
     const robotCodeSettingsSection = robotCodeAsArray.slice(lineNumberSettingsSelector, lineNumberTasksSelector);
     const robotCodeTaskSection = robotCodeAsArray.slice(lineNumberTasksSelector);
 
-
-    // const startEventId = getStartEventId(bpmnJson);
-
-    // Build basic ssot-frame
-    const ssot = {
-        _id: robotId,
-        starterId: 'Activity_0ay88v7'/* startEventId[0] */,
-        robotName,
-    };
-
     const declaredApplications = getApplicationArray(robotCodeSettingsSection)
 
-    const elementsArray = getInstructionElements(robotCodeTaskSection, declaredApplications)
+    const elementsArray = getInstructionElements(robotCodeTaskSection, declaredApplications, robotId)
     console.log(elementsArray)
 
-    ssot.elements = elementsArray;
+    // Build ssot
+    const ssot = {
+        _id: robotId,
+        starterId: getStarterId(elementsArray),
+        robotName,
+        elements: elementsArray
+    };
 
     // console.log(JSON.parse(sessionStorage.getItem('ssotLocal')));
-
-    console.log(ssot);
 
     return ssot;
 
