@@ -23,10 +23,11 @@ const RobotContainer = (props) => {
   /**
    * @description Sends a job to the server to execute a specfic robot for a specific user
    */
-  const startRobot = () => {
-    if (isRobotExecutable(robotId) === true) {
+  const startRobot = async () => {
+    const response = await isRobotExecutable(robotId);
+    if (response === true) {
       socket.emit('robotExecutionJobs', { robotId, userId });
-    } else if (isRobotExecutable(robotId) === false) {
+    } else {
       alert('Your Bot is not fully configured and can not be executed!');
     }
   };
