@@ -1,12 +1,18 @@
-import { getParameterFromDB } from './attributeAndParamUtils';
+import {
+  getParameterForRobotFromDB,
+  getAttributesFromDB,
+} from './attributeAndParamUtils';
 
-const retrieveRobotInformation = async (robotId) => getParameterFromDB(robotId);
-
-const checkParamsForExecutability = (parameterObjects) => {
+const configuredRobotParamsCorrectly = (parameterObjects) => {
   let executability = true;
-  parameterObjects.forEach((parameterObject) => {
-    parameterObject.rpaParameters.forEach((parameter) => {
-      if (parameter.isRequired === true && parameter.value === '') {
+  Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
+    Array.prototype.forEach.call(parameterObject.rpaParameters, (parameter) => {
+      if (
+        parameter.isRequired === true &&
+        (parameter.requireUserInput === false ||
+          parameter.requireUserInput === undefined) &&
+        parameter.value === ''
+      ) {
         console.error(
           'Required parameter not specified in paramter',
           parameter
@@ -26,13 +32,55 @@ const checkParamsForExecutability = (parameterObjects) => {
   return executability;
 };
 
-const isRobotExecutable = (robotId) => {
-  const response = true;
-  retrieveRobotInformation(robotId).then((parametersForRobot) => {
-    checkParamsForExecutability(parametersForRobot);
-    // response = checkForExecutability(parametersForRobot);
+const configuredRobotActivitesCorrectly = (attributeObjects) => {
+  let executability = true;
+  Array.prototype.forEach.call(attributeObjects, (attributeObject) => {
+    if (attributeObject.rpaApplication === '') {
+      console.error(
+        `RPA Application of ${attributeObject.activityId} not specified`,
+        attributeObject
+      );
+      executability = false;
+    }
+    if (attributeObject.rpaTask === '') {
+      console.error(
+        `RPA Task of ${attributeObject.activityId} not specified`,
+        attributeObject
+      );
+      executability = false;
+    }
   });
-  return response;
+  return executability;
 };
 
-export { isRobotExecutable, checkParamsForExecutability };
+const isRobotExecutable = (robotId) => {
+  let areActivitiesCorrect;
+  let areParamsCorrect;
+
+  getAttributesFromDB(robotId)
+    .then((response) => response.json())
+    .then((data) => {
+      areActivitiesCorrect = configuredRobotActivitesCorrectly(data);
+    });
+
+  getParameterForRobotFromDB(robotId)
+    .then((response) => response.json())
+    .then((data) => {
+      areParamsCorrect = configuredRobotParamsCorrectly(data);
+    })
+    .then(() => {
+      if (areActivitiesCorrect && areParamsCorrect) {
+        return true;
+      }
+
+      console.log(areActivitiesCorrect, 'DAS LIEGT AN AKITIVTÄT');
+      console.log(areParamsCorrect, 'DAS LIEGT AN PARAMS');
+      return false;
+    });
+};
+
+export {
+  isRobotExecutable,
+  configuredRobotParamsCorrectly,
+  configuredRobotActivitesCorrectly,
+};
