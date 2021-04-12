@@ -26,16 +26,17 @@ const RobotInteractionCockpit = (match) => {
         const activityParameterTupels = [];
         Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
           const { activityId } = parameterObject;
-          let activityParamterTupel;
+          const activityParameter = [];
           Array.prototype.forEach.call(
             parameterObject.rpaParameters,
             (parameter) => {
               if (parameter.requireUserInput) {
-                activityParamterTupel = [activityId, parameter];
-                activityParameterTupels.push(activityParamterTupel);
+                activityParameter.push(parameter);
               }
             }
           );
+          const activityParamterTupel = [activityId, activityParameter];
+          activityParameterTupels.push(activityParamterTupel);
         });
         if (isMounted.current) {
           setParameterList(activityParameterTupels);

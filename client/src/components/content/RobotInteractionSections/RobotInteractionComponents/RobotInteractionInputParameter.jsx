@@ -36,15 +36,13 @@ const RobotInteractionInputParameter = ({
         defaultValue={value}
         onChange={updateParameterValue}
         suffix={
-          isRequired && (
-            <>
-              <Tooltip title={infoText}>
-                <InfoCircleOutlined
-                  style={{ color: corporateDesign.colorBackgroundCta }}
-                />
-              </Tooltip>
-            </>
-          )
+          <>
+            <Tooltip title={infoText}>
+              <InfoCircleOutlined
+                style={{ color: corporateDesign.colorBackgroundCta }}
+              />
+            </Tooltip>
+          </>
         }
       />
     </>
