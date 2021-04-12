@@ -2,7 +2,7 @@ import { getParameterFromDB } from './attributeAndParamUtils';
 
 const retrieveRobotInformation = async (robotId) => getParameterFromDB(robotId);
 
-const checkForExecutability = (parameterObjects) => {
+const checkParamsForExecutability = (parameterObjects) => {
   let executability = true;
   parameterObjects.forEach((parameterObject) => {
     parameterObject.rpaParameters.forEach((parameter) => {
@@ -14,7 +14,7 @@ const checkForExecutability = (parameterObjects) => {
         executability = false;
       }
       const requiredType = parameter.type.toLowerCase();
-      if (requiredType !== typeof parameter.value) {
+      if (requiredType !== typeof parameter.value && parameter.value !== '') {
         console.error(
           `Required parameter has not specified type. Should be ${requiredType}, but is ${typeof parameter.value}`,
           parameter
@@ -26,9 +26,13 @@ const checkForExecutability = (parameterObjects) => {
   return executability;
 };
 
-const isRobotExecutable = async (robotId) => {
-  const parametersForRobot = await retrieveRobotInformation(robotId);
-  return checkForExecutability(parametersForRobot);
+const isRobotExecutable = (robotId) => {
+  const response = true;
+  retrieveRobotInformation(robotId).then((parametersForRobot) => {
+    checkParamsForExecutability(parametersForRobot);
+    // response = checkForExecutability(parametersForRobot);
+  });
+  return response;
 };
 
-export { isRobotExecutable, checkForExecutability };
+export { isRobotExecutable, checkParamsForExecutability };

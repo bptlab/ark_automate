@@ -200,4 +200,4 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   return ssot;
 }
 
-export default parseBpmnToSsot;
+export { parseBpmnToSsot };
