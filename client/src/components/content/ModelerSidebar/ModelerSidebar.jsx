@@ -8,7 +8,7 @@ import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
 import getParsedRobotFile from '../../../api/ssot';
 import downloadString from '../../../utils/downloadString';
 import parseSsotToBpmn from '../../../utils/parser/ssotToBpmnParsing/ssotToBpmnParsing';
-import parseBpmnToSsot from '../../../utils/parser/BpmnToSsotParsing/BpmnToSsotParsing';
+import { parseBpmnToSsot } from '../../../utils/parser/BpmnToSsotParsing/BpmnToSsotParsing';
 import {
   setSingleParameter,
   resetRpaApplication,
