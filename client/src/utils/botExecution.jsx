@@ -26,7 +26,7 @@ const configuredRobotParamsCorrectly = (parameterObjects) => {
 
 const configuredRobotActivitesCorrectly = (attributeObjects) => {
   let executability = true;
-  Array.prototype.forEach.call(attributeObjects, (attributeObject) => {
+  attributeObjects.forEach((attributeObject) => {
     if (attributeObject.rpaApplication === '') {
       console.error(
         `RPA Application of ${attributeObject.activityId} not specified`,
@@ -46,20 +46,19 @@ const configuredRobotActivitesCorrectly = (attributeObjects) => {
 };
 
 const isRobotExecutable = async (robotId) => {
-  const data1 = await getAttributesFromDB(robotId);
-  const areActivitiesCorrect = configuredRobotActivitesCorrectly(
-    await data1.json()
+  const attributes = await getAttributesFromDB(robotId);
+  const activitiesAreCorrect = configuredRobotActivitesCorrectly(
+    await attributes.json()
   );
 
-  const data2 = await getParameterForRobotFromDB(robotId);
-  const areParamsCorrect = configuredRobotParamsCorrectly(await data2.json());
+  const parameters = await getParameterForRobotFromDB(robotId);
+  const paramsAreCorrect = configuredRobotParamsCorrectly(
+    await parameters.json()
+  );
 
-  console.log(areActivitiesCorrect, 'DAS LIEGT AN AKITIVTÄT');
-  console.log(areParamsCorrect, 'DAS LIEGT AN PARAMS');
-  if (areActivitiesCorrect && areParamsCorrect) {
+  if (activitiesAreCorrect && paramsAreCorrect) {
     return true;
   }
-
   return false;
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   configuredRobotParamsCorrectly,
   configuredRobotActivitesCorrectly,
@@ -63,22 +64,6 @@ const paramObjectWithoutRequiredValue = {
         'Path to save to. If not given, uses path given when opened or created.',
       index: 0,
       value: '',
-    },
-  ],
-};
-
-const paramObjectWithWrongType = {
-  activityId: 'Activity_0mgbrvu',
-  ssotId: '60619b7b5d691786a44a6093',
-  rpaParameters: [
-    {
-      name: 'path',
-      type: 'String',
-      isRequired: true,
-      infoText:
-        'Path to save to. If not given, uses path given when opened or created.',
-      index: 0,
-      value: 0,
     },
   ],
 };
