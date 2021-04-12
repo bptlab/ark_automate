@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Layout, Card, Steps, Space } from 'antd';
+import { Layout, Card, Steps, Space, Button } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
 import { getAllRequireUserInputParameters } from '../../../api/ssotRetrieval';
+import socket from '../../../utils/socket/socketConnections';
+import { upsert } from '../../../utils/attributeAndParamUtils';
+import styles from './RobotInteractionCockpit.module.css';
 
 const { Step } = Steps;
 /**
@@ -12,6 +15,7 @@ const { Step } = Steps;
  */
 const RobotInteractionCockpit = (match) => {
   const { robotId } = match.match.params;
+  const { userId } = match.location.state;
   const isMounted = useRef(true);
   const [parameterList, setParameterList] = useState([]);
 
@@ -49,6 +53,9 @@ const RobotInteractionCockpit = (match) => {
     []
   );
 
+  /**
+   * @description Ensures that we only update the paramterList when the paramters we fetch form the DB have changed
+   */
   useEffect(() => {
     getParameterRequireUserInput();
   }, [getParameterRequireUserInput]);
@@ -60,7 +67,9 @@ const RobotInteractionCockpit = (match) => {
     // isBotExecutable function is to be implemented
     const isBotExecutable = true;
     if (isBotExecutable) {
-      socket.emit('robotExecutionJobs', { robotId, userId });
+      upsert().then(() => {
+        socket.emit('robotExecutionJobs', { robotId, userId });
+      });
     } else {
       alert('Your Bot is not fully configured and can not be executed!');
     }
@@ -77,6 +86,14 @@ const RobotInteractionCockpit = (match) => {
             <Step title='Done' description='Get return value' />
           </Steps>
           <RobotInteractionInputSection parameterList={parameterList} />
+          <Space direction='horizontal' size='large' style={{ width: '100%' }}>
+            <Button type='primary' className={styles.button} onClick={upsert}>
+              Save changes to cloud
+            </Button>
+            <Button type='primary' onClick={startRobot}>
+              Execute Robot
+            </Button>
+          </Space>
         </Space>
       </Card>
     </Layout>

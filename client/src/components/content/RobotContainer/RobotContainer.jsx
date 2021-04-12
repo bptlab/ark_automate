@@ -4,9 +4,9 @@ import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
+import { initSsotSessionStorage } from '../../../utils/attributeAndParamUtils';
 
 const { Title } = Typography;
 
@@ -18,6 +18,13 @@ const { Title } = Typography;
 const RobotContainer = (props) => {
   const { robotId, robotName, userId } = props;
   const [name, setRobotName] = useState(robotName);
+
+  /**
+   * @description Sends a job to the server to execute a specfic robot for a specific user
+   */
+  const initLocalSsot = () => {
+    initSsotSessionStorage(robotId);
+  };
 
   /**
    * @description Updates the name of the robot in the backend and in the robot container
@@ -38,8 +45,16 @@ const RobotContainer = (props) => {
       <Col className={[styles.box, styles.robotBox]}>
         <Row align='middle' style={{ height: '55%' }}>
           <Col type='flex' span={12}>
-            <Link to={`/interaction_cockpit/${robotId}`}>
-              <PlayCircleOutlined className={styles.clickableIcon} />
+            <Link
+              to={{
+                pathname: `/interaction_cockpit/${robotId}`,
+                state: { userId },
+              }}
+            >
+              <PlayCircleOutlined
+                onClick={initLocalSsot}
+                className={styles.clickableIcon}
+              />
             </Link>
           </Col>
           <Col type='flex' span={12}>

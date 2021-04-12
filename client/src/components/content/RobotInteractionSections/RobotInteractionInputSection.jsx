@@ -21,6 +21,7 @@ const RobotInteractionInputSection = ({ parameterList }) => (
             isRequired={singleInput[1].isRequired}
             dataType={singleInput[1].type}
             value={singleInput[1].value}
+            activityId={singleInput[0]}
           />
         </>
       ))}
