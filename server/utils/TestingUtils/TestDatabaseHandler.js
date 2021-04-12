@@ -16,7 +16,7 @@ const mongod = new MongoMemoryServer({
 /**
  * Connect to the in-memory database.
  */
-const connect = async () => {
+exports.connect = async () => {
   const uri = await mongod.getUri();
   await mongoose.createConnection(uri, mongooseOpts);
   await mongoose.connect(uri, mongooseOpts);
@@ -25,7 +25,7 @@ const connect = async () => {
 /**
  * Drop database, close the connection and stop mongod.
  */
-const closeDatabase = async () => {
+exports.closeDatabase = async () => {
   await mongoose.connection.dropDatabase();
   await mongoose.connection.close();
   await mongoose.disconnect();
@@ -35,7 +35,7 @@ const closeDatabase = async () => {
 /**
  * Remove all the data for all db collections.
  */
-const clearDatabase = async () => {
+exports.clearDatabase = async () => {
   const { collections } = mongoose.connection;
 
   // fix according to https://docs.w3cub.com/eslint/rules/no-await-in-loop.html
@@ -46,5 +46,3 @@ const clearDatabase = async () => {
   }
   return Promise.all(result);
 };
-
-module.exports = { clearDatabase, closeDatabase, connect };
