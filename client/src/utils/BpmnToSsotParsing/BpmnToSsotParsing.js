@@ -33,7 +33,7 @@ const isElementTracked = (elementsArray, id) => {
 };
 
 /**
- * 
+ *
  * @param {Array} bpmnShapes all shapes of the BPMN diagram
  * @param {Array} localElementsArray current version of the localElementsArray with all elements
  * @returns {Array}  Array of elements with their id, successors, predecessors and name
@@ -42,14 +42,16 @@ const returnElementsArrayWithNameLabel = (bpmnShapes, localElementsArray) => {
   const updatedLocalElementsArray = [];
 
   localElementsArray.forEach((element) => {
-    const matchingElement = bpmnShapes.find((shape) => element.id === shape.$.id)
+    const matchingElement = bpmnShapes.find(
+      (shape) => element.id === shape.$.id
+    );
     const newElement = element;
     newElement.name = matchingElement.$.name;
-    updatedLocalElementsArray.push(newElement)
-  })
+    updatedLocalElementsArray.push(newElement);
+  });
 
   return updatedLocalElementsArray;
-}
+};
 
 /**
  * @description Creates the array full of elements by iterating over the
@@ -58,7 +60,7 @@ const returnElementsArrayWithNameLabel = (bpmnShapes, localElementsArray) => {
  */
 const findElements = (flows, bpmnShapes) => {
   if (typeof flows === 'undefined') {
-    return []
+    return [];
   }
 
   const localElementsArray = [];
@@ -72,8 +74,8 @@ const findElements = (flows, bpmnShapes) => {
       newElement.successorIds.push(flowTarget);
       localElementsArray.push(newElement);
     } else {
-      const sourceElement = localElementsArray.find((element) =>
-        element.id === flowSource
+      const sourceElement = localElementsArray.find(
+        (element) => element.id === flowSource
       );
       sourceElement.successorIds.push(flowTarget);
     }
@@ -83,13 +85,13 @@ const findElements = (flows, bpmnShapes) => {
       newElement.predecessorIds.push(flowSource);
       localElementsArray.push(newElement);
     } else {
-      const targetElement = localElementsArray.find((element) =>
-        element.id === flowSource
+      const targetElement = localElementsArray.find(
+        (element) => element.id === flowSource
       );
       targetElement.predecessorIds.push(flowSource);
     }
   });
-  return returnElementsArrayWithNameLabel(bpmnShapes, localElementsArray)
+  return returnElementsArrayWithNameLabel(bpmnShapes, localElementsArray);
 };
 
 /**
@@ -111,8 +113,7 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
     }
 
     if (activity.$['arkRPA:application']) {
-      instructionElement.rpaApplication =
-        activity.$['arkRPA:application'];
+      instructionElement.rpaApplication = activity.$['arkRPA:application'];
       instructionElement.rpaTask = activity.$['arkRPA:task'];
 
       const parameterArray = [];
@@ -126,7 +127,6 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
       });
       instructionElement.rpaParameters = parameterArray;
     }
-
   });
   return elementsArray;
 };
@@ -149,20 +149,25 @@ const getStartEventId = (bpmnJson) => {
   let startEvents;
   const startEventIds = [];
 
-  startEvents = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
+  startEvents =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
   if (typeof startEvents === 'undefined') startEvents = [];
 
-  startEvents.forEach(singleStartEvent => {
+  startEvents.forEach((singleStartEvent) => {
     startEventIds.push(singleStartEvent.$.id);
   });
 
   if (startEventIds.length === 0) {
-    alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+    alert(
+      'There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.'
+    );
   } else if (startEventIds.length > 1) {
-    alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+    alert(
+      'There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.'
+    );
   }
   return startEventIds;
-}
+};
 
 /**
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
@@ -178,26 +183,38 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
     _id: robotId,
     starterId: startEventId[0],
     robotName,
-  }; 
+  };
 
-  let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
+  let flows =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
   if (typeof flows === 'undefined') flows = [];
 
-  let bpmnActivities = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
+  let bpmnActivities =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
   if (typeof bpmnActivities === 'undefined') bpmnActivities = [];
 
-  const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
-  const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
-  const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
+  const bpmnStartEvent =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
+  const bpmnEndEvent =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
+  const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0][
+    'bpmn2:startEvent'
+  ]
     .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'])
-    .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'])
+    .concat(
+      bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent']
+    );
 
   let elementsArray = findElements(flows, bpmnShapes);
   elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
-  elementsArray = enrichMarkerElements(elementsArray, bpmnStartEvent, bpmnEndEvent);
+  elementsArray = enrichMarkerElements(
+    elementsArray,
+    bpmnStartEvent,
+    bpmnEndEvent
+  );
 
   ssot.elements = elementsArray;
   return ssot;
-}
+};
 
 export { parseBpmnToSsot };
