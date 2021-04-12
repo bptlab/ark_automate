@@ -144,12 +144,6 @@ describe('Checking Bot parameters for Executability', () => {
     expect(response).toBe(false);
   });
 
-  it('correctly assigns bot as not executable when parameter is of wrong type', () => {
-    const incorrectListOfParameters = [paramObject1, paramObjectWithWrongType];
-    const response = configuredRobotParamsCorrectly(incorrectListOfParameters);
-    expect(response).toBe(false);
-  });
-
   it('correctly recognizes a bot as executable if required paramter is empty but is specified later by user input', () => {
     const listOfParameters = [
       paramObject1,

@@ -5,8 +5,8 @@ import {
 
 const configuredRobotParamsCorrectly = (parameterObjects) => {
   let executability = true;
-  Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
-    Array.prototype.forEach.call(parameterObject.rpaParameters, (parameter) => {
+  parameterObjects.forEach((parameterObject) => {
+    parameterObject.rpaParameters.forEach((parameter) => {
       if (
         parameter.isRequired === true &&
         (parameter.requireUserInput === false ||
@@ -19,14 +19,6 @@ const configuredRobotParamsCorrectly = (parameterObjects) => {
         );
         executability = false;
       }
-      /*       const requiredType = parameter.type.toLowerCase();
-      if (requiredType !== typeof parameter.value && parameter.value !== '') {
-        console.error(
-          `Required parameter has not specified type. Should be ${requiredType}, but is ${typeof parameter.value}`,
-          parameter
-        );
-        executability = false;
-      } */
     });
   });
   return executability;
@@ -53,54 +45,23 @@ const configuredRobotActivitesCorrectly = (attributeObjects) => {
   return executability;
 };
 
-const isRobotExecutable = (robotId) => {
-  console.log('sind hier');
-  getAttributesFromDB(robotId)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('sind dadadadad');
+const isRobotExecutable = async (robotId) => {
+  const data1 = await getAttributesFromDB(robotId);
+  const areActivitiesCorrect = configuredRobotActivitesCorrectly(
+    await data1.json()
+  );
 
-      const areActivitiesCorrect = configuredRobotActivitesCorrectly(data);
-      console.log(areActivitiesCorrect, 'sindasdasddsasd dadadadad');
+  const data2 = await getParameterForRobotFromDB(robotId);
+  const areParamsCorrect = configuredRobotParamsCorrectly(await data2.json());
 
-      return areActivitiesCorrect;
-    })
-    .then((areActivitiesCorrect) => {
-      getParameterForRobotFromDB(robotId)
-        .then((response) => response.json())
-        .then((data) => {
-          const areParamsCorrect = configuredRobotParamsCorrectly(data);
-          if (areActivitiesCorrect && areParamsCorrect) {
-            return true;
-          }
-          console.log(areActivitiesCorrect, 'DAS LIEGT AN AKITIVTÄT');
-          console.log(areParamsCorrect, 'DAS LIEGT AN PARAMS');
-          return false;
-        });
-    });
+  console.log(areActivitiesCorrect, 'DAS LIEGT AN AKITIVTÄT');
+  console.log(areParamsCorrect, 'DAS LIEGT AN PARAMS');
+  if (areActivitiesCorrect && areParamsCorrect) {
+    return true;
+  }
+
+  return false;
 };
-/* 
-  getAttributesFromDB(robotId)
-    .then((response) => response.json())
-    .then((data) => {
-      areActivitiesCorrect = configuredRobotActivitesCorrectly(data);
-    })
-    .then(() =>
-      getParameterForRobotFromDB(robotId)
-        .then((response) => response.json())
-        .then((data) => {
-          areParamsCorrect = configuredRobotParamsCorrectly(data);
-        })
-        .then(() => {
-          if (areActivitiesCorrect && areParamsCorrect) {
-            return true;
-          }
-
-          console.log(areActivitiesCorrect, 'DAS LIEGT AN AKITIVTÄT');
-          console.log(areParamsCorrect, 'DAS LIEGT AN PARAMS');
-          return false;
-        })
-    ); */
 
 export {
   isRobotExecutable,
