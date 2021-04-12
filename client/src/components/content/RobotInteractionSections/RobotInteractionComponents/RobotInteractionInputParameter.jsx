@@ -1,10 +1,11 @@
 import React from 'react';
-import { Input, Tooltip } from 'antd';
+import { Typography, Input, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import corporateDesign from '../../../../layout/corporateDesign';
 import { setSingleParameter } from '../../../../utils/attributeAndParamUtils';
 
+const { Text } = Typography;
 /**
  * @description Renders a parameter input field for a given variable
  * @category Client
@@ -31,6 +32,7 @@ const RobotInteractionInputParameter = ({
 
   return (
     <>
+      <Text strong>{variableName}</Text>
       <Input
         placeholder={variableName}
         defaultValue={value}
