@@ -42,8 +42,10 @@ const RobotFile = () => {
    */
   const onSaveToCloud = /* async */ () => {
     const ssot = parseRobotCodeToSsot(code);
-    sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
-    upsert();
+    if (typeof ssot !== 'undefined') {
+      sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
+      upsert();
+    }
   };
 
   return (

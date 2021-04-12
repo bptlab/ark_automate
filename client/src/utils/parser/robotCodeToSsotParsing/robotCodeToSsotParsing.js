@@ -1,285 +1,159 @@
 /* eslint-disable no-alert */
-// eslint-disable-next-line no-var
-
-const { parseString } = require('xmljs2');
-
 
 /**
  * @category Client
  * @module
  */
 
-const NUMBER_OF_SPACES = 4;
-
-const SsotBaseObjects = require('../SsotBaseObjects');
-
-const ssotBaseElement = SsotBaseObjects.baseElement;
-
-/**
- * @description Creates a base element of the single source of truth
- * @returns {object}  Base element of the single source of truth
- */
-const createBaseElement = (id) => {
-    // creates deep copy of baseElement
-    const baseElement = JSON.parse(JSON.stringify(ssotBaseElement));
-    baseElement.id = id;
-    return baseElement;
-};
-
-/**
- * @description Checks if the given id can be found in the given Array of element objects
- * @returns {boolean}  Boolean if element is tracked in Array
- */
-const isElementTracked = (elementsArray, id) => {
-    if (elementsArray.find((element) => element.id === id)) {
-        return true;
-    }
-    return false;
-};
+const FOURSPACE = '    ';
 
 /**
  * 
- * @param {Array} bpmnShapes all shapes of the BPMN diagram
- * @param {Array} localElementsArray current version of the localElementsArray with all elements
- * @returns {Array}  Array of elements with their id, successors, predecessors and name
+ * @returns "uniqueId" which is just an increment from the counter in the local storage 
  */
-const returnElementsArrayWithNameLabel = (bpmnShapes, localElementsArray) => {
-    const updatedLocalElementsArray = [];
-
-    localElementsArray.forEach((element) => {
-        const matchingElement = bpmnShapes.find((shape) => element.id === shape.$.id)
-        const newElement = element;
-        newElement.name = matchingElement.$.name;
-        updatedLocalElementsArray.push(newElement)
-    })
-
-    return updatedLocalElementsArray;
-}
-
-/**
- * @description Creates the array full of elements by iterating over the
- * referenced ids in the flow and adding new elements (incl. name) if they have not been added yet
- * @returns {Array}  Array of elements with their id, successors, predecessors and name
- */
-const findElements = (flows, bpmnShapes) => {
-    if (typeof flows === 'undefined') {
-        return []
-    }
-
-    const localElementsArray = [];
-
-    flows.forEach((flow) => {
-        const flowSource = flow.$.sourceRef;
-        const flowTarget = flow.$.targetRef;
-
-        if (!isElementTracked(localElementsArray, flowSource)) {
-            const newElement = createBaseElement(flowSource);
-            newElement.successorIds.push(flowTarget);
-            localElementsArray.push(newElement);
-        } else {
-            const sourceElement = localElementsArray.find((element) =>
-                element.id === flowSource
-            );
-            sourceElement.successorIds.push(flowTarget);
-        }
-
-        if (!isElementTracked(localElementsArray, flowTarget)) {
-            const newElement = createBaseElement(flowTarget);
-            newElement.predecessorIds.push(flowSource);
-            localElementsArray.push(newElement);
-        } else {
-            const targetElement = localElementsArray.find((element) =>
-                element.id === flowSource
-            );
-            targetElement.predecessorIds.push(flowSource);
-        }
-    });
-    return returnElementsArrayWithNameLabel(bpmnShapes, localElementsArray)
-};
-
-/**
- * @description Enriches elements in the elementsArray that should be of type instruction
- * @returns {Array}  Array of elements for single source of truth
- */
-const enrichInstructionElements = (elementsArray, bpmnActivities) => {
-    if (typeof bpmnActivities === 'undefined') {
-        return [];
-    }
-
-    bpmnActivities.forEach((activity) => {
-        const instructionElement = elementsArray.find(
-            (element) => element.id === activity.$.id
-        );
-        if (instructionElement) {
-            instructionElement.type = 'INSTRUCTION';
-            instructionElement.outputVariable = '';
-        }
-
-        if (activity.$['arkRPA:application']) {
-            instructionElement.rpaApplication =
-                activity.$['arkRPA:application'];
-            instructionElement.rpaTask = activity.$['arkRPA:task'];
-
-            const parameterArray = [];
-            const parameterObj = JSON.parse(activity.$['arkRPA:inputVars']);
-            Object.keys(parameterObj).forEach((key) => {
-                const inputVar = {};
-                inputVar.name = key;
-                inputVar.value = parameterObj[key];
-                inputVar.requireUserInput = true;
-                parameterArray.push(inputVar);
-            });
-            instructionElement.rpaParameters = parameterArray;
-        }
-
-    });
-    return elementsArray;
-};
-
-/**
- * @description Enriches elements in the elementsArray that should be of type marker
- * @returns {Array}  Array of elements for single source of truth
- */
-const enrichMarkerElements = (elementsArray) => {
-    const eventRegularExpression = new RegExp('^Event_.*$');
-    elementsArray.forEach((element) => {
-        if (eventRegularExpression.test(element.id)) {
-            element.type = 'MARKER';
-        }
-    });
-    return elementsArray;
-};
-
-const getStartEventId = (bpmnJson) => {
-    let startEvents;
-    const startEventIds = [];
-
-    startEvents = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
-    if (typeof startEvents === 'undefined') startEvents = [];
-
-    startEvents.forEach(singleStartEvent => {
-        startEventIds.push(singleStartEvent.$.id);
-    });
-
-    if (startEventIds.length === 0) {
-        alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-    } else if (startEventIds.length > 1) {
-        alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-    }
-    return startEventIds;
-}
-
-// todo
 const getUniqueId = () => {
     const newId = JSON.parse(sessionStorage.getItem('idCounter')) + 1;
-    sessionStorage.setItem('idCounter', newId)
-    return `Activity_0ay${newId}`
+    sessionStorage.setItem('idCounter', newId);
+    return `Activity_0ay${newId}`;
 }
 
-// todo
-const getApplicationArray = (robotCodeSettingsSection) => {
-    const robotCode = robotCodeSettingsSection.slice(1)
-    for (let i = 0; i < robotCode.length; i += 1) {
-        if (robotCode[i] === '') {
-            robotCode.splice(i, 1);
+/**
+ * @description Splits the robot code into an array and deletes all empty lines 
+ * @param {String} robotCode Code from the Code editor
+ * @returns Robot code w/o empty lines as an array
+ */
+const getRobotCodeAsArray = (robotCode) => {
+    const robotCodeAsArray = robotCode.split('\n');
+    for (let i = 0; i < robotCodeAsArray.length; i += 1) {
+        if (robotCodeAsArray[i] === '') {
+            robotCodeAsArray.splice(i, 1);
+            i -= 1;
         }
     }
+    return robotCodeAsArray;
+}
 
-    // test if every line starts with Library
-    robotCode.forEach((element) => {
-        if (!element.startsWith('Library ')) {
-            alert('Every line of the \'*** Settings ***\' Section has to start with \'Library\'!');
-        }
-    });
+/**
+ * @description checks all lines of the settings section for the right syntax and returns all declared applications as an array
+ * @param {Array} robotCodeSettingsSection all lines from the settings section as an array-entry (typeof string)
+ * @returns Array of all declared applications or undefined if an error occures
+ */
+const getApplicationArray = (robotCodeSettingsSection) => {
+    const robotCode = robotCodeSettingsSection.slice(1)
+    const availableApplications = JSON.parse(sessionStorage.getItem('availableApplications'))
+    let errorWasThrown;
 
-    // test if spacing in every line is correct
-    const regexForRightSpacing = new RegExp(`Library +Rz*`)
     robotCode.forEach((line) => {
-        if (!regexForRightSpacing.test(line)) {
-            alert('Spacing error between \'Library\' and \'RPA. ...\'');
-        }
-    });
+        const regexForRpaAlias = new RegExp(`Library +RPA[.][a-zA-Z]+`)
 
-    // test if RPA ist correct alias
-    const regexForRpaAlias = new RegExp(`Library +RPA[.][a-zA-Z]+`)
-    robotCode.forEach((line) => {
-        if (!regexForRpaAlias.test(line)) {
-            alert('Application has to start with \'RPA.\'');
-        }
-    });
+        const elementStartsWithLibary = line.startsWith('Library ');
+        const rpaAliasIsCorrect = regexForRpaAlias.test(line);
+        const applicationIsAvailable = availableApplications.includes(line.split('RPA.')[1])
 
-    const declaredApplications = [];
-    robotCode.forEach((line) => {
-        declaredApplications.push(line.split("RPA.")[1]);
+        if (!elementStartsWithLibary) {
+            alert(`Every line of the "*** Settings ***" Section has to start with "Library"! \nError location: "${line}"`);
+            errorWasThrown = true;
+            return;
+        }
+        if (!rpaAliasIsCorrect) {
+            alert(`Application has to start with "RPA." \nError location: "${line}"`);
+            errorWasThrown = true;
+            return;
+        }
+        if (!applicationIsAvailable) {
+            alert(`The Application "${String(line.split('RPA.')[1])}" is currently not supported. `);
+            errorWasThrown = true;
+        }
     })
 
-    // test if Application is part of all applications
-    declaredApplications.forEach((application) => {
-        const availableApplications = JSON.parse(sessionStorage.getItem('availableApplications'))
-        if (!availableApplications.includes(application)) {
-            alert(`The Application ${String(application)} is currently not supported. `);
-        }
-    })
+    const declaredApplications = (errorWasThrown ? undefined : robotCode.map((line) => line.split('RPA.')[1]))
 
     return declaredApplications;
 }
 
-
-/*
-*   every construction block contains two lines (entries in the array):
-*   #elementName
-*   Task Parameter1 Parameter2
-*/
-const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredApplications) => {
-    let currentApplication;
-    const instructionBlocks = [];
-    const regexForElementNameLine = new RegExp(`#`)
-    // const regexForTaskAndParamLine = new RegExp(`s`)
-
-    for (let lineNumber = 1; lineNumber < robotCodeTaskSection.length; lineNumber += 1) {
-        let currentLine = robotCodeTaskSection[lineNumber]
-
-        if (currentLine.replaceAll(' ', '') === '') {
-            continue; // ignores empty lines
-        }
-
-        // set new Application
-        if (declaredApplications.includes(currentLine)) {
-            currentApplication = currentLine;
-            continue;
-        }
-
-        if (regexForElementNameLine.test(currentLine)) {
-            instructionBlocks.push({ rpaApplication: currentApplication, name: currentLine.substring(1) })
-            continue;
-        }
-
-        currentLine = currentLine.trim();
-
-        const splitPlaceholder = '§&§'
-        if (currentLine.includes(splitPlaceholder)) {
-            alert('it is not allowed to use & or § as param values')
-        } else {
-            currentLine = currentLine.replaceAll('    ', splitPlaceholder);
-        }
-
-        // set RPATask
-        if (currentLine.includes(splitPlaceholder)) {
-            const rpaTask = currentLine.slice(0, currentLine.indexOf(splitPlaceholder))
-            instructionBlocks[instructionBlocks.length - 1].rpaTask = rpaTask;
-        }
-
-        // set RPAParameter
-        const parameters = currentLine.replace(instructionBlocks[instructionBlocks.length - 1].rpaTask + splitPlaceholder, '')
-        const parameterArray = parameters.split([splitPlaceholder]);
-        instructionBlocks[instructionBlocks.length - 1].paramArray = parameterArray;
-
-        // todo implement outputVariables
-
-    }
-    return instructionBlocks
+/**
+ * @description retrieves the rpa task from the current code line
+ * @param {String} currentLine current line of RPAf code
+ * @param {String} splitPlaceholder placeholder to split the string
+ * @returns rpaTask as String
+ */
+const getRpaTask = (currentLine, splitPlaceholder) => {
+    const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
+    return currentLine.slice(0, indexOfFirstSplitPlaceholder);
 }
 
+/**
+ * @description retrieves the rpa parameters from the current code line
+ * @param {String} currentLine current line of RPAf code
+ * @param {String} splitPlaceholder placeholder to split the string
+ * @param {String} instructionBlocks current intruction block to get the rpaTask
+ * @returns rpaParameters as Array
+ */
+const getRpaParameters = (currentLine, splitPlaceholder, instructionBlocks) => {
+    const parametersWithoutRpaTask = currentLine.replace(instructionBlocks[instructionBlocks.length - 1].rpaTask + splitPlaceholder, '')
+    return parametersWithoutRpaTask.split([splitPlaceholder]);
+}
+
+/**
+ * @description "preprocesses" the code in a usable data format
+ * @param {Array} robotCodeTaskSection robot code w/o empty lines as an array of Strings
+ * @param {Array} declaredApplications all declared Aplications from ***settings*** section as Strings 
+ * @returns Array of Objects with the following schema:
+ *      instructionBlocks = [rpaApplication:String, rpaTask:String, name:String, paramArray:Array]
+ */
+const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredApplications) => {
+    let currentApplication;
+    let errorWasThrown;
+    const instructionBlocks = [];
+    const regexForElementNameLine = new RegExp(`#`)
+    const splitPlaceholder = '§&§';
+
+    robotCodeTaskSection.slice(1).forEach((line) => {
+        if (errorWasThrown) return;
+        let currentLine = line.trim();
+        const currentLineDefinesNewApplication = declaredApplications.includes(currentLine);
+        const currentLineContainsElementName = regexForElementNameLine.test(currentLine);
+        const currentLineIncludesSplitPlaceholder = currentLine.includes(splitPlaceholder);
+        const currentLineHasNoSpecifiedApplication = typeof currentApplication === 'undefined';
+
+        if (currentLineDefinesNewApplication) {
+            currentApplication = currentLine;
+            return;
+
+        } if (currentLineHasNoSpecifiedApplication) {
+            alert(`There is no RPA-Application specified for line "${currentLine}"`);
+            errorWasThrown = true;
+            return;
+        }
+
+        if (currentLineIncludesSplitPlaceholder) {
+            alert(`It is not allowed to use & or § as param values \nError location: "${line}"`);
+            errorWasThrown = true;
+            return;
+        }
+
+        if (currentLineContainsElementName) {
+            instructionBlocks.push({ rpaApplication: currentApplication, name: currentLine.substring(1) })
+            return;
+        }
+
+        if (!errorWasThrown) {
+            currentLine = currentLine.replaceAll(FOURSPACE, splitPlaceholder);
+            instructionBlocks[instructionBlocks.length - 1].rpaTask =
+                getRpaTask(currentLine, splitPlaceholder);
+            instructionBlocks[instructionBlocks.length - 1].paramArray =
+                getRpaParameters(currentLine, splitPlaceholder, instructionBlocks);
+
+            // TODO: implement parsing of outputVariables from RPAf code
+        }
+    })
+    return (errorWasThrown ? undefined : instructionBlocks);
+}
+
+/**
+ * @returns dummy startMarker as JSON => currently MARKERS aren't defined
+ * in our RPAf-Syntax and therefore there aren't implemented
+ */
 const buildStartMarker = () => ({
     "successorIds": [],
     "id": getUniqueId(),
@@ -288,154 +162,169 @@ const buildStartMarker = () => ({
     "predecessorIds": []
 })
 
-const buildEndMarker = (successor) => ({
+/**
+ * @param {Object} predecessor as an Object to get the predecessorId
+ * @returns dummy endMarker as JSON => currently MARKERS aren't defined
+ * in our RPAf-Syntax and therefore there aren't implemented
+ */
+const buildEndMarker = (predecessor) => ({
     "successorIds": [],
     "id": getUniqueId(),
     "type": "MARKER",
     "name": "END",
-    "predecessorIds": [successor ? successor.id : 'MarkerElement']
-
+    "predecessorIds": [predecessor ? predecessor.id : "MarkerElement"]
 })
 
-const buildSingleAttributeObject = (currentElement, singleElement, robotId) => {
-    let { rpaTask } = singleElement;
-    if (!rpaTask) rpaTask = ""
-    if (rpaTask.includes('§&§')) {
-        alert('it is not allowed to use & or § as param values')
-    } else {
-        rpaTask = rpaTask.replaceAll('    ', '§&§');
-    }
-
-    if (rpaTask.includes('§&§')) {
-        rpaTask = rpaTask.slice(0, rpaTask.indexOf('§&§'))
-    }
+/**
+ * @description builds the attributeObject for a single element
+ * @param {Object} currentElement current instruction element
+ * @param {Object} singleElementFromTasksSection the parsed Object from the RPAf Code  
+ * @param {String} robotId the id of the current robot / ssot 
+ * @returns attributeObject for a single attribute
+ */
+const buildSingleAttributeObject = (currentElement, singleElementFromTasksSection, robotId) => {
+    let { rpaTask } = singleElementFromTasksSection;
+    if (!rpaTask) rpaTask = 'no Task defined'
 
     return {
         activityId: currentElement.id,
-        rpaApplication: singleElement.rpaApplication,
+        rpaApplication: singleElementFromTasksSection.rpaApplication,
         rpaTask,
         ssotId: robotId
     }
 }
 
-const buildSingleParameterObject = (singleAtrributeObject, activityId, singleElement, robotId, taskAndApplicationCombinations) => {
-    const { rpaApplication } = singleAtrributeObject;
-    const { rpaTask } = singleAtrributeObject;
-    const singleParamArray = singleElement.paramArray;
-    const parameterArray = [];
+/**
+ * @description builds the parameterObject for a single element
+ * @param {Object} singleAtrributeObject the attribute Object of the current activity
+ * @param {Object} singleElementFromTasksSection the parsed Object from the RPAf Code   
+ * @param {Array} taskAndApplicationCombinations all combinations of applications and tasks
+ * @returns parameterObject for a single attribute
+ */
+const buildSingleParameterObject = (singleAtrributeObject, singleElementFromTasksSection, taskAndApplicationCombinations) => {
+    const { rpaApplication, activityId, rpaTask, ssotId } = singleAtrributeObject;
+    const singleParamArray = singleElementFromTasksSection.paramArray;
 
     const combinationObject = taskAndApplicationCombinations.filter((singleCombinationObject) =>
         (singleCombinationObject.Application === rpaApplication && singleCombinationObject.Task === rpaTask)
-    )[0]
+    )[0];
 
 
-    combinationObject.inputVars.forEach((singleInputVariable, index) => {
+    const parameterArray = combinationObject.inputVars.map((singleInputVariable, index) => {
         const singleParameterObject = {
             index: singleInputVariable.index,
             infoText: singleInputVariable.infoText,
             isRequired: singleInputVariable.isRequired,
             name: singleInputVariable.name,
             type: singleInputVariable.type,
-            value: (singleParamArray[index].startsWith('%') && singleParamArray[index].endsWith('%') ? '' : singleParamArray[index])
+            value: (singleParamArray[index].startsWith('%%') && singleParamArray[index].endsWith('%%') ? '' : singleParamArray[index]),
+            requireUserInput: (!!(singleParamArray[index].startsWith('%%') && singleParamArray[index].endsWith('%%'))),
         };
 
-        parameterArray.push(singleParameterObject)
+        return singleParameterObject;
     })
 
     return {
         activityId,
         rpaParameters: parameterArray,
-        ssotId: robotId
-    }
+        ssotId
+    };
 }
 
-
-
-
-// todo
-const getInstructionElements = (robotCodeTaskSection, declaredApplications, robotId) => {
-    const taskAndApplicationCombinations = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
-    const instructionArray = getInstructionBlocksFromTaskSection(robotCodeTaskSection, declaredApplications)
-    const instructionElement = [];
+/**
+ * @description build the elementsArray of the ssot
+ * @param {Array} robotCodeTaskSection robot code w/o empty lines as an array of Strings
+ * @param {Array} declaredApplications all declared Aplications from ***settings*** section as Strings 
+ * @param {String} robotId the id of the current robot / ssot 
+ * @returns elementsArray with all needed properties
+ */
+const getElementsArray = (robotCodeTaskSection, declaredApplications, robotId) => {
+    const elementsArray = [];
     const attributeArray = [];
     const parameterArray = [];
 
-    instructionElement.push(buildStartMarker())
+    if (typeof declaredApplications === 'undefined') return undefined;
+
+    const taskAndApplicationCombinations = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
+    const instructionArray = getInstructionBlocksFromTaskSection(robotCodeTaskSection, declaredApplications);
+    if (typeof instructionArray === 'undefined') return undefined;
+
+    elementsArray.push(buildStartMarker())
 
     instructionArray.forEach((singleElement) => {
         const currentElement = {}
-        currentElement.successorIds = []
 
+        currentElement.successorIds = []
         currentElement.id = getUniqueId();
         currentElement.type = 'INSTRUCTION';
         currentElement.name = singleElement.name;
-        const predecessor = instructionElement[instructionElement.length - 1]
-        currentElement.predecessorIds = predecessor && [predecessor.id]
+
+        const predecessor = elementsArray[elementsArray.length - 1];
+        currentElement.predecessorIds = predecessor && [predecessor.id];
         if (predecessor) predecessor.successorIds = [currentElement.id];
 
-        instructionElement.push(currentElement)
+        elementsArray.push(currentElement);
 
         const singleAtrributeObject = buildSingleAttributeObject(currentElement, singleElement, robotId);
-        attributeArray.push(singleAtrributeObject)
+        attributeArray.push(singleAtrributeObject);
 
-        // enrich parameterObject
-        const singleParameterObject = buildSingleParameterObject(singleAtrributeObject, currentElement.id, singleElement, robotId, taskAndApplicationCombinations);
-        parameterArray.push(singleParameterObject)
+        const singleParameterObject = buildSingleParameterObject(singleAtrributeObject, singleElement, taskAndApplicationCombinations);
+        parameterArray.push(singleParameterObject);
     })
+    elementsArray.push(buildEndMarker(elementsArray[elementsArray.length - 1]))
+    const lastElement = elementsArray[elementsArray.length - 1]
+    const secontlLastElement = elementsArray[elementsArray.length - 2]
+    secontlLastElement.successorIds = [lastElement.id]
+
     sessionStorage.removeItem('attributeLocalStorage')
     sessionStorage.setItem('attributeLocalStorage', JSON.stringify(attributeArray));
-    console.log('attributeArray')
-    console.log(attributeArray);
     sessionStorage.setItem('parameterLocalStorage', JSON.stringify(parameterArray));
-    console.log('paramArray')
-    console.log(parameterArray)
 
-    instructionElement.push(buildEndMarker(instructionElement[instructionElement.length - 1]))
-    const lastElement = instructionElement[instructionElement.length - 1]
-    const secontlLstElement = instructionElement[instructionElement.length - 2]
-    secontlLstElement.successorIds = [lastElement.id]
-
-    return instructionElement;
+    return elementsArray;
 }
-
-const getStarterId = (elementsArray) => {
-    let starterElementId = 'noStarterElement';
-    elementsArray.forEach((singleElement) => {
-        if (singleElement.type === 'MARKER' && singleElement.predecessorIds.length === 0) {
-            starterElementId = singleElement.id;
-        }
-    })
-    return starterElementId;
-}
-
 
 /**
- * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
- * @returns {string} XML that has to be put in single source of truth file
+ * @description retrieves the starterId of the robot from the elements array
+ * @param {Array} elementsArray Array of all elements of the robot
+ * @returns starterId as string
+ */
+const getStarterId = (elementsArray) =>
+    elementsArray.forEach((singleElement) => {
+        if (singleElement.type === 'MARKER' && singleElement.predecessorIds.length === 0) {
+            return singleElement.id;
+        }
+        return 'noStarterElement';
+    })
+
+/**
+ * @description Parses the RPA-Framework code from the code editor to the single source of truth
+ * @param {String} robotCode from the code-editor
+ * @returns Single source of truth as a JavaSctipt-object or undefined if an error occures
  */
 const parseRobotCodeToSsot = (robotCode) => {
 
     const robotId = JSON.parse(sessionStorage.getItem('robotId'));
     const robotName = sessionStorage.getItem('robotName');
-    const robotCodeAsArray = robotCode.split('\n');
-    const lineNumberTasksSelector = robotCodeAsArray.indexOf('*** Tasks ***')
-    const lineNumberSettingsSelector = robotCodeAsArray.indexOf('*** Settings ***')
+    const robotCodeAsArray = getRobotCodeAsArray(robotCode);
+
+    const lineNumberTasksSelector = robotCodeAsArray.indexOf('*** Tasks ***');
+    const lineNumberSettingsSelector = robotCodeAsArray.indexOf('*** Settings ***');
     const robotCodeSettingsSection = robotCodeAsArray.slice(lineNumberSettingsSelector, lineNumberTasksSelector);
     const robotCodeTaskSection = robotCodeAsArray.slice(lineNumberTasksSelector);
 
-    const declaredApplications = getApplicationArray(robotCodeSettingsSection)
+    const declaredApplications = getApplicationArray(robotCodeSettingsSection);
+    const elementsArray = getElementsArray(robotCodeTaskSection, declaredApplications, robotId);
 
-    const elementsArray = getInstructionElements(robotCodeTaskSection, declaredApplications, robotId)
-
-    // Build ssot
-    const ssot = {
-        _id: robotId,
-        starterId: getStarterId(elementsArray),
-        robotName,
-        elements: elementsArray
-    };
-
-    return ssot;
+    if (typeof elementsArray !== 'undefined') {
+        const ssot = {
+            _id: robotId,
+            starterId: getStarterId(elementsArray),
+            robotName,
+            elements: elementsArray
+        };
+        return ssot;
+    }
+    return undefined;
 }
 
 module.exports = { parseRobotCodeToSsot };
