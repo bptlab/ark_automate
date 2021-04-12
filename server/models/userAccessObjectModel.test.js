@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
-const { testUserAccessObject } = require('../utils/TestingUtils/testData');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler.js');
+const { testUserAccessObject } = require('../utils/TestingUtils/testData.js');
 const userAccessObjectModel = require('./userAccessObjectModel.js');
-const UserAccesObject = mongoose.model('userAccessObject')
+const UserAccesObject = mongoose.model('userAccessObject');
 /**
  * Connect to a new in-memory database before running any tests.
  */
@@ -21,9 +21,7 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('user access objects can be created', () => {
-  const userAccessObject = new UserAccesObject(
-    testUserAccessObject
-  );
+  const userAccessObject = new UserAccesObject(testUserAccessObject);
   it('should throw no errors for correct job', async () => {
     userAccessObject.save((err) => {
       expect(err).to.not.exist;

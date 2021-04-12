@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
-const { testRpaTask1 } = require('../utils/TestingUtils/testData');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler.js');
+const { testRpaTask1 } = require('../utils/TestingUtils/testData.js');
 const taskModel = require('./rpaTaskModel.js');
 
 const RpaTask = mongoose.model('rpa-task');

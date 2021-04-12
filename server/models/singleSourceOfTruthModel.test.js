@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
-const { testSsot } = require('../utils/TestingUtils/testData');
+const dbHandler = require('../utils/TestingUtils/testDatabaseHandler.js');
+const { testSsot } = require('../utils/TestingUtils/testData.js');
 const ssotModel = require('./singleSourceOfTruthModel.js');
 
 /**
