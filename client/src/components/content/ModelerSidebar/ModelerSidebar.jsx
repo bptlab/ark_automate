@@ -1,15 +1,22 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState, useEffect } from 'react';
 import { Typography, Layout, Space, Button } from 'antd';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
 import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
-import getParsedRobotFile from "../../../api/ssot";
+import getParsedRobotFile from '../../../api/ssot';
 import downloadString from '../../../utils/downloadString';
-import { setSingleParameter, resetRpaApplication, setRpaTask, upsert, getParameterObject, setOutputValueName } from '../../../utils/attributeAndParamUtils';
+import {
+  setSingleParameter,
+  resetRpaApplication,
+  setRpaTask,
+  upsert,
+  getParameterObject,
+  setOutputValueName,
+} from '../../../utils/attributeAndParamUtils';
 import parseSsotToBpmn from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
-import { parseBpmnToSsot } from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
+import parseBpmnToSsot from '../../../utils/BpmnToSsotParsing/BpmnToSsotParsing';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -84,17 +91,19 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     const currentAttributes = JSON.parse(
       sessionStorage.getItem('attributeLocalStorage')
     );
-    const matchingActivity = currentAttributes.find((element) => (element.activityId === activityId));
+    const matchingActivity = currentAttributes.find(
+      (element) => element.activityId === activityId
+    );
 
     if (matchingActivity) {
       setSelectedApplication(matchingActivity.rpaApplication);
       getTasksForApplication(matchingActivity.rpaApplication);
     }
-    return (!!matchingActivity && !!matchingActivity.rpaApplication);
+    return !!matchingActivity && !!matchingActivity.rpaApplication;
   };
 
   /**
-   * @description Gets called when a new application was selected in the dropwdown in the sidebar. 
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar.
    * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
    * @param {Object} value new value of the ApplicationDropdown
    */
@@ -102,9 +111,12 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     setOutputVariableName(undefined);
     const paramObj = getParameterObject(robotId, activityId);
     if (paramObj) {
-      const paramsInOrder = paramObj.rpaParameters.sort((a, b) => a.index - b.index);
+      const paramsInOrder = paramObj.rpaParameters.sort(
+        (a, b) => a.index - b.index
+      );
       setvariableList(paramsInOrder);
-      if (paramObj.outputVariable) setOutputVariableName(paramObj.outputVariable)
+      if (paramObj.outputVariable)
+        setOutputVariableName(paramObj.outputVariable);
     }
   };
 
@@ -125,13 +137,19 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       const currentElement = event.newSelection[0];
       elementState.currentElement = currentElement;
 
-
       if (event.newSelection[0] && event.newSelection[0].type === 'bpmn:Task') {
-        setDisableTaskSelection(!checkForApplicationTask(event.newSelection[0].id));
+        setDisableTaskSelection(
+          !checkForApplicationTask(event.newSelection[0].id)
+        );
 
-        const localAttributeStorage = JSON.parse(sessionStorage.getItem('attributeLocalStorage'));
-        const matchingAttributeObject = localAttributeStorage.find((element) => (element.activityId === event.newSelection[0].id));
-        if (matchingAttributeObject) updateParamSection(event.newSelection[0].id);
+        const localAttributeStorage = JSON.parse(
+          sessionStorage.getItem('attributeLocalStorage')
+        );
+        const matchingAttributeObject = localAttributeStorage.find(
+          (element) => element.activityId === event.newSelection[0].id
+        );
+        if (matchingAttributeObject)
+          updateParamSection(event.newSelection[0].id);
       }
     });
 
@@ -146,8 +164,6 @@ const ModelerSidebar = ({ modeler, robotId }) => {
         });
       }
     });
-
-
   }, [modeler]);
 
   /**
@@ -165,7 +181,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   };
 
   /**
-   * @description Gets called when a new application was selected in the dropwdown in the sidebar. 
+   * @description Gets called when a new application was selected in the dropwdown in the sidebar.
    * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
    * @param {Object} value new value of the ApplicationDropdown
    */
@@ -189,8 +205,13 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * @param {Object} value new value of the TaskDropdown
    */
   const taskChangedHandler = (value) => {
-    setRpaTask(robotId, elementState.currentElement.id, selectedApplication, value);
-    if (value) updateParamSection(elementState.currentElement.id)
+    setRpaTask(
+      robotId,
+      elementState.currentElement.id,
+      selectedApplication,
+      value
+    );
+    if (value) updateParamSection(elementState.currentElement.id);
   };
 
   /**
@@ -213,23 +234,21 @@ const ModelerSidebar = ({ modeler, robotId }) => {
 
   /**
    * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the xml from the parser, parse that xml to a ssot and write the 
+   * This function will retrieve the xml from the parser, parse that xml to a ssot and write the
    * resulting ssot into the sessionStorage.
    */
   const onSaveToCloud = async () => {
-    modeler.saveXML({ format: true })
+    modeler
+      .saveXML({ format: true })
       .then((xml) => {
-        parseBpmnToSsot(xml, robotId)
-          .then((result) => {
-            const ssot = JSON.stringify(result);
-            sessionStorage.setItem('ssotLocal', ssot);
+        parseBpmnToSsot(xml, robotId).then((result) => {
+          const ssot = JSON.stringify(result);
+          sessionStorage.setItem('ssotLocal', ssot);
 
-            upsert();
-          })
+          upsert();
+        });
       })
-      .catch((err) =>
-        console.error(err)
-      );
+      .catch((err) => console.error(err));
   };
 
   /**
@@ -279,10 +298,18 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             Please select a single element.
           </Title>
         )}
-        <Button type='primary' className={styles.button} onClick={downloadRobotFile}>
+        <Button
+          type='primary'
+          className={styles.button}
+          onClick={downloadRobotFile}
+        >
           Get Robot file
         </Button>
-        <Button type='primary' className={styles.button} onClick={onSaveToCloud}>
+        <Button
+          type='primary'
+          className={styles.button}
+          onClick={onSaveToCloud}
+        >
           Save changes to cloud
         </Button>
       </Space>

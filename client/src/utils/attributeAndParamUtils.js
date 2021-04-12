@@ -143,7 +143,7 @@ const getParameterObject = (robotId, activityId) => {
             element.Task === task
         ));
 
-        if (matchingComboObject) {
+        if (matchingComboObject && matchingComboObject.inputVars.length && matchingParameterObject.rpaParameters.length) {
             // In the future there could be a need for a more advanced signature check, but fur the current use cases this should be sufficient
             const comboParameterLength = matchingComboObject.inputVars.length;
             const parameterObjectLength = matchingParameterObject.rpaParameters.length;
@@ -171,7 +171,7 @@ const getParameterObject = (robotId, activityId) => {
         ));
 
         const rpaParameters = [];
-        if (matchingComboObject) {
+        if (matchingComboObject && matchingComboObject.inputVars) {
             matchingComboObject.inputVars.forEach((element) => {
                 const elementCopy = element;
                 elementCopy.value = '';
@@ -307,7 +307,7 @@ const getParameterForRobotFromDB = async (robotId) => {
     return response;
 };
 
-module.exports = {
+export {
     getRobotId,
     getRpaTask,
     setRobotId,
@@ -320,5 +320,5 @@ module.exports = {
     setOutputValueName,
     getRpaApplication,
     upsert,
-    getParameterForRobotFromDB
+    getParameterForRobotFromDB,
 }
