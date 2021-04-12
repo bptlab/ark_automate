@@ -17,6 +17,7 @@ const RobotInteractionInputParameter = ({
   dataType,
   value,
   activityId,
+  infoText,
 }) => {
   /**
    * @description Gets called when the value in a single input field for the parameters has been changed and updates
@@ -36,11 +37,13 @@ const RobotInteractionInputParameter = ({
         onChange={updateParameterValue}
         suffix={
           isRequired && (
-            <Tooltip title='This field is required for the task to work'>
-              <InfoCircleOutlined
-                style={{ color: corporateDesign.colorBackgroundCta }}
-              />
-            </Tooltip>
+            <>
+              <Tooltip title={infoText}>
+                <InfoCircleOutlined
+                  style={{ color: corporateDesign.colorBackgroundCta }}
+                />
+              </Tooltip>
+            </>
           )
         }
       />
@@ -54,6 +57,7 @@ RobotInteractionInputParameter.propTypes = {
   dataType: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   activityId: PropTypes.string.isRequired,
+  infoText: PropTypes.string.isRequired,
 };
 
 export default RobotInteractionInputParameter;

@@ -22,6 +22,7 @@ const RobotInteractionInputSection = ({ parameterList }) => (
             dataType={singleInput[1].type}
             value={singleInput[1].value}
             activityId={singleInput[0]}
+            infoText={singleInput[1].infoText}
           />
         </>
       ))}
