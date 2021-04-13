@@ -2,17 +2,22 @@
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
+const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
 const ssotRetrievalController = require('../controllers/ssotRetrievalController');
 const ssotParsingController = require('../controllers/ssotParsingController');
 const ssotVariableController = require('../controllers/ssotVariableController');
 const ssotAttributesController = require('../controllers/ssotRpaAttributes');
 
-const testData = require('../utils/TestingUtils/testData');
-const { testSsot, testSsotId, testUserId } = require('../utils/TestingUtils/testData');
-
+// eslint-disable-next-line no-unused-vars
 const rpaTaskModel = require('../models/rpaTaskModel');
+
+const testData = require('../utils/TestingUtils/testData');
+const {
+  testSsot,
+  testSsotId,
+  testUserId,
+} = require('../utils/TestingUtils/testData');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -45,9 +50,7 @@ describe('/ssot/getAvailableRobotsForUser', () => {
     expect(response.statusCode).toBe(200);
     // Catches error "Received: serializes to the same string"
     // Solution found here https://github.com/facebook/jest/issues/8475#issuecomment-537830532
-    expect(JSON.stringify(data[0]._id)).toEqual(
-      JSON.stringify(testSsotId)
-    );
+    expect(JSON.stringify(data[0]._id)).toEqual(JSON.stringify(testSsotId));
   });
 });
 
@@ -136,12 +139,8 @@ describe('ssot/shareRobotWithUser', () => {
     const data = await response._getData();
 
     expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data.userId)).toEqual(
-      JSON.stringify(testUserId)
-    );
-    expect(JSON.stringify(data.robotId)).toEqual(
-      JSON.stringify(testSsotId)
-    );
+    expect(JSON.stringify(data.userId)).toEqual(JSON.stringify(testUserId));
+    expect(JSON.stringify(data.robotId)).toEqual(JSON.stringify(testSsotId));
 
     // verify if really in DB
     const userAccessObject = await mongoose
@@ -268,10 +267,7 @@ describe('ssot/overwriteRobot/:robotId', () => {
     expect(data.elements.length).toBe(1);
 
     // verify if really in DB
-    const newSsot = await mongoose
-      .model('SSoT')
-      .findById(testSsotId)
-      .exec();
+    const newSsot = await mongoose.model('SSoT').findById(testSsotId).exec();
     expect(JSON.stringify(data)).toEqual(JSON.stringify(newSsot));
   });
 });

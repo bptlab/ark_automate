@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/* eslint-disable no-undef */
 const parser = require('../SsotToRobotParser');
 const testSsot = require('./SsotForTesting.json');
 const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');

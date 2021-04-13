@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
-const dbHandler = require('../utils/TestingUtils/testDatabaseHandler');
+const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const socketHelperFunctions = require('./socketHelperFunctions');
 const testData = require('../utils/TestingUtils/testData');
-const {testSsotId, testUserId} = require('../utils/TestingUtils/testData');
+const { testSsotId, testUserId } = require('../utils/TestingUtils/testData');
 
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
 
