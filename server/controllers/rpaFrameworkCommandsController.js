@@ -47,12 +47,13 @@ exports.getVarsForTask = async (req, res) => {
           Task: task,
         },
         {
-          InputVars: 1,
-          Output: 1
+          inputVars: 1,
+          outputValue: 1,
         },
         (err, tasks) => {
           res.send(tasks);
-        });
+        }
+      );
     } else {
       res.send('Please set valid application and task parameters.');
     }
@@ -63,10 +64,7 @@ exports.getVarsForTask = async (req, res) => {
 
 // GET /rpa-framework/commands/getAllParameters
 exports.getAllParameters = async (req, res) => {
-  const parameterObjects = await mongoose
-    .model('rpa-task')
-    .find()
-    .exec();
+  const parameterObjects = await mongoose.model('rpa-task').find().exec();
 
   res.send(parameterObjects);
 };
