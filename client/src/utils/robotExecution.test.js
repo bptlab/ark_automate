@@ -2,7 +2,7 @@
 import {
   configuredRobotParamsCorrectly,
   configuredRobotActivitesCorrectly,
-} from './botExecution';
+} from './robotExecution';
 
 const paramObject1 = {
   activityId: 'Activity_0ay88v7',
@@ -113,14 +113,14 @@ const attributeObjectWithEmptyApplication = {
   rpaTask: 'Get Request',
 };
 
-describe('Checking Bot parameters for Executability', () => {
-  it('correctly assigns bot as executable', async () => {
+describe('Checking robot parameters for Executability', () => {
+  it('correctly assigns robot as executable', async () => {
     const correctListOfParameters = [paramObject1, paramObject2];
     const response = configuredRobotParamsCorrectly(correctListOfParameters);
     expect(response).toBe(true);
   });
 
-  it('correctly assigns bot as not executable when required parameter is empty', () => {
+  it('correctly assigns robot as not executable when required parameter is empty', () => {
     const incorrectListOfParameters = [
       paramObject1,
       paramObjectWithoutRequiredValue,
@@ -129,7 +129,7 @@ describe('Checking Bot parameters for Executability', () => {
     expect(response).toBe(false);
   });
 
-  it('correctly recognizes a bot as executable if required paramter is empty but is specified later by user input', () => {
+  it('correctly recognizes a robot as executable if required paramter is empty but is specified later by user input', () => {
     const listOfParameters = [
       paramObject1,
       paramObjectWithLaterSpecifiedUserInput,
@@ -139,14 +139,14 @@ describe('Checking Bot parameters for Executability', () => {
   });
 });
 
-describe('Checking Bot attributes for Executability', () => {
+describe('Checking robot attributes for Executability', () => {
   it('correctly assigns bot as executable', () => {
     const correctListOfParameters = [attributeObject1, attributeObject2];
     const response = configuredRobotActivitesCorrectly(correctListOfParameters);
     expect(response).toBe(true);
   });
 
-  it('correctly assigns bot as not executable when application is empty', () => {
+  it('correctly assigns robot as not executable when application is empty', () => {
     const incorrectListOfParameters = [
       attributeObject1,
       attributeObjectWithEmptyApplication,
@@ -157,7 +157,7 @@ describe('Checking Bot attributes for Executability', () => {
     expect(response).toBe(false);
   });
 
-  it('correctly assigns bot as not executable when task is empty', () => {
+  it('correctly assigns robot as not executable when task is empty', () => {
     const incorrectListOfParameters = [
       attributeObject1,
       attributeObjectWithEmptyTask,

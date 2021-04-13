@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
-import { isRobotExecutable } from '../../../utils/botExecution';
+import { isRobotExecutable } from '../../../utils/robotExecution';
 
 const { Title } = Typography;
 
