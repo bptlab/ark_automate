@@ -91,26 +91,28 @@ const writeCodeForElement = (
     const currentAttributeObject = attributes.find(
       (attribute) => attribute.activityId === id
     );
-    if (currentAttributeObject.rpaApplication !== previousApplication) {
-      newPreviousApplication = currentAttributeObject.rpaApplication;
-      newCodeLine += currentAttributeObject.rpaApplication + LINEBREAK;
-    } else {
-      newPreviousApplication = previousApplication;
-    }
-    newCodeLine += COMMENT + currentElement.name + LINEBREAK;
-    const currentParameterObject = parameters.find(
-      (parameter) => parameter.activityId === id
-    );
-    if (currentParameterObject) {
-      newCodeLine += setOutputVar(currentParameterObject);
-    }
-    newCodeLine += currentAttributeObject.rpaTask;
-    if (currentParameterObject) {
-      newCodeLine += appendRpaInputParameter(currentParameterObject);
-    }
+    if (currentAttributeObject) {
+      if (currentAttributeObject.rpaApplication !== previousApplication) {
+        newPreviousApplication = currentAttributeObject.rpaApplication;
+        newCodeLine += currentAttributeObject.rpaApplication + LINEBREAK;
+      } else {
+        newPreviousApplication = previousApplication;
+      }
+      newCodeLine += COMMENT + currentElement.name + LINEBREAK;
+      const currentParameterObject = parameters.find(
+        (parameter) => parameter.activityId === id
+      );
+      if (currentParameterObject) {
+        newCodeLine += setOutputVar(currentParameterObject);
+      }
+      newCodeLine += currentAttributeObject.rpaTask;
+      if (currentParameterObject) {
+        newCodeLine += appendRpaInputParameter(currentParameterObject);
+      }
 
-    newCodeLine += LINEBREAK;
-    combinedCode += newCodeLine;
+      newCodeLine += LINEBREAK;
+      combinedCode += newCodeLine;
+    }
   }
 
   if (successorTasksExist(currentElement)) {
