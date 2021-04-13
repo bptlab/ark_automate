@@ -130,21 +130,7 @@ exports.retrieveRobotMetadata = async (req, res) => {
     console.error(err);
   }
 };
-exports.getAllRequireUserInputParameters = async (req, res) => {
-  try {
-    res.set('Content-Type', 'application/json');
-    const { robotId } = req.params;
 
-    const parameterData = await mongoose
-      .model('parameter')
-      .find({ ssotId: robotId })
-      .exec();
-
-    res.send(parameterData);
-  } catch (err) {
-    console.error(err);
-  }
-};
 // GET /createNewRobot?userId=78d09f66d2ed466cf20b06f7&robotName=NewRobot
 exports.createNewRobot = async (req, res) => {
   try {

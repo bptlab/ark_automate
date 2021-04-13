@@ -56,21 +56,10 @@ const createNewRobot = async (userId, newName) => {
   return response;
 };
 
-/**
- * @description Fetch the ssot correlating to the specified Id
- * @param { String } robotId - String including the Id of the robot to be retrieved
- */
-const getAllRequireUserInputParameters = async (robotId) => {
-  const requestString = `/ssot/getAllRequireUserInputParameters/${robotId}`;
-  const response = await fetch(requestString);
-  return response;
-};
-
 export {
   getSsotFromDB,
   fetchSsotsForUser,
   changeSsotName,
   retrieveMetadataForRobot,
   createNewRobot,
-  getAllRequireUserInputParameters,
 };

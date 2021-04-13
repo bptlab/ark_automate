@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
-import { getAllRequireUserInputParameters } from '../../../api/ssotRetrieval';
+import { getAllParametersForRobot } from '../../../api/variableRetrieval';
 import socket from '../../../utils/socket/socketConnections';
 import { upsert } from '../../../utils/attributeAndParamUtils';
 import styles from './RobotInteractionCockpit.module.css';
@@ -26,7 +26,7 @@ const RobotInteractionCockpit = (match) => {
    * @description For each activity of the current robot get the id, the name and all the parameters that require a user input
    */
   const getActivityAndParameterInformation = useCallback(() => {
-    getAllRequireUserInputParameters(robotId)
+    getAllParametersForRobot(robotId)
       .then((response) => response.json())
       .then((parameterObjects) => {
         const activityInformationList = [];

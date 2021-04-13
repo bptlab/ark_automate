@@ -35,7 +35,7 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('/ssot/getAvailableRobotsForUser', () => {
-  it('retreives the list of robots for user correctly', async () => {
+  it('retrieves the list of robots for user correctly', async () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadUserAccessObjectsInDb();
 
