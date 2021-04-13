@@ -36,6 +36,7 @@ router.post('/updateInputAndOutput', variableController.updateVariables); // not
 router.post('/updateInputParameter', variableController.updateOnlyInputParams); // not used
 router.post('/updateOutputVariableName', variableController.updateOnlyOutputVarName); // not used
 router.post('/updateManyParameters', variableController.updateMany);
+router.get('/getAllParameters/:robotId', variableController.retrieveParametersForRobot);
 router.get('/', variableController.retrieveParametersForRobot);
 
 /// RPA ATTRIBUTES ROUTES ///
