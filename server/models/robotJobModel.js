@@ -9,9 +9,9 @@ const inputParameterSchema = new Schema({
 
 // eslint-disable-next-line camelcase
 const Job_Schema = new Schema({
-  user_id: mongoose.Types.ObjectId,
-  robot_id: mongoose.Types.ObjectId,
-  status: String,
+  user_id: {type: mongoose.Types.ObjectId,required: [true, 'UserId required']},
+  robot_id: {type: mongoose.Types.ObjectId,required: [true, 'RobotId required']},
+  status: {type: String,required: [true, 'Status required']},
   parameters: [inputParameterSchema],
 });
 
