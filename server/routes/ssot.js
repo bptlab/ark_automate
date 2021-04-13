@@ -15,10 +15,6 @@ router.get('/parser/getForId/:botId', parsingController.getRobotCodeForId);
 /// SSOT ROUTES ///
 router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
 router.get(
-  '/getAllRequireUserInputParameters/:robotId',
-  retrievalController.getAllRequireUserInputParameters
-);
-router.get(
   '/getAvailableRobotsForUser/:userId',
   retrievalController.getRobotList
 );
