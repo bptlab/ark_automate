@@ -6,6 +6,7 @@ import { getAllParametersForRobot } from '../../../api/variableRetrieval';
 import socket from '../../../utils/socket/socketConnections';
 import { upsert } from '../../../utils/attributeAndParamUtils';
 import styles from './RobotInteractionCockpit.module.css';
+import { isRobotExecutable } from '../../../utils/robotExecution';
 
 const { Step } = Steps;
 const { Title } = Typography;
@@ -84,10 +85,9 @@ const RobotInteractionCockpit = (match) => {
   /**
    * @description Sends a job to the server to execute a specfic robot for a specific user
    */
-  const startRobot = () => {
-    // isBotExecutable function is to be implemented
-    const isBotExecutable = true;
-    if (isBotExecutable) {
+  const startRobot = async () => {
+    const robotIsExecutable = await isRobotExecutable(robotId);
+    if (robotIsExecutable) {
       upsert().then(() => {
         setCurrentStep(1);
         socket.emit('robotExecutionJobs', { robotId, userId });
