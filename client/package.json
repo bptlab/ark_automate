@@ -7,9 +7,6 @@
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
     "@craco/craco": "^6.1.1",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.1.1",
-    "@testing-library/user-event": "^12.2.0",
     "antd": "^4.8.2",
     "body-parser": "^1.18.3",
     "bpmn-font": "^0.10.0",
@@ -57,6 +54,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3",
     "better-docs": "^2.3.2",
     "eslint": "^7.17.0",
     "eslint-config-airbnb": "^18.2.1",
