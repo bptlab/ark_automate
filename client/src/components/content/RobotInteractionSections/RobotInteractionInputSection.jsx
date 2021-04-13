@@ -13,19 +13,19 @@ const { Title } = Typography;
 const RobotInteractionInputSection = ({ parameterList }) => (
   <Space size='small' direction='vertical' style={{ width: '100%' }}>
     {parameterList.map((activityInformation) => {
-      if (activityInformation[1].length !== 0) {
+      if (activityInformation.activityParameter.length !== 0) {
         return (
           <>
             <Title style={{ marginBottom: '0px' }} level={4}>
-              Activity: {activityInformation[2]}
+              Activity: {activityInformation.activityName}
             </Title>
-            {activityInformation[1].map((params) => (
+            {activityInformation.activityParameter.map((params) => (
               <RobotInteractionInputParameter
                 variableName={params.name}
                 isRequired={params.isRequired}
                 dataType={params.type}
                 value={params.value}
-                activityId={activityInformation[0]}
+                activityId={activityInformation.activityId}
                 infoText={params.infoText}
               />
             ))}

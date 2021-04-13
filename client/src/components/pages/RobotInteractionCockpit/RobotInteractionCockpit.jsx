@@ -50,11 +50,11 @@ const RobotInteractionCockpit = (match) => {
             }
           );
           if (activityParameter.length !== 0) {
-            const activityInformation = [
+            const activityInformation = {
               activityId,
               activityParameter,
               activityName,
-            ];
+            };
             activityInformationList.push(activityInformation);
           }
         });
@@ -100,13 +100,15 @@ const RobotInteractionCockpit = (match) => {
   return (
     <Layout>
       <HeaderNavbar selectedKey={4} />
-      <Card>
+      <Card style={{ margin: '24px', borderRadius: '5px' }}>
+        <Steps current={currentStep}>
+          <Step title='Input' description='Define input for robot' />
+          <Step title='Execution' description='Check current status' />
+          <Step title='Done' description='Get return value' />
+        </Steps>
+      </Card>
+      <Card style={{ margin: '24px', marginTop: '0px' }}>
         <Space direction='vertical' size='large' style={{ width: '100%' }}>
-          <Steps current={currentStep}>
-            <Step title='Input' description='Define input for robot' />
-            <Step title='Execution' description='Check current status' />
-            <Step title='Done' description='Get return value' />
-          </Steps>
           {currentStep === 0 && parameterList.length !== 0 && (
             <>
               <RobotInteractionInputSection parameterList={parameterList} />
