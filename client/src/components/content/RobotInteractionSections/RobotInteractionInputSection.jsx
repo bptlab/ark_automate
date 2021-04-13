@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Space } from 'antd';
 import RobotInteractionInputParameter from './RobotInteractionComponents/RobotInteractionInputParameter';
@@ -11,31 +11,29 @@ const { Title } = Typography;
  * @component
  */
 const RobotInteractionInputSection = ({ parameterList }) => (
-  <>
-    <Space size='small' direction='vertical' style={{ width: '100%' }}>
-      {parameterList.map((activityInformation) => {
-        if (activityInformation[1].length !== 0) {
-          return (
-            <>
-              <Title style={{ marginBottom: '0px' }} level={4}>
-                Activity: {activityInformation[2]}
-              </Title>
-              {activityInformation[1].map((params) => (
-                <RobotInteractionInputParameter
-                  variableName={params.name}
-                  isRequired={params.isRequired}
-                  dataType={params.type}
-                  value={params.value}
-                  activityId={params}
-                  infoText={params.infoText}
-                />
-              ))}
-            </>
-          );
-        }
-      })}
-    </Space>
-  </>
+  <Space size='small' direction='vertical' style={{ width: '100%' }}>
+    {parameterList.map((activityInformation) => {
+      if (activityInformation[1].length !== 0) {
+        return (
+          <>
+            <Title style={{ marginBottom: '0px' }} level={4}>
+              Activity: {activityInformation[2]}
+            </Title>
+            {activityInformation[1].map((params) => (
+              <RobotInteractionInputParameter
+                variableName={params.name}
+                isRequired={params.isRequired}
+                dataType={params.type}
+                value={params.value}
+                activityId={activityInformation[0]}
+                infoText={params.infoText}
+              />
+            ))}
+          </>
+        );
+      }
+    })}
+  </Space>
 );
 
 RobotInteractionInputSection.propTypes = {

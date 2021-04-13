@@ -13,7 +13,6 @@ const { Text } = Typography;
  */
 const RobotInteractionInputParameter = ({
   variableName,
-  isRequired,
   // eslint-disable-next-line no-unused-vars
   dataType,
   value,
@@ -26,7 +25,7 @@ const RobotInteractionInputParameter = ({
    * @param {Object} value new value of input field
    */
   const updateParameterValue = (event) => {
-    console.log('activityId: ', event.target.value);
+    console.log('activityId: ', activityId);
     setSingleParameter(activityId, event);
   };
 
@@ -53,7 +52,6 @@ const RobotInteractionInputParameter = ({
 
 RobotInteractionInputParameter.propTypes = {
   variableName: PropTypes.string.isRequired,
-  isRequired: PropTypes.bool.isRequired,
   dataType: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   activityId: PropTypes.string.isRequired,

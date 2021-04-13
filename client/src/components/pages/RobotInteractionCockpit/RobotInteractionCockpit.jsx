@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Layout, Card, Steps, Space, Button } from 'antd';
+import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
 import { getAllRequireUserInputParameters } from '../../../api/ssotRetrieval';
@@ -8,6 +8,8 @@ import { upsert } from '../../../utils/attributeAndParamUtils';
 import styles from './RobotInteractionCockpit.module.css';
 
 const { Step } = Steps;
+const { Title } = Typography;
+
 /**
  * @description Page, where you can interact with a robot and for example enter input
  * @category Client
@@ -27,7 +29,7 @@ const RobotInteractionCockpit = (match) => {
     getAllRequireUserInputParameters(robotId)
       .then((response) => response.json())
       .then((parameterObjects) => {
-        const activityInformation = [];
+        const activityInformationList = [];
         Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
           const { activityId } = parameterObject;
           let activityName = '';
@@ -47,15 +49,17 @@ const RobotInteractionCockpit = (match) => {
               }
             }
           );
-          const activityParamterTupel = [
-            activityId,
-            activityParameter,
-            activityName,
-          ];
-          activityInformation.push(activityParamterTupel);
+          if (activityParameter.length !== 0) {
+            const activityInformation = [
+              activityId,
+              activityParameter,
+              activityName,
+            ];
+            activityInformationList.push(activityInformation);
+          }
         });
         if (isMounted.current) {
-          setParameterList(activityInformation);
+          setParameterList(activityInformationList);
         }
       });
   }, [robotId]);
@@ -103,7 +107,7 @@ const RobotInteractionCockpit = (match) => {
             <Step title='Execution' description='Check current status' />
             <Step title='Done' description='Get return value' />
           </Steps>
-          {currentStep === 0 && (
+          {currentStep === 0 && parameterList.length !== 0 && (
             <>
               <RobotInteractionInputSection parameterList={parameterList} />
               <Space
@@ -124,6 +128,17 @@ const RobotInteractionCockpit = (match) => {
               </Space>
             </>
           )}
+          {currentStep === 0 &&
+            (parameterList.length === 0 || parameterList === undefined) && (
+              <>
+                <Title style={{ marginBottom: '0px' }} level={5}>
+                  No User Input Required. Ready to go!
+                </Title>
+                <Button type='primary' onClick={startRobot}>
+                  Execute Robot
+                </Button>
+              </>
+            )}
         </Space>
       </Card>
     </Layout>
