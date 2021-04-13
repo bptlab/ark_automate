@@ -25,7 +25,6 @@ const RobotInteractionInputParameter = ({
    * @param {Object} value new value of input field
    */
   const updateParameterValue = (event) => {
-    console.log('activityId: ', activityId);
     setSingleParameter(activityId, event);
   };
 

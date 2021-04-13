@@ -258,7 +258,6 @@ const getParameterObject = (robotId, activityId) => {
  * @param {Object} value The value object returned by the dropdown selection
  */
 const setSingleParameter = (activityId, value) => {
-  console.log(sessionStorage.getItem('parameterLocalStorage'));
   const localParameterStorage = JSON.parse(
     sessionStorage.getItem('parameterLocalStorage')
   );
