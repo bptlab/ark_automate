@@ -201,4 +201,4 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export { parseBpmnToSsot };
+export {parseBpmnToSsot};
