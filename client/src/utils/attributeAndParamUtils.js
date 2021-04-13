@@ -320,7 +320,7 @@ const setPropertyForParameter = (
 };
 
 /**
- * @description Will retrieve the local parameter storage and return the current value of the userInpitRequired property
+ * @description Will retrieve the local parameter storage and return the current value of the userInputRequired property
  * @param {string} robotId id of the selected robot
  * @param {string} activityId id of the selected activity
  * @param {string} parameterName The name of the parameter for which we want to get an update on the status of a property
