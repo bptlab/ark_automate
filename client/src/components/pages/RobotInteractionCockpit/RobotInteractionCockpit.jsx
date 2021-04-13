@@ -18,14 +18,26 @@ const RobotInteractionCockpit = (match) => {
   const { userId } = match.location.state;
   const isMounted = useRef(true);
   const [parameterList, setParameterList] = useState([]);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const getParameterRequireUserInput = useCallback(() => {
+  /**
+   * @description For each activity of the current robot get the id, the name and all the parameters that require a user input
+   */
+  const getActivityAndParameterInformation = useCallback(() => {
     getAllRequireUserInputParameters(robotId)
       .then((response) => response.json())
       .then((parameterObjects) => {
-        const activityParameterTupels = [];
+        const activityInformation = [];
         Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
           const { activityId } = parameterObject;
+          let activityName = '';
+          let ssot = sessionStorage.getItem('ssotLocal');
+          ssot = JSON.parse(ssot);
+          Array.prototype.forEach.call(ssot.elements, (elem) => {
+            if (elem.id === activityId) {
+              activityName = elem.name;
+            }
+          });
           const activityParameter = [];
           Array.prototype.forEach.call(
             parameterObject.rpaParameters,
@@ -35,11 +47,15 @@ const RobotInteractionCockpit = (match) => {
               }
             }
           );
-          const activityParamterTupel = [activityId, activityParameter];
-          activityParameterTupels.push(activityParamterTupel);
+          const activityParamterTupel = [
+            activityId,
+            activityParameter,
+            activityName,
+          ];
+          activityInformation.push(activityParamterTupel);
         });
         if (isMounted.current) {
-          setParameterList(activityParameterTupels);
+          setParameterList(activityInformation);
         }
       });
   }, [robotId]);
@@ -58,8 +74,8 @@ const RobotInteractionCockpit = (match) => {
    * @description Ensures that we only update the paramterList when the paramters we fetch form the DB have changed
    */
   useEffect(() => {
-    getParameterRequireUserInput();
-  }, [getParameterRequireUserInput]);
+    getActivityAndParameterInformation();
+  }, [getActivityAndParameterInformation]);
 
   /**
    * @description Sends a job to the server to execute a specfic robot for a specific user
@@ -69,6 +85,7 @@ const RobotInteractionCockpit = (match) => {
     const isBotExecutable = true;
     if (isBotExecutable) {
       upsert().then(() => {
+        setCurrentStep(1);
         socket.emit('robotExecutionJobs', { robotId, userId });
       });
     } else {
@@ -81,20 +98,32 @@ const RobotInteractionCockpit = (match) => {
       <HeaderNavbar selectedKey={4} />
       <Card>
         <Space direction='vertical' size='large' style={{ width: '100%' }}>
-          <Steps current={0}>
+          <Steps current={currentStep}>
             <Step title='Input' description='Define input for robot' />
             <Step title='Execution' description='Check current status' />
             <Step title='Done' description='Get return value' />
           </Steps>
-          <RobotInteractionInputSection parameterList={parameterList} />
-          <Space direction='horizontal' size='large' style={{ width: '100%' }}>
-            <Button type='primary' className={styles.button} onClick={upsert}>
-              Save changes to cloud
-            </Button>
-            <Button type='primary' onClick={startRobot}>
-              Execute Robot
-            </Button>
-          </Space>
+          {currentStep === 0 && (
+            <>
+              <RobotInteractionInputSection parameterList={parameterList} />
+              <Space
+                direction='horizontal'
+                size='large'
+                style={{ width: '100%' }}
+              >
+                <Button
+                  type='primary'
+                  className={styles.button}
+                  onClick={upsert}
+                >
+                  Save changes to cloud
+                </Button>
+                <Button type='primary' onClick={startRobot}>
+                  Execute Robot
+                </Button>
+              </Space>
+            </>
+          )}
         </Space>
       </Card>
     </Layout>
