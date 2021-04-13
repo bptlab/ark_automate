@@ -1,14 +1,14 @@
 import React from 'react';
 import { is } from 'bpmn-js/lib/util/ModelUtil';
 import { Space } from 'antd';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import PPIdSection from './PropertiesPanelSections/PPIdSection';
-import PPTitle from './PropertiesPanelSections/PPTitleSection'
+import PPTitle from './PropertiesPanelSections/PPTitleSection';
 import PPNameSection from './PropertiesPanelSections/PPNameSection';
 import PPParameterSection from './PropertiesPanelSections/PPParameterSection';
 import PPRpaSection from './PropertiesPanelSections/PPRpaSection';
-import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection'
+import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection';
 
 /**
  * @description Shows PropertiesPanel for one selected BPMN-Element.
@@ -23,12 +23,13 @@ const PropertiesPanel = ({
   selectedActivity,
   taskSelectionUpdated,
   disableTaskSelection,
+  robotId,
   variableList,
   parameterSelectionUpdated,
   outputVariableName,
-  outputNameUpdated
+  outputNameUpdated,
 }) => (
-  < div className='element-properties' key={element.id} >
+  <div className='element-properties' key={element.id}>
     <Space direction='vertical' style={{ width: '100%' }}>
       <PPTitle element={element} />
       <PPIdSection element={element} />
@@ -44,12 +45,24 @@ const PropertiesPanel = ({
             disableTaskSelection={disableTaskSelection}
             selectedActivity={selectedActivity}
           />
-          {((variableList.length > 0) && <PPParameterSection variableList={variableList} onValueChange={parameterSelectionUpdated} />)}
-          {(outputVariableName && <PPOutputValueSection outputVariableText={outputVariableName} onNameChange={outputNameUpdated} />)}
+          {variableList.length > 0 && (
+            <PPParameterSection
+              selectedActivity={selectedActivity}
+              variableList={variableList}
+              onValueChange={parameterSelectionUpdated}
+              robotId={robotId}
+            />
+          )}
+          {outputVariableName && (
+            <PPOutputValueSection
+              outputVariableText={outputVariableName}
+              onNameChange={outputNameUpdated}
+            />
+          )}
         </>
       )}
     </Space>
-  </div >
+  </div>
 );
 
 PropertiesPanel.propTypes = {
@@ -64,6 +77,7 @@ PropertiesPanel.propTypes = {
   parameterSelectionUpdated: PropTypes.func.isRequired,
   outputVariableName: PropTypes.string.isRequired,
   outputNameUpdated: PropTypes.func.isRequired,
+  robotId: PropTypes.string.isRequired,
 };
 
 export default PropertiesPanel;
