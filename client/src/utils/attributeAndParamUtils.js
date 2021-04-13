@@ -290,6 +290,63 @@ const setSingleParameter = (activityId, value) => {
 };
 
 /**
+ * @description Will set the single parameter in local session storage
+ * @param {String} activityId Id of the activity for which to change the value for
+ * @param {String} parameterName Name of the parameter we want to change a property for
+ * @param {Object} value The value object returned by the dropdown selection
+ */
+const setPropertyForParameter = (
+  activityId,
+  parameterName,
+  property,
+  value
+) => {
+  const localParameterStorage = JSON.parse(
+    sessionStorage.getItem('parameterLocalStorage')
+  );
+  const newLocalParameterStorage = localParameterStorage.map((element) => {
+    if (element.activityId === activityId) {
+      element.rpaParameters.map((elem) => {
+        if (elem.name === parameterName) {
+          // eslint-disable-next-line no-param-reassign
+          elem[property] = value;
+        }
+        return elem;
+      });
+    }
+    return element;
+  });
+  sessionStorage.setItem(
+    'parameterLocalStorage',
+    JSON.stringify(newLocalParameterStorage)
+  );
+};
+
+/**
+ * @description Will retrieve the local parameter storage and return the current value of the userInputRequired property
+ * @param {string} robotId id of the selected robot
+ * @param {string} activityId id of the selected activity
+ * @param {string} parameterName The name of the parameter for which we want to get an update on the status of a property
+ * @param {string} property The property of the parameters we want to get the current value of
+ */
+const parameterPropertyStatus = (
+  robotId,
+  activityId,
+  parameterName,
+  property
+) => {
+  const paramObj = getParameterObject(robotId, activityId);
+
+  const rpaParameters = paramObj.rpaParameters.filter(
+    (element) => element.name === parameterName
+  );
+  if (rpaParameters[0]) {
+    return rpaParameters[0][property];
+  }
+  return false;
+};
+
+/**
  * @description Will send a backend call to retrieve all attribute objects related to the provided robotId
  * @param {String} robotId Id of the robot for which to retrieve the values
  * @returns {Array} Array of attribute objects related to the robot
@@ -449,6 +506,8 @@ export {
   resetRpaApplication,
   getParameterObject,
   setSingleParameter,
+  setPropertyForParameter,
+  parameterPropertyStatus,
   getAttributesFromDB,
   getParameterFromDB,
   setOutputValueName,

@@ -140,10 +140,17 @@ exports.createNewRobot = async (req, res) => {
     const { robotName } = req.query;
     const nameWithEmptyspace = robotName.replace(/\+/g, ' ');
 
+    const initialStartEvent = {
+      predecessorIds: [],
+      successorIds: [],
+      type: 'MARKER',
+      id: 'Event_startEvent'
+    }
+
     const ssot = await mongoose.model('SSoT').create({
       starterId: '',
       robotName: nameWithEmptyspace,
-      elements: [],
+      elements: [ initialStartEvent ],
     });
 
     const updatedSsot = await ssot

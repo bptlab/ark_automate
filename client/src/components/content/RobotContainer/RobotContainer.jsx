@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
 import { initSsotSessionStorage } from '../../../utils/attributeAndParamUtils';
+import { isRobotExecutable } from '../../../utils/robotExecution';
 
 const { Title } = Typography;
 
@@ -24,6 +25,15 @@ const RobotContainer = (props) => {
    */
   const initLocalSsot = () => {
     initSsotSessionStorage(robotId);
+  };
+
+  const startRobot = async () => {
+    const robotIsExecutable = await isRobotExecutable(robotId);
+    if (robotIsExecutable) {
+      socket.emit('robotExecutionJobs', { robotId, userId });
+    } else {
+      alert('Your Bot is not fully configured and can not be executed!');
+    }
   };
 
   /**

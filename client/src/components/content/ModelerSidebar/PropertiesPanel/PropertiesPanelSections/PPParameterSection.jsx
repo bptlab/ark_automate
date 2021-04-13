@@ -10,27 +10,38 @@ const { Text } = Typography;
  * @category Client
  * @component
  */
-const PPParameterSection = ({ onValueChange, variableList }) => (
+const PPParameterSection = ({
+  selectedActivity,
+  variableList,
+  onValueChange,
+  robotId,
+}) => (
   <>
     <Text className='label-on-dark-background'>Parameter:</Text>
 
     <Space direction='vertical' style={{ width: '100%' }}>
       {variableList.map((singleInput) => (
-        <PPParameterInput
-          onValueChange={onValueChange}
-          variableName={singleInput.name}
-          isRequired={singleInput.isRequired}
-          dataType={singleInput.type}
-          value={singleInput.value}
-        />
+        <>
+          <PPParameterInput
+            onValueChange={onValueChange}
+            variableName={singleInput.name}
+            isRequired={singleInput.isRequired}
+            dataType={singleInput.type}
+            value={singleInput.value}
+            robotId={robotId}
+            selectedActivity={selectedActivity}
+          />
+        </>
       ))}
     </Space>
   </>
 );
 
 PPParameterSection.propTypes = {
+  selectedActivity: PropTypes.string.isRequired,
   onValueChange: PropTypes.func.isRequired,
   variableList: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  robotId: PropTypes.string.isRequired,
 };
 
 export default PPParameterSection;
