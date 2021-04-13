@@ -25,25 +25,25 @@ afterAll(async () => dbHandler.closeDatabase());
 describe('user access objects can be created', () => {
   const userAccessObject = new UserAccesObject(testUserAccessObject);
   it('should throw no errors for correct job', async () => {
-    userAccessObject.save((err) => {
-      expect(err).to.not.exist;
-    });
+    userAccessObject.save((err) => expect(err).to.not.exist);
   });
 });
 
 describe('user access objects have validation for missing parameters', () => {
   const job = new UserAccesObject({});
   it('should be invalid if RobotId is empty', async () => {
-    job.save((err) => {
-      expect(err.errors.robotId).to.exist;
-      expect(err.errors.robotId.message).equal('RobotId required');
-    });
+    job.save(
+      (err) =>
+        expect(err.errors.robotId).to.exist &&
+        expect(err.errors.robotId.message).equal('RobotId required')
+    );
   });
 
   it('should be invalid if UserId is empty', async () => {
-    job.save((err) => {
-      expect(err.errors.userId).to.exist;
-      expect(err.errors.userId.message).equal('UserId required');
-    });
+    job.save(
+      (err) =>
+        expect(err.errors.userId).to.exist &&
+        expect(err.errors.userId.message).equal('UserId required')
+    );
   });
 });

@@ -6,6 +6,8 @@ const { testSsot } = require('../utils/TestingUtils/testData.js');
 // eslint-disable-next-line no-unused-vars
 const ssotModel = require('./singleSourceOfTruthModel.js');
 
+const Ssot = mongoose.model('SSoT');
+
 /**
  * Connect to a new in-memory database before running any tests.
  */
@@ -22,20 +24,19 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('Robots can be created', () => {
-  const ssot = new mongoose.model('SSoT')(testSsot);
+  const ssot = new Ssot(testSsot);
   it('should throw no errors for correct job', async () => {
-    ssot.save((err) => {
-      expect(err).to.not.exist;
-    });
+    ssot.save((err) => expect(err).to.not.exist);
   });
 });
 
 describe('Robots have validation for missing parameters', () => {
-  const job = new mongoose.model('SSoT')({});
+  const job = new Ssot({});
   it('should be invalid if robotName is empty', async () => {
-    job.save((err) => {
-      expect(err.errors.robotName).to.exist;
-      expect(err.errors.robotName.message).equal('robotName required');
-    });
+    job.save(
+      (err) =>
+        expect(err.errors.robotName).to.exist &&
+        expect(err.errors.robotName.message).equal('robotName required')
+    );
   });
 });
