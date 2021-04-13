@@ -37,23 +37,13 @@ const PPParameterInput = ({
   );
 
   const changeUserInputRequirement = (event, parameterName) => {
-    if (event.target.checked) {
-      setPropertyForParameter(
-        selectedActivity,
-        parameterName,
-        'requireUserInput',
-        true
-      );
-      setUserInputRequired(true);
-    } else {
-      setPropertyForParameter(
-        selectedActivity,
-        parameterName,
-        'requireUserInput',
-        false
-      );
-      setUserInputRequired(false);
-    }
+    setPropertyForParameter(
+      selectedActivity,
+      parameterName,
+      'requireUserInput',
+      event.target.checked
+    );
+    setUserInputRequired(event.target.checked);
   };
 
   const changeParamterValue = (event, parameterName) => {

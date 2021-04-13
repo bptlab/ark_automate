@@ -77,6 +77,7 @@ PropertiesPanel.propTypes = {
   parameterSelectionUpdated: PropTypes.func.isRequired,
   outputVariableName: PropTypes.string.isRequired,
   outputNameUpdated: PropTypes.func.isRequired,
+  robotId: PropTypes.string.isRequired,
 };
 
 export default PropertiesPanel;
