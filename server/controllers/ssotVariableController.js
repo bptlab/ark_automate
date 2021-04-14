@@ -7,7 +7,7 @@ const rpaModels = require('../models/rpaTaskModel');
 const retrieveParameterObject = async (robotId, activityParameterId) =>
     mongoose.model('parameter').findOne(
         {
-            ssotId: botId,
+            ssotId: robotId,
             activityId: activityParameterId,
       ssotId: robotId,
         }
@@ -28,7 +28,7 @@ const findParametersForTask = async (applicationName, taskName) => (
     ).exec()
 )
 
-const initiateParametersForActivity = async (botId, activityId, updatedParameters, hasOutput) => {
+const initiateParametersForActivity = async (robotId, activityId, updatedParameters, hasOutput) => {
   robotId,
         return mongoose.model('parameter').findOneAndUpdate(
             {
@@ -67,7 +67,7 @@ const initiateParametersForActivity = async (botId, activityId, updatedParameter
 const checkForOutputValue = async (robotId, activityId) => {
     const parameterObject = await  mongoose.model('parameter').findOne(
         {
-            ssotId: botId,
+            ssotId: robotId,
             activityId,
       ssotId: robotId,
         }
@@ -75,7 +75,7 @@ const checkForOutputValue = async (robotId, activityId) => {
     return !!parameterObject.outputVariable
 }
 
-const updateParametersForActivity = async (botId, activityId, updatedParameters, updatedOutput, hasOutput) => {
+const updateParametersForActivity = async (robotId, activityId, updatedParameters, updatedOutput, hasOutput) => {
   robotId,
         return mongoose.model('parameter').findOneAndUpdate(
             {
@@ -154,7 +154,7 @@ exports.getVariables = async (req, res) => {
         const variables = await mongoose.model('parameter').findOne(
             {
                 ssotId: botId,
-        ssotId: robotId,
+                ssotId: robotId,
             }
         ).exec()
         
@@ -228,7 +228,7 @@ exports.updateVariables = async (req, res) => {
     }
 };
 
-// POST /ssot/updateInputParameter/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
+// POST /ssot/updateInputParameter/?robotId=604f537ed699a2eb47433184&activityId=Activity_1groimk
 // do not forget the payload in the body for this request
 exports.updateOnlyInputParams = async (req, res) => {
     try {

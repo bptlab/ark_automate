@@ -174,7 +174,7 @@ describe('ssot/createNewRobot', () => {
     expect(response.statusCode).toBe(200);
 
     const data = await response._getData();
-    const newSsotId = data.robotId;
+    const newRobotId = data.robotId;
 
     // verify if really in DB
     const request2 = httpMocks.createRequest({
@@ -187,7 +187,7 @@ describe('ssot/createNewRobot', () => {
 
     const data2 = await response2._getData();
     expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data2[0]._id)).toEqual(JSON.stringify(newSsotId));
+    expect(JSON.stringify(data2[0]._id)).toEqual(JSON.stringify(newRobotId));
   });
 });
 
@@ -213,7 +213,7 @@ describe('ssot/parser/get-robot-code', () => {
   });
 });
 
-describe('ssot/parser/getForId/:botId', () => {
+describe('ssot/parser/getForId/:robotId', () => {
   it('successfully retrieves parsed code for ssot', async () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
