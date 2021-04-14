@@ -1,11 +1,10 @@
+/* eslint-disable no-plusplus */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
 import { getAllParametersForRobot } from '../../../api/variableRetrieval';
 import socket from '../../../utils/socket/socketConnections';
-import { upsert } from '../../../utils/attributeAndParamUtils';
-import styles from './RobotInteractionCockpit.module.css';
 import { isRobotExecutable } from '../../../utils/robotExecution';
 
 const { Step } = Steps;
@@ -22,6 +21,7 @@ const RobotInteractionCockpit = (match) => {
   const isMounted = useRef(true);
   const [parameterList, setParameterList] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
+  const [parameters, setParameters] = useState([]);
 
   /**
    * @description For each activity of the current robot get the id, the name and all the parameters that require a user input
@@ -88,13 +88,39 @@ const RobotInteractionCockpit = (match) => {
   const startRobot = async () => {
     const robotIsExecutable = await isRobotExecutable(robotId);
     if (robotIsExecutable) {
-      upsert().then(() => {
-        setCurrentStep(1);
-        socket.emit('robotExecutionJobs', { robotId, userId });
-      });
+      setCurrentStep(1);
+      socket.emit('robotExecutionJobs', { robotId, userId, parameters });
     } else {
       alert('Your Bot is not fully configured and can not be executed!');
     }
+  };
+
+  /**
+   * @description Will update the value of a parameter in the component state
+   * @param {string} parameterId Id of the parameter which value will be changed
+   * @param {string} value new value of the parameter
+   */
+  const updateParameterValue = (parameterId, value) => {
+    const currentParameters = [...parameters];
+    let found = false;
+    for (let i = 0; i < currentParameters.length; i++) {
+      if (currentParameters[i].parameterId === parameterId) {
+        found = true;
+        break;
+      }
+    }
+    if (found) {
+      Array.prototype.map.call(currentParameters, (parameter) => {
+        if (parameter.parameterId === parameterId) {
+          // eslint-disable-next-line no-param-reassign
+          parameter.value = value;
+        }
+        return parameter;
+      });
+    } else {
+      currentParameters.push({ parameterId, value });
+    }
+    setParameters(currentParameters);
   };
 
   return (
@@ -111,23 +137,13 @@ const RobotInteractionCockpit = (match) => {
         <Space direction='vertical' size='large' style={{ width: '100%' }}>
           {currentStep === 0 && parameterList.length !== 0 && (
             <>
-              <RobotInteractionInputSection parameterList={parameterList} />
-              <Space
-                direction='horizontal'
-                size='large'
-                style={{ width: '100%' }}
-              >
-                <Button
-                  type='primary'
-                  className={styles.button}
-                  onClick={upsert}
-                >
-                  Save changes to cloud
-                </Button>
-                <Button type='primary' onClick={startRobot}>
-                  Execute Robot
-                </Button>
-              </Space>
+              <RobotInteractionInputSection
+                parameterList={parameterList}
+                updateParameterValue={updateParameterValue}
+              />
+              <Button type='primary' onClick={startRobot}>
+                Execute Robot
+              </Button>
             </>
           )}
           {currentStep === 0 &&

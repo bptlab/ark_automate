@@ -3,7 +3,6 @@ import { Typography, Input, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import corporateDesign from '../../../../layout/corporateDesign';
-import { setSingleParameter } from '../../../../utils/attributeAndParamUtils';
 
 const { Text } = Typography;
 /**
@@ -15,46 +14,35 @@ const RobotInteractionInputParameter = ({
   variableName,
   // eslint-disable-next-line no-unused-vars
   dataType,
-  value,
-  activityId,
   infoText,
-}) => {
-  /**
-   * @description Gets called when the value in a single input field for the parameters has been changed and updates
-   * the values in the ssot
-   * @param {Object} value new value of input field
-   */
-  const updateParameterValue = (event) => {
-    setSingleParameter(activityId, event);
-  };
-
-  return (
-    <>
-      <Text strong>{variableName}</Text>
-      <Input
-        placeholder={variableName}
-        defaultValue={value}
-        onChange={updateParameterValue}
-        suffix={
-          <>
-            <Tooltip title={infoText}>
-              <InfoCircleOutlined
-                style={{ color: corporateDesign.colorBackgroundCta }}
-              />
-            </Tooltip>
-          </>
-        }
-      />
-    </>
-  );
-};
+  updateParameterValue,
+  parameterId,
+}) => (
+  <>
+    <Text strong>{variableName}</Text>
+    <Input
+      placeholder={variableName}
+      defaultValue=''
+      onChange={(e) => updateParameterValue(parameterId, e.target.value)}
+      suffix={
+        <>
+          <Tooltip title={infoText}>
+            <InfoCircleOutlined
+              style={{ color: corporateDesign.colorBackgroundCta }}
+            />
+          </Tooltip>
+        </>
+      }
+    />
+  </>
+);
 
 RobotInteractionInputParameter.propTypes = {
   variableName: PropTypes.string.isRequired,
   dataType: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  activityId: PropTypes.string.isRequired,
   infoText: PropTypes.string.isRequired,
+  updateParameterValue: PropTypes.func.isRequired,
+  parameterId: PropTypes.string.isRequired,
 };
 
 export default RobotInteractionInputParameter;

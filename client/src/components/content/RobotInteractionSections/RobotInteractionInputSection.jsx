@@ -10,7 +10,10 @@ const { Title } = Typography;
  * @category Client
  * @component
  */
-const RobotInteractionInputSection = ({ parameterList }) => (
+const RobotInteractionInputSection = ({
+  parameterList,
+  updateParameterValue,
+}) => (
   <Space size='small' direction='vertical' style={{ width: '100%' }}>
     {parameterList.map((activityInformation) => {
       if (activityInformation.activityParameter.length !== 0) {
@@ -24,9 +27,9 @@ const RobotInteractionInputSection = ({ parameterList }) => (
                 variableName={params.name}
                 isRequired={params.isRequired}
                 dataType={params.type}
-                value={params.value}
-                activityId={activityInformation.activityId}
                 infoText={params.infoText}
+                updateParameterValue={updateParameterValue}
+                parameterId={params._id}
               />
             ))}
           </>
@@ -38,6 +41,7 @@ const RobotInteractionInputSection = ({ parameterList }) => (
 
 RobotInteractionInputSection.propTypes = {
   parameterList: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  updateParameterValue: PropTypes.func.isRequired,
 };
 
 export default RobotInteractionInputSection;

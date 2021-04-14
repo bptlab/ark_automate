@@ -45,29 +45,19 @@ exports.socketManager = (io, socket) => {
 
   /*  Gets triggered when the web client wants to execute a robot. We check if a desktop client is available. We either execute 
   the robot immediately and add a job to the database with status executing or we just add a job to the database with status waiting  */
-  socket.on('robotExecutionJobs', ({ robotId, userId }) => {
+  socket.on('robotExecutionJobs', ({ robotId, userId, parameters }) => {
     const clients = io.sockets.adapter.rooms.get(userId);
     const numClients = clients ? clients.size : 0;
     if (numClients > 1) {
       socketHelperFunctions
-        .createJob(userId, robotId, 'executing', [
-          {
-            name: '',
-            value: '',
-          },
-        ])
+        .createJob(userId, robotId, 'executing', parameters)
         .then((jobId) => {
           socketHelperFunctions.getRobotCode(robotId).then((robotCode) => {
             io.to(userId).emit('robotExecution', { robotCode, jobId });
           });
         });
     } else {
-      socketHelperFunctions.createJob(userId, robotId, 'waiting', [
-        {
-          name: '',
-          value: '',
-        },
-      ]);
+      socketHelperFunctions.createJob(userId, robotId, 'waiting', parameters);
     }
   });
 
