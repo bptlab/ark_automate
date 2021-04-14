@@ -52,12 +52,47 @@ exports.socketManager = (io, socket) => {
       socketHelperFunctions
         .createJob(userId, robotId, 'executing', parameters)
         .then((jobId) => {
-          socketHelperFunctions.getRobotCode(robotId).then((robotCode) => {
-            io.to(userId).emit('robotExecution', { robotCode, jobId });
-          });
+          socketHelperFunctions
+            .getParameterObjects(robotId)
+            .then((parameterObjects) => {
+              // Evtl als eigene Funktion auslagern
+              Array.prototype.map.call(parameterObjects, (parameterObject) => {
+                if (parameterObject.rpaParameters.length !== 0) {
+                  Array.prototype.map.call(
+                    parameterObject.rpaParameters,
+                    (rpaParameter) => {
+                      Array.prototype.map.call(parameters, (parameter) => {
+                        if (
+                          String(parameter.parameterId) ===
+                          String(rpaParameter._id)
+                        ) {
+                          rpaParameter.value = parameter.value;
+                        }
+                      });
+                    }
+                  );
+                }
+                socketHelperFunctions.updateParameterWithUserInput(
+                  parameterObject
+                );
+              });
+              socketHelperFunctions.getRobotCode(robotId).then((robotCode) => {
+                io.to(userId).emit('robotExecution', { robotCode, jobId });
+              });
+            });
         });
     } else {
-      socketHelperFunctions.createJob(userId, robotId, 'waiting', parameters);
+      socketHelperFunctions
+        .createJob(userId, robotId, 'waiting', parameters)
+        .then((jobId) => {
+          Array.prototype.forEach.call(parameters, (parameter) => {
+            console.log('parameters ', parameters);
+            socketHelperFunctions.updateParameterValue(
+              parameter.id,
+              parameter.value
+            );
+          });
+        });
     }
   });
 

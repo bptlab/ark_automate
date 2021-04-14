@@ -23,6 +23,31 @@ exports.getRobotCode = async (robotId) => {
 };
 
 /**
+ * @description Finds a specific robot job and retrieves the parameter array
+ * @param {String} jobId the id of the robot job that we want to get all the parameters from
+ */
+exports.getRobotJobParameters = async (jobId) => {
+  const robotJobParameters = await jobsModel.Job.findById(jobId, {
+    parameters: 1,
+  }).exec();
+  return robotJobParameters;
+};
+
+/**
+ * @description Finds a specific parameter and updates the value
+ * @param {String} robotId the id of the robot with the parameters
+ * @param {String} parameterId the id of the parameter that we want to update
+ * @param {String} value the new value of the parameter
+ */
+exports.getParameterObjects = async (robotId) => {
+  const parameterObjects = await mongoose
+    .model('parameter')
+    .find({ ssotId: robotId })
+    .exec();
+  return parameterObjects;
+};
+
+/**
  * @description Fetches the ssot from the database and parses the ssot to robot code
  * @param {String} robotId the id of the robot we want the robot code for
  */
@@ -91,4 +116,15 @@ exports.getAllWaitingJobsForUser = async (userId) => {
     }
   );
   return jobList;
+};
+
+/**
+ * @description Finds a specific parameter and updates the value
+ * @param {String} robotId the id of the robot with the parameters
+ */
+exports.updateParameterWithUserInput = async (parameterObject) => {
+  mongoose
+    .model('parameter')
+    .findByIdAndUpdate(parameterObject._id, parameterObject)
+    .exec();
 };
