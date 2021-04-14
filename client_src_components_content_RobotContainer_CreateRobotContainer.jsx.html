@@ -92,7 +92,6 @@ import PropTypes from 'prop-types';
 import styles from './RobotContainer.module.css';
 import corporateDesign from '../../../layout/corporateDesign';
 
-
 const { Title } = Typography;
 
 /**
@@ -100,31 +99,34 @@ const { Title } = Typography;
  * @description Provides the first Box of Robot Overview with the "Create new Robot"-Box
  * @category Client
  */
-const CreateRobotContainer = (props) => {
+const CreateRobotContainer = ({ createNewRobot }) => (
+  &lt;Col xs={24} sm={12} md={8} xl={6} xxl={4}>
+    &lt;Col
+      className={[styles.box, styles.createRobotBox]}
+      onClick={createNewRobot}
+    >
+      &lt;Row align='middle' style={{ height: '70%' }}>
+        &lt;Col type='flex' span={24}>
+          &lt;PlusCircleOutlined
+            style={{
+              fontSize: '6rem',
+              color: corporateDesign.colorBackground,
+            }}
+          />
+        &lt;/Col>
+      &lt;/Row>
 
-    const addRobot = () => alert('Unfortunately this is currently not supported.'); //props.createNewRobot();
-
-    return (
-        &lt;Col xs={24} sm={12} md={8} xl={6} xxl={4}>
-            &lt;Col className={[styles.box, styles.createRobotBox]} >
-                &lt;Row align="middle" style={{ height: '70%' }}>
-                    &lt;Col type="flex" span={24}>
-                        &lt;PlusCircleOutlined onClick={addRobot} style={{ fontSize: '6rem', color: corporateDesign.colorBackground }} />
-                    &lt;/Col>
-                &lt;/Row>
-
-                &lt;Row justify="space-around" align="middle" style={{ height: '40%' }}>
-                    &lt;Title className={styles.title} level={3} >
-                        Create new Robot
-                    &lt;/Title>
-                &lt;/Row>
-            &lt;/Col>
-        &lt;/Col >
-    )
-};
+      &lt;Row justify='space-around' align='middle' style={{ height: '40%' }}>
+        &lt;Title className={styles.title} level={3}>
+          Create new Robot
+        &lt;/Title>
+      &lt;/Row>
+    &lt;/Col>
+  &lt;/Col>
+);
 
 CreateRobotContainer.propTypes = {
-    createNewRobot: PropTypes.string.isRequired,
+  createNewRobot: PropTypes.func.isRequired,
 };
 
 export default CreateRobotContainer;
