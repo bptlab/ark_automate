@@ -4,12 +4,12 @@ const ssotModels = require('../models/singleSourceOfTruthModel.js');
 const userAccessModels = require('../models/userAccessObjectModel.js');
 const rpaModels = require('../models/rpaTaskModel');
 
-const retrieveParameterObject = async (robotId, activityParameterId) =>
+const retrieveParameterObject = async (robotId, activityParameterId) => (
     mongoose.model('parameter').findOne(
         {
             ssotId: robotId,
             activityId: activityParameterId,
-      ssotId: robotId,
+            ssotId: robotId,
         }
     ).exec()
 )
@@ -29,10 +29,10 @@ const findParametersForTask = async (applicationName, taskName) => (
 )
 
 const initiateParametersForActivity = async (robotId, activityId, updatedParameters, hasOutput) => {
-  robotId,
+    if (hasOutput) { 
         return mongoose.model('parameter').findOneAndUpdate(
             {
-          ssotId: robotId,
+                ssotId: robotId,
                 activityId,
             },
             { 
@@ -49,7 +49,7 @@ const initiateParametersForActivity = async (robotId, activityId, updatedParamet
     
     return mongoose.model('parameter').findOneAndUpdate(
         {
-        ssotId: robotId,
+            ssotId: robotId,
             activityId,
         },
         { 
@@ -76,10 +76,10 @@ const checkForOutputValue = async (robotId, activityId) => {
 }
 
 const updateParametersForActivity = async (robotId, activityId, updatedParameters, updatedOutput, hasOutput) => {
-  robotId,
+    if (hasOutput) { 
         return mongoose.model('parameter').findOneAndUpdate(
             {
-          ssotId: robotId,
+                ssotId: robotId,
                 activityId,
             },
             { 
@@ -153,8 +153,8 @@ exports.getVariables = async (req, res) => {
 
         const variables = await mongoose.model('parameter').findOne(
             {
-                ssotId: botId,
                 ssotId: robotId,
+        ssotId: robotId,
             }
         ).exec()
         
