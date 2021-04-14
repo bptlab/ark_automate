@@ -7,9 +7,8 @@ const rpaModels = require('../models/rpaTaskModel');
 const retrieveParameterObject = async (robotId, activityParameterId) => (
     mongoose.model('parameter').findOne(
         {
-            ssotId: robotId,
+            robotId,
             activityId: activityParameterId,
-            ssotId: robotId,
         }
     ).exec()
 )
@@ -32,7 +31,7 @@ const initiateParametersForActivity = async (robotId, activityId, updatedParamet
     if (hasOutput) { 
         return mongoose.model('parameter').findOneAndUpdate(
             {
-                ssotId: robotId,
+                robotId,
                 activityId,
             },
             { 
@@ -49,7 +48,7 @@ const initiateParametersForActivity = async (robotId, activityId, updatedParamet
     
     return mongoose.model('parameter').findOneAndUpdate(
         {
-            ssotId: robotId,
+            robotId,
             activityId,
         },
         { 
@@ -67,9 +66,8 @@ const initiateParametersForActivity = async (robotId, activityId, updatedParamet
 const checkForOutputValue = async (robotId, activityId) => {
     const parameterObject = await  mongoose.model('parameter').findOne(
         {
-            ssotId: robotId,
+            robotId,
             activityId,
-      ssotId: robotId,
         }
     ).exec();
     return !!parameterObject.outputVariable
@@ -79,7 +77,7 @@ const updateParametersForActivity = async (robotId, activityId, updatedParameter
     if (hasOutput) { 
         return mongoose.model('parameter').findOneAndUpdate(
             {
-                ssotId: robotId,
+                robotId,
                 activityId,
             },
             { 
@@ -96,7 +94,7 @@ const updateParametersForActivity = async (robotId, activityId, updatedParameter
     
     return mongoose.model('parameter').findOneAndUpdate(
         {
-        ssotId: robotId,
+            robotId,
             activityId,
         },
         { 
@@ -153,8 +151,7 @@ exports.getVariables = async (req, res) => {
 
         const variables = await mongoose.model('parameter').findOne(
             {
-                ssotId: robotId,
-        ssotId: robotId,
+                robotId: robotId,
             }
         ).exec()
         
@@ -239,7 +236,7 @@ exports.updateOnlyInputParams = async (req, res) => {
         
         const updatedParameterObject = await mongoose.model('parameter').findOneAndUpdate(
             {
-          ssotId: robotId,
+                robotId,
                 activityId
             },
             { 
@@ -270,7 +267,7 @@ exports.updateOnlyOutputVarName = async (req, res) => {
         
         const updatedParameterObject = await mongoose.model('parameter').findOneAndUpdate(
             {
-          ssotId: robotId,
+                robotId,
                 activityId
             },
             { 
@@ -302,7 +299,7 @@ exports.updateMany = async (req, res) => {
             const updateElement = {
                 updateOne: {
                     filter: {
-                        ssotId: element.ssotId,
+                        robotId: element.robotId,
                         activityId: element.activityId
                     },
                     update: element,
@@ -328,7 +325,7 @@ exports.retrieveParametersForRobot = async (req, res) => {
         .model('parameter')
         .find(
             {
-                ssotId: robotId
+                robotId
             }
         )
         .exec();

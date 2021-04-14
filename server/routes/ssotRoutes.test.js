@@ -221,7 +221,7 @@ describe('ssot/parser/getForId/:robotId', () => {
 
     const request = httpMocks.createRequest({
       params: {
-        botId: testRobotId,
+        robotId: testRobotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -254,7 +254,7 @@ describe('ssot/overwriteRobot/:robotId', () => {
     const request = httpMocks.createRequest({
       method: 'POST',
       params: {
-        botId: testRobotId,
+        robotId: testRobotId,
       },
       body: adaptedSsot,
     });

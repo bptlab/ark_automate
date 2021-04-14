@@ -211,7 +211,7 @@ const retrieveParameters = async (ssot) => {
     .model('parameter')
     .find(
       {
-        ssotId: id,
+        robotId: id,
         activityId: { $in: listOfActivityIds },
       },
       {
@@ -244,7 +244,7 @@ const retrieveAttributes = async (ssot) => {
   const attributeObjects = await mongoose
     .model('rpaAttributes')
     .find({
-      ssotId: id,
+      robotId: id,
       activityId: { $in: listOfActivityIds },
     })
     .exec();

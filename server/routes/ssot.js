@@ -10,7 +10,7 @@ const rpaAttributesController = require('../controllers/ssotRpaAttributes');
 
 /// PARSING ROUTES ///
 router.get('/parser/get-robot-code', parsingController.getRobotCode); // not used anymore
-router.get('/parser/getForId/:botId', parsingController.getRobotCodeForId); 
+router.get('/parser/getForId/:robotId', parsingController.getRobotCodeForId);
 
 /// SSOT ROUTES ///
 router.get('/get/:id', retrievalController.getSingleSourceOfTruth);
@@ -20,7 +20,7 @@ router.get(
 );
 router.get('/renameRobot', retrievalController.renameRobot);
 router.get(
-  '/retrieveMetadataForRobot/:botId',
+  '/retrieveMetadataForRobot/:robotId',
   retrievalController.retrieveRobotMetadata
 );
 router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser); // not used

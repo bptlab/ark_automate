@@ -41,7 +41,8 @@ const resetRpaApplication = (robotId, activityId, newApplication) => {
     (element) => element.activityId === activityId
   );
   const arrayWithoutMatchingElement = localApplicationTaskStorage.filter(
-    (element) => element.ssotId === robotId && element.activityId !== activityId
+    (element) =>
+      element.robotId === robotId && element.activityId !== activityId
   );
 
   if (matchingActivity) {
@@ -49,7 +50,7 @@ const resetRpaApplication = (robotId, activityId, newApplication) => {
   } else {
     matchingActivity = {
       activityId,
-      ssotId: robotId,
+      robotId: robotId,
       rpaApplication: newApplication,
     };
   }
@@ -78,7 +79,8 @@ const setRpaTask = (robotId, activityId, application, newTask) => {
     (element) => element.activityId === activityId
   );
   const arrayWithoutMatchingElement = localApplicationTaskStorage.filter(
-    (element) => element.ssotId === robotId && element.activityId !== activityId
+    (element) =>
+      element.robotId === robotId && element.activityId !== activityId
   );
 
   if (matchingActivity) {
@@ -86,7 +88,7 @@ const setRpaTask = (robotId, activityId, application, newTask) => {
   } else {
     matchingActivity = {
       activityId,
-      ssotId: robotId,
+      robotId: robotId,
       rpaApplication: application,
       rpaTask: newTask,
     };
@@ -237,7 +239,7 @@ const getParameterObject = (robotId, activityId) => {
           ? `${activityId}_output`
           : undefined,
       rpaParameters,
-      ssotId: robotId,
+      robotId: robotId,
     };
 
     localParameterStorage.push(matchingParameterObject);

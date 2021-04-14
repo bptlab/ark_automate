@@ -12,7 +12,7 @@ exports.getAttributes = async (req, res) => {
         const attributes = await mongoose.model('rpaAttributes').findOne(
             {
                 activityId,
-          ssotId: robotId,
+          robotId: robotId,
             },
             {
                 rpaApplication: 1,
@@ -33,7 +33,7 @@ exports.updateAttributes = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const updatedInfo = req.body;
-    const robotId = updatedInfo.ssotId;
+    const robotId = updatedInfo.robotId;
         const { activityId } = updatedInfo;
 
         const updatedAttributes = await mongoose
@@ -41,7 +41,7 @@ exports.updateAttributes = async (req, res) => {
             .findOneAndUpdate(
                 {
                     activityId,
-          ssotId: robotId,
+                    robotId,
                 },
                 updatedInfo,
                 {
@@ -70,7 +70,7 @@ exports.updateMany = async (req, res) => {
             const updateElement = {
                 updateOne: {
                     filter: {
-                        ssotId: element.ssotId,
+            robotId: element.robotId,
                         activityId: element.activityId
                     },
                     update: element,
@@ -93,13 +93,9 @@ exports.retrieveAttributesForRobot = async (req, res) => {
     const { robotId } = req.params;
 
     const attributeObjects = await mongoose
-        .model('rpaAttributes')
-        .find(
-            {
-                ssotId: robotId
-            }
-        )
-        .exec();
+      .model('rpaAttributes')
+      .find({ robotId })
+      .exec();
 
     res.send(attributeObjects);
 };
