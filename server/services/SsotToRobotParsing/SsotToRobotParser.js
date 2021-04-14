@@ -155,7 +155,7 @@ const generateCodeForRpaTasks = (elements, parameters, attributes) => {
 };
 
 /**
- * @description Collects the applications used by the bot
+ * @description Collects the applications used by the robot
  * @param {Array} elements All the elements from the SSoT
  * @returns {Array} All unique Applications that occur in the ssot
  */
