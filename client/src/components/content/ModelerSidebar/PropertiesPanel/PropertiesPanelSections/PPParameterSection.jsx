@@ -18,7 +18,9 @@ const PPParameterSection = ({
   robotId,
 }) => (
   <>
-    <Text className={styles[`label-on-dark-background`]}>Parameter:</Text>
+    <Text className={styles[`label-on-dark-background`]} strong>
+      Parameter:
+    </Text>
 
     <Space direction='vertical' style={{ width: '100%' }}>
       {variableList.map((singleInput) => (
