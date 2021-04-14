@@ -43,8 +43,8 @@ const markerSchema = new Schema({
 
 const ssotSchema = new Schema({
   starterId: String,
-  robotName: String,
-  elements: [instructionSchema, markerSchema],
+  robotName: {type: String, required: [true, 'robotName required']},
+  elements: {type: [instructionSchema, markerSchema]},
 });
 
 mongoose.model('parameter', parameterObjectSchema);
