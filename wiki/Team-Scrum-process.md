@@ -47,7 +47,9 @@ We agreed on having a **Pull Request freeze on 14:00** the day before the sprint
 ### Action Points for this Sprint
 
 During our last retrospective we agreed on tackling the following action points:
-* Pull Requests that introduce more than 500 lines of changes need a more detailed description so that reviewers can understand the components, not only check for syntax.
-* Work on spike issues is supposed to be stopped as soon as the estimated time has passed
-* We want to figure out ways to find a balance between time spent on our bachelors project and the bachelors thesis. Other bachelor project teams are allowed to reserve time in their sprint for their Bachelors thesis. Further interrogation is needed to check if we are allowed to do this as well.
-* We need to define our programming style for issues, wether it's closer to extreme programming or more future proof implementations
+* We want to introduce a longer team coffee break on Wednesdays afternoons, every two weeks. The feelgood manager takes care of this.
+* The Scrum master wants to interrogate when and how much work is still expected on the bachelors project in June so that we can plan the writing of our bachelors thesis.
+* Calls between team members will be held in a "Teams-Meeting" in our Meeting Channel, so that other team members can feel free to join.
+* We want to make the communication between team members and stakeholders more transparent. Therefore, we will from now on post important information from stakeholders in our teams and inform other team members about it in the next daily.
+* We will delete the Quote-thread.
+* The Scrum Master will open a thread regarding further distribution of the presentations which are supposed to be held. We then want to finally assign us to these presentations.
