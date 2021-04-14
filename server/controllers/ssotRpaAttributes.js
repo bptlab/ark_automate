@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 // eslint-disable-next-line no-unused-vars
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 
-// GET /ssot/getAttributes/?botId=6045eccf&activityId=ActivityId123
+// GET /ssot/getAttributes/?robotId=6045eccf&activityId=ActivityId123
 exports.getAttributes = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { botId } = req.query;
+    const { robotId } = req.query;
         const { activityId } = req.query;
 
         const attributes = await mongoose.model('rpaAttributes').findOne(
             {
                 activityId,
-                ssotId: botId,
+          ssotId: robotId,
             },
             {
                 rpaApplication: 1,
@@ -33,7 +33,7 @@ exports.updateAttributes = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
         const updatedInfo = req.body;
-        const botId = updatedInfo.ssotId;
+    const robotId = updatedInfo.ssotId;
         const { activityId } = updatedInfo;
 
         const updatedAttributes = await mongoose
@@ -41,7 +41,7 @@ exports.updateAttributes = async (req, res) => {
             .findOneAndUpdate(
                 {
                     activityId,
-                    ssotId: botId,
+          ssotId: robotId,
                 },
                 updatedInfo,
                 {

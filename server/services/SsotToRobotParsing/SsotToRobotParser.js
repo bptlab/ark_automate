@@ -273,11 +273,11 @@ const parseSsotToRobotCode = async (ssot) => {
 
 /**
  * @description Parses the SSoT provided by its id to an executable .robot file
- * @param {String} ssotId The id of the ssot which should be parsed
+ * @param {String} robotId The id of the ssot which should be parsed
  * @returns {string} Code that has to be put in .robot file
  */
-const parseSsotById = async (ssotId) => {
-  const ssot = await mongoose.model('SSoT').findById(ssotId).exec();
+const parseSsotById = async (robotId) => {
+  const ssot = await mongoose.model('SSoT').findById(robotId).exec();
 
   return parseSsotToRobotCode(ssot);
 };
