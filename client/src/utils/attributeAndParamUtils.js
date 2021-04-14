@@ -442,7 +442,7 @@ const getParameterForRobotFromDB = async (robotId) => {
   return response;
 };
 
-module.exports = {
+export {
   getRobotId,
   getRpaTask,
   setRobotId,
