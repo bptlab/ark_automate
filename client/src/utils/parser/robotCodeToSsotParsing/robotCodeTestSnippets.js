@@ -1,5 +1,5 @@
 const correctSettingsSection = '*** Settings ***\nLibrary    RPA.Excel.Application\nLibrary    RPA.HTTP'
-const correctTaskSection = '*** Tasks ***\nExcel.Application\n#activity One\n    Open Application    %%visible%%    %%display_alerts%%'
+const correctTaskSection = '*** Tasks ***\nExcel.Application\n#activity One\n    Open Application    %%visible%%    TestPETER'
 const taskAndApplicationCombinations = [{
     "_id": "6061d5627dee5516b3824ade",
     "Application": "Excel.Application",
@@ -95,9 +95,41 @@ const taskAndApplicationCombinations = [{
         }
     ]
 }]
+const correctElementsArray = [
+    {
+        "successorIds": [
+            "Activity_0ay5418"
+        ],
+        "id": "Activity_0ay5417",
+        "type": "MARKER",
+        "name": "START",
+        "predecessorIds": []
+    },
+    {
+        "successorIds": [
+            "Activity_0ay5419"
+        ],
+        "id": "Activity_0ay5418",
+        "type": "INSTRUCTION",
+        "name": "activity One",
+        "predecessorIds": [
+            "Activity_0ay5417"
+        ]
+    },
+    {
+        "successorIds": [],
+        "id": "Activity_0ay5419",
+        "type": "MARKER",
+        "name": "END",
+        "predecessorIds": [
+            "Activity_0ay5418"
+        ]
+    }
+]
 
 export {
     correctSettingsSection,
     correctTaskSection,
-    taskAndApplicationCombinations
+    taskAndApplicationCombinations,
+    correctElementsArray
 }

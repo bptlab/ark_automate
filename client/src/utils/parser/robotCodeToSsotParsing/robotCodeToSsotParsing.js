@@ -39,6 +39,7 @@ const getRobotCodeAsArray = (robotCode) => {
  * @returns Array of all declared applications or undefined if an error occures
  */
 const getApplicationArray = (robotCodeSettingsSection) => {
+    if (typeof robotCodeSettingsSection === 'undefined') return undefined;
     const robotCode = robotCodeSettingsSection.slice(1)
     const availableApplications = JSON.parse(sessionStorage.getItem('availableApplications'))
     let errorWasThrown;
@@ -243,7 +244,7 @@ const getElementsArray = (robotCodeTaskSection, declaredApplications, robotId) =
     const attributeArray = [];
     const parameterArray = [];
 
-    if (typeof declaredApplications === 'undefined') return undefined;
+    if (typeof robotCodeTaskSection === 'undefined' || typeof declaredApplications === 'undefined') return undefined;
 
     const taskAndApplicationCombinations = JSON.parse(sessionStorage.getItem('TaskApplicationCombinations'));
     const instructionArray = getInstructionBlocksFromTaskSection(robotCodeTaskSection, declaredApplications);
@@ -295,6 +296,20 @@ const getStarterId = (elementsArray) =>
         }
         return 'noStarterElement';
     })
+/**
+ * @description
+ * @param {Array} robotCodeAsArray the complete robotCode w/o new lines as array
+ * @param {String} selector the selector to get the line number for
+ * @returns line number where the selector occurs
+ */
+const getLineNumberForSelector = (robotCodeAsArray, selector) => {
+    let lineNumber;
+    robotCodeAsArray.forEach((codeLine, index) => {
+        if (codeLine.trim().includes(selector)) lineNumber = index;
+    });
+    if (typeof lineNumber === 'undefined') alert(`The required selector "${selector}" was not found`)
+    return lineNumber;
+}
 
 /**
  * @description Parses the RPA-Framework code from the code editor to the single source of truth
@@ -307,10 +322,14 @@ const parseRobotCodeToSsot = (robotCode) => {
     const robotName = sessionStorage.getItem('robotName');
     const robotCodeAsArray = getRobotCodeAsArray(robotCode);
 
-    const lineNumberTasksSelector = robotCodeAsArray.indexOf('*** Tasks ***');
-    const lineNumberSettingsSelector = robotCodeAsArray.indexOf('*** Settings ***');
-    const robotCodeSettingsSection = robotCodeAsArray.slice(lineNumberSettingsSelector, lineNumberTasksSelector);
-    const robotCodeTaskSection = robotCodeAsArray.slice(lineNumberTasksSelector);
+    const lineNumberSettingsSelector = getLineNumberForSelector(robotCodeAsArray, '*** Settings ***');
+    const lineNumberTasksSelector = getLineNumberForSelector(robotCodeAsArray, '*** Tasks ***');
+
+    let robotCodeSettingsSection; let robotCodeTaskSection;
+    if (typeof lineNumberSettingsSelector !== 'undefined' && typeof lineNumberTasksSelector !== 'undefined') {
+        robotCodeSettingsSection = robotCodeAsArray.slice(lineNumberSettingsSelector, lineNumberTasksSelector);
+        robotCodeTaskSection = robotCodeAsArray.slice(lineNumberTasksSelector);
+    }
 
     const declaredApplications = getApplicationArray(robotCodeSettingsSection);
     const elementsArray = getElementsArray(robotCodeTaskSection, declaredApplications, robotId);
@@ -327,4 +346,10 @@ const parseRobotCodeToSsot = (robotCode) => {
     return undefined;
 }
 
-module.exports = { parseRobotCodeToSsot };
+module.exports = {
+    parseRobotCodeToSsot,
+    getLineNumberForSelector,
+    getRobotCodeAsArray,
+    getApplicationArray,
+    getElementsArray
+};
