@@ -17,7 +17,7 @@ const PPNameSection = ({ element, nameChanged }) => (
     <Input
       placeholder='name'
       suffix={
-        <Tooltip title='the name of your task, gateway or event'>
+        <Tooltip title='The name of your task, gateway or event'>
           <InfoCircleOutlined
             style={{ color: corporateDesign.colorPrimaryInverted }}
           />
