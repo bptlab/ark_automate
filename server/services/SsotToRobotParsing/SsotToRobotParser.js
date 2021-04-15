@@ -1,11 +1,17 @@
 /**
- * @category Server
+ * @category Client
  * @module
  */
-const robotCodeConstants = require('./robotCodeConstants');
+const mongoose = require('mongoose');
+// eslint-disable-next-line no-unused-vars
+const ssotModels = require('../../models/singleSourceOfTruthModel.js');
 
-const libraryCreation = require('./libraryImportCreation');
-const objectRetrieval = require('./robotCodeParserObjectRetrieval');
+const ACTIVITY_IDENTIFIER = 'INSTRUCTION';
+const LINEBREAK = '\n';
+const COMMENT = '#';
+// eslint-disable-next-line no-unused-vars
+const DOUBLESPACE = '  ';
+const FOURSPACE = '    ';
 
 /**
  * @description Checks whether the given element is of type instruction and contains rpa attributes
@@ -13,7 +19,7 @@ const objectRetrieval = require('./robotCodeParserObjectRetrieval');
  * @returns {Boolean} Value specifies if object is of type instruction and contains rpa attributes
  */
 const isAnRpaInstruction = (currentElement) =>
-  currentElement.type === robotCodeConstants.ACTIVITY_IDENTIFIER;
+  currentElement.type === ACTIVITY_IDENTIFIER;
 
 /**
  * @description Checks whether the given element has a successor element
@@ -36,14 +42,11 @@ const appendRpaInputParameter = (parameterObject) => {
     (a, b) => a.index - b.index
   );
   sortedInputs.forEach((parameter) => {
-    console.log(parameter);
     // regex will return -1 if no $$text$$ was found
     newCodeLine +=
       parameter.value.search(/\$\$(.*?)\$\$/) < 0
-        ? `${robotCodeConstants.FOURSPACE}${parameter.value}`
-        : `${robotCodeConstants.FOURSPACE}$\{${
-            parameter.value.split('$$')[1]
-          }\}`;
+        ? `${FOURSPACE}${parameter.value}`
+        : `${FOURSPACE}$\{${parameter.value.split('$$')[1]}\}`;
   });
 
   return newCodeLine;
@@ -55,10 +58,10 @@ const appendRpaInputParameter = (parameterObject) => {
  * @returns {String} String specifying the output variables name
  */
 const setOutputVar = (paramObject) => {
-  let newCodeLine = robotCodeConstants.FOURSPACE;
+  let newCodeLine = FOURSPACE;
 
   if (paramObject.outputVariable) {
-    newCodeLine += `\${${paramObject.outputVariable}} =${robotCodeConstants.FOURSPACE}`;
+    newCodeLine += `\${${paramObject.outputVariable}} =${FOURSPACE}`;
   }
 
   return newCodeLine;
@@ -78,10 +81,8 @@ const writeCodeForElement = (
   parameters,
   attributes,
   codeToAppend,
-  previousApplication,
-  jobParameters
+  previousApplication
 ) => {
-  console.log(jobParameters);
   const currentElement = elements.find((element) => element.id === id);
   let combinedCode = codeToAppend;
   let newCodeLine = '';
@@ -93,15 +94,11 @@ const writeCodeForElement = (
     if (currentAttributeObject) {
       if (currentAttributeObject.rpaApplication !== previousApplication) {
         newPreviousApplication = currentAttributeObject.rpaApplication;
-        newCodeLine +=
-          currentAttributeObject.rpaApplication + robotCodeConstants.LINEBREAK;
+        newCodeLine += currentAttributeObject.rpaApplication + LINEBREAK;
       } else {
         newPreviousApplication = previousApplication;
       }
-      newCodeLine +=
-        robotCodeConstants.COMMENT +
-        currentElement.name +
-        robotCodeConstants.LINEBREAK;
+      newCodeLine += COMMENT + currentElement.name + LINEBREAK;
       const currentParameterObject = parameters.find(
         (parameter) => parameter.activityId === id
       );
@@ -113,7 +110,7 @@ const writeCodeForElement = (
         newCodeLine += appendRpaInputParameter(currentParameterObject);
       }
 
-      newCodeLine += robotCodeConstants.LINEBREAK;
+      newCodeLine += LINEBREAK;
       combinedCode += newCodeLine;
     }
   }
@@ -140,29 +137,119 @@ const writeCodeForElement = (
  * @param {Object} metaData MetaData of the robot
  * @returns {string} Generated .robot code for the tasks section
  */
-const generateCodeForRpaTasks = (
-  elements,
-  parameters,
-  attributes,
-  requiresJobParameter
-) => {
+const generateCodeForRpaTasks = (elements, parameters, attributes) => {
   const startElement = elements.find(
     (element) => element.predecessorIds.length === 0
   );
 
-  if (!requiresJobParameter) {
-    return writeCodeForElement(
-      startElement.id,
-      elements,
-      parameters,
-      attributes,
-      '',
-      'None'
-    );
-  }
-  // TODO retrieve job object; call parser with that object
+  const codeForRpaTasks = writeCodeForElement(
+    startElement.id,
+    elements,
+    parameters,
+    attributes,
+    '',
+    'None'
+  );
 
-  return 'ELSE CASE';
+  return codeForRpaTasks;
+};
+
+/**
+ * @description Collects the applications used by the bot
+ * @param {Array} elements All the elements from the SSoT
+ * @returns {Array} All unique Applications that occur in the ssot
+ */
+const collectApplications = (elements) => {
+  const applications = [];
+  if (elements !== undefined && elements.length > 0) {
+    elements.forEach((element) => {
+      if (
+        element.rpaApplication !== undefined &&
+        !applications.includes(element.rpaApplication)
+      ) {
+        applications.push(element.rpaApplication);
+      }
+    });
+  }
+  return applications;
+};
+
+/**
+ * @description Generates the Library Import Code of the .robot file
+ * @param {Array} elements All the elements from the SSoT
+ * @returns {string} Library Import Code that has to be put in .robot file
+ */
+const generateCodeForLibraryImports = (elements) => {
+  let libraryImports = '';
+  const applications = collectApplications(elements);
+  if (applications.length > 0) {
+    Object.values(applications).forEach((application) => {
+      libraryImports += `Library${FOURSPACE}RPA.${application}${LINEBREAK}`;
+    });
+  }
+
+  return libraryImports;
+};
+
+/**
+ * @description For all activities in the ssot this method will retrieve the associated parameter objects
+ * @param {Object} ssot The ssot for which the parameters should be retrieved
+ * @returns {Array} Array of parameter objects
+ */
+const retrieveParameters = async (ssot) => {
+  const { id } = ssot;
+  const { elements } = ssot;
+  const listOfActivityIds = [];
+
+  elements.forEach((element) => {
+    if (element.type === ACTIVITY_IDENTIFIER) {
+      listOfActivityIds.push(element.id);
+    }
+  });
+
+  const parameterObjects = await mongoose
+    .model('parameter')
+    .find(
+      {
+        ssotId: id,
+        activityId: { $in: listOfActivityIds },
+      },
+      {
+        activityId: 1,
+        rpaParameters: 1,
+        outputVariable: 1,
+      }
+    )
+    .exec();
+
+  return parameterObjects;
+};
+
+/**
+ * @description For all activities in the ssot this method will retrieve the associated parameter objects
+ * @param {Object} ssot The ssot for which the parameters should be retrieved
+ * @returns {Array} Array of attribute objects
+ */
+const retrieveAttributes = async (ssot) => {
+  const { id } = ssot;
+  const { elements } = ssot;
+  const listOfActivityIds = [];
+
+  elements.forEach((element) => {
+    if (element.type === ACTIVITY_IDENTIFIER) {
+      listOfActivityIds.push(element.id);
+    }
+  });
+
+  const attributeObjects = await mongoose
+    .model('rpaAttributes')
+    .find({
+      ssotId: id,
+      activityId: { $in: listOfActivityIds },
+    })
+    .exec();
+
+  return attributeObjects;
 };
 
 /**
@@ -172,17 +259,14 @@ const generateCodeForRpaTasks = (
  */
 const parseSsotToRobotCode = async (ssot) => {
   const { elements } = ssot;
-  const attributeObjects = await objectRetrieval.retrieveAttributes(ssot);
-  let parsedCode = await libraryCreation.createLibraryImports(attributeObjects);
+  let parsedCode = '';
+  parsedCode += `*** Settings ***${LINEBREAK}`;
+  const attributeObjects = await retrieveAttributes(ssot);
+  parsedCode += generateCodeForLibraryImports(attributeObjects);
   // ideally we use the keyword statement for each task, currently not working out of the box
-  parsedCode += `${robotCodeConstants.LINEBREAK}*** Tasks ***${robotCodeConstants.LINEBREAK}`;
-  const parameters = await objectRetrieval.retrieveParameters(ssot);
-  parsedCode += generateCodeForRpaTasks(
-    elements,
-    parameters,
-    attributeObjects,
-    false
-  );
+  parsedCode += `${LINEBREAK}*** Tasks ***${LINEBREAK}`;
+  const parameters = await retrieveParameters(ssot);
+  parsedCode += generateCodeForRpaTasks(elements, parameters, attributeObjects);
 
   return parsedCode;
 };
@@ -193,16 +277,9 @@ const parseSsotToRobotCode = async (ssot) => {
  * @returns {string} Code that has to be put in .robot file
  */
 const parseSsotById = async (ssotId) => {
-  const ssot = await objectRetrieval.retrieveSsot(ssotId);
+  const ssot = await mongoose.model('SSoT').findById(ssotId).exec();
 
   return parseSsotToRobotCode(ssot);
-};
-
-/**
- * TODO
- */
-const parseCodeForJob = async (ssotId, jobId) => {
-  //add functionality here
 };
 
 module.exports = {
