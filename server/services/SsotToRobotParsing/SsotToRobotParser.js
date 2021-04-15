@@ -155,7 +155,7 @@ const generateCodeForRpaTasks = (elements, parameters, attributes) => {
 };
 
 /**
- * @description Collects the applications used by the bot
+ * @description Collects the applications used by the robot
  * @param {Array} elements All the elements from the SSoT
  * @returns {Array} All unique Applications that occur in the ssot
  */
@@ -211,7 +211,7 @@ const retrieveParameters = async (ssot) => {
     .model('parameter')
     .find(
       {
-        ssotId: id,
+        robotId: id,
         activityId: { $in: listOfActivityIds },
       },
       {
@@ -244,7 +244,7 @@ const retrieveAttributes = async (ssot) => {
   const attributeObjects = await mongoose
     .model('rpaAttributes')
     .find({
-      ssotId: id,
+      robotId: id,
       activityId: { $in: listOfActivityIds },
     })
     .exec();
@@ -273,11 +273,11 @@ const parseSsotToRobotCode = async (ssot) => {
 
 /**
  * @description Parses the SSoT provided by its id to an executable .robot file
- * @param {String} ssotId The id of the ssot which should be parsed
+ * @param {String} robotId The id of the ssot which should be parsed
  * @returns {string} Code that has to be put in .robot file
  */
-const parseSsotById = async (ssotId) => {
-  const ssot = await mongoose.model('SSoT').findById(ssotId).exec();
+const parseSsotById = async (robotId) => {
+  const ssot = await mongoose.model('SSoT').findById(robotId).exec();
 
   return parseSsotToRobotCode(ssot);
 };

@@ -4,10 +4,10 @@ const ssotModels = require('../models/singleSourceOfTruthModel.js');
 const userAccessModels = require('../models/userAccessObjectModel.js');
 const rpaModels = require('../models/rpaTaskModel');
 
-const retrieveParameterObject = async (botId, activityParameterId) => (
+const retrieveParameterObject = async (robotId, activityParameterId) => (
     mongoose.model('parameter').findOne(
         {
-            ssotId: botId,
+            robotId,
             activityId: activityParameterId,
         }
     ).exec()
@@ -27,11 +27,11 @@ const findParametersForTask = async (applicationName, taskName) => (
     ).exec()
 )
 
-const initiateParametersForActivity = async (botId, activityId, updatedParameters, hasOutput) => {
-    if (hasOutput) {
+const initiateParametersForActivity = async (robotId, activityId, updatedParameters, hasOutput) => {
+    if (hasOutput) { 
         return mongoose.model('parameter').findOneAndUpdate(
             {
-                ssotId: botId,
+                robotId,
                 activityId,
             },
             { 
@@ -48,7 +48,7 @@ const initiateParametersForActivity = async (botId, activityId, updatedParameter
     
     return mongoose.model('parameter').findOneAndUpdate(
         {
-            ssotId: botId,
+            robotId,
             activityId,
         },
         { 
@@ -63,21 +63,21 @@ const initiateParametersForActivity = async (botId, activityId, updatedParameter
     ).exec()    
 }
 
-const checkForOutputValue = async (botId, activityId) => {
+const checkForOutputValue = async (robotId, activityId) => {
     const parameterObject = await  mongoose.model('parameter').findOne(
         {
-            ssotId: botId,
+            robotId,
             activityId,
         }
     ).exec();
     return !!parameterObject.outputVariable
 }
 
-const updateParametersForActivity = async (botId, activityId, updatedParameters, updatedOutput, hasOutput) => {
-    if (hasOutput) {
+const updateParametersForActivity = async (robotId, activityId, updatedParameters, updatedOutput, hasOutput) => {
+    if (hasOutput) { 
         return mongoose.model('parameter').findOneAndUpdate(
             {
-                ssotId: botId,
+                robotId,
                 activityId,
             },
             { 
@@ -94,7 +94,7 @@ const updateParametersForActivity = async (botId, activityId, updatedParameters,
     
     return mongoose.model('parameter').findOneAndUpdate(
         {
-            ssotId: botId,
+            robotId,
             activityId,
         },
         { 
@@ -109,11 +109,11 @@ const updateParametersForActivity = async (botId, activityId, updatedParameters,
     ).exec()    
 }
 
-// GET /ssot/getVariablesForNewTask/?botId=6045eccf&activityId=ActivityId123&application=MS+Excel&task=Open+Application
+// GET /ssot/getVariablesForNewTask/?robotId=6045eccf&activityId=ActivityId123&application=MS+Excel&task=Open+Application
 exports.getVariablesForNewTask = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { botId } = req.query;
+    const { robotId } = req.query;
         const { activityId } = req.query;
         const { application } = req.query;
         const applicationWithEmptyspace = application.replace(/\+/g, ' ');
@@ -130,7 +130,7 @@ exports.getVariablesForNewTask = async (req, res) => {
         });
 
         const updatedParameterObject = await initiateParametersForActivity(
-            botId,
+      robotId,
             activityId,
             inputVars,
             rpaTaskVariables.outputValue
@@ -142,17 +142,16 @@ exports.getVariablesForNewTask = async (req, res) => {
     }
 };
 
-// GET /ssot/getVariables/?botId=6045eccf&activityId=ActivityId123
+// GET /ssot/getVariables/?robotId=6045eccf&activityId=ActivityId123
 exports.getVariables = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { botId } = req.query;
+    const { robotId } = req.query;
         const { activityId } = req.query;
 
         const variables = await mongoose.model('parameter').findOne(
             {
-                ssotId: botId,
-                activityId
+                robotId: robotId,
             }
         ).exec()
         
@@ -184,14 +183,14 @@ exports.getVariablesForTaskApp = async (req, res) => {
     }
 };
 
-// GET /ssot/checkForExistingVariables/?botId=6045eccfa9a07940e5763f0b&activityId=Activity_1groimk
+// GET /ssot/checkForExistingVariables/?robotId=6045eccfa9a07940e5763f0b&activityId=Activity_1groimk
 exports.checkForExistingVariables = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { botId } = req.query;
+    const { robotId } = req.query;
         const { activityId } = req.query;
 
-        const element = await retrieveParameterObject(botId, activityId);
+    const element = await retrieveParameterObject(robotId, activityId);
 
         res.send(element);
     } catch (err) {
@@ -199,20 +198,20 @@ exports.checkForExistingVariables = async (req, res) => {
     }
 };
 
-// POST /ssot/updateInputAndOutput/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
+// POST /ssot/updateInputAndOutput/?robotId=604f537ed699a2eb47433184&activityId=Activity_1groimk
 // do not forget the payload in the body for this request
 exports.updateVariables = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { botId } = req.query;
+    const { robotId } = req.query;
         const {activityId} = req.query;
         const updatedInfo = req.body;
         const {parameters} = updatedInfo;
         const {output} = updatedInfo;
         
-        const hasOutput = await checkForOutputValue(botId, activityId);
+    const hasOutput = await checkForOutputValue(robotId, activityId);
         const updatedParameterObject = await updateParametersForActivity(
-            botId,
+      robotId,
             activityId,
             parameters,
             output,
@@ -226,18 +225,18 @@ exports.updateVariables = async (req, res) => {
     }
 };
 
-// POST /ssot/updateInputParameter/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
+// POST /ssot/updateInputParameter/?robotId=604f537ed699a2eb47433184&activityId=Activity_1groimk
 // do not forget the payload in the body for this request
 exports.updateOnlyInputParams = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { botId } = req.query;
+    const { robotId } = req.query;
         const {activityId} = req.query;
         const parameters = req.body;
         
         const updatedParameterObject = await mongoose.model('parameter').findOneAndUpdate(
             {
-                ssotId: botId,
+                robotId,
                 activityId
             },
             { 
@@ -257,18 +256,18 @@ exports.updateOnlyInputParams = async (req, res) => {
     }
 };
 
-// POST /ssot/updateOutputVariableName/?botId=604f537ed699a2eb47433184&activityId=Activity_1groimk
+// POST /ssot/updateOutputVariableName/?robotId=604f537ed699a2eb47433184&activityId=Activity_1groimk
 // do not forget the payload in the body for this request
 exports.updateOnlyOutputVarName = async (req, res) => {
     try {
         res.set('Content-Type', 'application/json');
-        const { botId } = req.query;
+    const { robotId } = req.query;
         const {activityId} = req.query;
         const outputVarName = req.body;
         
         const updatedParameterObject = await mongoose.model('parameter').findOneAndUpdate(
             {
-                ssotId: botId,
+                robotId,
                 activityId
             },
             { 
@@ -300,7 +299,7 @@ exports.updateMany = async (req, res) => {
             const updateElement = {
                 updateOne: {
                     filter: {
-                        ssotId: element.ssotId,
+                        robotId: element.robotId,
                         activityId: element.activityId
                     },
                     update: element,
@@ -326,7 +325,7 @@ exports.retrieveParametersForRobot = async (req, res) => {
         .model('parameter')
         .find(
             {
-                ssotId: robotId
+                robotId
             }
         )
         .exec();

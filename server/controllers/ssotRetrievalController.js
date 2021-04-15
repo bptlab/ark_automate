@@ -35,15 +35,15 @@ exports.getRobotList = async (req, res) => {
       )
       .exec();
 
-    const ssotIds = [];
+    const robotIds = [];
     userAccessObjs.forEach((singleUserObj) => {
-      ssotIds.push(singleUserObj.robotId);
+      robotIds.push(singleUserObj.robotId);
     });
 
     const availableSsots = await mongoose
       .model('SSoT')
       .find(
-        { _id: { $in: ssotIds } },
+        { _id: { $in: robotIds } },
         {
           starterId: 1,
           robotName: 1,
