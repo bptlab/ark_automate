@@ -1,6 +1,6 @@
 const paramObject1 = {
   activityId: 'Activity_0ay88v7',
-  ssotId: '60618ee17e82bbf2ca91cbb6',
+  robotId: '60618ee17e82bbf2ca91cbb6',
   rpaParameters: [
     {
       name: 'uri',
@@ -32,7 +32,7 @@ const paramObject1 = {
 
 const paramObject2 = {
   activityId: 'Activity_0mgbrvu',
-  ssotId: '60619b7b5d691786a44a6093',
+  robotId: '60619b7b5d691786a44a6093',
   rpaParameters: [
     {
       name: 'path',
@@ -48,7 +48,7 @@ const paramObject2 = {
 
 const paramObjectWithoutRequiredValue = {
   activityId: 'Activity_0mgbrvu',
-  ssotId: '60619b7b5d691786a44a6093',
+  robotId: '60619b7b5d691786a44a6093',
   rpaParameters: [
     {
       name: 'path',
@@ -64,7 +64,7 @@ const paramObjectWithoutRequiredValue = {
 
 const paramObjectWithLaterSpecifiedUserInput = {
   activityId: 'Activity_0mgbrvu',
-  ssotId: '60619b7b5d691786a44a6093',
+  robotId: '60619b7b5d691786a44a6093',
   rpaParameters: [
     {
       name: 'path',
@@ -81,28 +81,28 @@ const paramObjectWithLaterSpecifiedUserInput = {
 
 const attributeObject1 = {
   activityId: 'Activity_1kwfds7',
-  ssotId: '60618ee17e82bbf2ca91cbb6',
+  robotId: '60618ee17e82bbf2ca91cbb6',
   rpaApplication: 'Excel.Application',
   rpaTask: 'Quit Excel',
 };
 
 const attributeObject2 = {
   activityId: 'Activity_0ay88v7',
-  ssotId: '60618ee17e82bbf2ca91cbb6',
+  robotId: '60618ee17e82bbf2ca91cbb6',
   rpaApplication: 'HTTP',
   rpaTask: 'Get Request',
 };
 
 const attributeObjectWithEmptyTask = {
   activityId: 'Activity_0ay88v7',
-  ssotId: '60618ee17e82bbf2ca91cbb6',
+  robotId: '60618ee17e82bbf2ca91cbb6',
   rpaApplication: 'HTTP',
   rpaTask: '',
 };
 
 const attributeObjectWithEmptyApplication = {
   activityId: 'Activity_0ay88v7',
-  ssotId: '60618ee17e82bbf2ca91cbb6',
+  robotId: '60618ee17e82bbf2ca91cbb6',
   rpaApplication: '',
   rpaTask: 'Get Request',
 };

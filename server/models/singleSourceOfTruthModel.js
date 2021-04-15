@@ -13,7 +13,7 @@ const singleParameterSchema = new Schema({
 });
 
 const parameterObjectSchema = new Schema({
-  ssotId: mongoose.Types.ObjectId,
+  robotId: mongoose.Types.ObjectId,
   activityId: String,
   outputVariable: String,
   rpaParameters: [ singleParameterSchema ],
@@ -28,7 +28,7 @@ const instructionSchema = new Schema({
 });
 
 const rpaAttributesObjectSchema = new Schema({
-  ssotId: mongoose.Types.ObjectId,
+  robotId: mongoose.Types.ObjectId,
   activityId: String,
   rpaApplication: String,
   rpaTask: String,

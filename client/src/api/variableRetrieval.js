@@ -13,7 +13,7 @@
 const variablesForNewTask = async (robotId, activityId, application, task) => {
   const applicationWithoutEmptySpaces = application.replace(/\s/g, '+');
   const taskWithoutEmptySpaces = task.replace(/\s/g, '+');
-  const requestString = `/ssot/getVariablesForNewTask/?botId=${robotId}&activityId=${activityId}&application=${applicationWithoutEmptySpaces}&task=${taskWithoutEmptySpaces}`;
+  const requestString = `/ssot/getVariablesForNewTask/?robotId=${robotId}&activityId=${activityId}&application=${applicationWithoutEmptySpaces}&task=${taskWithoutEmptySpaces}`;
 
   const response = await fetch(requestString);
   return response;
@@ -25,7 +25,7 @@ const variablesForNewTask = async (robotId, activityId, application, task) => {
  * @param {String} activityId - String including the Id of the activity
  */
 const checkRobotForExistingVariables = async (robotId, activityId) => {
-  const requestString = `/ssot/checkForExistingVariables/?botId=${robotId}&activityId=${activityId}`;
+  const requestString = `/ssot/checkForExistingVariables/?robotId=${robotId}&activityId=${activityId}`;
   const response = await fetch(requestString);
   return response;
 };
@@ -42,7 +42,7 @@ const updateVariablesForRobot = async (
   newVariableList,
   outputVariableName
 ) => {
-  const requestString = `/ssot/updateVariables/?botId=${robotId}&activityId=${activityId}`;
+  const requestString = `/ssot/updateVariables/?robotId=${robotId}&activityId=${activityId}`;
   const updateObject = {
     parameters: newVariableList,
     output: outputVariableName,

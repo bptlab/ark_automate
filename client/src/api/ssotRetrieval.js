@@ -25,12 +25,12 @@ const fetchSsotsForUser = async (userId) => {
 
 /**
  * @description This function renames the robot in Ssot
- * @param { String } ssotId - String including the ssotId
+ * @param { String } robotId - String including the robotId
  * @param { String } newName - String with the new RobotName
  */
-const changeSsotName = async (ssotId, newName) => {
+const changeSsotName = async (robotId, newName) => {
   const adjustedName = newName.replace(/\s/g, '+');
-  const requestString = `/ssot/renameRobot?id=${ssotId}&newName=${adjustedName}`;
+  const requestString = `/ssot/renameRobot?id=${robotId}&newName=${adjustedName}`;
   const response = await fetch(requestString);
   return response;
 };

@@ -118,7 +118,7 @@ User information about a robot (creator, released for etc.) is stored in an addi
 
 ```json
 {
-  "ssotId": "604f537ed699a2eb47274184",
+  "robotId": "604f537ed699a2eb47274184",
   "activityId": "Activity_47II",
   "outputVariable": "exampleId",
   "rpaParameters": [
@@ -148,7 +148,7 @@ User information about a robot (creator, released for etc.) is stored in an addi
 
 ```json
 {
-  "ssotId": "604f537ed699a2eb47274184",
+  "robotId": "604f537ed699a2eb47274184",
   "activityId": "Activity_47II",
   "rpaApplication": "Excel.Files",
   "rpaTask": "Open Workbook"
