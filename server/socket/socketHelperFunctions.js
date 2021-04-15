@@ -14,7 +14,9 @@ mongoose.set('useFindAndModify', false);
  */
 exports.getRobotCode = async (robotId) => {
   try {
-    return ssotToRobotParser.ssotToRobotParser(robotId);
+    const ssot = await mongoose.model('SSoT').findById(robotId).exec();
+    const robotCode = ssotToRobotParser.parseSsotToRobotCode(ssot);
+    return robotCode;
   } catch (err) {
     return console.error(err);
   }
@@ -40,7 +42,7 @@ exports.getRobotJobParameters = async (jobId) => {
 exports.getParameterObjects = async (robotId) => {
   const parameterObjects = await mongoose
     .model('parameter')
-    .find({ ssotId: robotId })
+    .find({ robotId })
     .exec();
   return parameterObjects;
 };

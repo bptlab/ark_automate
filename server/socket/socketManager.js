@@ -55,6 +55,7 @@ exports.socketManager = (io, socket) => {
           socketHelperFunctions
             .getParameterObjects(robotId)
             .then((parameterObjects) => {
+              console.log('parameterObjects ', parameterObjects);
               // Evtl als eigene Funktion auslagern
               Array.prototype.map.call(parameterObjects, (parameterObject) => {
                 if (parameterObject.rpaParameters.length !== 0) {
@@ -72,11 +73,13 @@ exports.socketManager = (io, socket) => {
                     }
                   );
                 }
+                console.log('parameterObject ', parameterObject);
                 socketHelperFunctions.updateParameterWithUserInput(
                   parameterObject
                 );
               });
               socketHelperFunctions.getRobotCode(robotId).then((robotCode) => {
+                console.log('robotCode ', robotCode);
                 io.to(userId).emit('robotExecution', { robotCode, jobId });
               });
             });
