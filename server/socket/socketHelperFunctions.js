@@ -119,10 +119,10 @@ exports.getAllWaitingJobsForUser = async (userId) => {
 };
 
 /**
- * @description Finds a specific parameter and updates the value
- * @param {String} robotId the id of the robot with the parameters
+ * @description Replaces a parameterObject with a new one
+ * @param {String} parameterObject The new parameter object
  */
-exports.updateParameterWithUserInput = async (parameterObject) => {
+exports.replaceParameterObject = async (parameterObject) => {
   mongoose
     .model('parameter')
     .findByIdAndUpdate(parameterObject._id, parameterObject)

@@ -1,6 +1,35 @@
 const socketHelperFunctions = require('./socketHelperFunctions');
 
+/**
+ * @description Update Parameter Objects with new parameters
+ * @param {String} parameterObjects The selection of parameter objects this function will have a look at
+ * @param {String} newParameters New parameters in the form {id, value} that the function will use to update the parameter objects
+ */
+const updateParameterObjects = (parameterObjects, newParameters) => {
+  Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
+    if (parameterObject.rpaParameters.length !== 0) {
+      Array.prototype.map.call(
+        parameterObject.rpaParameters,
+        (currentParameter) => {
+          Array.prototype.forEach.call(newParameters, (newParameter) => {
+            if (
+              // eslint-disable-next-line no-underscore-dangle
+              String(newParameter.parameterId) === String(currentParameter._id)
+            ) {
+              // eslint-disable-next-line no-param-reassign
+              currentParameter.value = newParameter.value;
+            }
+          });
+          return currentParameter;
+        }
+      );
+    }
+    socketHelperFunctions.replaceParameterObject(parameterObject);
+  });
+};
+
 exports.socketManager = (io, socket) => {
+  // eslint-disable-next-line no-console
   console.log('Client connected via socket: ', socket.id);
 
   /*  When a client wants to join a room we check if the roomId (userId) matches any of the userIds in the database.
@@ -22,6 +51,7 @@ exports.socketManager = (io, socket) => {
           .then((jobList) => {
             if (jobList.length > 0) {
               jobList.forEach((job) => {
+                // eslint-disable-next-line camelcase
                 const { id, robot_id } = job;
                 socketHelperFunctions
                   .getRobotCode(robot_id)
@@ -55,31 +85,8 @@ exports.socketManager = (io, socket) => {
           socketHelperFunctions
             .getParameterObjects(robotId)
             .then((parameterObjects) => {
-              console.log('parameterObjects ', parameterObjects);
-              // Evtl als eigene Funktion auslagern
-              Array.prototype.map.call(parameterObjects, (parameterObject) => {
-                if (parameterObject.rpaParameters.length !== 0) {
-                  Array.prototype.map.call(
-                    parameterObject.rpaParameters,
-                    (rpaParameter) => {
-                      Array.prototype.map.call(parameters, (parameter) => {
-                        if (
-                          String(parameter.parameterId) ===
-                          String(rpaParameter._id)
-                        ) {
-                          rpaParameter.value = parameter.value;
-                        }
-                      });
-                    }
-                  );
-                }
-                console.log('parameterObject ', parameterObject);
-                socketHelperFunctions.updateParameterWithUserInput(
-                  parameterObject
-                );
-              });
+              updateParameterObjects(parameterObjects, parameters);
               socketHelperFunctions.getRobotCode(robotId).then((robotCode) => {
-                console.log('robotCode ', robotCode);
                 io.to(userId).emit('robotExecution', { robotCode, jobId });
               });
             });
@@ -88,13 +95,11 @@ exports.socketManager = (io, socket) => {
       socketHelperFunctions
         .createJob(userId, robotId, 'waiting', parameters)
         .then((jobId) => {
-          Array.prototype.forEach.call(parameters, (parameter) => {
-            console.log('parameters ', parameters);
-            socketHelperFunctions.updateParameterValue(
-              parameter.id,
-              parameter.value
-            );
-          });
+          socketHelperFunctions
+            .getParameterObjects(robotId)
+            .then((parameterObjects) => {
+              updateParameterObjects(parameterObjects, parameters);
+            });
         });
     }
   });
