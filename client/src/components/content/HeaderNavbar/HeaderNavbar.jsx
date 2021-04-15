@@ -48,12 +48,12 @@ const HeaderNavbar = (props) => {
             alt='ark_automate Icon'
           />
         </Link>
+        <Menu.Item key={robotOverviewPageKey}>
+          Overview
+          <Link to='/robot_overview' />
+        </Menu.Item>
         {!onRobotInteraction && (
           <>
-            <Menu.Item key={robotOverviewPageKey}>
-              Overview
-              <Link to='/robot_overview' />
-            </Menu.Item>
             {!onOverview && (
               <Menu.Item key={bpmnModelerPageKey}>
                 Modeler
