@@ -101,3 +101,48 @@ describe('getting all jobs for user', () => {
     expect(jobList.length).toEqual(1);
   });
 });
+
+describe('Retrieving all parameter objects for a specific robot', () => {
+  it('sucessfully retrieves all parameter objects for a specific robot', async () => {
+    await dbLoader.loadParametersInDb();
+
+    const parameterObjects = await socketHelperFunctions.getParameterObjects(
+      testRobotId
+    );
+
+    expect(parameterObjects).not.toBeNull();
+    expect(parameterObjects).not.toBeUndefined();
+    expect(parameterObjects).not.toContain('undefined');
+    expect(parameterObjects.length).toEqual(3);
+    expect(JSON.stringify(parameterObjects)).toEqual(
+      JSON.stringify([
+        testData.testParameter1,
+        testData.testParameter2,
+        testData.testParameter3,
+      ])
+    );
+  });
+});
+
+describe('updating of a parameter object', () => {
+  it('sucessfully replaces a parameter object with a new one', async () => {
+    await dbLoader.loadParametersInDb();
+    const parameterObject = testData.testParameter3;
+    expect(parameterObject.rpaParameters[0].value).not.toBeNull();
+    expect(parameterObject.rpaParameters[0].value).not.toBeUndefined();
+    expect(parameterObject.rpaParameters[0].value).toEqual(
+      'http://localhost:3000'
+    );
+
+    parameterObject.rpaParameters[0].value = 'newValue';
+    await socketHelperFunctions.replaceParameterObject(parameterObject);
+
+    // verify if really in DB
+    const newParameterObject = await mongoose
+      .model('parameter')
+      .findById(parameterObject._id);
+    expect(newParameterObject.rpaParameters[0].value).not.toBeNull();
+    expect(newParameterObject.rpaParameters[0].value).not.toBeUndefined();
+    expect(newParameterObject.rpaParameters[0].value).toEqual('newValue');
+  });
+});
