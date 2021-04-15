@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 require('express');
 const mongoose = require('mongoose');
-const parseCodeForJob = require('../services/SsotToRobotParsing/SsotToRobotParser.js');
+const ssotToRobotParser = require('../services/SsotToRobotParsing/SsotToRobotParser.js');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 const userAccessObject = require('../models/userAccessObjectModel.js');
 const jobsModel = require('../models/robotJobModel.js');
@@ -12,9 +12,9 @@ mongoose.set('useFindAndModify', false);
  * @description Fetches the ssot of a given robot from the database and parses the ssot to robot code
  * @param {String} robotId the id of the robot we want the robot code for
  */
-exports.getRobotCode = async (robotId, jobId) => {
+exports.getRobotCode = async (robotId) => {
   try {
-    return ssotToRobotParser.parseCodeForJob(robotId, jobId);
+    return ssotToRobotParser.ssotToRobotParser(robotId);
   } catch (err) {
     return console.error(err);
   }
