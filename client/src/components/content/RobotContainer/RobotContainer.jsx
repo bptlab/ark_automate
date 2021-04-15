@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
-import { initSsotSessionStorage } from '../../../utils/attributeAndParamUtils';
-import { isRobotExecutable } from '../../../utils/robotExecution';
 
 const { Title } = Typography;
 
@@ -19,22 +17,6 @@ const { Title } = Typography;
 const RobotContainer = (props) => {
   const { robotId, robotName, userId } = props;
   const [name, setRobotName] = useState(robotName);
-
-  /**
-   * @description Sends a job to the server to execute a specfic robot for a specific user
-   */
-  const initLocalSsot = () => {
-    initSsotSessionStorage(robotId);
-  };
-
-  const startRobot = async () => {
-    const robotIsExecutable = await isRobotExecutable(robotId);
-    if (robotIsExecutable) {
-      socket.emit('robotExecutionJobs', { robotId, userId });
-    } else {
-      alert('Your Bot is not fully configured and can not be executed!');
-    }
-  };
 
   /**
    * @description Updates the name of the robot in the backend and in the robot container
@@ -61,10 +43,7 @@ const RobotContainer = (props) => {
                 state: { userId },
               }}
             >
-              <PlayCircleOutlined
-                onClick={initLocalSsot}
-                className={styles.clickableIcon}
-              />
+              <PlayCircleOutlined className={styles.clickableIcon} />
             </Link>
           </Col>
           <Col type='flex' span={12}>

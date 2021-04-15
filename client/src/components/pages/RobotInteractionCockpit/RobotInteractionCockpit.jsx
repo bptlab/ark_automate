@@ -30,37 +30,39 @@ const RobotInteractionCockpit = (match) => {
     getAllParametersForRobot(robotId)
       .then((response) => response.json())
       .then((parameterObjects) => {
-        const activityInformationList = [];
-        Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
-          const { activityId } = parameterObject;
-          let activityName = '';
-          let ssot = sessionStorage.getItem('ssotLocal');
-          ssot = JSON.parse(ssot);
-          Array.prototype.forEach.call(ssot.elements, (elem) => {
-            if (elem.id === activityId) {
-              activityName = elem.name;
+        if (parameterObjects.length !== 0) {
+          const activityInformationList = [];
+          Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
+            const { activityId } = parameterObject;
+            let activityName = '';
+            let ssot = sessionStorage.getItem('ssotLocal');
+            ssot = JSON.parse(ssot);
+            Array.prototype.forEach.call(ssot.elements, (elem) => {
+              if (elem.id === activityId) {
+                activityName = elem.name;
+              }
+            });
+            const activityParameter = [];
+            Array.prototype.forEach.call(
+              parameterObject.rpaParameters,
+              (parameter) => {
+                if (parameter.requireUserInput) {
+                  activityParameter.push(parameter);
+                }
+              }
+            );
+            if (activityParameter.length !== 0) {
+              const activityInformation = {
+                activityId,
+                activityParameter,
+                activityName,
+              };
+              activityInformationList.push(activityInformation);
             }
           });
-          const activityParameter = [];
-          Array.prototype.forEach.call(
-            parameterObject.rpaParameters,
-            (parameter) => {
-              if (parameter.requireUserInput) {
-                activityParameter.push(parameter);
-              }
-            }
-          );
-          if (activityParameter.length !== 0) {
-            const activityInformation = {
-              activityId,
-              activityParameter,
-              activityName,
-            };
-            activityInformationList.push(activityInformation);
+          if (isMounted.current) {
+            setParameterList(activityInformationList);
           }
-        });
-        if (isMounted.current) {
-          setParameterList(activityInformationList);
         }
       });
   }, [robotId]);
@@ -70,7 +72,7 @@ const RobotInteractionCockpit = (match) => {
    */
   useEffect(
     () => () => {
-      isMounted.current = true;
+      isMounted.current = false;
     },
     []
   );

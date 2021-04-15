@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
@@ -16,10 +16,16 @@ const HeaderNavbar = (props) => {
   const robotOverviewPageKey = 1;
   const bpmnModelerPageKey = 2;
   const robotFilePageKey = 3;
+  const robotInteractionPageKey = 4;
 
-  let onOverview = true;
+  let onOverview = false;
   if (selectedKey === robotOverviewPageKey) {
-    onOverview = false;
+    onOverview = true;
+  }
+
+  let onRobotInteraction = false;
+  if (selectedKey === robotInteractionPageKey) {
+    onRobotInteraction = true;
   }
 
   let bpmnModelerLink = '/modeler';
@@ -42,19 +48,29 @@ const HeaderNavbar = (props) => {
             alt='ark_automate Icon'
           />
         </Link>
-        <Menu.Item key={robotOverviewPageKey}>
-          Overview
-        <Link to='/robot_overview' />
-        </Menu.Item>
-        {onOverview && (
-          <Menu.Item key={bpmnModelerPageKey}>
-            Modeler
-            <Link to={bpmnModelerLink} />
-          </Menu.Item>
+        {!onRobotInteraction && (
+          <>
+            <Menu.Item key={robotOverviewPageKey}>
+              Overview
+              <Link to='/robot_overview' />
+            </Menu.Item>
+            {!onOverview && (
+              <Menu.Item key={bpmnModelerPageKey}>
+                Modeler
+                <Link to={bpmnModelerLink} />
+              </Menu.Item>
+            )}
+            {!onOverview && (
+              <Menu.Item key={robotFilePageKey}>
+                Robot File
+                <Link to='/robotfile' />
+              </Menu.Item>
+            )}
+          </>
         )}
-        {onOverview && (
-          <Menu.Item key={robotFilePageKey}>
-            Robot File
+        {onRobotInteraction && (
+          <Menu.Item key={robotInteractionPageKey}>
+            Robot Interaction Cockpit
             <Link to='/robotfile' />
           </Menu.Item>
         )}
@@ -64,7 +80,7 @@ const HeaderNavbar = (props) => {
 };
 
 HeaderNavbar.propTypes = {
-  selectedKey: PropTypes.number.isRequired
+  selectedKey: PropTypes.number.isRequired,
 };
 
 export default HeaderNavbar;
