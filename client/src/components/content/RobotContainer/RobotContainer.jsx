@@ -13,6 +13,7 @@ import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
 import { isRobotExecutable } from '../../../utils/robotExecution';
+import { deleteRobotFromDB } from '../../../utils/attributeAndParamUtils';
 
 const { Title } = Typography;
 
@@ -56,12 +57,14 @@ const RobotContainer = (props) => {
   /**
    * @description Deletes a specfic robot for a specific user
    */
-  const deleteRobot = async () => {
+  const deleteRobot = () => {
     setConfirmLoading(true);
-    setTimeout(() => {
-      setPopConfirmVisible(false);
-      setConfirmLoading(false);
-    }, 2000);
+    deleteRobotFromDB(robotId).then(() => {
+      setTimeout(() => {
+        setPopConfirmVisible(false);
+        setConfirmLoading(false);
+      }, 500);
+    });
   };
 
   /**

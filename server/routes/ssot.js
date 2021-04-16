@@ -26,6 +26,7 @@ router.get(
 router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser); // not used
 router.get('/createNewRobot', retrievalController.createNewRobot);
 router.post('/overwriteRobot/:robotId', retrievalController.overwriteRobot);
+router.delete('/delete/:robotId', retrievalController.deleteRobot);
 
 /// VARIABLE ROUTES ///
 router.get('/getVariablesForNewTask', variableController.getVariablesForNewTask); // not used

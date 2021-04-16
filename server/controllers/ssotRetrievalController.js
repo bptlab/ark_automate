@@ -184,18 +184,47 @@ exports.overwriteRobot = async (req, res) => {
 
     const ssotData = await mongoose
       .model('SSoT')
-      .findByIdAndUpdate(
-        updatedSsot['_id'],
-        updatedSsot,
-        {
-          new: true,
-          useFindAndModify: false,
-          upsert: true
-        }
-      )
+      .findByIdAndUpdate(updatedSsot['_id'], updatedSsot, {
+        new: true,
+        useFindAndModify: false,
+        upsert: true,
+      })
       .exec();
 
     res.send(ssotData);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// DELETE /78d09f66d2ed466cf20b06f7
+exports.deleteRobot = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const { robotId } = req.params;
+    const usableRobotId = mongoose.Types.ObjectId(robotId);
+
+    const response = await mongoose
+      .model('SSoT')
+      .deleteOne({ _id: usableRobotId })
+      .exec();
+
+    await mongoose
+      .model('userAccessObject')
+      .deleteMany({ robotId: usableRobotId })
+      .exec();
+
+    await mongoose
+      .model('rpaAttributes')
+      .deleteMany({ robotId: usableRobotId })
+      .exec();
+
+    await mongoose
+      .model('parameter')
+      .deleteMany({ robotId: usableRobotId })
+      .exec();
+
+    res.send(response);
   } catch (err) {
     console.error(err);
   }

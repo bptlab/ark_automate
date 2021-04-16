@@ -444,6 +444,25 @@ const getParameterForRobotFromDB = async (robotId) => {
   return response;
 };
 
+/**
+ * @description Will send a backend call to delete a robot
+ * @param {String} robotId Id of the robot that is deleted
+ * @returns {Array} Array of parameter objects related to the robot
+ */
+const deleteRobotFromDB = async (robotId)  => {
+  const requestStringParameters = `/ssot/delete/${robotId}`;
+  const deleteMethod = {
+    method: 'DELETE',
+  };
+  await fetch(requestStringParameters, deleteMethod)
+    .then(() => {
+      console.log('removed');
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
 export {
   getRobotId,
   getRpaTask,
@@ -460,4 +479,5 @@ export {
   getRpaApplication,
   upsert,
   getParameterForRobotFromDB,
+  deleteRobotFromDB,
 };
