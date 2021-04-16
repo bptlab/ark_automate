@@ -11,11 +11,11 @@ mongoose.set('useFindAndModify', false);
 /**
  * @description Fetches the ssot of a given robot from the database and parses the ssot to robot code
  * @param {String} robotId the id of the robot we want the robot code for
+ * @param {String} jobId the id of the current job
  */
-exports.getRobotCode = async (robotId) => {
+exports.getRobotCode = async (robotId, jobId) => {
   try {
-    const ssot = await mongoose.model('SSoT').findById(robotId).exec();
-    const robotCode = ssotToRobotParser.parseSsotToRobotCode(ssot);
+    const robotCode = ssotToRobotParser.parseCodeForJob(robotId, jobId);
     return robotCode;
   } catch (err) {
     return console.error(err);
@@ -102,27 +102,4 @@ exports.getAllWaitingJobsForUser = async (userId) => {
     }
   );
   return jobList;
-};
-
-/**
- * @description Retrieves all parameter objects for a specific robot
- * @param {String} robotId the id of the robot with the parameters
- */
-exports.getParameterObjects = async (robotId) => {
-  const parameterObjects = await mongoose
-    .model('parameter')
-    .find({ robotId })
-    .exec();
-  return parameterObjects;
-};
-
-/**
- * @description Replaces a parameterObject with a new version of the same object
- * @param {String} parameterObject The updated parameter object
- */
-exports.replaceParameterObject = async (parameterObject) => {
-  mongoose
-    .model('parameter')
-    .findByIdAndUpdate(parameterObject._id, parameterObject)
-    .exec();
 };

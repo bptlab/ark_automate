@@ -1,33 +1,5 @@
 const socketHelperFunctions = require('./socketHelperFunctions');
 
-/**
- * @description Update Parameter Objects with new parameters
- * @param {String} parameterObjects The selection of parameter objects this function will have a look at
- * @param {String} newParameters New parameters in the form {id, value} that the function will use to update the parameter objects
- */
-const updateParameterObjects = (parameterObjects, newParameters) => {
-  Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
-    if (parameterObject.rpaParameters.length !== 0) {
-      Array.prototype.map.call(
-        parameterObject.rpaParameters,
-        (currentParameter) => {
-          Array.prototype.forEach.call(newParameters, (newParameter) => {
-            if (
-              // eslint-disable-next-line no-underscore-dangle
-              String(newParameter.parameterId) === String(currentParameter._id)
-            ) {
-              // eslint-disable-next-line no-param-reassign
-              currentParameter.value = newParameter.value;
-            }
-          });
-          return currentParameter;
-        }
-      );
-    }
-    socketHelperFunctions.replaceParameterObject(parameterObject);
-  });
-};
-
 exports.socketManager = (io, socket) => {
   // eslint-disable-next-line no-console
   console.log('Client connected via socket: ', socket.id);
@@ -54,7 +26,7 @@ exports.socketManager = (io, socket) => {
                 // eslint-disable-next-line camelcase
                 const { id, robot_id } = job;
                 socketHelperFunctions
-                  .getRobotCode(robot_id)
+                  .getRobotCode(robot_id, id)
                   .then((robotCode) => {
                     socketHelperFunctions.updateRobotJobStatus(id, 'executing');
                     io.to(userId).emit('robotExecution', {
@@ -83,24 +55,13 @@ exports.socketManager = (io, socket) => {
         .createJob(userId, robotId, 'executing', parameters)
         .then((jobId) => {
           socketHelperFunctions
-            .getParameterObjects(robotId)
-            .then((parameterObjects) => {
-              updateParameterObjects(parameterObjects, parameters);
-              socketHelperFunctions.getRobotCode(robotId).then((robotCode) => {
-                io.to(userId).emit('robotExecution', { robotCode, jobId });
-              });
+            .getRobotCode(robotId, jobId)
+            .then((robotCode) => {
+              io.to(userId).emit('robotExecution', { robotCode, jobId });
             });
         });
     } else {
-      socketHelperFunctions
-        .createJob(userId, robotId, 'waiting', parameters)
-        .then((jobId) => {
-          socketHelperFunctions
-            .getParameterObjects(robotId)
-            .then((parameterObjects) => {
-              updateParameterObjects(parameterObjects, parameters);
-            });
-        });
+      socketHelperFunctions.createJob(userId, robotId, 'waiting', parameters);
     }
   });
 

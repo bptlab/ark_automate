@@ -5,6 +5,7 @@
 const mongoose = require('mongoose');
 // eslint-disable-next-line no-unused-vars
 const ssotModels = require('../../models/singleSourceOfTruthModel.js');
+const jobsModel = require('../../models/robotJobModel.js');
 
 const ACTIVITY_IDENTIFIER = 'INSTRUCTION';
 const LINEBREAK = '\n';
@@ -226,6 +227,62 @@ const retrieveParameters = async (ssot) => {
 };
 
 /**
+ * @description Update Parameter Objects with new parameters
+ * @param {String} parameterObjects The selection of parameter objects this function will have a look at
+ * @param {String} newParameters New parameters in the form {id, value} that the function will use to update the parameter objects
+ */
+const updateParameterObjects = (parameterObjects, newParameters) => {
+  Array.prototype.map.call(parameterObjects, (parameterObject) => {
+    if (parameterObject.rpaParameters.length !== 0) {
+      Array.prototype.map.call(
+        parameterObject.rpaParameters,
+        (currentParameter) => {
+          Array.prototype.forEach.call(newParameters, (newParameter) => {
+            if (
+              // eslint-disable-next-line no-underscore-dangle
+              String(newParameter.parameterId) === String(currentParameter._id)
+            ) {
+              // eslint-disable-next-line no-param-reassign
+              currentParameter.value = newParameter.value;
+            }
+          });
+          return currentParameter;
+        }
+      );
+    }
+    return parameterObject;
+  });
+  return parameterObjects;
+};
+
+/**
+ * @description Retrieve all parameters for a specific job
+ * @param {String} jobId The id of the job
+ */
+const getAllParametersForJob = async (jobId) => {
+  const jobParametersObject = await mongoose
+    .model('job')
+    .findById(jobId, { parameters: 1 });
+  const jobParameters = jobParametersObject.parameters;
+  return jobParameters;
+};
+
+/**
+ * @description For all activities in the ssot this method will retrieve the associated parameter objects
+ * @param {Object} ssot The ssot for which the parameters should be retrieved
+ * @returns {Array} Array of parameter objects
+ */
+const retrieveParametersFromSsotAndJob = async (ssot, jobId) => {
+  const parameterObjects = await retrieveParameters(ssot);
+  const newParameters = await getAllParametersForJob(jobId);
+  const parameterObjectsUpdated = await updateParameterObjects(
+    parameterObjects,
+    newParameters
+  );
+  return parameterObjectsUpdated;
+};
+
+/**
  * @description For all activities in the ssot this method will retrieve the associated parameter objects
  * @param {Object} ssot The ssot for which the parameters should be retrieved
  * @returns {Array} Array of attribute objects
@@ -253,22 +310,55 @@ const retrieveAttributes = async (ssot) => {
 };
 
 /**
- * @description Parses the given SSoT to an executable .robot file
+ * @description Generates that basic code that every robot has
  * @param {Object} ssot The SSoT
- * @returns {string} Code that has to be put in .robot file
+ * @returns {string} Basic code for the .robot file
  */
-const parseSsotToRobotCode = async (ssot) => {
-  const { elements } = ssot;
+const generateCodeBase = async (ssot) => {
   let parsedCode = '';
   parsedCode += `*** Settings ***${LINEBREAK}`;
   const attributeObjects = await retrieveAttributes(ssot);
   parsedCode += generateCodeForLibraryImports(attributeObjects);
   // ideally we use the keyword statement for each task, currently not working out of the box
   parsedCode += `${LINEBREAK}*** Tasks ***${LINEBREAK}`;
-  const parameters = await retrieveParameters(ssot);
-  parsedCode += generateCodeForRpaTasks(elements, parameters, attributeObjects);
+  return { parsedCode, attributeObjects };
+};
 
-  return parsedCode;
+/**
+ * @description Parses the given SSoT to an executable .robot file
+ * @param {Object} ssot The SSoT
+ * @returns {string} Code that has to be put in .robot file
+ */
+const parseSsotToRobotCode = async (ssot) => {
+  // eslint-disable-next-line prefer-const
+  const result = generateCodeBase(ssot);
+  const parameters = await retrieveParameters(ssot);
+  result.parsedCode += generateCodeForRpaTasks(
+    ssot.elements,
+    parameters,
+    result.attributeObjects
+  );
+
+  return result.parsedCode;
+};
+
+/**
+ * @description Parses the given SSoT and parameters of the robot job to an executable .robot file
+ * @param {Object} ssot The SSoT
+ * @param {Object} jobId The id of the job
+ * @returns {string} Code that has to be put in .robot file
+ */
+const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
+  // eslint-disable-next-line prefer-const
+  const result = await generateCodeBase(ssot);
+  const parameters = await retrieveParametersFromSsotAndJob(ssot, jobId);
+  result.parsedCode += generateCodeForRpaTasks(
+    ssot.elements,
+    parameters,
+    result.attributeObjects
+  );
+
+  return result.parsedCode;
 };
 
 /**
@@ -278,11 +368,22 @@ const parseSsotToRobotCode = async (ssot) => {
  */
 const parseSsotById = async (robotId) => {
   const ssot = await mongoose.model('SSoT').findById(robotId).exec();
-
   return parseSsotToRobotCode(ssot);
+};
+
+/**
+ * @description Parses the SSoT provided by its id to an executable .robot file
+ * @param {String} robotId The id of the ssot which should be parsed
+ *  @param {String} jobId The id of the current robotJob that is to be executed
+ * @returns {string} Code that has to be put in .robot file
+ */
+const parseCodeForJob = async (robotId, jobId) => {
+  const ssot = await mongoose.model('SSoT').findById(robotId).exec();
+  return parseSsotAndJobToRobotCode(ssot, jobId);
 };
 
 module.exports = {
   parseSsotToRobotCode,
   parseSsotById,
+  parseCodeForJob,
 };
