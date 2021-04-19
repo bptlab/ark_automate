@@ -4,7 +4,7 @@ import { Col, Row, Typography } from 'antd';
 import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import socket from '../../../utils/socket/socketConnections';
+import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
 import { isRobotExecutable } from '../../../utils/robotExecution';
@@ -26,7 +26,7 @@ const RobotContainer = (props) => {
   const startRobot = async () => {
     const robotIsExecutable = await isRobotExecutable(robotId);
     if (robotIsExecutable) {
-      socket.emit('robotExecutionJobs', { robotId, userId });
+      startRobotForUser(userId, robotId);
     } else {
       alert('Your Bot is not fully configured and can not be executed!');
     }
