@@ -19,6 +19,7 @@ const { Title } = Typography;
 const RobotContainer = (props) => {
   const { robotId, robotName, userId } = props;
   const [name, setRobotName] = useState(robotName);
+  const [hoveredUpon, setHoveredUpon] = useState(false);
 
   /**
    * @description Sends a job to the server to execute a specfic robot for a specific user
@@ -47,32 +48,51 @@ const RobotContainer = (props) => {
   };
 
   return (
-    <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
-      <Col className={[styles.box, styles.robotBox]}>
-        <Row align='middle' style={{ height: '55%' }}>
-          <Col type='flex' span={12}>
-            <PlayCircleOutlined
-              onClick={startRobot}
-              className={styles.clickableIcon}
-            />
-          </Col>
-          <Col type='flex' span={12}>
-            <Link to={`/modeler/${robotId}`}>
-              <EditOutlined className={styles.clickableIcon} />
-            </Link>
-          </Col>
-        </Row>
+    <Col
+      xs={24}
+      sm={12}
+      md={8}
+      xl={6}
+      xxl={4}
+      onMouseEnter={() => setHoveredUpon(true)}
+      onMouseLeave={() => setHoveredUpon(false)}
+    >
+      {hoveredUpon && (
+        <Col className={[styles.box, styles.robotBox, styles.selectedRobotBox]}>
+          <Row align='middle' style={{ height: '55%' }}>
+            <Col type='flex' span={12}>
+              <PlayCircleOutlined
+                onClick={startRobot}
+                className={styles.clickableIcon}
+              />
+            </Col>
+            <Col type='flex' span={12}>
+              <Link to={`/modeler/${robotId}`}>
+                <EditOutlined className={styles.clickableIcon} />
+              </Link>
+            </Col>
+          </Row>
 
-        <Row justify='space-around' align='middle' style={{ height: '45%' }}>
-          <Title
-            className={styles.title}
-            level={3}
-            editable={{ onChange: renameRobot }}
-          >
-            {name}
-          </Title>
-        </Row>
-      </Col>
+          <Row justify='space-around' align='middle' style={{ height: '45%' }}>
+            <Title
+              className={styles.title}
+              level={3}
+              editable={{ onChange: renameRobot }}
+            >
+              {name}
+            </Title>
+          </Row>
+        </Col>
+      )}
+      {!hoveredUpon && (
+        <Col className={[styles.box, styles.robotBox]}>
+          <Row justify='center' align='middle' style={{ height: '100%' }}>
+            <Title className={styles.title} level={3}>
+              {name}
+            </Title>
+          </Row>
+        </Col>
+      )}
     </Col>
   );
 };
