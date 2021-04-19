@@ -7,6 +7,7 @@
 
 const FOURSPACE = '    ';
 
+
 /**
  * 
  * @returns "uniqueId" which is just an increment from the counter in the local storage 
@@ -14,8 +15,16 @@ const FOURSPACE = '    ';
 const getUniqueId = () => {
     const newId = JSON.parse(sessionStorage.getItem('idCounter')) + 1;
     sessionStorage.setItem('idCounter', newId);
-    return `Activity_0ay${newId}`;
+    return newId;
 }
+
+/**
+ * #todo
+ * @returns 
+ */
+const getActivityId = () => `Activity_0ay${getUniqueId()}`
+const getEventId = () => `Event_0ay${getUniqueId()}`
+
 
 /**
  * @description Splits the robot code into an array and deletes all empty lines 
@@ -157,7 +166,7 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
  */
 const buildStartMarker = () => ({
     "successorIds": [],
-    "id": getUniqueId(),
+    "id": getEventId(),
     "type": "MARKER",
     "name": "START",
     "predecessorIds": []
@@ -170,7 +179,7 @@ const buildStartMarker = () => ({
  */
 const buildEndMarker = (predecessor) => ({
     "successorIds": [],
-    "id": getUniqueId(),
+    "id": getEventId(),
     "type": "MARKER",
     "name": "END",
     "predecessorIds": [predecessor ? predecessor.id : "MarkerElement"]
@@ -191,7 +200,7 @@ const buildSingleAttributeObject = (currentElement, singleElementFromTasksSectio
         activityId: currentElement.id,
         rpaApplication: singleElementFromTasksSection.rpaApplication,
         rpaTask,
-        ssotId: robotId
+        robotId
     }
 }
 
@@ -203,7 +212,7 @@ const buildSingleAttributeObject = (currentElement, singleElementFromTasksSectio
  * @returns parameterObject for a single attribute
  */
 const buildSingleParameterObject = (singleAtrributeObject, singleElementFromTasksSection, taskAndApplicationCombinations) => {
-    const { rpaApplication, activityId, rpaTask, ssotId } = singleAtrributeObject;
+    const { rpaApplication, activityId, rpaTask, robotId } = singleAtrributeObject;
     const singleParamArray = singleElementFromTasksSection.paramArray;
 
     const combinationObject = taskAndApplicationCombinations.filter((singleCombinationObject) =>
@@ -228,7 +237,7 @@ const buildSingleParameterObject = (singleAtrributeObject, singleElementFromTask
     return {
         activityId,
         rpaParameters: parameterArray,
-        ssotId
+        robotId
     };
 }
 
@@ -256,7 +265,7 @@ const getElementsArray = (robotCodeTaskSection, declaredApplications, robotId) =
         const currentElement = {}
 
         currentElement.successorIds = []
-        currentElement.id = getUniqueId();
+        currentElement.id = getActivityId();
         currentElement.type = 'INSTRUCTION';
         currentElement.name = singleElement.name;
 

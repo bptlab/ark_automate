@@ -18,6 +18,7 @@ import {
   getParameterObject,
   setOutputValueName
 } from '../../../utils/attributeAndParamUtils';
+import corporateDesign from '../../../layout/corporateDesign';
 
 const { Title } = Typography;
 const { Sider } = Layout;
