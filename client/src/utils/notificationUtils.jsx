@@ -3,6 +3,13 @@ import { notification } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, CloudUploadOutlined, WarningOutlined } from '@ant-design/icons';
 import corporateDesign from '../layout/corporateDesign';
 
+/**
+ * @description will first consider if a special icon is requested and otherwise return the corresponding icon for the notification type.
+ * @param {String} type one from 'Success', 'Warning' or 'Alert' - defines type (and with it the color scheme) for the notification Box 
+ * @param {String} icon The icon that will be displayed in the notification. (Must be imported and handled in notificationUtils accordingly!)
+ * @param {String} colorName Returns the css selector for the matching notification type
+ * @returns the icon component of the notification
+ */
 // eslint-disable-next-line consistent-return
 const getIconForType = (type, icon, colorName) => {
     switch (icon) {
@@ -21,6 +28,12 @@ const getIconForType = (type, icon, colorName) => {
     }
 }
 
+/**
+ * @description Throws a notification at the upper right edge of the screen, which disappears again automatically
+ * @param {String} type one from 'Success', 'Warning' or 'Alert' - defines type (and with it the color scheme) for the notification Box 
+ * @param {String} message The message that is displayed in the notification
+ * @param {String} icon The icon that will be displayed in the notification. (Must be imported and handled in notificationUtils accordingly!)
+ */
 const customNotification = (type, message, icon) => {
     const colorName = `color${type}Notification`
 

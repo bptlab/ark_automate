@@ -1,4 +1,5 @@
-/* eslint-disable no-alert */
+import customNotification from '../../notificationUtils';
+
 const { parseString } = require('xmljs2');
 
 /**
@@ -157,9 +158,12 @@ const getStartEventId = (bpmnJson) => {
   });
 
   if (startEventIds.length === 0) {
-    alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-  } else if (startEventIds.length > 1) {
-    alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+    customNotification('Error', 'There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.')
+    return undefined;
+  }
+  if (startEventIds.length > 1) {
+    customNotification('Error', 'There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.')
+    return undefined;
   }
   return startEventIds;
 }
@@ -172,6 +176,8 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   const robotName = sessionStorage.getItem('robotName');
   const bpmnJson = await parseString(bpmnXml.xml);
   const startEventId = getStartEventId(bpmnJson);
+
+  if (typeof startEventId === 'undefined') return undefined;
 
   // Build basic ssot-frame
   const ssot = {
@@ -189,8 +195,8 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
   console.log(bpmnStartEvent)
   const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
-  const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
-    .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'])
+  const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task']
+    .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'])
     .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'])
 
   let elementsArray = findElements(flows, bpmnShapes);

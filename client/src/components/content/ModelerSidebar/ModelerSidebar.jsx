@@ -17,7 +17,7 @@ import {
   getParameterObject,
   setOutputValueName
 } from '../../../utils/attributeAndParamUtils';
-import customNotification from '../../../utils/notificationUtils'
+import customNotification from '../../../utils/notificationUtils';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -243,11 +243,14 @@ const ModelerSidebar = ({ modeler, robotId }) => {
       .saveXML({ format: true })
       .then((xml) => {
         parseBpmnToSsot(xml, robotId).then((result) => {
-          const ssot = JSON.stringify(result);
-          sessionStorage.setItem('ssotLocal', ssot);
+          if (typeof result === 'undefined') {
+            customNotification('Warning', 'Because a parsing error occurred, the robot was not saved to cloud.')
+          } else {
+            const ssot = JSON.stringify(result);
+            sessionStorage.setItem('ssotLocal', ssot);
 
-          upsert();
-          customNotification('Success', 'Successfully saved to cloud', 'CloudUploadOutlined');
+            upsert();
+          }
         });
       })
       .catch((err) => console.error(err));

@@ -1,3 +1,4 @@
+import customNotification from './notificationUtils'
 /**
  * @category Client
  * @module
@@ -432,6 +433,8 @@ const upsert = async () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
   });
+
+  customNotification('Success', 'Successfully saved to cloud', 'CloudUploadOutlined');
 };
 
 /**

@@ -43,10 +43,12 @@ const RobotFile = () => {
    */
   const onSaveToCloud = /* async */ () => {
     const ssot = parseRobotCodeToSsot(code);
-    if (typeof ssot !== 'undefined') {
+    if (typeof ssot === 'undefined') {
+      customNotification('Warning', 'Because a parsing error occurred, the robot was not saved to cloud.')
+    } else {
       sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
+
       upsert();
-      customNotification('Success', 'Successfully saved to cloud', 'CloudUploadOutlined');
     }
   };
 

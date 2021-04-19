@@ -1,4 +1,4 @@
-/* eslint-disable no-alert */
+const { default: customNotification } = require("../../notificationUtils");
 
 /**
  * @category Client
@@ -60,29 +60,21 @@ const getApplicationArray = (robotCodeSettingsSection) => {
         const rpaAliasIsCorrect = regexForRpaAlias.test(line);
         const applicationIsAvailable = availableApplications.includes(line.split('RPA.')[1])
 
-        try {
-            if (!elementStartsWithLibrary) {
-                // alert(`Every line of the "*** Settings ***" Section has to start with "Library"! \nError location: "${line}"`);
-                error = Error("Testmessage", "PEDER")
-                errorWasThrown = true;
-                return;
-            }
-            if (!rpaAliasIsCorrect) {
-                alert(`Application has to start with "RPA." \nError location: "${line}"`);
-                errorWasThrown = true;
-                return;
-            }
-            if (!applicationIsAvailable) {
-                alert(`The Application "${String(line.split('RPA.')[1])}" is currently not supported. `);
-                errorWasThrown = true;
-            }
+        if (!elementStartsWithLibrary) {
+            customNotification('Error', `Every line of the "*** Settings ***" Section has to start with "Library"! \nError location: "${line}"`)
+            errorWasThrown = true;
+            return;
         }
-        catch (err) {
-            console.log(err)
+        if (!rpaAliasIsCorrect) {
+            customNotification('Error', `Application has to start with "RPA." \nError location: "${line}"`)
+            errorWasThrown = true;
+            return;
+        }
+        if (!applicationIsAvailable) {
+            customNotification('Error', `The Application "${String(line.split('RPA.')[1])}" is currently not supported. `)
+            errorWasThrown = true;
         }
     })
-
-    // console.log(error.message + error.fileName)
 
     const declaredApplications = (errorWasThrown ? undefined : robotCode.map((line) => line.split('RPA.')[1]))
 
@@ -139,13 +131,13 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
             return;
 
         } if (currentLineHasNoSpecifiedApplication) {
-            alert(`There is no RPA-Application specified for line "${currentLine}"`);
+            customNotification('Error', `There is no RPA-Application specified for line "${currentLine}"`)
             errorWasThrown = true;
             return;
         }
 
         if (currentLineIncludesSplitPlaceholder) {
-            alert(`It is not allowed to use & or § as param values \nError location: "${line}"`);
+            customNotification('Error', `It is not allowed to use & or § as param values \nError location: "${line}"`)
             errorWasThrown = true;
             return;
         }
@@ -324,7 +316,7 @@ const getLineNumberForSelector = (robotCodeAsArray, selector) => {
     robotCodeAsArray.forEach((codeLine, index) => {
         if (codeLine.trim().includes(selector)) lineNumber = index;
     });
-    if (typeof lineNumber === 'undefined') alert(`The required selector "${selector}" was not found`)
+    if (typeof lineNumber === 'undefined') customNotification('Error', `The required selector "${selector}" was not found`)
     return lineNumber;
 }
 
