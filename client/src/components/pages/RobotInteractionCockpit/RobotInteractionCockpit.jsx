@@ -4,8 +4,8 @@ import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
 import { getAllParametersForRobot } from '../../../api/variableRetrieval';
-import socket from '../../../utils/socket/socketConnections';
 import { isRobotExecutable } from '../../../utils/robotExecution';
+import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
 
 const { Step } = Steps;
 const { Title } = Typography;
@@ -91,7 +91,7 @@ const RobotInteractionCockpit = (match) => {
     const robotIsExecutable = await isRobotExecutable(robotId);
     if (robotIsExecutable) {
       setCurrentStep(1);
-      socket.emit('robotExecutionJobs', { robotId, userId, parameters });
+      startRobotForUser(userId, robotId, parameters);
     } else {
       alert('Your Bot is not fully configured and can not be executed!');
     }
