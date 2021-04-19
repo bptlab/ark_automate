@@ -12,10 +12,11 @@
     "client/node_modules"
   ],
   "dependencies": {
+    "chai": "^4.3.4",
     "express": "^4.16.4",
-    "socket.io": "^4.0.0",
     "mongodb": "^3.6.5",
-    "mongoose": "^5.12.1"
+    "mongoose": "^5.12.1",
+    "socket.io": "^4.0.0"
   },
   "devDependencies": {
     "eslint": "^7.17.0",

@@ -13,7 +13,7 @@ const singleParameterSchema = new Schema({
 });
 
 const parameterObjectSchema = new Schema({
-  ssotId: mongoose.Types.ObjectId,
+  robotId: mongoose.Types.ObjectId,
   activityId: String,
   outputVariable: String,
   rpaParameters: [ singleParameterSchema ],
@@ -28,7 +28,7 @@ const instructionSchema = new Schema({
 });
 
 const rpaAttributesObjectSchema = new Schema({
-  ssotId: mongoose.Types.ObjectId,
+  robotId: mongoose.Types.ObjectId,
   activityId: String,
   rpaApplication: String,
   rpaTask: String,
@@ -43,8 +43,8 @@ const markerSchema = new Schema({
 
 const ssotSchema = new Schema({
   starterId: String,
-  robotName: String,
-  elements: [instructionSchema, markerSchema],
+  robotName: {type: String, required: [true, 'robotName required']},
+  elements: {type: [instructionSchema, markerSchema]},
 });
 
 mongoose.model('parameter', parameterObjectSchema);

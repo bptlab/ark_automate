@@ -73,7 +73,7 @@ const RobotOverview = () => {
   };
 
   /**
-   * @description Creates a new bot for the current userId
+   * @description Creates a new robot for the current userId
    */
   const initiateRobotCreation = () => {
     const robotName = 'New Robot';

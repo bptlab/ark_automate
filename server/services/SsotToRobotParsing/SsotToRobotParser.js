@@ -92,26 +92,28 @@ const writeCodeForElement = (
     const currentAttributeObject = attributes.find(
       (attribute) => attribute.activityId === id
     );
-    if (currentAttributeObject.rpaApplication !== previousApplication) {
-      newPreviousApplication = currentAttributeObject.rpaApplication;
-      newCodeLine += currentAttributeObject.rpaApplication + LINEBREAK;
-    } else {
-      newPreviousApplication = previousApplication;
-    }
-    newCodeLine += COMMENT + currentElement.name + LINEBREAK;
-    const currentParameterObject = parameters.find(
-      (parameter) => parameter.activityId === id
-    );
-    if (currentParameterObject) {
-      newCodeLine += setOutputVar(currentParameterObject);
-    }
-    newCodeLine += currentAttributeObject.rpaTask;
-    if (currentParameterObject) {
-      newCodeLine += appendRpaInputParameter(currentParameterObject);
-    }
+    if (currentAttributeObject) {
+      if (currentAttributeObject.rpaApplication !== previousApplication) {
+        newPreviousApplication = currentAttributeObject.rpaApplication;
+        newCodeLine += currentAttributeObject.rpaApplication + LINEBREAK;
+      } else {
+        newPreviousApplication = previousApplication;
+      }
+      newCodeLine += COMMENT + currentElement.name + LINEBREAK;
+      const currentParameterObject = parameters.find(
+        (parameter) => parameter.activityId === id
+      );
+      if (currentParameterObject) {
+        newCodeLine += setOutputVar(currentParameterObject);
+      }
+      newCodeLine += currentAttributeObject.rpaTask;
+      if (currentParameterObject) {
+        newCodeLine += appendRpaInputParameter(currentParameterObject);
+      }
 
-    newCodeLine += LINEBREAK;
-    combinedCode += newCodeLine;
+      newCodeLine += LINEBREAK;
+      combinedCode += newCodeLine;
+    }
   }
 
   if (successorTasksExist(currentElement)) {
@@ -154,7 +156,7 @@ const generateCodeForRpaTasks = (elements, parameters, attributes) => {
 };
 
 /**
- * @description Collects the applications used by the bot
+ * @description Collects the applications used by the robot
  * @param {Array} elements All the elements from the SSoT
  * @returns {Array} All unique Applications that occur in the ssot
  */
@@ -210,7 +212,7 @@ const retrieveParameters = async (ssot) => {
     .model('parameter')
     .find(
       {
-        ssotId: id,
+        robotId: id,
         activityId: { $in: listOfActivityIds },
       },
       {
@@ -243,7 +245,7 @@ const retrieveAttributes = async (ssot) => {
   const attributeObjects = await mongoose
     .model('rpaAttributes')
     .find({
-      ssotId: id,
+      robotId: id,
       activityId: { $in: listOfActivityIds },
     })
     .exec();
@@ -272,11 +274,11 @@ const parseSsotToRobotCode = async (ssot) => {
 
 /**
  * @description Parses the SSoT provided by its id to an executable .robot file
- * @param {String} ssotId The id of the ssot which should be parsed
+ * @param {String} robotId The id of the ssot which should be parsed
  * @returns {string} Code that has to be put in .robot file
  */
-const parseSsotById = async (ssotId) => {
-  const ssot = await mongoose.model('SSoT').findById(ssotId).exec();
+const parseSsotById = async (robotId) => {
+  const ssot = await mongoose.model('SSoT').findById(robotId).exec();
 
   return parseSsotToRobotCode(ssot);
 };

@@ -12,8 +12,8 @@ exports.getRobotCode = async (req, res) => {
 
 exports.getRobotCodeForId = async (req, res) => {
   try {
-    const { botId } = req.params;
-    const robotCode = await ssotToRobotparser.parseSsotById(botId);
+    const { robotId } = req.params;
+    const robotCode = await ssotToRobotparser.parseSsotById(robotId);
     res.send(robotCode);
   } catch (err) {
     console.error(err);

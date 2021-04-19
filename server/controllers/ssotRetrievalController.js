@@ -35,15 +35,15 @@ exports.getRobotList = async (req, res) => {
       )
       .exec();
 
-    const ssotIds = [];
+    const robotIds = [];
     userAccessObjs.forEach((singleUserObj) => {
-      ssotIds.push(singleUserObj.robotId);
+      robotIds.push(singleUserObj.robotId);
     });
 
     const availableSsots = await mongoose
       .model('SSoT')
       .find(
-        { _id: { $in: ssotIds } },
+        { _id: { $in: robotIds } },
         {
           starterId: 1,
           robotName: 1,
@@ -140,10 +140,17 @@ exports.createNewRobot = async (req, res) => {
     const { robotName } = req.query;
     const nameWithEmptyspace = robotName.replace(/\+/g, ' ');
 
+    const initialStartEvent = {
+      predecessorIds: [],
+      successorIds: [],
+      type: 'MARKER',
+      id: 'Event_startEvent'
+    }
+
     const ssot = await mongoose.model('SSoT').create({
       starterId: '',
       robotName: nameWithEmptyspace,
-      elements: [],
+      elements: [ initialStartEvent ],
     });
 
     const updatedSsot = await ssot
