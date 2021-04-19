@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
+import { Layout, Button, Space, Row, Col, notification } from 'antd';
+import { CloudUploadOutlined } from '@ant-design/icons';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import getParsedRobotFile from '../../../api/ssot';
 import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils'
 import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
+import { upsert } from '../../../utils/attributeAndParamUtils';
 import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';
-import { upsert } from '../../../utils/attributeAndParamUtils';
+import corporateDesign from '../../../layout/corporateDesign';
 
 /**
  * @description View of the robot file
@@ -46,6 +48,18 @@ const RobotFile = () => {
     if (typeof ssot !== 'undefined') {
       sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
       upsert();
+      notification.open({
+        message: 'Successfully saved to cloud',
+        icon: (
+          <CloudUploadOutlined
+            style={{ color: corporateDesign.colorSuccessNotificationIcon }}
+          />
+        ),
+        style: {
+          backgroundColor:
+            corporateDesign.colorSuccessNotificationBackground,
+        },
+      });
     }
   };
 
