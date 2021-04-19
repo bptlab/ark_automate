@@ -27,9 +27,6 @@
 .title {
   color: var(--colorPrimaryInvertedText) !important;
   text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .title:hover {
