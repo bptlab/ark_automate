@@ -10,10 +10,14 @@ const { Text } = Typography;
  * @component
  */
 const PPIdSection = (element) => (
-    <Space direction='horizontal' style={{ width: '100%' }}>
-        <Text className={styles[`label-on-dark-background`]}>ID: </Text>
-        <Text className={styles[`label-on-dark-background`]}>{element.element.id}</Text>
-    </Space>
+  <Space direction='horizontal' style={{ width: '100%' }}>
+    <Text className={styles[`label-on-dark-background`]} strong>
+      ID:{' '}
+    </Text>
+    <Text className={styles[`label-on-dark-background`]}>
+      {element.element.id}
+    </Text>
+  </Space>
 );
 
 export default PPIdSection;
