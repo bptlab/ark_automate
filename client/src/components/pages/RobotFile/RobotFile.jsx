@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col, notification } from 'antd';
-import { CloudUploadOutlined } from '@ant-design/icons';
+import { Layout, Button, Space, Row, Col } from 'antd';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
@@ -11,7 +10,7 @@ import { upsert } from '../../../utils/attributeAndParamUtils';
 import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';
-import corporateDesign from '../../../layout/corporateDesign';
+import customNotification from '../../../utils/notificationUtils';
 
 /**
  * @description View of the robot file
@@ -47,19 +46,7 @@ const RobotFile = () => {
     if (typeof ssot !== 'undefined') {
       sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
       upsert();
-
-      notification.open({
-        message: 'Successfully saved to cloud',
-        icon: (
-          <CloudUploadOutlined
-            style={{ color: corporateDesign.colorSuccessNotificationIcon }}
-          />
-        ),
-        style: {
-          backgroundColor:
-            corporateDesign.colorSuccessNotificationBackground,
-        },
-      });
+      customNotification('Success', 'Successfully saved to cloud', 'CloudUploadOutlined');
     }
   };
 

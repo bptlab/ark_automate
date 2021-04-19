@@ -51,30 +51,38 @@ const getApplicationArray = (robotCodeSettingsSection) => {
     if (typeof robotCodeSettingsSection === 'undefined') return undefined;
     const robotCode = robotCodeSettingsSection.slice(1)
     const availableApplications = JSON.parse(sessionStorage.getItem('availableApplications'))
-    let errorWasThrown;
+    let errorWasThrown; let error;
 
     robotCode.forEach((line) => {
         const regexForRpaAlias = new RegExp(`Library +RPA[.][a-zA-Z]+`)
 
-        const elementStartsWithLibary = line.startsWith('Library ');
+        const elementStartsWithLibrary = line.startsWith('Library ');
         const rpaAliasIsCorrect = regexForRpaAlias.test(line);
         const applicationIsAvailable = availableApplications.includes(line.split('RPA.')[1])
 
-        if (!elementStartsWithLibary) {
-            alert(`Every line of the "*** Settings ***" Section has to start with "Library"! \nError location: "${line}"`);
-            errorWasThrown = true;
-            return;
+        try {
+            if (!elementStartsWithLibrary) {
+                // alert(`Every line of the "*** Settings ***" Section has to start with "Library"! \nError location: "${line}"`);
+                error = Error("Testmessage", "PEDER")
+                errorWasThrown = true;
+                return;
+            }
+            if (!rpaAliasIsCorrect) {
+                alert(`Application has to start with "RPA." \nError location: "${line}"`);
+                errorWasThrown = true;
+                return;
+            }
+            if (!applicationIsAvailable) {
+                alert(`The Application "${String(line.split('RPA.')[1])}" is currently not supported. `);
+                errorWasThrown = true;
+            }
         }
-        if (!rpaAliasIsCorrect) {
-            alert(`Application has to start with "RPA." \nError location: "${line}"`);
-            errorWasThrown = true;
-            return;
-        }
-        if (!applicationIsAvailable) {
-            alert(`The Application "${String(line.split('RPA.')[1])}" is currently not supported. `);
-            errorWasThrown = true;
+        catch (err) {
+            console.log(err)
         }
     })
+
+    // console.log(error.message + error.fileName)
 
     const declaredApplications = (errorWasThrown ? undefined : robotCode.map((line) => line.split('RPA.')[1]))
 

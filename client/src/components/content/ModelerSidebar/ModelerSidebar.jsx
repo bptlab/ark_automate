@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 import React, { useState, useEffect } from 'react';
-import { Typography, Layout, Space, Button, notification } from 'antd';
+import { Typography, Layout, Space, Button } from 'antd';
 import PropTypes from 'prop-types';
-import { CloudUploadOutlined } from '@ant-design/icons';
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
 import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
@@ -18,7 +17,7 @@ import {
   getParameterObject,
   setOutputValueName
 } from '../../../utils/attributeAndParamUtils';
-import corporateDesign from '../../../layout/corporateDesign';
+import customNotification from '../../../utils/notificationUtils'
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -248,18 +247,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
           sessionStorage.setItem('ssotLocal', ssot);
 
           upsert();
-          notification.open({
-            message: 'Successfully saved to cloud',
-            icon: (
-              <CloudUploadOutlined
-                style={{ color: corporateDesign.colorSuccessNotificationIcon }}
-              />
-            ),
-            style: {
-              backgroundColor:
-                corporateDesign.colorSuccessNotificationBackground,
-            },
-          });
+          customNotification('Success', 'Successfully saved to cloud', 'CloudUploadOutlined');
         });
       })
       .catch((err) => console.error(err));
