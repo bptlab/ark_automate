@@ -53,3 +53,9 @@ During our last retrospective we agreed on tackling the following action points:
 * We want to make the communication between team members and stakeholders more transparent. Therefore, we will from now on post important information from stakeholders in our teams and inform other team members about it in the next daily.
 * We will delete the Quote-thread.
 * The Scrum Master will open a thread regarding further distribution of the presentations which are supposed to be held. We then want to finally assign us to these presentations.
+
+### Old Action Points
+* Pull Requests that introduce more than 500 lines of changes need a more detailed description so that reviewers can understand the components, not only check for syntax.
+* Work on spike issues is supposed to be stopped as soon as the estimated time has passed
+* We want to figure out ways to find a balance between time spent on our bachelors project and the bachelors thesis.
+* We need to define our programming style for issues, wether it's closer to extreme programming or more future proof implementations
