@@ -40,17 +40,21 @@ describe('robot code retrieval', () => {
       testRobotId,
       testJobId
     );
-    fs.readFile('./socket/testRobotFile.txt', 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
+    fs.readFile(
+      './utils/TestingUtils/testRobotFile.txt',
+      'utf8',
+      (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        expect(robotCode).not.toBeUndefined();
+        expect(robotCode).not.toBeNull();
+        expect(String(robotCode).replace(/\s/g, '')).toEqual(
+          String(data).replace(/\s/g, '')
+        );
       }
-      expect(robotCode).not.toBeUndefined();
-      expect(robotCode).not.toBeNull();
-      expect(String(robotCode).replace(/\s/g, '')).toEqual(
-        String(data).replace(/\s/g, '')
-      );
-    });
+    );
   });
 });
 

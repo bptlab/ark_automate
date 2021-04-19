@@ -1,8 +1,13 @@
 /* eslint-disable no-undef */
+const fs = require('fs');
 const parser = require('../SsotToRobotParser');
 const testSsot = require('./SsotForTesting.json');
 const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');
-const dbLoader = require('../../../utils/TestingUtils/databaseLoader')
+const dbLoader = require('../../../utils/TestingUtils/databaseLoader');
+const {
+  testRobotId,
+  testJobId,
+} = require('../../../utils/TestingUtils/testData');
 
 const EXCEL1_ACTIVITY_NAME = 'FirstActivity';
 const OPEN_WORKBOOK_CMD = 'Open Workbook';
@@ -94,6 +99,33 @@ describe('Ssot Parsing', () => {
     );
     expect(parserResultString.indexOf(OPEN_BROWSER_CMD)).toBeLessThan(
       parserResultString.lastIndexOf(BROWSER_ACTIVITY_PARAM)
+    );
+  });
+
+  it('parses all the elements of the ssot in the correct order', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadParametersInDb();
+    await dbLoader.loadJobInDb();
+
+    const parserResultString = await parser.parseCodeForJob(
+      testRobotId,
+      testJobId
+    );
+    fs.readFile(
+      './utils/TestingUtils/testRobotFile.txt',
+      'utf8',
+      (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        expect(parserResultString).not.toBeUndefined();
+        expect(parserResultString).not.toBeNull();
+        expect(String(parserResultString).replace(/\s/g, '')).toEqual(
+          String(data).replace(/\s/g, '')
+        );
+      }
     );
   });
 });
