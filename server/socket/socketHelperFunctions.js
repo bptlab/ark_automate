@@ -13,9 +13,22 @@ mongoose.set('useFindAndModify', false);
  * @param {String} robotId the id of the robot we want the robot code for
  * @param {String} jobId the id of the current job
  */
-exports.getRobotCode = async (robotId, jobId) => {
+exports.getRobotCodeForJob = async (robotId, jobId) => {
   try {
     const robotCode = ssotToRobotParser.parseCodeForJob(robotId, jobId);
+    return robotCode;
+  } catch (err) {
+    return console.error(err);
+  }
+};
+
+/**
+ * @description Fetches the ssot of a given robot from the database and parses the ssot to robot code
+ * @param {String} robotId the id of the robot we want the robot code for
+ */
+exports.getRobotCode = async (robotId) => {
+  try {
+    const robotCode = ssotToRobotParser.parseSsotById(robotId);
     return robotCode;
   } catch (err) {
     return console.error(err);

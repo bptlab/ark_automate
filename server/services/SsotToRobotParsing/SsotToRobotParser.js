@@ -20,7 +20,7 @@ const { generateCodeForRpaTasks } = require('./generateCodeForRpaTasks');
  */
 const parseSsotToRobotCode = async (ssot) => {
   // eslint-disable-next-line prefer-const
-  const result = generateCodeBase(ssot);
+  const result = await generateCodeBase(ssot);
   const parameters = await retrieveParameters(ssot);
   result.parsedCode += generateCodeForRpaTasks(
     ssot.elements,

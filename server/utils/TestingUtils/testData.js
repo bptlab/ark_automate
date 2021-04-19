@@ -2,6 +2,7 @@ const testUserId = '604a3ba6561e2d1fad4eda60';
 const user2Id = '604a3ba6561e2d1fad4eda00';
 
 const testRobotId = '606199015d691786a44a608f';
+const testJobId = '605c68a86d596e0d6bed0077';
 
 const testSsot = {
   id: testRobotId,
@@ -121,12 +122,18 @@ const testRpaTask3 = {
 };
 
 const testJob = {
-  _id: '605c68a86d596e0d6bed0077',
+  _id: testJobId,
   __v: 0,
   user_id: testUserId,
   robot_id: testRobotId,
   status: 'waiting',
-  parameters: [],
+  parameters: [
+    {
+      _id: '60780432cb11ef12444785ee',
+      parameterId: '6062f0ad92ffd3044c6ee387',
+      value: 'TESTVALUE',
+    },
+  ],
 };
 
 const testAttributes1 = {
@@ -196,7 +203,7 @@ const testParameter3 = {
   _id: '6062f0ad1abb38158c2dfa67',
   __v: 0,
   activityId: 'Activity_1x8wlwh',
-  robotId: '606199015d691786a44a608f',
+  robotId: testRobotId,
   rpaParameters: [
     {
       _id: '6062f0ad92ffd3044c6ee387',
@@ -206,6 +213,7 @@ const testParameter3 = {
       infoText: 'Open Browser',
       index: 0,
       value: 'http://localhost:3000',
+      requireUserInput: true,
     },
   ],
 };
@@ -222,6 +230,7 @@ module.exports = {
   testRpaTask2,
   testRpaTask3,
   testJob,
+  testJobId,
   testAttributes1,
   testAttributes2,
   testAttributes3,

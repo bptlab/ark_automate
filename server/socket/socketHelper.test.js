@@ -1,10 +1,16 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
+const fs = require('fs');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const socketHelperFunctions = require('./socketHelperFunctions');
 const testData = require('../utils/TestingUtils/testData');
-const { testRobotId, testUserId } = require('../utils/TestingUtils/testData');
+
+const {
+  testRobotId,
+  testUserId,
+  testJobId,
+} = require('../utils/TestingUtils/testData');
 
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
 
@@ -28,12 +34,23 @@ describe('robot code retrieval', () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
+    await dbLoader.loadJobInDb();
 
-    const robotCode = await socketHelperFunctions.getRobotCode(testRobotId);
-    expect(robotCode).not.toBeUndefined();
-    expect(robotCode).not.toBeNull();
-    expect(robotCode).toMatch('*** Settings ***');
-    expect(robotCode).toMatch('*** Tasks ***');
+    const robotCode = await socketHelperFunctions.getRobotCodeForJob(
+      testRobotId,
+      testJobId
+    );
+    fs.readFile('./socket/testRobotFile.txt', 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      expect(robotCode).not.toBeUndefined();
+      expect(robotCode).not.toBeNull();
+      expect(String(robotCode).replace(/\s/g, '')).toEqual(
+        String(data).replace(/\s/g, '')
+      );
+    });
   });
 });
 

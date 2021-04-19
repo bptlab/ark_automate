@@ -26,7 +26,7 @@ exports.socketManager = (io, socket) => {
                 // eslint-disable-next-line camelcase
                 const { id, robot_id } = job;
                 socketHelperFunctions
-                  .getRobotCode(robot_id, id)
+                  .getRobotCodeForJob(robot_id, id)
                   .then((robotCode) => {
                     socketHelperFunctions.updateRobotJobStatus(id, 'executing');
                     io.to(userId).emit('robotExecution', {
@@ -55,7 +55,7 @@ exports.socketManager = (io, socket) => {
         .createJob(userId, robotId, 'executing', parameters)
         .then((jobId) => {
           socketHelperFunctions
-            .getRobotCode(robotId, jobId)
+            .getRobotCodeForJob(robotId, jobId)
             .then((robotCode) => {
               io.to(userId).emit('robotExecution', { robotCode, jobId });
             });
