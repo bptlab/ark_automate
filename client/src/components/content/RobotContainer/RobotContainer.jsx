@@ -1,13 +1,13 @@
-/* eslint-disable no-alert */
 import React, { useState } from 'react';
-import { Col, Row, Typography } from 'antd';
-import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
+import { Col, Row, Typography, notification } from 'antd';
+import { PlayCircleOutlined, EditOutlined, WarningOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
 import { changeSsotName } from '../../../api/ssotRetrieval';
 import { isRobotExecutable } from '../../../utils/robotExecution';
+import corporateDesign from '../../../layout/corporateDesign';
 
 const { Title } = Typography;
 
@@ -28,7 +28,19 @@ const RobotContainer = (props) => {
     if (robotIsExecutable) {
       socket.emit('robotExecutionJobs', { robotId, userId });
     } else {
-      alert('Your Bot is not fully configured and can not be executed!');
+      notification.error({
+        message: 'Error',
+        description: 'Your Bot is not fully configured and can not be executed!',
+        icon: (
+          <WarningOutlined
+            style={{ color: corporateDesign.colorWarningNotificationIcon }}
+          />
+        ),
+        style: {
+          backgroundColor:
+            corporateDesign.colorWarningNotificationBackground,
+        },
+      });
     }
   };
 

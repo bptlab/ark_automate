@@ -44,10 +44,10 @@ const RobotFile = () => {
    */
   const onSaveToCloud = /* async */ () => {
     const ssot = parseRobotCodeToSsot(code);
-    console.log(ssot);
     if (typeof ssot !== 'undefined') {
       sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
       upsert();
+
       notification.open({
         message: 'Successfully saved to cloud',
         icon: (
