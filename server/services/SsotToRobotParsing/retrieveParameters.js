@@ -45,27 +45,24 @@ const retrieveParameters = async (ssot) => {
 
 /**
  * @description Update Parameter Objects with new parameters
- * @param {String} parameterObjects The selection of parameter objects this function will have a look at
- * @param {String} newParameters New parameters in the form {id, value} that the function will use to update the parameter objects
+ * @param {Array} parameterObjects The selection of parameter objects this function will have a look at
+ * @param {Array} newParameters New parameters in the form {id, value} that the function will use to update the parameter objects
  */
 const updateParameterObjects = (parameterObjects, newParameters) => {
-  Array.prototype.map.call(parameterObjects, (parameterObject) => {
+  parameterObjects.map((parameterObject) => {
     if (parameterObject.rpaParameters.length !== 0) {
-      Array.prototype.map.call(
-        parameterObject.rpaParameters,
-        (currentParameter) => {
-          Array.prototype.forEach.call(newParameters, (newParameter) => {
-            if (
-              // eslint-disable-next-line no-underscore-dangle
-              String(newParameter.parameterId) === String(currentParameter._id)
-            ) {
-              // eslint-disable-next-line no-param-reassign
-              currentParameter.value = newParameter.value;
-            }
-          });
-          return currentParameter;
-        }
-      );
+      parameterObject.rpaParameters.map((currentParameter) => {
+        newParameters.forEach((newParameter) => {
+          if (
+            // eslint-disable-next-line no-underscore-dangle
+            String(newParameter.parameterId) === String(currentParameter._id)
+          ) {
+            // eslint-disable-next-line no-param-reassign
+            currentParameter.value = newParameter.value;
+          }
+        });
+        return currentParameter;
+      });
     }
     return parameterObject;
   });

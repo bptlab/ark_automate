@@ -33,25 +33,22 @@ const RobotInteractionCockpit = (match) => {
       .then((parameterObjects) => {
         if (parameterObjects.length > 0) {
           const activityInformationList = [];
-          Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
+          parameterObjects.forEach((parameterObject) => {
             const { activityId } = parameterObject;
             let activityName = '';
             let ssot = sessionStorage.getItem('ssotLocal');
             ssot = JSON.parse(ssot);
-            Array.prototype.forEach.call(ssot.elements, (element) => {
+            ssot.elements.forEach((element) => {
               if (element.id === activityId) {
                 activityName = element.name;
               }
             });
             const activityParameter = [];
-            Array.prototype.forEach.call(
-              parameterObject.rpaParameters,
-              (parameter) => {
-                if (parameter.requireUserInput) {
-                  activityParameter.push(parameter);
-                }
+            parameterObject.rpaParameters.forEach((parameter) => {
+              if (parameter.requireUserInput) {
+                activityParameter.push(parameter);
               }
-            );
+            });
             if (activityParameter.length > 0) {
               const activityInformation = {
                 activityId,
@@ -61,6 +58,7 @@ const RobotInteractionCockpit = (match) => {
               activityInformationList.push(activityInformation);
             }
           });
+
           if (isMounted.current) {
             setParameterList(activityInformationList);
           }
@@ -113,7 +111,7 @@ const RobotInteractionCockpit = (match) => {
       }
     }
     if (found) {
-      Array.prototype.map.call(currentParameters, (parameter) => {
+      currentParameters.map((parameter) => {
         if (parameter.parameterId === parameterId) {
           // eslint-disable-next-line no-param-reassign
           parameter.value = value;
