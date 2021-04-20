@@ -59,7 +59,7 @@ const PPParameterInput = ({
   };
   return (
     <>
-      <Text className={styles[`label-on-dark-background`]}>{variableName}</Text>
+      <Text className='label-on-dark-background'>{variableName}</Text>
       <Input
         placeholder={variableName}
         defaultValue={value}
