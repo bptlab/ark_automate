@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
@@ -30,16 +31,16 @@ const RobotInteractionCockpit = (match) => {
     getAllParametersForRobot(robotId)
       .then((response) => response.json())
       .then((parameterObjects) => {
-        if (parameterObjects.length !== 0) {
+        if (parameterObjects.length > 0) {
           const activityInformationList = [];
           Array.prototype.forEach.call(parameterObjects, (parameterObject) => {
             const { activityId } = parameterObject;
             let activityName = '';
             let ssot = sessionStorage.getItem('ssotLocal');
             ssot = JSON.parse(ssot);
-            Array.prototype.forEach.call(ssot.elements, (elem) => {
-              if (elem.id === activityId) {
-                activityName = elem.name;
+            Array.prototype.forEach.call(ssot.elements, (element) => {
+              if (element.id === activityId) {
+                activityName = element.name;
               }
             });
             const activityParameter = [];
@@ -51,7 +52,7 @@ const RobotInteractionCockpit = (match) => {
                 }
               }
             );
-            if (activityParameter.length !== 0) {
+            if (activityParameter.length > 0) {
               const activityInformation = {
                 activityId,
                 activityParameter,

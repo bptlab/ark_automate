@@ -78,7 +78,7 @@ const retrieveAttributes = async (ssot) => {
 
 /**
  * @description Generates that basic code that every robot has
- * @param {Object} ssot The SSoT
+ * @param {Object} ssot The ssot
  * @returns {string} Basic code for the .robot file
  */
 const generateCodeBase = async (ssot) => {

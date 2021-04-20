@@ -16,7 +16,7 @@ const RobotInteractionInputSection = ({
 }) => (
   <Space size='small' direction='vertical' style={{ width: '100%' }}>
     {parameterList.map((activityInformation) => {
-      if (activityInformation.activityParameter.length !== 0) {
+      if (activityInformation.activityParameter.length > 0) {
         return (
           <>
             <Title style={{ marginBottom: '0px' }} level={4}>
@@ -29,12 +29,14 @@ const RobotInteractionInputSection = ({
                 dataType={params.type}
                 infoText={params.infoText}
                 updateParameterValue={updateParameterValue}
+                // eslint-disable-next-line no-underscore-dangle
                 parameterId={params._id}
               />
             ))}
           </>
         );
       }
+      return <div />;
     })}
   </Space>
 );

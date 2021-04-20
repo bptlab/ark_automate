@@ -218,6 +218,9 @@ const testParameter3 = {
   ],
 };
 
+const testRobotCode =
+  '*** Settings *** Library    RPA.Excel.Application Library    RPA.Browser *** Tasks *** Excel.Application #FirstActivity Open Workbook    C://Users/Filepath #SecondActivity Find Empty Row    StonksOnlyGoUp.xls Browser #ThirdActivity Open Browser    TESTVALUE';
+
 module.exports = {
   testSsot,
   testUserAccessObject,
@@ -237,4 +240,5 @@ module.exports = {
   testParameter1,
   testParameter2,
   testParameter3,
+  testRobotCode,
 };

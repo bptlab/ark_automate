@@ -48,7 +48,7 @@ const appendRpaInputParameter = (parameterObject) => {
     newCodeLine +=
       parameter.value.search(/\$\$(.*?)\$\$/) < 0
         ? `${FOURSPACE}${parameter.value}`
-        : `${FOURSPACE}$\{${parameter.value.split('$$')[1]}\}`;
+        : `${FOURSPACE}$\{${parameter.value.split('$$')[1]}}`;
   });
 
   return newCodeLine;

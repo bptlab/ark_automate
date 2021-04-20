@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
-const fs = require('fs');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const socketHelperFunctions = require('./socketHelperFunctions');
 const testData = require('../utils/TestingUtils/testData');
@@ -10,6 +9,7 @@ const {
   testRobotId,
   testUserId,
   testJobId,
+  testRobotCode,
 } = require('../utils/TestingUtils/testData');
 
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
@@ -40,20 +40,10 @@ describe('robot code retrieval', () => {
       testRobotId,
       testJobId
     );
-    fs.readFile(
-      './utils/TestingUtils/testRobotFile.txt',
-      'utf8',
-      (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        expect(robotCode).not.toBeUndefined();
-        expect(robotCode).not.toBeNull();
-        expect(String(robotCode).replace(/\s/g, '')).toEqual(
-          String(data).replace(/\s/g, '')
-        );
-      }
+    expect(robotCode).not.toBeUndefined();
+    expect(robotCode).not.toBeNull();
+    expect(String(robotCode).replace(/\s/g, '')).toEqual(
+      String(testRobotCode).replace(/\s/g, '')
     );
   });
 });

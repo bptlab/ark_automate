@@ -23,7 +23,9 @@ const RobotInteractionInputParameter = ({
     <Input
       placeholder={variableName}
       defaultValue=''
-      onChange={(e) => updateParameterValue(parameterId, e.target.value)}
+      onChange={(event) =>
+        updateParameterValue(parameterId, event.target.value)
+      }
       suffix={
         <>
           <Tooltip title={infoText}>

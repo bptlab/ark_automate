@@ -448,7 +448,7 @@ const getParameterForRobotFromDB = async (robotId) => {
 };
 
 /**
- * @description Will set the single parameter in local session storage
+ * @description Will initialize the ssot in local session storage
  * @param {String} robotId Id of the robot for which we want to initialize the ssot locally
  */
 const initSsotSessionStorage = (robotId) => {

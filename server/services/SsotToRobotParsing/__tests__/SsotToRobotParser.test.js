@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-const fs = require('fs');
 const parser = require('../SsotToRobotParser');
 const testSsot = require('./SsotForTesting.json');
 const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');
@@ -7,6 +6,7 @@ const dbLoader = require('../../../utils/TestingUtils/databaseLoader');
 const {
   testRobotId,
   testJobId,
+  testRobotCode,
 } = require('../../../utils/TestingUtils/testData');
 
 const EXCEL1_ACTIVITY_NAME = 'FirstActivity';
@@ -112,20 +112,10 @@ describe('Ssot Parsing', () => {
       testRobotId,
       testJobId
     );
-    fs.readFile(
-      './utils/TestingUtils/testRobotFile.txt',
-      'utf8',
-      (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        expect(parserResultString).not.toBeUndefined();
-        expect(parserResultString).not.toBeNull();
-        expect(String(parserResultString).replace(/\s/g, '')).toEqual(
-          String(data).replace(/\s/g, '')
-        );
-      }
+    expect(parserResultString).not.toBeUndefined();
+    expect(parserResultString).not.toBeNull();
+    expect(String(parserResultString).replace(/\s/g, '')).toEqual(
+      String(testRobotCode).replace(/\s/g, '')
     );
   });
 });
