@@ -15,8 +15,10 @@ mongoose.set('useFindAndModify', false);
 exports.getRobotCode = async (robotId) => {
   try {
     const ssot = await mongoose.model('SSoT').findById(robotId).exec();
-    const robotCode = ssotToRobotParser.parseSsotToRobotCode(ssot);
-    return robotCode;
+    if (ssot) {
+      return ssotToRobotParser.parseSsotToRobotCode(ssot);
+    }
+    return undefined;
   } catch (err) {
     return console.error(err);
   }
