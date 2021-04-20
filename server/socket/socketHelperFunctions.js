@@ -40,7 +40,7 @@ exports.getRobotCode = async (robotId) => {
  * @param {String} jobId the id of the robot job that we want to get all the parameters from
  */
 exports.getRobotJobParameters = async (jobId) => {
-  const robotJobParameters = await jobsModel.Job.findById(jobId, {
+  const robotJobParameters = await mongoose.model('job').findById(jobId, {
     parameters: 1,
   }).exec();
   return robotJobParameters;
