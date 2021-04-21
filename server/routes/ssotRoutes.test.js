@@ -167,28 +167,6 @@ describe('ssot/createNewRobot', () => {
   });
 });
 
-describe('ssot/parser/get-robot-code', () => {
-  it('successfully retrieves parsed code for ssot', async () => {
-    await dbLoader.loadSsotInDb();
-    await dbLoader.loadAttributesInDb();
-    await dbLoader.loadParametersInDb();
-
-    const request = httpMocks.createRequest({
-      query: {
-        robotId: testRobotId,
-      },
-    });
-    const response = httpMocks.createResponse();
-
-    await ssotParsingController.getRobotCode(request, response);
-    expect(response.statusCode).toBe(200);
-
-    const data = await response._getData();
-    expect(data).toMatch('*** Settings ***');
-    expect(data).toMatch('*** Tasks ***');
-  });
-});
-
 describe('ssot/parser/getForId/:robotId', () => {
   it('successfully retrieves parsed code for ssot', async () => {
     await dbLoader.loadSsotInDb();
