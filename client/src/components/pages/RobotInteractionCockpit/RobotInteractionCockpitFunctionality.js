@@ -2,6 +2,9 @@ import { getAllParametersForRobot } from '../../../api/variableRetrieval';
 
 /**
  * @description For each activity of the current robot get the id, the name and all the parameters that require a user input
+ * @param {String} robotId Id of the robot for which we want to get all parameters
+ * @param {Function} setParameterList Setter function for the component state parameterList
+ * @param {Object} isMounted Describes if the component is currently mounted or not
  */
 const getActivityAndParameterInformation = (
   robotId,
