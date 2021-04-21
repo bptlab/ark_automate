@@ -100,25 +100,25 @@ const correctElementsArray = [
         "successorIds": [
             "Activity_0ay5418"
         ],
-        "id": "Activity_0ay5417",
+        "id": "Event_0ay5417",
         "type": "MARKER",
         "name": "START",
         "predecessorIds": []
     },
     {
         "successorIds": [
-            "Activity_0ay5419"
+            "Event_0ay5419"
         ],
         "id": "Activity_0ay5418",
         "type": "INSTRUCTION",
         "name": "activity One",
         "predecessorIds": [
-            "Activity_0ay5417"
+            "Event_0ay5417"
         ]
     },
     {
         "successorIds": [],
-        "id": "Activity_0ay5419",
+        "id": "Event_0ay5419",
         "type": "MARKER",
         "name": "END",
         "predecessorIds": [
@@ -127,9 +127,19 @@ const correctElementsArray = [
     }
 ]
 
+const correctInstructionBlocks = [
+    {
+        rpaApplication: 'Excel.Application',
+        name: 'activity One',
+        rpaTask: 'Open Application',
+        paramArray: ['%%visible%%', 'TestPETER']
+    }
+]
+
 export {
     correctSettingsSection,
     correctTaskSection,
     taskAndApplicationCombinations,
-    correctElementsArray
+    correctElementsArray,
+    correctInstructionBlocks
 }

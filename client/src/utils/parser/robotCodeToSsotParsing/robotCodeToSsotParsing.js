@@ -1,9 +1,10 @@
-const { default: customNotification } = require("../../notificationUtils");
 
 /**
  * @category Client
  * @module
  */
+
+const { default: customNotification } = require("../../notificationUtils");
 
 const FOURSPACE = '    ';
 
@@ -51,7 +52,7 @@ const getApplicationArray = (robotCodeSettingsSection) => {
     if (typeof robotCodeSettingsSection === 'undefined') return undefined;
     const robotCode = robotCodeSettingsSection.slice(1)
     const availableApplications = JSON.parse(sessionStorage.getItem('availableApplications'))
-    let errorWasThrown; let error;
+    let errorWasThrown;
 
     robotCode.forEach((line) => {
         const regexForRpaAlias = new RegExp(`Library +RPA[.][a-zA-Z]+`)
@@ -298,13 +299,14 @@ const getElementsArray = (robotCodeTaskSection, declaredApplications, robotId) =
  * @param {Array} elementsArray Array of all elements of the robot
  * @returns starterId as string
  */
-const getStarterId = (elementsArray) =>
-    elementsArray.forEach((singleElement) => {
-        if (singleElement.type === 'MARKER' && singleElement.predecessorIds.length === 0) {
-            return singleElement.id;
-        }
-        return 'noStarterElement';
-    })
+const getStarterId = (elementsArray) => {
+    const starterElements = elementsArray.filter((singleElement) =>
+        singleElement.type === 'MARKER' && singleElement.predecessorIds.length === 0
+    )
+    if (starterElements.length === 1) {
+        return starterElements[0].id
+    } return 'no starter id found';
+}
 /**
  * @description
  * @param {Array} robotCodeAsArray the complete robotCode w/o new lines as array
@@ -316,7 +318,9 @@ const getLineNumberForSelector = (robotCodeAsArray, selector) => {
     robotCodeAsArray.forEach((codeLine, index) => {
         if (codeLine.trim().includes(selector)) lineNumber = index;
     });
-    if (typeof lineNumber === 'undefined') customNotification('Error', `The required selector "${selector}" was not found`)
+    if (typeof lineNumber === 'undefined') {
+        customNotification('Error', `The required selector "${selector}" was not found`)
+    }
     return lineNumber;
 }
 
@@ -360,5 +364,6 @@ module.exports = {
     getLineNumberForSelector,
     getRobotCodeAsArray,
     getApplicationArray,
-    getElementsArray
+    getElementsArray,
+    getInstructionBlocksFromTaskSection
 };
