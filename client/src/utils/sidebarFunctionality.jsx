@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import { CloudUploadOutlined } from '@ant-design/icons';
@@ -51,20 +52,14 @@ const getTasksForApplication = async (application, setterObject) => {
     );
     setterObject.setDisableTaskSelection(false);
   } else {
-    fetchTasksFromDB(application)
-      .then((response) => response.json())
-      .then((data) => {
-        currentSavedTasksObject[application] = data;
-        sessionStorage.setItem(
-          'taskToApplicationCache',
-          JSON.stringify(currentSavedTasksObject)
-        );
-        setterObject.setTasksForSelectedApplication(data);
-        setterObject.setDisableTaskSelection(false);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const data = await (await fetchTasksFromDB(application)).json();
+    currentSavedTasksObject[application] = data;
+    sessionStorage.setItem(
+      'taskToApplicationCache',
+      JSON.stringify(currentSavedTasksObject)
+    );
+    setterObject.setTasksForSelectedApplication(data);
+    setterObject.setDisableTaskSelection(false);
   }
 };
 
@@ -244,41 +239,33 @@ const handleOutputVarNameChange = (activityId, newValue) => {
  * @param {String} robotId id of the robot
  */
 const onSaveToCloud = async (modeler, robotId) => {
-  modeler
-    .saveXML({ format: true })
-    .then((xml) => {
-      parseBpmnToSsot(xml, robotId).then((result) => {
-        const ssot = JSON.stringify(result);
-        sessionStorage.setItem('ssotLocal', ssot);
+  const xml = await modeler.saveXML({ format: true });
+  const result = await parseBpmnToSsot(xml, robotId);
+  const ssot = JSON.stringify(result);
+  sessionStorage.setItem('ssotLocal', ssot);
 
-        upsert();
-        notification.open({
-          message: 'Successfully saved to cloud',
-          icon: (
-            <CloudUploadOutlined
-              style={{ color: corporateDesign.colorSuccessNotificationIcon }}
-            />
-          ),
-          style: {
-            backgroundColor: corporateDesign.colorSuccessNotificationBackground,
-          },
-        });
-      });
-    })
-    .catch((err) => console.error(err));
+  upsert();
+  notification.open({
+    message: 'Successfully saved to cloud',
+    icon: (
+      <CloudUploadOutlined
+        style={{ color: corporateDesign.colorSuccessNotificationIcon }}
+      />
+    ),
+    style: {
+      backgroundColor: corporateDesign.colorSuccessNotificationBackground,
+    },
+  });
 };
 
 /**
  * @description Will parse the ssot which can be found in the database correlating to the specified id
  * @param {String} robotId id of the robot
  */
-const downloadRobotFile = (robotId) => {
-  getParsedRobotFile(robotId)
-    .then((response) => response.text())
-    .then((robotCode) => {
-      const fileName = `${sessionStorage.getItem('robotName')}.robot`;
-      downloadString(robotCode, 'text/robot', fileName);
-    });
+const downloadRobotFile = async (robotId) => {
+  const response = await (await getParsedRobotFile(robotId)).text();
+  const fileName = `${sessionStorage.getItem('robotName')}.robot`;
+  downloadString(response, 'text/robot', fileName);
 };
 
 export {
