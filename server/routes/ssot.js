@@ -9,7 +9,6 @@ const variableController = require('../controllers/ssotVariableController');
 const rpaAttributesController = require('../controllers/ssotRpaAttributes');
 
 /// PARSING ROUTES ///
-router.get('/parser/get-robot-code', parsingController.getRobotCode); // needed in the future
 router.get('/parser/getForId/:robotId', parsingController.getRobotCodeForId);
 
 /// SSOT ROUTES ///
@@ -19,10 +18,6 @@ router.get(
   retrievalController.getRobotList
 );
 router.get('/renameRobot', retrievalController.renameRobot);
-router.get(
-  '/retrieveMetadataForRobot/:robotId',
-  retrievalController.retrieveRobotMetadata
-);
 router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser); // needed in the future
 router.get('/createNewRobot', retrievalController.createNewRobot);
 router.post('/overwriteRobot/:robotId', retrievalController.overwriteRobot);
@@ -33,7 +28,6 @@ router.get(
   '/getAllParameters/:robotId',
   variableController.retrieveParametersForRobot
 );
-router.get('/', variableController.retrieveParametersForRobot);
 
 /// RPA ATTRIBUTES ROUTES ///
 router.post('/updateManyAttributes', rpaAttributesController.updateMany);

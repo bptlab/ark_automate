@@ -75,27 +75,3 @@ describe('/commands/getAllParameters', () => {
     );
   });
 });
-
-describe('/commands/get-vars-for-task', () => {
-  it('retrieves the list of all available variables for a task', async () => {
-    const request = httpMocks.createRequest({
-      query: {
-        application: testData.testRpaTask1.Application,
-        task: testData.testRpaTask1.Task,
-      },
-    });
-
-    const response = httpMocks.createResponse();
-    await rpaController.getVarsForTask(request, response);
-    const data = await response._getData();
-
-    expect(response.statusCode).toBe(200);
-    expect(data.inputVars.length).toBe(testData.testRpaTask1.inputVars.length);
-
-    const testTaskKey = testData.testRpaTask1.inputVars.keys[0];
-    expect(data.inputVars).toHaveProperty(
-      String(testTaskKey),
-      testData.testRpaTask1.inputVars[testTaskKey]
-    );
-  });
-});

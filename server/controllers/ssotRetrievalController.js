@@ -111,26 +111,6 @@ exports.shareRobotWithUser = async (req, res) => {
   }
 };
 
-// GET /retrieveMetadataForRobot/78d09f66d2ed466cf20b06f7
-exports.retrieveRobotMetadata = async (req, res) => {
-  try {
-    res.set('Content-Type', 'application/json');
-    const { robotId } = req.params;
-
-    const ssotData = await mongoose
-      .model('SSoT')
-      .findById(robotId, {
-        starterId: 1,
-        robotName: 1,
-      })
-      .exec();
-
-    res.send(ssotData);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 // GET /createNewRobot?userId=78d09f66d2ed466cf20b06f7&robotName=NewRobot
 exports.createNewRobot = async (req, res) => {
   try {
@@ -144,13 +124,13 @@ exports.createNewRobot = async (req, res) => {
       predecessorIds: [],
       successorIds: [],
       type: 'MARKER',
-      id: 'Event_startEvent'
-    }
+      id: 'Event_startEvent',
+    };
 
     const ssot = await mongoose.model('SSoT').create({
       starterId: '',
       robotName: nameWithEmptyspace,
-      elements: [ initialStartEvent ],
+      elements: [initialStartEvent],
     });
 
     const updatedSsot = await ssot
@@ -184,15 +164,11 @@ exports.overwriteRobot = async (req, res) => {
 
     const ssotData = await mongoose
       .model('SSoT')
-      .findByIdAndUpdate(
-        updatedSsot['_id'],
-        updatedSsot,
-        {
-          new: true,
-          useFindAndModify: false,
-          upsert: true
-        }
-      )
+      .findByIdAndUpdate(updatedSsot['_id'], updatedSsot, {
+        new: true,
+        useFindAndModify: false,
+        upsert: true,
+      })
       .exec();
 
     res.send(ssotData);

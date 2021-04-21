@@ -101,30 +101,6 @@ describe('ssot/renameRobot', () => {
   });
 });
 
-describe('ssot/retrieveRobotMetadata', () => {
-  it('gets the correct robot metadata', async () => {
-    await dbLoader.loadSsotInDb();
-
-    const request = httpMocks.createRequest({
-      params: {
-        robotId: testRobotId,
-      },
-    });
-    const response = httpMocks.createResponse();
-
-    await ssotRetrievalController.retrieveRobotMetadata(request, response);
-    const data = await response._getData();
-
-    expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data.robotName)).toEqual(
-      JSON.stringify(testSsot.robotName)
-    );
-    expect(JSON.stringify(data.starterId)).toEqual(
-      JSON.stringify(testSsot.starterId)
-    );
-  });
-});
-
 describe('ssot/shareRobotWithUser', () => {
   it('successfully creates a userAccessObject for robot and user', async () => {
     const request = httpMocks.createRequest({
