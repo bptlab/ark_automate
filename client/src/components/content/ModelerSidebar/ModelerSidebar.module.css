@@ -2,6 +2,10 @@
   color: var(--colorPrimaryInvertedText) !important;
 }
 
+.requiredStar {
+  color : var(--colorBackgroundCta) !important;
+}
+
 .title {
   margin-bottom: 0rem !important;
   color: var(--colorPrimaryInvertedText) !important;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Input, Tooltip, Checkbox, Typography } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { Input, Tooltip, Checkbox, Row, Typography, Form, Button } from 'antd';
+import { InfoCircleOutlined, LockOutlined, UnlockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import corporateDesign from '../../../../../layout/corporateDesign';
 import styles from '../../ModelerSidebar.module.css';
@@ -10,6 +10,7 @@ import {
 } from '../../../../../utils/attributeAndParamUtils';
 
 const { Text } = Typography;
+const { Search } = Input;
 
 /**
  * @description Renders a parameter input field for a given variable
@@ -22,6 +23,7 @@ const PPParameterInput = ({
   isRequired,
   // eslint-disable-next-line no-unused-vars
   dataType,
+  infoText,
   value,
   robotId,
   selectedActivity,
@@ -43,9 +45,10 @@ const PPParameterInput = ({
       selectedActivity,
       parameterName,
       'requireUserInput',
-      event.target.checked
+      !userInputRequired
     );
-    setUserInputRequired(event.target.checked);
+    setUserInputRequired(!userInputRequired);
+    console.log(userInputRequired)
   };
 
   const changeParamterValue = (event, parameterName) => {
@@ -57,33 +60,56 @@ const PPParameterInput = ({
     );
     setParameterValue(event.target.value);
   };
+
+  const lockInputButton = () => (
+    <LockOutlined onClick={(event) => {
+      console.log('OnClick1');
+      changeUserInputRequirement(event, variableName)
+    }} />
+    // <Checkbox onChange={buttonClick} />
+    /* <Link onClick={buttonClick} >
+      <Text type="primary">
+        Disable
+    </Text>
+    </Link> */
+
+    /*     <Checkbox
+          onChange={(event) => changeUserInputRequirement(event, variableName)}
+          checked={userInputRequired}
+          className={styles[`label-on-dark-background`]}
+        >
+          User Input required
+        </Checkbox> */
+  )
+
   return (
     <>
-      <Text className={styles[`label-on-dark-background`]}>{variableName}</Text>
+      <Row>
+        <Text className={styles[`label-on-dark-background`]}>{variableName}</Text>
+        {isRequired && (
+          <Tooltip title='HintText' className={styles.requiredStar}>
+            &nbsp;*
+          </Tooltip>
+        )
+        }
+      </Row>
+
       <Input
-        placeholder={variableName}
+        placeholder='Please type in value'
         defaultValue={value}
         value={userInputRequired ? '' : parameterValue}
         onChange={(event) => changeParamterValue(event, variableName)}
         onPressEnter={onValueChange}
         suffix={
-          isRequired && (
-            <Tooltip title='This field is required for the task to work'>
-              <InfoCircleOutlined
-                style={{ color: corporateDesign.colorBackgroundCta }}
-              />
-            </Tooltip>
-          )
-        }
+          <Tooltip title={infoText}>
+            <InfoCircleOutlined />
+          </Tooltip>}
+        addonAfter={lockInputButton()}
         disabled={userInputRequired}
       />
-      <Checkbox
-        onChange={(event) => changeUserInputRequirement(event, variableName)}
-        checked={userInputRequired}
-        className={styles[`label-on-dark-background`]}
-      >
-        User Input required
-      </Checkbox>
+
+
+
     </>
   );
 };
@@ -96,6 +122,7 @@ PPParameterInput.propTypes = {
   value: PropTypes.string.isRequired,
   robotId: PropTypes.string.isRequired,
   selectedActivity: PropTypes.string.isRequired,
+  infoText: PropTypes.string.isRequired,
 };
 
 export default PPParameterInput;

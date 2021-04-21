@@ -31,6 +31,7 @@ const PPParameterSection = ({
             isRequired={singleInput.isRequired}
             dataType={singleInput.type}
             value={singleInput.value}
+            infoText={singleInput.infoText}
             robotId={robotId}
             selectedActivity={selectedActivity}
           />

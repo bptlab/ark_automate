@@ -5,7 +5,6 @@ import Home from './pages/Home/Home';
 import Error from './pages/Error/Error';
 import RobotFile from './pages/RobotFile/RobotFile';
 import RobotOverview from './pages/RobotOverview/RobotOverview';
-import './App.css';
 
 /**
  * @description route component of the application
