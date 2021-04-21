@@ -86,7 +86,11 @@ const RobotContainer = (props) => {
       )}
       {!hoveredUpon && (
         <Col className={[styles.box, styles.robotBox]}>
-          <Row justify='center' align='middle' style={{ height: '100%' }}>
+          <Row
+            justify='center'
+            align='middle'
+            style={{ height: '100%', margin: '0.5rem' }}
+          >
             <Title className={styles.title} level={2}>
               {name}
             </Title>
