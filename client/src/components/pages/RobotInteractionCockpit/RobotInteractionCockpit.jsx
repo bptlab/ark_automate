@@ -36,8 +36,7 @@ const RobotInteractionCockpit = (match) => {
           parameterObjects.forEach((parameterObject) => {
             const { activityId } = parameterObject;
             let activityName = '';
-            let ssot = sessionStorage.getItem('ssotLocal');
-            ssot = JSON.parse(ssot);
+            const ssot = JSON.parse(sessionStorage.getItem('ssotLocal'));
             ssot.elements.forEach((element) => {
               if (element.id === activityId) {
                 activityName = element.name;

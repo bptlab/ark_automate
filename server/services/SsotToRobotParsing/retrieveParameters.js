@@ -77,13 +77,13 @@ const getAllParametersForJob = async (jobId) => {
   const jobParametersObject = await mongoose
     .model('job')
     .findById(jobId, { parameters: 1 });
-  const jobParameters = jobParametersObject.parameters;
-  return jobParameters;
+  return jobParametersObject.parameters;
 };
 
 /**
  * @description For all activities in the ssot this method will retrieve the associated parameter objects
  * @param {Object} ssot The ssot for which the parameters should be retrieved
+ * @param {String} jobId The job id identifiyng a job object from which we want to fetch additional paramters
  * @returns {Array} Array of parameter objects
  */
 const retrieveParametersFromSsotAndJob = async (ssot, jobId) => {

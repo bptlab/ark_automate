@@ -66,7 +66,9 @@ const successorTasksExist = (currentElement) =>
 /**
  * @description Receives an array of all elements and generates the .robot code for the elements recursively.
  * @param {String} id Id of the element we are looking for
- * @param {Array} elements All the elements from the SSoT
+ * @param {Array} elements All the elements from the ssot
+ * @param {Array} parameters All parameter objects of the robot
+ * @param {Array} attributes All attribute objects of the robot
  * @param {String} codeToAppend The current code we want to extend
  * @param {String} previousApplication Name of the rpa application of the previous element
  * @returns {string} Generated .robot code for the tasks section

@@ -488,8 +488,9 @@ const initSsotSessionStorage = (robotId) => {
 
   initSessionStorage('taskToApplicationCache', JSON.stringify({}));
   initSessionStorage('availableApplications', JSON.stringify([]));
-  let applicationList = sessionStorage.getItem('availableApplications');
-  applicationList = JSON.parse(applicationList);
+  const applicationList = JSON.parse(
+    sessionStorage.getItem('availableApplications')
+  );
   if (applicationList && applicationList.length < 1)
     getAvailableApplications()
       .then((response) => response.json())
