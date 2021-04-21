@@ -1,12 +1,12 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
-import { getAllParametersForRobot } from '../../../api/variableRetrieval';
 import { isRobotExecutable } from '../../../utils/robotExecution';
 import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
+import { getActivityAndParameterInformation } from './RobotInteractionCockpitFunctionality';
 
 const { Step } = Steps;
 const { Title } = Typography;
@@ -25,47 +25,6 @@ const RobotInteractionCockpit = (match) => {
   const [parameters, setParameters] = useState([]);
 
   /**
-   * @description For each activity of the current robot get the id, the name and all the parameters that require a user input
-   */
-  const getActivityAndParameterInformation = useCallback(() => {
-    getAllParametersForRobot(robotId)
-      .then((response) => response.json())
-      .then((parameterObjects) => {
-        if (parameterObjects.length > 0) {
-          const activityInformationList = [];
-          parameterObjects.forEach((parameterObject) => {
-            const { activityId } = parameterObject;
-            let activityName = '';
-            const ssot = JSON.parse(sessionStorage.getItem('ssotLocal'));
-            ssot.elements.forEach((element) => {
-              if (element.id === activityId) {
-                activityName = element.name;
-              }
-            });
-            const activityParameter = [];
-            parameterObject.rpaParameters.forEach((parameter) => {
-              if (parameter.requireUserInput) {
-                activityParameter.push(parameter);
-              }
-            });
-            if (activityParameter.length > 0) {
-              const activityInformation = {
-                activityId,
-                activityParameter,
-                activityName,
-              };
-              activityInformationList.push(activityInformation);
-            }
-          });
-
-          if (isMounted.current) {
-            setParameterList(activityInformationList);
-          }
-        }
-      });
-  }, [robotId]);
-
-  /**
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(
@@ -79,8 +38,8 @@ const RobotInteractionCockpit = (match) => {
    * @description Ensures that we only update the paramterList when the paramters we fetch form the DB have changed
    */
   useEffect(() => {
-    getActivityAndParameterInformation();
-  }, [getActivityAndParameterInformation]);
+    getActivityAndParameterInformation(robotId, setParameterList, isMounted);
+  }, [robotId]);
 
   /**
    * @description Sends a job to the server to execute a specfic robot for a specific user
