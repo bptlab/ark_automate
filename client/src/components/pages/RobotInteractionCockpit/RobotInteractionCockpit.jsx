@@ -50,6 +50,7 @@ const RobotInteractionCockpit = (match) => {
       setCurrentStep(1);
       startRobotForUser(userId, robotId, parameters);
     } else {
+      // eslint-disable-next-line no-alert
       alert('Your Bot is not fully configured and can not be executed!');
     }
   };
