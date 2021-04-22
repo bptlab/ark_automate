@@ -9,7 +9,7 @@ import socket from '../../utils/socket/socketConnections';
  * @param {String} userId Id of the user for which room should be joined
  */
 const joinRoomForUser = (userId) => {
-  socket.emit('joinUserRoom', userId);
+  socket.emit('joinUserRoom', userId, 'webApplication');
 };
 
 /**

@@ -6,7 +6,7 @@ exports.socketManager = (io, socket) => {
 
   /*  When a client wants to join a room we check if the roomId (userId) matches any of the userIds in the database.
   Once connected we check for waiting jobs and if available send them to the client to execute */
-  socket.on('joinUserRoom', (userId) => {
+  socket.on('joinUserRoom', (userId, clientType) => {
     socketHelperFunctions.getAllUserIds().then((users) => {
       if (users.includes(userId)) {
         socket.join(userId);
@@ -18,25 +18,36 @@ exports.socketManager = (io, socket) => {
           'newClientJoinedUserRoom',
           `New user has been connected to the room`
         );
-        socketHelperFunctions
-          .getAllWaitingJobsForUser(userId)
-          .then((jobList) => {
-            if (jobList.length > 0) {
-              jobList.forEach((job) => {
-                // eslint-disable-next-line camelcase
-                const { id, robot_id } = job;
-                socketHelperFunctions
-                  .getRobotCodeForJob(robot_id, id)
-                  .then((robotCode) => {
-                    socketHelperFunctions.updateRobotJobStatus(id, 'executing');
-                    io.to(userId).emit('robotExecution', {
-                      robotCode,
-                      jobId: id,
+        if (clientType !== 'webApplication') {
+          socketHelperFunctions
+            .getAllWaitingJobsForUser(userId)
+            .then((jobList) => {
+              if (jobList.length > 0) {
+                jobList.forEach((job) => {
+                  const { id, robot_id } = job;
+                  socketHelperFunctions
+                    .getRobotCodeForJob(robot_id, id)
+                    .then((robotCode) => {
+                      if (robotCode) {
+                        socketHelperFunctions.updateRobotJobStatus(
+                          id,
+                          'executing'
+                        );
+                        io.to(userId).emit('robotExecution', {
+                          robotCode,
+                          jobId: id,
+                        });
+                      } else {
+                        socketHelperFunctions.updateRobotJobStatus(
+                          id,
+                          'failed'
+                        );
+                      }
                     });
-                  });
-              });
-            }
-          });
+                });
+              }
+            });
+        }
 
         // eslint-disable-next-line no-else-return
       } else {
