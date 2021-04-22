@@ -30,5 +30,14 @@ const updateVariablesForRobot = async (
   return response;
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { updateVariablesForRobot };
+/**
+ * @description Fetch all parameter objects for a specifc robot
+ * @param { String } robotId Id of the robot we want to get all the parameters for
+ */
+const getAllParametersForRobot = async (robotId) => {
+  const requestString = `/ssot/getAllParameters/${robotId}`;
+  const response = await fetch(requestString);
+  return response;
+};
+
+export { updateVariablesForRobot, getAllParametersForRobot };

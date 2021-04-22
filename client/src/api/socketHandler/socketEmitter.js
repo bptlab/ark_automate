@@ -9,7 +9,7 @@ import socket from '../../utils/socket/socketConnections';
  * @param {String} userId Id of the user for which room should be joined
  */
 const joinRoomForUser = (userId) => {
-  socket.emit('joinUserRoom', userId);
+  socket.emit('joinUserRoom', userId, 'webApplication');
 };
 
 /**
@@ -17,8 +17,8 @@ const joinRoomForUser = (userId) => {
  * @param {String} userId Id of the user for which to start a robot for
  * @param {String} robotId Id of the robot which should be started
  */
-const startRobotForUser = (userId, robotId) => {
-  socket.emit('robotExecutionJobs', { robotId, userId });
+const startRobotForUser = (userId, robotId, parameters) => {
+  socket.emit('robotExecutionJobs', { robotId, userId, parameters });
 };
 
 export { joinRoomForUser, startRobotForUser };

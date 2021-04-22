@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Input, Typography, Tooltip } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import corporateDesign from '../../../../../layout/corporateDesign';
-import styles from '../../ModelerSidebar.module.css';
 
 const { Text } = Typography;
 
@@ -14,13 +13,11 @@ const { Text } = Typography;
  */
 const PPNameSection = ({ element, nameChanged }) => (
   <>
-    <Text className={styles[`label-on-dark-background`]} strong>
-      Name:
-    </Text>
+    <Text className='label-on-dark-background'>Name:</Text>
     <Input
       placeholder='name'
       suffix={
-        <Tooltip title='the name of your task, gateway or event'>
+        <Tooltip title='The name of your task, gateway or event'>
           <InfoCircleOutlined
             style={{ color: corporateDesign.colorPrimaryInverted }}
           />
