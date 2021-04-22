@@ -18,7 +18,7 @@ router.get(
   retrievalController.getRobotList
 );
 router.get('/renameRobot', retrievalController.renameRobot);
-router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser); // needed in the future
+router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser);
 router.get('/createNewRobot', retrievalController.createNewRobot);
 router.post('/overwriteRobot/:robotId', retrievalController.overwriteRobot);
 

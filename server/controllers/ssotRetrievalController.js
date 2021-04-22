@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 const mongoose = require('mongoose');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
@@ -164,7 +165,7 @@ exports.overwriteRobot = async (req, res) => {
 
     const ssotData = await mongoose
       .model('SSoT')
-      .findByIdAndUpdate(updatedSsot['_id'], updatedSsot, {
+      .findByIdAndUpdate(updatedSsot._id, updatedSsot, {
         new: true,
         useFindAndModify: false,
         upsert: true,
