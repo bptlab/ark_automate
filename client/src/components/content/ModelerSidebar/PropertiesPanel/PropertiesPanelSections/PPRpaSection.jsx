@@ -3,7 +3,6 @@ import { Typography, Space } from 'antd';
 import PropTypes from 'prop-types';
 import PropertiesPanelApplicationDropdown from '../PropertiesPanelComponents/PPApplicationDropdown';
 import PropertiesPanelTaskDropdown from '../PropertiesPanelComponents/PPTaskDropdown';
-import styles from '../../ModelerSidebar.module.css';
 
 const { Text } = Typography;
 
@@ -20,9 +19,7 @@ const PPRpaSection = ({
   selectedActivity,
 }) => (
   <>
-    <Text className={styles[`label-on-dark-background`]} strong>
-      Actions:{' '}
-    </Text>
+    <Text className='label-on-dark-background'>Actions: </Text>
     <Space direction='vertical' style={{ width: '100%' }}>
       <PropertiesPanelApplicationDropdown
         onApplicationSelection={applicationSelectionUpdated}

@@ -144,13 +144,13 @@ exports.createNewRobot = async (req, res) => {
       predecessorIds: [],
       successorIds: [],
       type: 'MARKER',
-      id: 'Event_startEvent'
-    }
+      id: 'Event_startEvent',
+    };
 
     const ssot = await mongoose.model('SSoT').create({
       starterId: '',
       robotName: nameWithEmptyspace,
-      elements: [ initialStartEvent ],
+      elements: [initialStartEvent],
     });
 
     const updatedSsot = await ssot
@@ -184,15 +184,12 @@ exports.overwriteRobot = async (req, res) => {
 
     const ssotData = await mongoose
       .model('SSoT')
-      .findByIdAndUpdate(
-        updatedSsot['_id'],
-        updatedSsot,
-        {
-          new: true,
-          useFindAndModify: false,
-          upsert: true
-        }
-      )
+      // eslint-disable-next-line no-underscore-dangle
+      .findByIdAndUpdate(updatedSsot._id, updatedSsot, {
+        new: true,
+        useFindAndModify: false,
+        upsert: true,
+      })
       .exec();
 
     res.send(ssotData);

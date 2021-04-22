@@ -4,18 +4,13 @@
  */
 
 /**
-* @description Will retrieve the needed variables for a new application/task tuple and return that, as well as updating the ssot with those new variables
-* @param {String} robotId - String including the Id of the robot
-* @param {String} activityId - String including the Id of the activity
-* @param {String} application - String including the application
-* @param {String} task - String including the task
-*/
-const variablesForNewTask = async (
-  robotId,
-  activityId,
-  application,
-  task
-) => {
+ * @description Will retrieve the needed variables for a new application/task tuple and return that, as well as updating the ssot with those new variables
+ * @param {String} robotId - String including the Id of the robot
+ * @param {String} activityId - String including the Id of the activity
+ * @param {String} application - String including the application
+ * @param {String} task - String including the task
+ */
+const variablesForNewTask = async (robotId, activityId, application, task) => {
   const applicationWithoutEmptySpaces = application.replace(/\s/g, '+');
   const taskWithoutEmptySpaces = task.replace(/\s/g, '+');
   const requestString = `/ssot/getVariablesForNewTask/?robotId=${robotId}&activityId=${activityId}&application=${applicationWithoutEmptySpaces}&task=${taskWithoutEmptySpaces}`;
@@ -50,20 +45,31 @@ const updateVariablesForRobot = async (
   const requestString = `/ssot/updateVariables/?robotId=${robotId}&activityId=${activityId}`;
   const updateObject = {
     parameters: newVariableList,
-    output: outputVariableName
+    output: outputVariableName,
   };
   const response = await fetch(requestString, {
     body: JSON.stringify(updateObject),
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-    }
+      'Content-Type': 'application/json;charset=utf-8',
+    },
   });
+  return response;
+};
+
+/**
+ * @description Fetch all parameter objects for a specifc robot
+ * @param { String } robotId Id of the robot we want to get all the parameters for
+ */
+const getAllParametersForRobot = async (robotId) => {
+  const requestString = `/ssot/getAllParameters/${robotId}`;
+  const response = await fetch(requestString);
   return response;
 };
 
 export {
   variablesForNewTask,
   checkRobotForExistingVariables,
-  updateVariablesForRobot
+  updateVariablesForRobot,
+  getAllParametersForRobot,
 };
