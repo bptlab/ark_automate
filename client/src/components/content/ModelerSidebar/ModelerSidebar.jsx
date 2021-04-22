@@ -221,8 +221,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    * the values in the ssot
    * @param {Object} value new value of input field
    */
-  const handleInputParameterChange = (value) => {
-    setSingleParameter(elementState.currentElement.id, value);
+  const handleInputParameterChange = (value, paramName) => {
+    setSingleParameter(elementState.currentElement.id, value, paramName);
   };
 
   /**

@@ -57,7 +57,7 @@ const PPParameterInput = ({
    * @param {Object} event from the input field
    * @param {String} parameterName Name of the currently handled parameter
    */
-  const changeParamterValue = (event, parameterName) => {
+  const changeParameterValue = (event, parameterName) => {
     setPropertyForParameter(
       selectedActivity,
       parameterName,
@@ -105,8 +105,8 @@ const PPParameterInput = ({
         placeholder={returnPlaceholderValue()}
         defaultValue={value}
         value={userInputRequired ? '' : parameterValue}
-        onChange={(event) => changeParamterValue(event, variableName)}
-        onPressEnter={onValueChange}
+        onChange={(event) => changeParameterValue(event, variableName)}
+        onPressEnter={(event) => onValueChange(event, variableName)}
         suffix={
           <Tooltip title={infoText}>
             <InfoCircleOutlined />
