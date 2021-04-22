@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Input, Tooltip, Checkbox, Row, Typography, Form, Button } from 'antd';
-import { InfoCircleOutlined, LockOutlined, UnlockOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Input, Tooltip, Typography } from 'antd';
+import { InfoCircleOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import corporateDesign from '../../../../../layout/corporateDesign';
 import styles from '../../ModelerSidebar.module.css';
 import {
   parameterPropertyStatus,
@@ -10,7 +9,6 @@ import {
 } from '../../../../../utils/attributeAndParamUtils';
 
 const { Text } = Typography;
-const { Search } = Input;
 
 /**
  * @description Renders a parameter input field for a given variable
@@ -40,7 +38,11 @@ const PPParameterInput = ({
     parameterPropertyStatus(robotId, selectedActivity, variableName, 'value')
   );
 
-  const changeUserInputRequirement = (event, parameterName) => {
+  /**
+   * @description changes the state for "userInputRequired" and also the parameter value 
+   * @param {String} parameterName Name of the currently handled parameter
+   */
+  const changeUserInputRequirement = (parameterName) => {
     setPropertyForParameter(
       selectedActivity,
       parameterName,
@@ -48,9 +50,13 @@ const PPParameterInput = ({
       !userInputRequired
     );
     setUserInputRequired(!userInputRequired);
-    console.log(userInputRequired)
   };
 
+  /**
+   * @description changes the parameter value
+   * @param {Object} event from the input field
+   * @param {String} parameterName Name of the currently handled parameter
+   */
   const changeParamterValue = (event, parameterName) => {
     setPropertyForParameter(
       selectedActivity,
@@ -61,41 +67,42 @@ const PPParameterInput = ({
     setParameterValue(event.target.value);
   };
 
-  const lockInputButton = () => (
-    <LockOutlined onClick={(event) => {
-      console.log('OnClick1');
-      changeUserInputRequirement(event, variableName)
-    }} />
-    // <Checkbox onChange={buttonClick} />
-    /* <Link onClick={buttonClick} >
-      <Text type="primary">
-        Disable
-    </Text>
-    </Link> */
+  /**
+   * @description returns the Loch/Unlock-Icon on whether the Input-field is locked or unlocked
+   * @returns the corresponding icon
+   */
+  const returnLockIcon = () => {
+    if (userInputRequired) {
+      return (
+        <LockOutlined onClick={(event) => {
+          changeUserInputRequirement(event, variableName)
+        }} />
+      )
+    }
+    return (
+      <UnlockOutlined onClick={(event) => {
+        changeUserInputRequirement(event, variableName)
+      }} />
+    )
+  }
 
-    /*     <Checkbox
-          onChange={(event) => changeUserInputRequirement(event, variableName)}
-          checked={userInputRequired}
-          className={styles[`label-on-dark-background`]}
-        >
-          User Input required
-        </Checkbox> */
-  )
+  /**
+   * @returns the input value depending on whether the field is locked or unlocked
+   */
+  const returnPlaceholderValue = () => (
+    userInputRequired ? 'Will be specified at bot start' : 'Please type in value')
 
   return (
     <>
-      <Row>
-        <Text className={styles[`label-on-dark-background`]}>{variableName}</Text>
-        {isRequired && (
-          <Tooltip title='HintText' className={styles.requiredStar}>
-            &nbsp;*
-          </Tooltip>
-        )
-        }
-      </Row>
+      <Text className={styles[`label-on-dark-background`]}>{variableName}</Text>
+      {isRequired && (
+        <Tooltip title='This field is required' className={styles.requiredStar}>
+          &nbsp;*
+        </Tooltip>
+      )}
 
       <Input
-        placeholder='Please type in value'
+        placeholder={returnPlaceholderValue()}
         defaultValue={value}
         value={userInputRequired ? '' : parameterValue}
         onChange={(event) => changeParamterValue(event, variableName)}
@@ -104,12 +111,9 @@ const PPParameterInput = ({
           <Tooltip title={infoText}>
             <InfoCircleOutlined />
           </Tooltip>}
-        addonAfter={lockInputButton()}
+        addonAfter={returnLockIcon()}
         disabled={userInputRequired}
       />
-
-
-
     </>
   );
 };
