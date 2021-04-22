@@ -1,4 +1,4 @@
-const ssotToRobotparser = require('../services/SsotToRobotParsing/SsotToRobotParser.js');
+const ssotToRobotparser = require('../../services/SsotToRobotParsing/SsotToRobotParser.js');
 
 exports.getRobotCodeForId = async (req, res) => {
   try {

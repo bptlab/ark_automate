@@ -4,7 +4,7 @@
  */
 const mongoose = require('mongoose');
 // eslint-disable-next-line no-unused-vars
-const ssotModels = require('../../models/singleSourceOfTruthModel.js');
+const ssotModels = require('../../api/models/singleSourceOfTruthModel.js');
 
 const ACTIVITY_IDENTIFIER = 'INSTRUCTION';
 const LINEBREAK = '\n';
