@@ -165,6 +165,7 @@ exports.overwriteRobot = async (req, res) => {
 
     const ssotData = await mongoose
       .model('SSoT')
+      // eslint-disable-next-line no-underscore-dangle
       .findByIdAndUpdate(updatedSsot._id, updatedSsot, {
         new: true,
         useFindAndModify: false,

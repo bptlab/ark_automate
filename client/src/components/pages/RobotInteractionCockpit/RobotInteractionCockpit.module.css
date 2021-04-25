@@ -1,0 +1,9 @@
+.button {
+  background-color: var(--colorPrimaryInverted);
+  border-color: var(--colorPrimaryInverted);
+}
+
+.cardStyle {
+  margin: '24px' !important;
+  border-radius: '5px' !important;
+}

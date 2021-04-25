@@ -11,15 +11,42 @@ mongoose.set('useFindAndModify', false);
 /**
  * @description Fetches the ssot of a given robot from the database and parses the ssot to robot code
  * @param {String} robotId the id of the robot we want the robot code for
+ * @param {String} jobId the id of the current job
  */
-exports.getRobotCode = async (robotId) => {
+exports.getRobotCodeForJob = async (robotId, jobId) => {
   try {
-    const ssot = await mongoose.model('SSoT').findById(robotId).exec();
-    const robotCode = ssotToRobotParser.parseSsotToRobotCode(ssot);
+    const robotCode = ssotToRobotParser.parseCodeForJob(robotId, jobId);
     return robotCode;
   } catch (err) {
     return console.error(err);
   }
+};
+
+/**
+ * @description Fetches the ssot of a given robot from the database and parses the ssot to robot code
+ * @param {String} robotId the id of the robot we want the robot code for
+ */
+exports.getRobotCode = async (robotId) => {
+  try {
+    const robotCode = ssotToRobotParser.parseSsotById(robotId);
+    return robotCode;
+  } catch (err) {
+    return console.error(err);
+  }
+};
+
+/**
+ * @description Finds a specific robot job and retrieves the parameter array
+ * @param {String} jobId the id of the robot job that we want to get all the parameters from
+ */
+exports.getRobotJobParameters = async (jobId) => {
+  const robotJobParameters = await mongoose
+    .model('job')
+    .findById(jobId, {
+      parameters: 1,
+    })
+    .exec();
+  return robotJobParameters;
 };
 
 /**
@@ -60,6 +87,7 @@ exports.createJob = async (userId, robotId, status, parameters) => {
   } catch (err) {
     if (err) {
       console.error(err);
+      return undefined;
     }
   }
 };

@@ -59,7 +59,7 @@ const PPParameterInput = ({
   };
   return (
     <>
-      <Text className={styles[`label-on-dark-background`]}>{variableName}</Text>
+      <Text className='label-on-dark-background'>{variableName}</Text>
       <Input
         placeholder={variableName}
         defaultValue={value}
@@ -80,7 +80,7 @@ const PPParameterInput = ({
       <Checkbox
         onChange={(event) => changeUserInputRequirement(event, variableName)}
         checked={userInputRequired}
-        className={styles[`label-on-dark-background`]}
+        className='label-on-dark-background'
       >
         User Input required
       </Checkbox>
