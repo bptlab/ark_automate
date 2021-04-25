@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 const mongoose = require('mongoose');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
@@ -106,26 +107,6 @@ exports.shareRobotWithUser = async (req, res) => {
       userId: req.query.userId,
     });
     res.send(uao);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-// GET /retrieveMetadataForRobot/78d09f66d2ed466cf20b06f7
-exports.retrieveRobotMetadata = async (req, res) => {
-  try {
-    res.set('Content-Type', 'application/json');
-    const { robotId } = req.params;
-
-    const ssotData = await mongoose
-      .model('SSoT')
-      .findById(robotId, {
-        starterId: 1,
-        robotName: 1,
-      })
-      .exec();
-
-    res.send(ssotData);
   } catch (err) {
     console.error(err);
   }

@@ -4,33 +4,6 @@
  */
 
 /**
- * @description Will retrieve the needed variables for a new application/task tuple and return that, as well as updating the ssot with those new variables
- * @param {String} robotId - String including the Id of the robot
- * @param {String} activityId - String including the Id of the activity
- * @param {String} application - String including the application
- * @param {String} task - String including the task
- */
-const variablesForNewTask = async (robotId, activityId, application, task) => {
-  const applicationWithoutEmptySpaces = application.replace(/\s/g, '+');
-  const taskWithoutEmptySpaces = task.replace(/\s/g, '+');
-  const requestString = `/ssot/getVariablesForNewTask/?robotId=${robotId}&activityId=${activityId}&application=${applicationWithoutEmptySpaces}&task=${taskWithoutEmptySpaces}`;
-
-  const response = await fetch(requestString);
-  return response;
-};
-
-/**
- * @description Fetch all variables for an existing activity
- * @param {String} robotId - String including the Id of the robot
- * @param {String} activityId - String including the Id of the activity
- */
-const checkRobotForExistingVariables = async (robotId, activityId) => {
-  const requestString = `/ssot/checkForExistingVariables/?robotId=${robotId}&activityId=${activityId}`;
-  const response = await fetch(requestString);
-  return response;
-};
-
-/**
  * @description Will update the variables for the specified activity
  * @param {String} robotId - String including the Id of the robbot
  * @param {String} activityId - String including the Id of the activity
@@ -67,9 +40,4 @@ const getAllParametersForRobot = async (robotId) => {
   return response;
 };
 
-export {
-  variablesForNewTask,
-  checkRobotForExistingVariables,
-  updateVariablesForRobot,
-  getAllParametersForRobot,
-};
+export { updateVariablesForRobot, getAllParametersForRobot };
