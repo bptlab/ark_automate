@@ -84,10 +84,21 @@ const getApplicationArray = (robotCodeSettingsSection) => {
 }
 
 /**
+ * @description retrieves the outputVariable name from the current code line
+ * @param {String} currentLine current line of RPAf code
+ * @param {String} splitPlaceholder placeholder to split the string
+ * @returns outputVariable as string
+ */
+const getOutputName = (currentLine, splitPlaceholder) => {
+    const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
+    return currentLine.slice(0, indexOfFirstSplitPlaceholder).replace('${', '').replace('}', '').replace('=', '');
+}
+
+/**
  * @description retrieves the rpa task from the current code line
  * @param {String} currentLine current line of RPAf code
  * @param {String} splitPlaceholder placeholder to split the string
- * @returns rpaTask as String
+ * @returns rpaTask as string
  */
 const getRpaTask = (currentLine, splitPlaceholder) => {
     const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
@@ -99,7 +110,7 @@ const getRpaTask = (currentLine, splitPlaceholder) => {
  * @param {String} currentLine current line of RPAf code
  * @param {String} splitPlaceholder placeholder to split the string
  * @param {String} instructionBlocks current intruction block to get the rpaTask
- * @returns rpaParameters as Array
+ * @returns rpaParameters as array
  */
 const getRpaParameters = (currentLine, splitPlaceholder, instructionBlocks) => {
     const parametersWithoutRpaTask = currentLine.replace(instructionBlocks[instructionBlocks.length - 1].rpaTask + splitPlaceholder, '')
@@ -117,7 +128,8 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
     let currentApplication;
     let errorWasThrown;
     const instructionBlocks = [];
-    const regexForElementNameLine = new RegExp(`#`)
+    const regexForElementNameLine = (/#/)
+    const regexForOutputVariable = (/\${(.)+} =/)
     const splitPlaceholder = '§&§';
 
     robotCodeTaskSection.slice(1).forEach((line) => {
@@ -127,6 +139,7 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
         const currentLineContainsElementName = regexForElementNameLine.test(currentLine);
         const currentLineIncludesSplitPlaceholder = currentLine.includes(splitPlaceholder);
         const currentLineHasNoSpecifiedApplication = typeof currentApplication === 'undefined';
+        const currentLineDefinesOutputValue = regexForOutputVariable.test(currentLine);
 
         if (currentLineDefinesNewApplication) {
             currentApplication = currentLine;
@@ -145,18 +158,25 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
         }
 
         if (currentLineContainsElementName) {
-            instructionBlocks.push({ rpaApplication: currentApplication, name: currentLine.substring(1) })
+            instructionBlocks.push({ rpaApplication: currentApplication, name: currentLine.substring(1).trim() })
             return;
         }
 
+        currentLine = currentLine.replaceAll(FOURSPACE, splitPlaceholder);
+
+        if (currentLineDefinesOutputValue) {
+            const outputValueName = getOutputName(currentLine, splitPlaceholder)
+            instructionBlocks[instructionBlocks.length - 1].outputName = outputValueName;
+
+            const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
+            currentLine = currentLine.slice(indexOfFirstSplitPlaceholder + splitPlaceholder.length)
+        }
+
         if (!errorWasThrown) {
-            currentLine = currentLine.replaceAll(FOURSPACE, splitPlaceholder);
             instructionBlocks[instructionBlocks.length - 1].rpaTask =
                 getRpaTask(currentLine, splitPlaceholder);
             instructionBlocks[instructionBlocks.length - 1].paramArray =
                 getRpaParameters(currentLine, splitPlaceholder, instructionBlocks);
-
-            // TODO: implement parsing of outputVariables from RPAf code
         }
     })
     return (errorWasThrown ? undefined : instructionBlocks);
@@ -233,7 +253,7 @@ const buildSingleParameterObject = (singleAtrributeObject, singleElementFromTask
         if (singleParameterObject.requireUserInput) {
             singleParameterObject.value = '';
         } else if (currentParameterTakesOutputValue) {
-            const outputValueName = singleParamArray[index].slice(2).slice(0, singleParamArray[index].length - 3)
+            const outputValueName = singleParamArray[index].slice(2).slice(0, singleParamArray[index].length - 3).trim()
             singleParameterObject.value = `$$${outputValueName}$$`;
         } else {
             singleParameterObject.value = singleParamArray[index];
@@ -245,7 +265,8 @@ const buildSingleParameterObject = (singleAtrributeObject, singleElementFromTask
     return {
         activityId,
         rpaParameters: parameterArray,
-        robotId
+        robotId,
+        outputVariable: singleElementFromTasksSection.outputName
     };
 }
 
