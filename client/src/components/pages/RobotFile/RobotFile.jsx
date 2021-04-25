@@ -41,7 +41,7 @@ const RobotFile = () => {
    * This function will retrieve the code from the editor, parse it to a ssot and write the
    * resulting ssot into the sessionStorage.
    */
-  const onSaveToCloud = /* async */ () => {
+  const onSaveToCloud = () => {
     const ssot = parseRobotCodeToSsot(code);
     if (typeof ssot === 'undefined') {
       customNotification('Warning', 'Because a parsing error occurred, the robot was not saved to cloud.')

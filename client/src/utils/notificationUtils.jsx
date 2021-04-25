@@ -4,7 +4,7 @@ import { CheckCircleOutlined, CloseCircleOutlined, CloudUploadOutlined, WarningO
 import corporateDesign from '../layout/corporateDesign';
 
 /**
- * @description will first consider if a special icon is requested and otherwise return the corresponding icon for the notification type.
+ * @description Will first consider if a special icon is requested and otherwise return the corresponding icon for the notification type.
  * @param {String} type one from 'Success', 'Warning' or 'Alert' - defines type (and with it the color scheme) for the notification Box 
  * @param {String} icon The icon that will be displayed in the notification. (Must be imported and handled in notificationUtils accordingly!)
  * @param {String} colorName Returns the css selector for the matching notification type

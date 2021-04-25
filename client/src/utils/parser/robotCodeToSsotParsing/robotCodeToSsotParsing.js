@@ -10,7 +10,6 @@ const FOURSPACE = '    ';
 
 
 /**
- * 
  * @returns "uniqueId" which is just an increment from the counter in the local storage 
  */
 const getUniqueId = () => {
@@ -20,17 +19,19 @@ const getUniqueId = () => {
 }
 
 /**
- * #todo
- * @returns 
+ * @returns unique Id; wrapped with the activity nomenclature
  */
 const getActivityId = () => `Activity_0ay${getUniqueId()}`
-const getEventId = () => `Event_0ay${getUniqueId()}`
 
+/**
+ * @returns unique Id; wrapped with the event nomenclature
+ */
+const getEventId = () => `Event_0ay${getUniqueId()}`
 
 /**
  * @description Splits the robot code into an array and deletes all empty lines 
- * @param {String} robotCode Code from the Code editor
- * @returns Robot code w/o empty lines as an array
+ * @param {String} robotCode Code from the code-editor
+ * @returns Robot code without empty lines as an array
  */
 const getRobotCodeAsArray = (robotCode) => {
     const robotCodeAsArray = robotCode.split('\n');
@@ -162,6 +163,7 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
 }
 
 /**
+ * @description builds a dummy startMarker element and returns them
  * @returns dummy startMarker as JSON => currently MARKERS aren't defined
  * in our RPAf-Syntax and therefore there aren't implemented
  */
@@ -174,6 +176,7 @@ const buildStartMarker = () => ({
 })
 
 /**
+ * @description builds a dummy endMarker element and returns them
  * @param {Object} predecessor as an Object to get the predecessorId
  * @returns dummy endMarker as JSON => currently MARKERS aren't defined
  * in our RPAf-Syntax and therefore there aren't implemented
@@ -222,15 +225,10 @@ const buildSingleParameterObject = (singleAtrributeObject, singleElementFromTask
 
 
     const parameterArray = combinationObject.inputVars.map((singleInputVariable, index) => {
-        const singleParameterObject = {
-            index: singleInputVariable.index,
-            infoText: singleInputVariable.infoText,
-            isRequired: singleInputVariable.isRequired,
-            name: singleInputVariable.name,
-            type: singleInputVariable.type,
-            value: (singleParamArray[index].startsWith('%%') && singleParamArray[index].endsWith('%%') ? '' : singleParamArray[index]),
-            requireUserInput: (!!(singleParamArray[index].startsWith('%%') && singleParamArray[index].endsWith('%%'))),
-        };
+        const singleParameterObject = { ...singleInputVariable };
+
+        singleParameterObject.requireUserInput = (!!(singleParamArray[index].startsWith('%%') && singleParamArray[index].endsWith('%%')))
+        singleParameterObject.value = (singleParameterObject.requireUserInput ? '' : singleParamArray[index])
 
         return singleParameterObject;
     })

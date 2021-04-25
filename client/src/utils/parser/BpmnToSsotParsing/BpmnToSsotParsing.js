@@ -193,7 +193,6 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   if (typeof bpmnActivities === 'undefined') bpmnActivities = [];
 
   const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
-  console.log(bpmnStartEvent)
   const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
   const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task']
     .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'])
@@ -202,7 +201,6 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   let elementsArray = findElements(flows, bpmnShapes);
   elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
   elementsArray = enrichMarkerElements(elementsArray, bpmnStartEvent, bpmnEndEvent);
-  console.log(elementsArray)
 
   ssot.elements = elementsArray;
   return ssot;
