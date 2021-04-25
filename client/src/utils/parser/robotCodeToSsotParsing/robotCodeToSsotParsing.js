@@ -225,10 +225,19 @@ const buildSingleParameterObject = (singleAtrributeObject, singleElementFromTask
 
 
     const parameterArray = combinationObject.inputVars.map((singleInputVariable, index) => {
+        const currentParameterRequiresUserInput = (singleParamArray[index].startsWith('%%') && singleParamArray[index].endsWith('%%'));
+        const currentParameterTakesOutputValue = (singleParamArray[index].startsWith('${') && singleParamArray[index].endsWith('}'));
         const singleParameterObject = { ...singleInputVariable };
 
-        singleParameterObject.requireUserInput = (!!(singleParamArray[index].startsWith('%%') && singleParamArray[index].endsWith('%%')))
-        singleParameterObject.value = (singleParameterObject.requireUserInput ? '' : singleParamArray[index])
+        singleParameterObject.requireUserInput = (currentParameterRequiresUserInput)
+        if (singleParameterObject.requireUserInput) {
+            singleParameterObject.value = '';
+        } else if (currentParameterTakesOutputValue) {
+            const outputValueName = singleParamArray[index].slice(2).slice(0, singleParamArray[index].length - 3)
+            singleParameterObject.value = `$$${outputValueName}$$`;
+        } else {
+            singleParameterObject.value = singleParamArray[index];
+        }
 
         return singleParameterObject;
     })
