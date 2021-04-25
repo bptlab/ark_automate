@@ -137,7 +137,7 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
  * @returns {Array}  Array of elements for single source of truth
  */
 const enrichMarkerElements = (elementsArray) => {
-  const eventRegularExpression = new RegExp('^Event_.*$');
+  const eventRegularExpression = (/^Event_.*$/);
   elementsArray.forEach((element) => {
     if (eventRegularExpression.test(element.id)) {
       element.type = 'MARKER';

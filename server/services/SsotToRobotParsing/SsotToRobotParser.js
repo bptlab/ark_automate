@@ -62,7 +62,7 @@ const setOutputVar = (paramObject) => {
   let newCodeLine = FOURSPACE;
 
   if (paramObject.outputVariable) {
-    newCodeLine += `\${${paramObject.outputVariable}} =${FOURSPACE}`;
+    newCodeLine += `\${${paramObject.outputVariable}} = `;
   }
 
   return newCodeLine;

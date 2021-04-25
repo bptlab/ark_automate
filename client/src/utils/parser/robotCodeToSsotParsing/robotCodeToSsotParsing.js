@@ -1,13 +1,11 @@
-
 /**
  * @category Client
  * @module
  */
 
-const { default: customNotification } = require("../../notificationUtils");
+const { default: customNotification } = require('../../notificationUtils');
 
 const FOURSPACE = '    ';
-
 
 /**
  * @returns "uniqueId" which is just an increment from the counter in the local storage 
@@ -56,7 +54,7 @@ const getApplicationArray = (robotCodeSettingsSection) => {
     let errorWasThrown;
 
     robotCode.forEach((line) => {
-        const regexForRpaAlias = new RegExp(`Library +RPA[.][a-zA-Z]+`)
+        const regexForRpaAlias = (/Library +RPA[.][a-zA-Z]+/)
 
         const elementStartsWithLibrary = line.startsWith('Library ');
         const rpaAliasIsCorrect = regexForRpaAlias.test(line);
@@ -86,12 +84,11 @@ const getApplicationArray = (robotCodeSettingsSection) => {
 /**
  * @description retrieves the outputVariable name from the current code line
  * @param {String} currentLine current line of RPAf code
- * @param {String} splitPlaceholder placeholder to split the string
  * @returns outputVariable as string
  */
-const getOutputName = (currentLine, splitPlaceholder) => {
-    const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
-    return currentLine.slice(0, indexOfFirstSplitPlaceholder).replace('${', '').replace('}', '').replace('=', '');
+const getOutputName = (currentLine) => {
+    const indexOfEqualsSign = currentLine.indexOf('=');
+    return currentLine.slice(0, indexOfEqualsSign).replace('${', '').replace('}', '').trim();
 }
 
 /**
@@ -115,6 +112,23 @@ const getRpaTask = (currentLine, splitPlaceholder) => {
 const getRpaParameters = (currentLine, splitPlaceholder, instructionBlocks) => {
     const parametersWithoutRpaTask = currentLine.replace(instructionBlocks[instructionBlocks.length - 1].rpaTask + splitPlaceholder, '')
     return parametersWithoutRpaTask.split([splitPlaceholder]);
+}
+
+/**
+ * @description deletes everything before the first occurence of '=' and then trims all emptyspace until the rpa task name to get the expected format
+ * @param {String} currentLine current line of RPAf code
+ * @param {String} splitPlaceholder placeholder to split the string
+ * @returns the current line without the outputVariableName prefix as string
+ */
+const currentLineWithoutOutputVariableName = (completeLine, splitPlaceholder) => {
+    const indexOfEqualsSign = completeLine.indexOf('=');
+    let currentLine = completeLine.slice(indexOfEqualsSign + 1);
+    if (currentLine.startsWith(splitPlaceholder)) {
+        currentLine = currentLine.replace(splitPlaceholder, '').trim();
+    } else {
+        currentLine = currentLine.trim();
+    }
+    return currentLine;
 }
 
 /**
@@ -165,11 +179,10 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
         currentLine = currentLine.replaceAll(FOURSPACE, splitPlaceholder);
 
         if (currentLineDefinesOutputValue) {
-            const outputValueName = getOutputName(currentLine, splitPlaceholder)
+            const outputValueName = getOutputName(currentLine);
             instructionBlocks[instructionBlocks.length - 1].outputName = outputValueName;
 
-            const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
-            currentLine = currentLine.slice(indexOfFirstSplitPlaceholder + splitPlaceholder.length)
+            currentLine = currentLineWithoutOutputVariableName(currentLine, splitPlaceholder);
         }
 
         if (!errorWasThrown) {
