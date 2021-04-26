@@ -56,10 +56,22 @@ const createNewRobot = async (userId, newName) => {
   return response;
 };
 
+/**
+ * @description Will send a backend call to delete a robot
+ * @param {String} robotId Id of the robot that is deleted
+ */
+const deleteRobotFromDB = async (robotId) => {
+  const requestStringParameters = `/ssot/delete/${robotId}`;
+  await fetch(requestStringParameters, { method: 'DELETE' }).catch((err) => {
+    console.error(err);
+  });
+};
+
 export {
   getSsotFromDB,
   fetchSsotsForUser,
   changeSsotName,
   retrieveMetadataForRobot,
   createNewRobot,
+  deleteRobotFromDB,
 };

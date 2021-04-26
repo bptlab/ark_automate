@@ -179,7 +179,7 @@ exports.overwriteRobot = async (req, res) => {
   }
 };
 
-// DELETE /78d09f66d2ed466cf20b06f7
+// DELETE /ssot/delete/78d09f66d2ed466cf20b06f7
 exports.deleteRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
@@ -205,6 +205,8 @@ exports.deleteRobot = async (req, res) => {
       .model('parameter')
       .deleteMany({ robotId: usableRobotId })
       .exec();
+
+    await mongoose.model('job').deleteMany({ robot_id: usableRobotId }).exec();
 
     res.send(response);
   } catch (err) {

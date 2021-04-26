@@ -10,11 +10,8 @@ import {
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
-import {
-  initSsotSessionStorage,
-  deleteRobotFromDB,
-} from '../../../utils/attributeAndParamUtils';
-import { changeSsotName } from '../../../api/ssotRetrieval';
+import { initSsotSessionStorage } from '../../../utils/attributeAndParamUtils';
+import { changeSsotName, deleteRobotFromDB } from '../../../api/ssotRetrieval';
 
 const { Title } = Typography;
 
@@ -24,7 +21,7 @@ const { Title } = Typography;
  * @category Client
  */
 const RobotContainer = (props) => {
-  const { robotId, robotName, userId, removeRobotFromOverview } = props;
+  const { robotId, robotName, userId, refreshOverview } = props;
   const [name, setRobotName] = useState(robotName);
   const [popConfirmVisible, setPopConfirmVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
@@ -60,23 +57,9 @@ const RobotContainer = (props) => {
       setTimeout(() => {
         setPopConfirmVisible(false);
         setConfirmLoading(false);
-        removeRobotFromOverview(robotId);
+        refreshOverview(robotId);
       }, 1000);
     });
-  };
-
-  /**
-   * @description Displays the confirmation dialog when user wants to delete a robot
-   */
-  const showPopConfirm = () => {
-    setPopConfirmVisible(true);
-  };
-
-  /**
-   * @description Removes the confirmation dialog when user cancels the deletion process of a robot
-   */
-  const handlePopConfirmCancel = () => {
-    setPopConfirmVisible(false);
   };
 
   return (
@@ -120,14 +103,14 @@ const RobotContainer = (props) => {
                 visible={popConfirmVisible}
                 onConfirm={deleteRobot}
                 okButtonProps={{ loading: confirmLoading }}
-                onCancel={handlePopConfirmCancel}
+                onCancel={() => setPopConfirmVisible(false)}
                 okText='Delete'
                 icon={<WarningOutlined />}
-                placement="left"
+                placement='left'
               >
                 <Tooltip title='Delete Robot'>
                   <DeleteOutlined
-                    onClick={showPopConfirm}
+                    onClick={() => setPopConfirmVisible(true)}
                     className={styles.clickableIcon}
                   />
                 </Tooltip>
@@ -143,8 +126,8 @@ const RobotContainer = (props) => {
                 onChange: renameRobot,
                 tooltip: false,
                 icon: (
-                  <Tooltip title='Edit Robot Name' placement="bottom">
-                    <EditOutlined/>
+                  <Tooltip title='Edit Robot Name' placement='bottom'>
+                    <EditOutlined />
                   </Tooltip>
                 ),
               }}
@@ -175,7 +158,7 @@ RobotContainer.propTypes = {
   robotName: PropTypes.string.isRequired,
   robotId: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
-  removeRobotFromOverview: PropTypes.func.isRequired,
+  refreshOverview: PropTypes.func.isRequired,
 };
 
 export default RobotContainer;
