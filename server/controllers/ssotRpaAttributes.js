@@ -2,100 +2,46 @@ const mongoose = require('mongoose');
 // eslint-disable-next-line no-unused-vars
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 
-// GET /ssot/getAttributes/?robotId=6045eccf&activityId=ActivityId123
-exports.getAttributes = async (req, res) => {
-    try {
-        res.set('Content-Type', 'application/json');
-    const { robotId } = req.query;
-        const { activityId } = req.query;
-
-        const attributes = await mongoose.model('rpaAttributes').findOne(
-            {
-                activityId,
-          robotId: robotId,
-            },
-            {
-                rpaApplication: 1,
-                rpaTask: 1,
-                _id: 0
-            }
-        ).exec()
-
-        res.send(attributes);
-    } catch (err) {
-        console.error(err);
-    }
-};
-
-// POST /ssot/updateAttributes/
-// do not forget the payload in the body for this request
-exports.updateAttributes = async (req, res) => {
-    try {
-        res.set('Content-Type', 'application/json');
-        const updatedInfo = req.body;
-    const robotId = updatedInfo.robotId;
-        const { activityId } = updatedInfo;
-
-        const updatedAttributes = await mongoose
-            .model('rpaAttributes')
-            .findOneAndUpdate(
-                {
-                    activityId,
-                    robotId,
-                },
-                updatedInfo,
-                {
-                    new: true,
-                    useFindAndModify: false,
-                    upsert: true
-                }
-            )
-            .exec();
-
-        res.send(updatedAttributes);
-    } catch (err) {
-        console.error(err);
-    }
-};
-
 // POST /ssot/updateManyAttributes/
 // do not forget the payload in the body for this request
 exports.updateMany = async (req, res) => {
-    try {
-        res.set('Content-Type', 'application/json');
-        const attributeList = req.body;
+  try {
+    res.set('Content-Type', 'application/json');
+    const attributeList = req.body;
 
-        const updateList = [];
-        attributeList.forEach((element) => {
-            const updateElement = {
-                updateOne: {
-                    filter: {
+    const updateList = [];
+    attributeList.forEach((element) => {
+      const updateElement = {
+        updateOne: {
+          filter: {
             robotId: element.robotId,
-                        activityId: element.activityId
-                    },
-                    update: element,
-                    upsert: true
-                }
-            };
-            updateList.push(updateElement);
-        });
+            activityId: element.activityId,
+          },
+          update: element,
+          upsert: true,
+        },
+      };
+      updateList.push(updateElement);
+    });
 
-        const updatedObjects = await mongoose.model('rpaAttributes').bulkWrite(updateList)
+    const updatedObjects = await mongoose
+      .model('rpaAttributes')
+      .bulkWrite(updateList);
 
-        res.send(updatedObjects);
-    } catch (err) {
-        console.error(err);
-    }
+    res.send(updatedObjects);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 // GET /getAllAttributes/604f537ed699a2eb47433184'
 exports.retrieveAttributesForRobot = async (req, res) => {
-    const { robotId } = req.params;
+  const { robotId } = req.params;
 
-    const attributeObjects = await mongoose
-      .model('rpaAttributes')
-      .find({ robotId })
-      .exec();
+  const attributeObjects = await mongoose
+    .model('rpaAttributes')
+    .find({ robotId })
+    .exec();
 
-    res.send(attributeObjects);
+  res.send(attributeObjects);
 };

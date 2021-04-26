@@ -101,30 +101,6 @@ describe('ssot/renameRobot', () => {
   });
 });
 
-describe('ssot/retrieveRobotMetadata', () => {
-  it('gets the correct robot metadata', async () => {
-    await dbLoader.loadSsotInDb();
-
-    const request = httpMocks.createRequest({
-      params: {
-        robotId: testRobotId,
-      },
-    });
-    const response = httpMocks.createResponse();
-
-    await ssotRetrievalController.retrieveRobotMetadata(request, response);
-    const data = await response._getData();
-
-    expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data.robotName)).toEqual(
-      JSON.stringify(testSsot.robotName)
-    );
-    expect(JSON.stringify(data.starterId)).toEqual(
-      JSON.stringify(testSsot.starterId)
-    );
-  });
-});
-
 describe('ssot/shareRobotWithUser', () => {
   it('successfully creates a userAccessObject for robot and user', async () => {
     const request = httpMocks.createRequest({
@@ -188,28 +164,6 @@ describe('ssot/createNewRobot', () => {
     const data2 = await response2._getData();
     expect(response.statusCode).toBe(200);
     expect(JSON.stringify(data2[0]._id)).toEqual(JSON.stringify(newRobotId));
-  });
-});
-
-describe('ssot/parser/get-robot-code', () => {
-  it('successfully retrieves parsed code for ssot', async () => {
-    await dbLoader.loadSsotInDb();
-    await dbLoader.loadAttributesInDb();
-    await dbLoader.loadParametersInDb();
-
-    const request = httpMocks.createRequest({
-      query: {
-        robotId: testRobotId,
-      },
-    });
-    const response = httpMocks.createResponse();
-
-    await ssotParsingController.getRobotCode(request, response);
-    expect(response.statusCode).toBe(200);
-
-    const data = await response._getData();
-    expect(data).toMatch('*** Settings ***');
-    expect(data).toMatch('*** Tasks ***');
   });
 });
 

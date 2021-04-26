@@ -1,0 +1,12 @@
+*** Settings ***
+Library    RPA.Excel.Application
+Library    RPA.Browser
+*** Tasks ***
+Excel.Application
+#FirstActivity
+    Open Workbook    C://Users/Filepath
+#SecondActivity
+    Find Empty Row    StonksOnlyGoUp.xls
+Browser
+#ThirdActivity
+    Open Browser    TESTVALUE
