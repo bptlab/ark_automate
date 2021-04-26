@@ -1,11 +1,12 @@
 const socketHelperFunctions = require('./socketHelperFunctions');
 
 exports.socketManager = (io, socket) => {
+  // eslint-disable-next-line no-console
   console.log('Client connected via socket: ', socket.id);
 
   /*  When a client wants to join a room we check if the roomId (userId) matches any of the userIds in the database.
   Once connected we check for waiting jobs and if available send them to the client to execute */
-  socket.on('joinUserRoom', (userId) => {
+  socket.on('joinUserRoom', (userId, clientType) => {
     socketHelperFunctions.getAllUserIds().then((users) => {
       if (users.includes(userId)) {
         socket.join(userId);
@@ -17,24 +18,36 @@ exports.socketManager = (io, socket) => {
           'newClientJoinedUserRoom',
           `New user has been connected to the room`
         );
-        socketHelperFunctions
-          .getAllWaitingJobsForUser(userId)
-          .then((jobList) => {
-            if (jobList.length > 0) {
-              jobList.forEach((job) => {
-                const { id, robot_id } = job;
-                socketHelperFunctions
-                  .getRobotCode(robot_id)
-                  .then((robotCode) => {
-                    socketHelperFunctions.updateRobotJobStatus(id, 'executing');
-                    io.to(userId).emit('robotExecution', {
-                      robotCode,
-                      jobId: id,
+        if (clientType !== 'webApplication') {
+          socketHelperFunctions
+            .getAllWaitingJobsForUser(userId)
+            .then((jobList) => {
+              if (jobList.length > 0) {
+                jobList.forEach((job) => {
+                  const { id, robot_id } = job;
+                  socketHelperFunctions
+                    .getRobotCodeForJob(robot_id, id)
+                    .then((robotCode) => {
+                      if (robotCode) {
+                        socketHelperFunctions.updateRobotJobStatus(
+                          id,
+                          'executing'
+                        );
+                        io.to(userId).emit('robotExecution', {
+                          robotCode,
+                          jobId: id,
+                        });
+                      } else {
+                        socketHelperFunctions.updateRobotJobStatus(
+                          id,
+                          'failed'
+                        );
+                      }
                     });
-                  });
-              });
-            }
-          });
+                });
+              }
+            });
+        }
 
         // eslint-disable-next-line no-else-return
       } else {
@@ -45,29 +58,21 @@ exports.socketManager = (io, socket) => {
 
   /*  Gets triggered when the web client wants to execute a robot. We check if a desktop client is available. We either execute 
   the robot immediately and add a job to the database with status executing or we just add a job to the database with status waiting  */
-  socket.on('robotExecutionJobs', ({ robotId, userId }) => {
+  socket.on('robotExecutionJobs', ({ robotId, userId, parameters }) => {
     const clients = io.sockets.adapter.rooms.get(userId);
     const numClients = clients ? clients.size : 0;
     if (numClients > 1) {
       socketHelperFunctions
-        .createJob(userId, robotId, 'executing', [
-          {
-            name: '',
-            value: '',
-          },
-        ])
+        .createJob(userId, robotId, 'executing', parameters)
         .then((jobId) => {
-          socketHelperFunctions.getRobotCode(robotId).then((robotCode) => {
-            io.to(userId).emit('robotExecution', { robotCode, jobId });
-          });
+          socketHelperFunctions
+            .getRobotCodeForJob(robotId, jobId)
+            .then((robotCode) => {
+              io.to(userId).emit('robotExecution', { robotCode, jobId });
+            });
         });
     } else {
-      socketHelperFunctions.createJob(userId, robotId, 'waiting', [
-        {
-          name: '',
-          value: '',
-        },
-      ]);
+      socketHelperFunctions.createJob(userId, robotId, 'waiting', parameters);
     }
   });
 

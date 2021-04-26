@@ -1,9 +1,8 @@
 import React from 'react';
 import { Space, Typography, Tooltip, Input } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import corporateDesign from '../../../../../layout/corporateDesign';
-import styles from '../../ModelerSidebar.module.css';
 
 const { Text } = Typography;
 
@@ -14,33 +13,39 @@ const { Text } = Typography;
  */
 const PPOutputValueSection = ({ outputVariableText, onNameChange }) => {
   const handleOutputVariableChange = (event) => {
-    const outputValueName = event.target.value.replace(/\$/g, '')
+    const outputValueName = event.target.value.replace(/\$/g, '');
     onNameChange(outputValueName);
-  }
+  };
 
-  return (<>
-    <Space>
-      <Text className={styles[`label-on-dark-background`]}>OutputValue: </Text>
-      <Tooltip
-        placement='bottom'
-        title='The OutputValue is the return value of the RPA task. It can be used as input for following activities with $$outputValue$$.'
-      >
-        <InfoCircleOutlined style={{ color: corporateDesign.colorPrimaryInvertedText }} />
-      </Tooltip>
-    </Space>
-
-    <Input
-      placeholder='Please type in your outputValue name'
-      defaultValue={outputVariableText}
-      suffix={
-        <Tooltip title={outputVariableText}> 
-          <InfoCircleOutlined style={{ color: corporateDesign.colorPrimaryInverted }} />
+  return (
+    <>
+      <Space>
+        <Text className='label-on-dark-background'>OutputValue: </Text>
+        <Tooltip
+          placement='bottom'
+          title='The OutputValue is the return value of the RPA task. It can be used as input for following activities with $$outputValue$$.'
+        >
+          <InfoCircleOutlined
+            style={{ color: corporateDesign.colorPrimaryInvertedText }}
+          />
         </Tooltip>
-      }
-      onPressEnter={handleOutputVariableChange}
-    />
-  </>)
-}
+      </Space>
+
+      <Input
+        placeholder='Please type in your outputValue name'
+        defaultValue={outputVariableText}
+        suffix={
+          <Tooltip title={outputVariableText}>
+            <InfoCircleOutlined
+              style={{ color: corporateDesign.colorPrimaryInverted }}
+            />
+          </Tooltip>
+        }
+        onPressEnter={handleOutputVariableChange}
+      />
+    </>
+  );
+};
 
 PPOutputValueSection.propTypes = {
   outputVariableText: PropTypes.string.isRequired,

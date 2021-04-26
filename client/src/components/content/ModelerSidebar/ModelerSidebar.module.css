@@ -1,7 +1,3 @@
-.label-on-dark-background {
-  color: var(--colorPrimaryInvertedText) !important;
-}
-
 .title {
   margin-bottom: 0rem !important;
   color: var(--colorPrimaryInvertedText) !important;
