@@ -26,6 +26,7 @@ const RobotContainer = (props) => {
   const [name, setRobotName] = useState(robotName);
   const [popConfirmVisible, setPopConfirmVisible] = React.useState(false);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [hoveredUpon, setHoveredUpon] = useState(false);
 
   /**
    * @description Sends a job to the server to execute a specfic robot for a specific user
@@ -76,55 +77,62 @@ const RobotContainer = (props) => {
   };
 
   return (
-    <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
-      <Col className={[styles.box, styles.robotBox]}>
-        <Row align='middle' style={{ height: '55%' }}>
-          <Col type='flex' span={12}>
-            <Link
-              to={{
-                pathname: `/interaction_cockpit/${robotId}`,
-                state: { userId },
-              }}
-            >
-              <PlayCircleOutlined
-                onClick={initLocalSsot}
-                className={styles.clickableIcon}
-              />
-            </Link>
-          </Col>
-          <Col type='flex' span={8}>
-            <Link to={`/modeler/${robotId}`}>
-              <EditOutlined className={styles.clickableIcon} />
-            </Link>
-          </Col>
-          <Col type='flex' span={8}>
-            <Popconfirm
-              title='Delete Robot?'
-              visible={popConfirmVisible}
-              onConfirm={deleteRobot}
-              okButtonProps={{ loading: confirmLoading }}
-              onCancel={handlePopConfirmCancel}
-              okText='Delete'
-              icon={<WarningOutlined />}
-            >
-              <DeleteOutlined
-                onClick={showPopConfirm}
-                className={styles.clickableIcon}
-              />
-            </Popconfirm>
-          </Col>
-        </Row>
+    <Col
+      xs={24}
+      sm={12}
+      md={8}
+      xl={6}
+      xxl={4}
+      onMouseEnter={() => setHoveredUpon(true)}
+      onMouseLeave={() => setHoveredUpon(false)}
+    >
+      {hoveredUpon && (
+        <Col className={[styles.box, styles.robotBox, styles.selectedRobotBox]}>
+          <Row align='middle' style={{ height: '55%' }}>
+            <Col type='flex' span={12}>
+              <Link
+                to={{
+                  pathname: `/interaction_cockpit/${robotId}`,
+                  state: { userId },
+                }}
+              >
+                <PlayCircleOutlined
+                  onClick={initLocalSsot}
+                  className={styles.clickableIcon}
+                />
+              </Link>
+            </Col>
+            <Col type='flex' span={12}>
+              <Link to={`/modeler/${robotId}`}>
+                <EditOutlined className={styles.clickableIcon} />
+              </Link>
+            </Col>
+          </Row>
 
-        <Row justify='space-around' align='middle' style={{ height: '45%' }}>
-          <Title
-            className={styles.title}
-            level={3}
-            editable={{ onChange: renameRobot }}
+          <Row justify='space-around' align='middle' style={{ height: '45%' }}>
+            <Title
+              className={styles.title}
+              level={3}
+              editable={{ onChange: renameRobot }}
+            >
+              {name}
+            </Title>
+          </Row>
+        </Col>
+      )}
+      {!hoveredUpon && (
+        <Col className={[styles.box, styles.robotBox]}>
+          <Row
+            justify='center'
+            align='middle'
+            style={{ height: '100%', margin: '0.5rem' }}
           >
-            {name}
-          </Title>
-        </Row>
-      </Col>
+            <Title className={styles.title} level={2}>
+              {name}
+            </Title>
+          </Row>
+        </Col>
+      )}
     </Col>
   );
 };
