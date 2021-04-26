@@ -123,6 +123,7 @@ const RobotContainer = (props) => {
                 onCancel={handlePopConfirmCancel}
                 okText='Delete'
                 icon={<WarningOutlined />}
+                placement="left"
               >
                 <Tooltip title='Delete Robot'>
                   <DeleteOutlined
