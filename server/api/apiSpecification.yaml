@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  description: >
+    _This document describes the REST API of Ark Automate._
+    Ark Automate is a platform that allows office users and software developers to automate business or everyday processes by simply sketching the steps of their process. By using simple flowcharts or powerful BPMN in their process outlines, users can create small software solutions using RPA that finish their tasks much faster and more reliably.
+  version: 1.0.0
+  title: Ark API
+  license:
+    name: LICENSE (MIT)
+    url: https://github.com/bptlab/ark_automate
+
+servers:
+  - url: '{protocol}://{server}/api/v1'
+    variables:
+      protocol:
+        default: https
+        enum: [http, https]
+      server:
+        default: localhost:5000
+
+tags:
+  - name: RPA-Functionalities
+    description: Operations about rpa supported applications, tasks and parameters
+  - name: Robots
+    description: Operations about robots
+
+paths:
+  #### RPA Functionalities ####
+  /functionalities:
+    get:
+      tags:
+        - RPA-Functionalities
+      summary: Get all functionality objects including task, application and parameters
+      operationId: getFunctionalities
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Functionalities'
+
+  /functionalities/applications:
+    get:
+      tags:
+        - RPA-Functionalities
+      summary: Get all applications that ark automate supports
+      operationId: getApplications
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Applications'
+
+  /functionalities/{application}/tasks:
+    parameters:
+      - name: application
+        in: path
+        description: The name of an application
+        required: true
+        schema:
+          $ref: '#/components/schemas/Applications'
+    get:
+      tags:
+        - RPA-Functionalities
+      summary: Gets all the tasks to execute for an application
+      operationId: getTasks
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tasks'
+        404:
+          description: Not Found
+
+components:
+  requestBodies:
+    ExperimentIntersectionConfiguration:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExperimentIntersectionConfiguration'
+      required: true
+  schemas:
+    #### RPA-Functionalities ####
+    Functionalities:
+      type: object
+      required:
+        - _id
+        - Application
+        - Task
+        - Code
+      properties:
+        _id:
+          type: string
+          minLength: 1
+          example: 6061d5627dee5516b3824ade
+        Application:
+          $ref: '#/components/schemas/Applications'
+        Task:
+          $ref: '#/components/schemas/Tasks'
+        Code:
+          $ref: '#/components/schemas/Tasks'
+        ouputValue:
+          type: boolean
+        inputVars:
+          type: object
+          required:
+            - name
+            - type
+            - isRequired
+            - infoText
+            - index
+          properties:
+            name:
+              type: string
+              example: visible
+            type:
+              type: string
+              example: Boolean
+            isRequired:
+              type: boolean
+            infoText:
+              type: string
+              example: Show window after opening
+            index:
+              type: int32
+              example: 0
+    Applications:
+      type: string
+      example: Excel.Files
+    Tasks:
+      type: string
+      example: Open Workbook
+    Algorithm:
+      allOf:
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              $ref: '#/components/schemas/AlgorithmId'
+        - $ref: '#/components/schemas/AlgorithmValues'
