@@ -123,7 +123,7 @@ const getRpaApplication = (activityId) => {
 
 /**
  *
- * @param {*} activityId id of the currently selected activity
+ * @param {String} activityId id of the currently selected activity
  * @description this util function returns the activityId for the selected activity
  * @returns the selected RPA task for the selected activity from localStorage
  */

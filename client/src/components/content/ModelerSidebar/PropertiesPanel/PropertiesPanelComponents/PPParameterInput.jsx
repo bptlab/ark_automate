@@ -71,10 +71,8 @@ const PPParameterInput = ({
    * @description returns the Unlock-Icon
    * @returns the corresponding icon
    */
-  const returnLockIcon = () => (
-    <UnlockOutlined onClick={(event) => {
-      changeUserInputRequirement(event, variableName)
-    }} />
+  const returnLockIcon = (inputParameterName) => (
+    <UnlockOutlined onClick={() => changeUserInputRequirement(inputParameterName)} />
   )
 
   return (
@@ -97,7 +95,7 @@ const PPParameterInput = ({
             <Tooltip title={infoText}>
               <InfoCircleOutlined />
             </Tooltip>}
-          addonAfter={returnLockIcon()}
+          addonAfter={returnLockIcon(variableName)}
           disabled={userInputRequired}
         />)}
 
@@ -106,9 +104,7 @@ const PPParameterInput = ({
           style={{ width: '100%' }}
           type='primary'
           className={styles.button}
-          onClick={(event) => {
-            changeUserInputRequirement(event, variableName)
-          }}>
+          onClick={() => changeUserInputRequirement(variableName)}>
           Parameter will be set at execution <LockOutlined />
         </Button>
       )}
