@@ -9,13 +9,15 @@ import {
   nameChangedHandler,
   applicationChangedHandler,
   taskChangedHandler,
-  handleInputParameterChange,
-  handleOutputVarNameChange,
+  inputParameterChangeHandler,
+  outputVarNameChangeHandler,
+  modelerSelectionChangeHandler,
+  modelerElementChangeHandler,
+} from '../../../utils/modelerSidebarFunctionality/modelerSidebarFunctionality';
+import {
   downloadRobotFile,
   onSaveToCloud,
-  onModelerSelectionChange,
-  onModelerElementChanged,
-} from '../../../utils/sidebarFunctionality';
+} from '../../../utils/robotMetadataUtils/robotMetadataUtils';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -63,11 +65,11 @@ const ModelerSidebar = ({ modeler, robotId }) => {
    */
   useEffect(() => {
     modeler.on('selection.changed', (event) => {
-      onModelerSelectionChange(event, elementState, robotId, stateSetters);
+      modelerSelectionChangeHandler(event, elementState, robotId, stateSetters);
     });
 
     modeler.on('element.changed', (event) => {
-      onModelerElementChanged(event, elementState, stateSetters);
+      modelerElementChangeHandler(event, elementState, stateSetters);
     });
   }, [modeler]);
 
@@ -106,14 +108,14 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             robotId={robotId}
             variableList={variableList}
             parameterSelectionUpdated={(newValue) => {
-              handleInputParameterChange(
+              inputParameterChangeHandler(
                 elementState.currentElement.id,
                 newValue
               );
             }}
             outputVariableName={outputVariableName}
             outputNameUpdated={(newValue) => {
-              handleOutputVarNameChange(
+              outputVarNameChangeHandler(
                 elementState.currentElement.id,
                 newValue
               );

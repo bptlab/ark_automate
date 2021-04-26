@@ -1,21 +1,20 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable react/jsx-no-bind */
-import React from 'react';
-import { CloudUploadOutlined } from '@ant-design/icons';
-import { notification } from 'antd';
-import { fetchTasksFromDB } from '../api/applicationAndTaskSelection';
-import getParsedRobotFile from '../api/ssot';
-import downloadString from './downloadString';
+
+/**
+ * @category Client
+ * @module
+ */
+
+import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
+/* import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
+ */
 import {
   setSingleParameter,
   resetRpaApplication,
   setRpaTask,
-  upsert,
   getParameterObject,
   setOutputValueName,
-} from './attributeAndParamUtils';
-import { parseBpmnToSsot } from './BpmnToSsotParsing/BpmnToSsotParsing';
-import corporateDesign from '../layout/corporateDesign';
+} from '../attributeAndParamUtils';
 
 /**
  * @description Will update the element state upon selection od a new element.
@@ -23,7 +22,7 @@ import corporateDesign from '../layout/corporateDesign';
  * @param {Object} elementState State of the element
  * @param {Object} setterObject object containing the functions for setting the state in the React component
  */
-const onModelerElementChanged = (event, elementState, setterObject) => {
+const modelerElementChangeHandler = (event, elementState, setterObject) => {
   if (!elementState.currentElement) {
     return;
   }
@@ -112,7 +111,7 @@ const updateParamSection = (activityId, robotId, setterObject) => {
  * @param {String} robotId id of the robot which was opened
  * @param {Object} setterObject object containing the functions for setting the state in the React component
  */
-const onModelerSelectionChange = (
+const modelerSelectionChangeHandler = (
   event,
   elementState,
   robotId,
@@ -217,7 +216,7 @@ const taskChangedHandler = (
  * @param {String} activityId id of the activity selected
  * @param {Object} value new value of input field
  */
-const handleInputParameterChange = (activityId, value) => {
+const inputParameterChangeHandler = (activityId, value) => {
   setSingleParameter(activityId, value);
 };
 
@@ -227,55 +226,16 @@ const handleInputParameterChange = (activityId, value) => {
  * @param {String} activityId id of the activity selected
  * @param {Object} newValue new value of the output variables name
  */
-const handleOutputVarNameChange = (activityId, newValue) => {
+const outputVarNameChangeHandler = (activityId, newValue) => {
   setOutputValueName(activityId, newValue);
-};
-
-/**
- * @description Gets called when the the button is pressed to save to the cloud.
- * This function will retrieve the xml from the parser, parse that xml to a ssot and write the
- * resulting ssot into the sessionStorage.
- * @param {Object} modeler the modeling object
- * @param {String} robotId id of the robot
- */
-const onSaveToCloud = async (modeler, robotId) => {
-  const xml = await modeler.saveXML({ format: true });
-  const result = await parseBpmnToSsot(xml, robotId);
-  const ssot = JSON.stringify(result);
-  sessionStorage.setItem('ssotLocal', ssot);
-
-  upsert();
-  notification.open({
-    message: 'Successfully saved to cloud',
-    icon: (
-      <CloudUploadOutlined
-        style={{ color: corporateDesign.colorSuccessNotificationIcon }}
-      />
-    ),
-    style: {
-      backgroundColor: corporateDesign.colorSuccessNotificationBackground,
-    },
-  });
-};
-
-/**
- * @description Will parse the ssot which can be found in the database correlating to the specified id
- * @param {String} robotId id of the robot
- */
-const downloadRobotFile = async (robotId) => {
-  const response = await (await getParsedRobotFile(robotId)).text();
-  const fileName = `${sessionStorage.getItem('robotName')}.robot`;
-  downloadString(response, 'text/robot', fileName);
 };
 
 export {
   nameChangedHandler,
   applicationChangedHandler,
   taskChangedHandler,
-  handleInputParameterChange,
-  handleOutputVarNameChange,
-  downloadRobotFile,
-  onSaveToCloud,
-  onModelerSelectionChange,
-  onModelerElementChanged,
+  inputParameterChangeHandler,
+  outputVarNameChangeHandler,
+  modelerSelectionChangeHandler,
+  modelerElementChangeHandler,
 };

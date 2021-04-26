@@ -2,73 +2,29 @@
 /* eslint-disable import/first */
 /* eslint-disable no-undef */
 
-jest.mock('../api/ssot');
-jest.mock('./downloadString');
-jest.mock('./attributeAndParamUtils');
-jest.mock('./BpmnToSsotParsing/BpmnToSsotParsing');
-jest.mock('../api/applicationAndTaskSelection');
+jest.mock('../attributeAndParamUtils');
+jest.mock('../../api/applicationAndTaskSelection');
 
 import {
   nameChangedHandler,
   applicationChangedHandler,
   taskChangedHandler,
-  handleInputParameterChange,
-  handleOutputVarNameChange,
-  downloadRobotFile,
-  onSaveToCloud,
-  onModelerSelectionChange,
-  onModelerElementChanged,
-} from './sidebarFunctionality';
-import getParsedRobotFile from '../api/ssot';
-import downloadString from './downloadString';
+  inputParameterChangeHandler,
+  outputVarNameChangeHandler,
+  modelerSelectionChangeHandler,
+  modelerElementChangeHandler,
+} from './modelerSidebarFunctionality';
 import {
   setSingleParameter,
   resetRpaApplication,
   setRpaTask,
-  upsert,
   getParameterObject,
   setOutputValueName,
-} from './attributeAndParamUtils';
-import { parseBpmnToSsot } from './BpmnToSsotParsing/BpmnToSsotParsing';
-import { fetchTasksFromDB } from '../api/applicationAndTaskSelection';
-import constants from './sidebarFunctionalityTestingUtils';
+} from '../attributeAndParamUtils';
+import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
+import constants from './modelerSidebarFunctionalityTestingUtils';
 
 describe('Sidebar Functionality: Small Utilities', () => {
-  it('download robot file', async () => {
-    sessionStorage.setItem('robotName', constants.MOCK_ROBOT_NAME);
-
-    getParsedRobotFile.mockImplementation((robotId) => {
-      expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
-      return {
-        text: async () => constants.MOCK_ROBOT_CONTENT,
-      };
-    });
-
-    downloadString.mockImplementation((robotCode, textSpecifyier, fileName) => {
-      expect(robotCode).toEqual(constants.MOCK_ROBOT_CONTENT);
-      expect(textSpecifyier).toEqual('text/robot');
-      expect(fileName).toEqual(`${constants.MOCK_ROBOT_NAME}.robot`);
-    });
-
-    await downloadRobotFile(constants.MOCK_ROBOT_ID);
-  });
-
-  it('save to cloud', async () => {
-    upsert.mockImplementation(() => {
-      expect(sessionStorage.getItem('ssotLocal')).toEqual(
-        JSON.stringify(constants.MOCK_PARSER_RESULT)
-      );
-    });
-
-    parseBpmnToSsot.mockImplementation(async (xml, robotId) => {
-      expect(xml).toEqual(constants.MOCK_XML);
-      expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
-      return constants.MOCK_PARSER_RESULT;
-    });
-
-    await onSaveToCloud(constants.MOCK_MODELER, constants.MOCK_ROBOT_ID);
-  });
-
   it('handle modeler element changed with no new selection', async () => {
     const setElementStateCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
@@ -81,7 +37,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
       },
     };
 
-    onModelerElementChanged(constants.MOCK_EVENT, {}, MOCK_SETTER_OBJECT);
+    modelerElementChangeHandler(constants.MOCK_EVENT, {}, MOCK_SETTER_OBJECT);
     expect(setElementStateCallCounter).toEqual(0);
   });
 
@@ -97,7 +53,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
       },
     };
 
-    onModelerElementChanged(
+    modelerElementChangeHandler(
       constants.MOCK_EVENT,
       constants.MOCK_ELEMENT_STATE,
       MOCK_SETTER_OBJECT
@@ -111,7 +67,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
       expect(newValue).toEqual(constants.MOCK_NEW_VALUE);
     });
 
-    handleOutputVarNameChange(
+    outputVarNameChangeHandler(
       constants.MOCK_ACTIVITY_ID,
       constants.MOCK_NEW_VALUE
     );
@@ -123,7 +79,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
       expect(value).toEqual(constants.MOCK_VALUE);
     });
 
-    handleInputParameterChange(
+    inputParameterChangeHandler(
       constants.MOCK_ACTIVITY_ID,
       constants.MOCK_VALUE
     );
@@ -179,7 +135,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       },
     };
 
-    onModelerSelectionChange(
+    modelerSelectionChangeHandler(
       MOCK_EVENT,
       MOCK_ELEMENT_STATE,
       constants.MOCK_ROBOT_ID,
@@ -219,7 +175,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       JSON.stringify(MOCK_TASK_TO_APPLICATION)
     );
 
-    onModelerSelectionChange(
+    modelerSelectionChangeHandler(
       constants.MOCK_EVENT,
       constants.MOCK_ELEMENT_STATE,
       constants.MOCK_ROBOT_ID,
@@ -272,7 +228,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       JSON.stringify(taskToApplication)
     );
 
-    onModelerSelectionChange(
+    modelerSelectionChangeHandler(
       constants.MOCK_EVENT,
       constants.MOCK_ELEMENT_STATE,
       constants.MOCK_ROBOT_ID,
@@ -330,7 +286,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       JSON.stringify(taskToApplication)
     );
 
-    onModelerSelectionChange(
+    modelerSelectionChangeHandler(
       constants.MOCK_EVENT,
       constants.MOCK_ELEMENT_STATE,
       constants.MOCK_ROBOT_ID,
