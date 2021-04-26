@@ -26,6 +26,7 @@ tags:
 
 paths:
   #### RPA Functionalities ####
+  #GET /rpa-framework/commands/get-available-applications
   /functionalities:
     get:
       tags:
@@ -41,7 +42,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Functionalities'
-
+  #// GET /rpa-framework/commands/get-available-tasks-for-application?application=Browser
   /functionalities/applications:
     get:
       tags:
@@ -57,7 +58,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Applications'
-
+  #GET /rpa-framework/commands/getAllParameters
   /functionalities/{application}/tasks:
     parameters:
       - name: application
@@ -76,21 +77,35 @@ paths:
           description: OK
           content:
             application/json:
-              type: array
-              items:
-                $ref: '#/components/schemas/Tasks'
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tasks'
         404:
           description: Not Found
+  #### Robots ####
+  # GET /ssot/:id
+  /robots:
+    get:
+      tags:
+        - Robots
+      summary: Get a robot with a specific id
+      operationId: getSpecificRobot
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Robots'
 
 components:
-  requestBodies:
-    ExperimentIntersectionConfiguration:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ExperimentIntersectionConfiguration'
-      required: true
   schemas:
+    #### General ####
+    ObjectIds:
+      type: string
+      minLength: 1
+      example: 6061d5627dee5516b3824ade
     #### RPA-Functionalities ####
     Functionalities:
       type: object
@@ -101,9 +116,7 @@ components:
         - Code
       properties:
         _id:
-          type: string
-          minLength: 1
-          example: 6061d5627dee5516b3824ade
+          $ref: '#/components/schemas/ObjectIds'
         Application:
           $ref: '#/components/schemas/Applications'
         Task:
@@ -133,7 +146,7 @@ components:
               type: string
               example: Show window after opening
             index:
-              type: int32
+              type: integer
               example: 0
     Applications:
       type: string
@@ -141,12 +154,63 @@ components:
     Tasks:
       type: string
       example: Open Workbook
-    Algorithm:
-      allOf:
-        - type: object
-          required:
-            - id
-          properties:
-            id:
-              $ref: '#/components/schemas/AlgorithmId'
-        - $ref: '#/components/schemas/AlgorithmValues'
+    #### Robots ####
+    EventIds:
+      type: string
+      minLength: 1
+      example: Event_0ay5426
+    ActivityIds:
+      type: string
+      minLength: 1
+      example: Activity_0ay5427
+    ElementIds:
+      type: string
+      minLength: 1
+      example: Event_0ay5426 or Activity_0ay5427
+    RobotNames:
+      type: string
+      example: Automate morning emails
+    RobotElements:
+      type: object
+      required:
+        - predecessorIds
+        - successorIds
+        - _id
+        - type
+        - name
+        - id
+      properties:
+        predecessorIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/ElementIds'
+        successorIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/ElementIds'
+        _id:
+          $ref: '#/components/schemas/ObjectIds'
+        type:
+          type: string
+          example: INSTRUCTION
+        name:
+          type: string
+          example: Fill in current sales projections
+        id:
+          $ref: '#/components/schemas/ActivityIds'
+    Robots:
+      type: object
+      required:
+        - _id
+        - robotName
+      properties:
+        _id:
+          $ref: '#/components/schemas/ObjectIds'
+        starterId:
+          $ref: '#/components/schemas/EventIds'
+        robotName:
+          $ref: '#/components/schemas/RobotNames'
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/RobotElements'
