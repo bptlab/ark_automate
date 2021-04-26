@@ -96,6 +96,17 @@ const RobotOverview = () => {
   };
 
   /**
+   * @description Removes the robot with the given id from the overview
+   * @param {String} robotId Id of the robot to be removed
+   */
+  const removeRobotFromOverview = (robotId) => {
+        const newRobotList = robotList.filter(foundRobotId => foundRobotId !== robotId)
+        setRobotList([]);
+        setRobotList(newRobotList);
+        retrieveBotList(userId);
+  };
+
+  /**
    * @description Creates all boxes for the robots from the database
    * @returns All Boxes that match the current searchValue as React component
    * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
@@ -115,6 +126,7 @@ const RobotOverview = () => {
             // eslint-disable-next-line no-underscore-dangle
             robotId={val._id}
             robotName={val.robotName}
+            removeRobotFromOverview={removeRobotFromOverview}
           />
         ))}
       </>
