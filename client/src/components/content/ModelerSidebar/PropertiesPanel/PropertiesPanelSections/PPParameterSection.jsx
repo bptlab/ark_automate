@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Space } from 'antd';
-import styles from '../../ModelerSidebar.module.css';
 import PPParameterInput from '../PropertiesPanelComponents/PPParameterInput';
 
 const { Text } = Typography;
@@ -18,9 +17,7 @@ const PPParameterSection = ({
   robotId,
 }) => (
   <>
-    <Text className={styles[`label-on-dark-background`]} strong>
-      Parameter:
-    </Text>
+    <Text className='label-on-dark-background'>Parameter:</Text>
 
     <Space direction='vertical' style={{ width: '100%' }}>
       {variableList.map((singleInput) => (

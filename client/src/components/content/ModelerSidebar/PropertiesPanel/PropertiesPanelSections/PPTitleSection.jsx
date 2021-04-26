@@ -1,6 +1,5 @@
 import React from 'react';
 import { Typography } from 'antd';
-import styles from '../../ModelerSidebar.module.css';
 
 const { Text } = Typography;
 
@@ -10,17 +9,14 @@ const { Text } = Typography;
  * @component
  */
 const PPTitleSection = (element) => {
-    let title = element.element.type;
-    title = title.replace('bpmn:', '');
+  let title = element.element.type;
+  title = title.replace('bpmn:', '');
 
-    return (
-        <Text
-            className={styles[`label-on-dark-background`]}
-            style={{ fontSize: '24px' }}
-        >
-            {title}
-        </Text>
-    );
-}
+  return (
+    <Text className='label-on-dark-background' style={{ fontSize: '24px' }}>
+      {title}
+    </Text>
+  );
+};
 
 export default PPTitleSection;

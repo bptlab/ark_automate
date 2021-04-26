@@ -13,3 +13,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.label-on-dark-background {
+  color: var(--colorPrimaryInvertedText) !important;
+}
