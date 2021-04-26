@@ -255,8 +255,9 @@ const getParameterObject = (robotId, activityId) => {
  * @description Will set the single parameter in local session storage
  * @param {String} activityId Id of the activity for which to change the value for
  * @param {Object} value The value object returned by the dropdown selection
+ * @param {String} parameterName The value of the parameter input field
  */
-const setSingleParameter = (activityId, value, paramName) => {
+const setSingleParameter = (activityId, value, parameterName) => {
   const localParameterStorage = JSON.parse(
     sessionStorage.getItem('parameterLocalStorage')
   );
@@ -268,10 +269,10 @@ const setSingleParameter = (activityId, value, paramName) => {
   );
 
   const matchingSingleParameter = matchingParameterObject.rpaParameters.find(
-    (element) => element.name === paramName
+    (element) => element.name === parameterName
   );
   const singleParametersWithoutMatch = matchingParameterObject.rpaParameters.filter(
-    (element) => element.name !== paramName
+    (element) => element.name !== parameterName
   );
 
   const editedParameter = matchingSingleParameter;
