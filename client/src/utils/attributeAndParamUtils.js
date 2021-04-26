@@ -212,8 +212,9 @@ const getParameterObject = (robotId, activityId) => {
   const matchingAttributeObject = localAttributeStorage.find(
     (element) => element.activityId === activityId
   );
-  const application = matchingAttributeObject.rpaApplication;
-  const task = matchingAttributeObject.rpaTask;
+
+  const application = (matchingAttributeObject !== undefined ? matchingAttributeObject.rpaApplication : undefined);
+  const task = (matchingAttributeObject !== undefined ? matchingAttributeObject.rpaTask : undefined);
 
   if (application && task) {
     const localComboStorage = JSON.parse(
@@ -337,12 +338,15 @@ const parameterPropertyStatus = (
 ) => {
   const paramObj = getParameterObject(robotId, activityId);
 
-  const rpaParameters = paramObj.rpaParameters.filter(
-    (element) => element.name === parameterName
-  );
-  if (rpaParameters[0]) {
-    return rpaParameters[0][property];
+  if (typeof paramObj !== 'undefined') {
+    const rpaParameters = paramObj.rpaParameters.filter(
+      (element) => element.name === parameterName
+    );
+    if (rpaParameters[0]) {
+      return rpaParameters[0][property];
+    }
   }
+
   return false;
 };
 
