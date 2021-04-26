@@ -53,7 +53,7 @@ const resetRpaApplication = (robotId, activityId, newApplication) => {
   } else {
     matchingActivity = {
       activityId,
-      robotId: robotId,
+      robotId,
       rpaApplication: newApplication,
     };
   }
@@ -91,7 +91,7 @@ const setRpaTask = (robotId, activityId, application, newTask) => {
   } else {
     matchingActivity = {
       activityId,
-      robotId: robotId,
+      robotId,
       rpaApplication: application,
       rpaTask: newTask,
     };
@@ -126,7 +126,7 @@ const getRpaApplication = (activityId) => {
 
 /**
  *
- * @param {*} activityId id of the currently selected activity
+ * @param {String} activityId id of the currently selected activity
  * @description this util function returns the activityId for the selected activity
  * @returns the selected RPA task for the selected activity from localStorage
  */
@@ -148,7 +148,7 @@ const getRpaTask = (activityId) => {
 /**
  * @description Will retrieve the value of the input variables name from either session storage,
  * or create a new one and will save it in local session storage.
- * If an existing prameter object has been found there will be a check happening, if the signature matches
+ * If an existing parameter object has been found there will be a check happening, if the signature matches
  * the one specified for that activities task and application. If not, then something must have been out of sync
  * and a new object will be created and saved to sessionStorage.
  * @param {String} robotId Id of the robot/ssot for which to retrieve the value
@@ -215,8 +215,9 @@ const getParameterObject = (robotId, activityId) => {
   const matchingAttributeObject = localAttributeStorage.find(
     (element) => element.activityId === activityId
   );
-  const application = matchingAttributeObject.rpaApplication;
-  const task = matchingAttributeObject.rpaTask;
+
+  const application = (matchingAttributeObject !== undefined ? matchingAttributeObject.rpaApplication : undefined);
+  const task = (matchingAttributeObject !== undefined ? matchingAttributeObject.rpaTask : undefined);
 
   if (application && task) {
     const localComboStorage = JSON.parse(
@@ -242,7 +243,7 @@ const getParameterObject = (robotId, activityId) => {
           ? `${activityId}_output`
           : undefined,
       rpaParameters,
-      robotId: robotId,
+      robotId,
     };
 
     localParameterStorage.push(matchingParameterObject);
@@ -258,8 +259,9 @@ const getParameterObject = (robotId, activityId) => {
  * @description Will set the single parameter in local session storage
  * @param {String} activityId Id of the activity for which to change the value for
  * @param {Object} value The value object returned by the dropdown selection
+ * @param {String} parameterName The value of the parameter input field
  */
-const setSingleParameter = (activityId, value) => {
+const setSingleParameter = (activityId, value, parameterName) => {
   const localParameterStorage = JSON.parse(
     sessionStorage.getItem('parameterLocalStorage')
   );
@@ -271,15 +273,15 @@ const setSingleParameter = (activityId, value) => {
   );
 
   const matchingSingleParameter = matchingParameterObject.rpaParameters.find(
-    (element) => element.name === value.target.placeholder
+    (element) => element.name === parameterName
   );
   const singleParametersWithoutMatch = matchingParameterObject.rpaParameters.filter(
-    (element) => element.name !== value.target.placeholder
+    (element) => element.name !== parameterName
   );
 
-  const editedPrameter = matchingSingleParameter;
-  editedPrameter.value = value.target.value;
-  singleParametersWithoutMatch.push(editedPrameter);
+  const editedParameter = matchingSingleParameter;
+  editedParameter.value = value.target.value;
+  singleParametersWithoutMatch.push(editedParameter);
 
   const editedParameterObject = matchingParameterObject;
   editedParameterObject.rpaParameters = singleParametersWithoutMatch;
@@ -339,12 +341,15 @@ const parameterPropertyStatus = (
 ) => {
   const paramObj = getParameterObject(robotId, activityId);
 
-  const rpaParameters = paramObj.rpaParameters.filter(
-    (element) => element.name === parameterName
-  );
-  if (rpaParameters[0]) {
-    return rpaParameters[0][property];
+  if (typeof paramObj !== 'undefined') {
+    const rpaParameters = paramObj.rpaParameters.filter(
+      (element) => element.name === parameterName
+    );
+    if (rpaParameters[0]) {
+      return rpaParameters[0][property];
+    }
   }
+
   return false;
 };
 
