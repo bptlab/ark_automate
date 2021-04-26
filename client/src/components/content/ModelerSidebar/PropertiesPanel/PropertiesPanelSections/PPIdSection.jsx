@@ -1,6 +1,5 @@
 import React from 'react';
 import { Space, Typography } from 'antd';
-import styles from '../../ModelerSidebar.module.css';
 
 const { Text } = Typography;
 
@@ -10,10 +9,10 @@ const { Text } = Typography;
  * @component
  */
 const PPIdSection = (element) => (
-    <Space direction='horizontal' style={{ width: '100%' }}>
-        <Text className={styles[`label-on-dark-background`]}>ID: </Text>
-        <Text className={styles[`label-on-dark-background`]}>{element.element.id}</Text>
-    </Space>
+  <Space direction='horizontal' style={{ width: '100%' }}>
+    <Text className='label-on-dark-background'>ID: </Text>
+    <Text className='label-on-dark-background'>{element.element.id}</Text>
+  </Space>
 );
 
 export default PPIdSection;

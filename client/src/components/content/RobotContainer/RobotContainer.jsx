@@ -9,10 +9,9 @@ import {
 } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import socket from '../../../utils/socket/socketConnections';
 import styles from './RobotContainer.module.css';
+import { initSsotSessionStorage } from '../../../utils/attributeAndParamUtils';
 import { changeSsotName } from '../../../api/ssotRetrieval';
-import { isRobotExecutable } from '../../../utils/robotExecution';
 import { deleteRobotFromDB } from '../../../utils/attributeAndParamUtils';
 
 const { Title } = Typography;
@@ -31,13 +30,8 @@ const RobotContainer = (props) => {
   /**
    * @description Sends a job to the server to execute a specfic robot for a specific user
    */
-  const startRobot = async () => {
-    const robotIsExecutable = await isRobotExecutable(robotId);
-    if (robotIsExecutable) {
-      socket.emit('robotExecutionJobs', { robotId, userId });
-    } else {
-      alert('Your Bot is not fully configured and can not be executed!');
-    }
+  const initLocalSsot = () => {
+    initSsotSessionStorage(robotId);
   };
 
   /**
@@ -85,11 +79,18 @@ const RobotContainer = (props) => {
     <Col xs={24} sm={12} md={8} xl={6} xxl={4}>
       <Col className={[styles.box, styles.robotBox]}>
         <Row align='middle' style={{ height: '55%' }}>
-          <Col type='flex' span={8}>
-            <PlayCircleOutlined
-              onClick={startRobot}
-              className={styles.clickableIcon}
-            />
+          <Col type='flex' span={12}>
+            <Link
+              to={{
+                pathname: `/interaction_cockpit/${robotId}`,
+                state: { userId },
+              }}
+            >
+              <PlayCircleOutlined
+                onClick={initLocalSsot}
+                className={styles.clickableIcon}
+              />
+            </Link>
           </Col>
           <Col type='flex' span={8}>
             <Link to={`/modeler/${robotId}`}>

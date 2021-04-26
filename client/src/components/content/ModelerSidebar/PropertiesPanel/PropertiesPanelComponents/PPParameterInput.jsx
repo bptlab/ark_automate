@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Tooltip, Checkbox } from 'antd';
+import { Input, Tooltip, Checkbox, Typography } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import corporateDesign from '../../../../../layout/corporateDesign';
@@ -8,6 +8,8 @@ import {
   parameterPropertyStatus,
   setPropertyForParameter,
 } from '../../../../../utils/attributeAndParamUtils';
+
+const { Text } = Typography;
 
 /**
  * @description Renders a parameter input field for a given variable
@@ -57,6 +59,7 @@ const PPParameterInput = ({
   };
   return (
     <>
+      <Text className='label-on-dark-background'>{variableName}</Text>
       <Input
         placeholder={variableName}
         defaultValue={value}
@@ -77,7 +80,7 @@ const PPParameterInput = ({
       <Checkbox
         onChange={(event) => changeUserInputRequirement(event, variableName)}
         checked={userInputRequired}
-        className={styles[`label-on-dark-background`]}
+        className='label-on-dark-background'
       >
         User Input required
       </Checkbox>

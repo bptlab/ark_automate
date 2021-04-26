@@ -2,6 +2,9 @@
  * @category Client
  * @module
  */
+import initSessionStorage from './sessionStorage';
+import { getAvailableApplications } from '../api/applicationAndTaskSelection';
+import { getSsotFromDB } from '../api/ssotRetrieval';
 
 /**
  * appTaskLocalStorage
@@ -445,6 +448,61 @@ const getParameterForRobotFromDB = async (robotId) => {
 };
 
 /**
+ * @description Will initialize the ssot in local session storage
+ * @param {String} robotId Id of the robot for which we want to initialize the ssot locally
+ */
+const initSsotSessionStorage = (robotId) => {
+  getSsotFromDB(robotId)
+    .then((response) => response.json())
+    .then((data) => {
+      sessionStorage.setItem('ssotLocal', JSON.stringify(data));
+      sessionStorage.setItem('robotName', data.robotName);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  getAttributesFromDB(robotId)
+    .then((response) => response.json())
+    .then((data) => {
+      initSessionStorage('attributeLocalStorage', JSON.stringify([]));
+      sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
+    });
+
+  getParameterFromDB(robotId)
+    .then((response) => response.json())
+    .then((data) => {
+      initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
+      sessionStorage.setItem(
+        'TaskApplicationCombinations',
+        JSON.stringify(data)
+      );
+    });
+
+  getParameterForRobotFromDB(robotId)
+    .then((response) => response.json())
+    .then((data) => {
+      initSessionStorage('parameterLocalStorage', JSON.stringify([]));
+      sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
+    });
+
+  initSessionStorage('taskToApplicationCache', JSON.stringify({}));
+  initSessionStorage('availableApplications', JSON.stringify([]));
+  const applicationList = JSON.parse(
+    sessionStorage.getItem('availableApplications')
+  );
+  if (applicationList && applicationList.length < 1)
+    getAvailableApplications()
+      .then((response) => response.json())
+      .then((data) => {
+        sessionStorage.setItem('availableApplications', JSON.stringify(data));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+};
+
+/**
  * @description Will send a backend call to delete a robot
  * @param {String} robotId Id of the robot that is deleted
  * @returns {Array} Array of parameter objects related to the robot
@@ -480,4 +538,5 @@ export {
   upsert,
   getParameterForRobotFromDB,
   deleteRobotFromDB,
+  initSsotSessionStorage,
 };
