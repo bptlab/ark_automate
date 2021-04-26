@@ -103,7 +103,7 @@ const PPParameterInput = ({
         <Button
           style={{ width: '100%' }}
           type='primary'
-          className={styles.button}
+          className={styles.parameterButton}
           onClick={() => changeUserInputRequirement(variableName)}>
           Parameter will be set at execution <LockOutlined />
         </Button>

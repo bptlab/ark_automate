@@ -24,3 +24,10 @@
 .button {
   width: 100%;
 }
+
+.parameterButton {
+  width: 100%;
+  background-color: var(--color-Background);
+  border-color: var(--colorBackgroundCta);
+}
+
