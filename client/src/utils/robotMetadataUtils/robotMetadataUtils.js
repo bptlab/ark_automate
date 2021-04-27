@@ -5,14 +5,10 @@
  * @module
  */
 
-import React from 'react';
-import { CloudUploadOutlined } from '@ant-design/icons';
-import { notification } from 'antd';
 import getParsedRobotFile from '../../api/ssot';
 import downloadString from '../downloadString';
 import { upsert } from '../attributeAndParamUtils';
-import { parseBpmnToSsot } from '../BpmnToSsotParsing/BpmnToSsotParsing';
-import corporateDesign from '../../layout/corporateDesign';
+import { parseBpmnToSsot } from '../parser/BpmnToSsotParsing/BpmnToSsotParsing';
 
 /**
  * @description Gets called when the the button is pressed to save to the cloud.
@@ -28,17 +24,6 @@ const onSaveToCloud = async (modeler, robotId) => {
   sessionStorage.setItem('ssotLocal', ssot);
 
   upsert();
-  notification.open({
-    message: 'Successfully saved to cloud',
-    icon: (
-      <CloudUploadOutlined
-        style={{ color: corporateDesign.colorSuccessNotificationIcon }}
-      />
-    ),
-    style: {
-      backgroundColor: corporateDesign.colorSuccessNotificationBackground,
-    },
-  });
 };
 
 /**

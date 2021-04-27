@@ -3,7 +3,7 @@ import customNotification from './notificationUtils'
  * @category Client
  * @module
  */
-import initSessionStorage from './sessionStorage';
+import initSessionStorage from './sessionStorageUtils/sessionStorage';
 import { getAvailableApplications } from '../api/applicationAndTaskSelection';
 import { getSsotFromDB } from '../api/ssotRetrieval';
 

@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
 import { initSsotSessionStorage } from '../../../utils/attributeAndParamUtils';
 import { changeSsotName, deleteRobotFromDB } from '../../../api/ssotRetrieval';
+import customNotification from '../../../utils/notificationUtils';
 
 const { Title } = Typography;
 
@@ -54,9 +55,7 @@ const RobotContainer = (props) => {
     setConfirmLoading(true);
 
     deleteRobotFromDB(robotId).then(() => {
-      notification.success({
-        message: `Successfully deleted robot '${name}'`,
-      });
+      customNotification('Success', `Successfully deleted robot ${name}`)
       setPopConfirmVisible(false);
       setConfirmLoading(false);
       refreshOverview();
