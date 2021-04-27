@@ -26,8 +26,8 @@ tags:
 
 paths:
   #### RPA Functionalities ####
-  #GET /rpa-framework/commands/get-available-applications
   /functionalities:
+    #GET /rpa-framework/commands/get-available-applications
     get:
       tags:
         - RPA-Functionalities
@@ -42,8 +42,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Functionalities'
-  #// GET /rpa-framework/commands/get-available-tasks-for-application?application=Browser
   /functionalities/applications:
+    #// GET /rpa-framework/commands/get-available-tasks-for-application?application=Browser
     get:
       tags:
         - RPA-Functionalities
@@ -58,7 +58,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Applications'
-  #GET /rpa-framework/commands/getAllParameters
   /functionalities/{application}/tasks:
     parameters:
       - name: application
@@ -67,6 +66,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/Applications'
+    # GET /ssot/:id
     get:
       tags:
         - RPA-Functionalities
@@ -84,7 +84,6 @@ paths:
         404:
           description: Not Found
   #### Robots ####
-  # GET /ssot/:id
   /robots/{robotId}:
     parameters:
       - name: robotId
@@ -93,6 +92,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/RobotIds'
+    # GET /ssot/:id
     get:
       tags:
         - Robots
@@ -105,7 +105,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Robots'
-  # GET /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
+    # // POST /overwriteRobot/78d09f66d2ed466cf20b06f7
+    put:
+      tags:
+        - Robots
+      summary: Overwrite the existing robot with an updated one
+      operationId: overwriteRobot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Robots'
+        description: updated Robot object
+        required: true
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Bad Request
+  /robots/{robotId}/robotCode:
+    parameters:
+      - name: robotId
+        in: path
+        description: The id of a robot
+        required: true
+        schema:
+          $ref: '#/components/schemas/RobotIds'
+    # GET /parser/getForId/:robotId
+    get:
+      tags:
+        - Robots
+      summary: Get the robot framework code of a specific robot
+      operationId: getRobotCode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotCode'
   /robots/{robotId}/robotName:
     parameters:
       - name: robotId
@@ -114,6 +152,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/RobotIds'
+    # GET /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
     patch:
       tags:
         - Robots
@@ -131,8 +170,8 @@ paths:
           description: No Content
         400:
           description: Bad Request
-  # // GET /shareRobotWithUser?userId=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
   /robots/userAccess:
+    # // GET /shareRobotWithUser?userId=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
     post:
       tags:
         - Robots
@@ -154,8 +193,6 @@ paths:
                 $ref: '#/components/schemas/UserAccessObjects'
         400:
           description: Bad Request
-
-  # GET ssot/getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
   /robots/{userId}:
     parameters:
       - name: userId
@@ -164,6 +201,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/ObjectIds'
+    # GET ssot/getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
     get:
       tags:
         - Robots
@@ -186,7 +224,142 @@ paths:
                       $ref: '#/components/schemas/RobotIds'
                     robotName:
                       $ref: '#/components/schemas/RobotNames'
-
+    # // GET /createNewRobot?userId=78d09f66d2ed466cf20b06f7&robotName=NewRobot
+    post:
+      tags:
+        - Robots
+      summary: Create a new robot for a specific user
+      operationId: createRobotForUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - robotName
+              properties:
+                userId:
+                  $ref: '#/components/schemas/ObjectIds'
+                robotName:
+                  $ref: '#/components/schemas/RobotNames'
+        description: Object that contains the new robotObject and a new userAccessObject
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - robotId
+                  - robotName
+                properties:
+                  robotId:
+                    $ref: '#/components/schemas/RobotIds'
+                  robotName:
+                    $ref: '#/components/schemas/RobotNames'
+        400:
+          description: Bad Request
+  /robots/parameters:
+    # // POST /ssot/updateManyParameters/
+    put:
+      tags:
+        - Robots
+      summary: Overwrite existing parameter objects with updated one's
+      operationId: overwriteParameters
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - parameterObjectsList
+              properties:
+                parameterObjectsList:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Parameters'
+        description: updated parameter object
+        required: true
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Bad Reque
+  /robots/parameters/{robotId}:
+    parameters:
+      - name: robotId
+        in: path
+        description: The id of a robot
+        required: true
+        schema:
+          $ref: '#/components/schemas/RobotIds'
+    # // GET /getAllParameters/604f537ed699a2eb47433184'
+    get:
+      tags:
+        - Robots
+      summary: Get all parameter objects for a specific robot
+      operationId: getParametersForRobot
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Parameters'
+  /robots/rpaattributes:
+    # // POST /ssot/updateManyAttributes/
+    put:
+      tags:
+        - Robots
+      summary: Overwrite existing rpa attribute objects with updated one's
+      operationId: overwriteAttributes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - attributeObjectList
+              properties:
+                attributeObjectList:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/RPAAttributes'
+        description: updated attributes object
+        required: true
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Bad Reque
+  /robots/rpaattributes/{robotId}:
+    parameters:
+      - name: robotId
+        in: path
+        description: The id of a robot
+        required: true
+        schema:
+          $ref: '#/components/schemas/RobotIds'
+    # // GET /getAllAttributes/604f537ed699a2eb47433184'
+    get:
+      tags:
+        - Robots
+      summary: Get all rpa attribute objects for a specific robot
+      operationId: getAttributesForRobot
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RPAAttributes'
 components:
   schemas:
     #### General ####
@@ -243,6 +416,70 @@ components:
       type: string
       example: Open Workbook
     #### Robots ####
+    RobotCode:
+      type: string
+    RPAAttributes:
+      type: object
+      required:
+        - robotId
+        - activityId
+        - rpaApplication
+        - rpaTask
+      properties:
+        robotId:
+          $ref: '#/components/schemas/RobotIds'
+        activityId:
+          $ref: '#/components/schemas/ActivityIds'
+        rpaApplication:
+          $ref: '#/components/schemas/Applications'
+        rpaTask:
+          $ref: '#/components/schemas/Tasks'
+    Parameters:
+      type: object
+      required:
+        - activityId
+        - robotId
+      properties:
+        activityId:
+          $ref: '#/components/schemas/ActivityIds'
+        robotId:
+          $ref: '#/components/schemas/RobotIds'
+        outputVariable:
+          type: string
+          example: Activity_0n140xq_output
+        rpaParameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/singleParameterObjects'
+    singleParameterObjects:
+      type: object
+      required:
+        - name
+        - value
+        - requireUserInput
+        - type
+        - isRequired
+        - infoText
+        - index
+      properties:
+        name:
+          type: string
+          example: visible
+        value:
+          type: boolean
+        requireUserInput:
+          type: boolean
+        type:
+          type: string
+          example: Boolean
+        isRequired:
+          type: boolean
+        infoText:
+          type: string
+          example: Show window after opening
+        index:
+          type: integer
+          example: 1
     UserAccessObjects:
       type: object
       required:
@@ -318,6 +555,7 @@ components:
         - _id
         - robotName
       properties:
+        # Question: how to deal with automatically generated ids that are relevant for get but irrelevant for post
         _id:
           $ref: '#/components/schemas/RobotIds'
         starterId:
