@@ -90,7 +90,6 @@ const PPParameterInput = ({
           defaultValue={value}
           value={userInputRequired ? '' : parameterValue}
           onChange={(event) => changeParameterValue(event, variableName)}
-          onPressEnter={(event) => onValueChange(event, variableName)}
           suffix={
             <Tooltip title={infoText}>
               <InfoCircleOutlined />

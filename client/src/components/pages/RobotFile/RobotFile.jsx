@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col } from 'antd';
+import { Layout, Button, Space, Row, Col, Modal, Table } from 'antd';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
@@ -21,6 +21,20 @@ const RobotFile = () => {
   const [code, setCode] = useState(
     'Please wait, your robot file is being loaded.'
   );
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   /**
    * @description Equivalent to ComponentDidMount in class based components
@@ -52,6 +66,50 @@ const RobotFile = () => {
     }
   };
 
+  const dataSource = [
+    {
+      key: '1',
+      name: 'Regular parameters',
+      syntax: 'parameterValue',
+      description: 'Hard code the specific value for this parameter',
+    },
+    {
+      key: '2',
+      name: 'Empty Variable Field',
+      syntax: '%%parameterName%%',
+      description: 'Highlights a field which has not been configured yet in the ssot',
+    },
+    {
+      key: '3',
+      name: 'Requires User Input',
+      syntax: '!!parameterName!!',
+      description: 'Highlights a parameter which should be specified by the user when starting the robot',
+    },
+    {
+      key: '4',
+      name: 'Variable',
+      syntax: '$(variableName)',
+      description: 'Used to pass in a variable, which could be the output of a previous activity',
+    },
+  ];
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Syntax specification',
+      dataIndex: 'syntax',
+      key: 'syntax',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+    },
+  ];
+
   return (
     <Layout>
       <HeaderNavbar selectedKey={3} />
@@ -62,13 +120,50 @@ const RobotFile = () => {
             size='middle'
             style={{ padding: '1rem', width: '100%' }}
           >
-            <Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            </Button>
+            <Space direction='horizontal'
+              size='middle'
+              style={{ width: '100%' }}>
+              <Button
+                type='primary'
+                onClick={onSaveToCloud}
+                style={{ width: '100%', display: 'inline-block' }}
+              >
+                Save changes to cloud
+              </Button>
+              <Button
+                type='primary'
+                onClick={showModal}
+                className={styles.syntaxModalButton}
+              >
+                Show Syntax
+              </Button>
+              <Modal title="Robot Framework Syntax" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={false}>
+                <Table dataSource={dataSource} columns={columns} pagination={false} />
+              </Modal>
+            </Space>
+
+            {/*             <Row justify='center' width='100%'>
+              <Col xs={16} sm={16} md={16}>
+                <Button
+                  type='primary'
+                  onClick={onSaveToCloud}
+                  style={{ width: '100%', marginRight: '1rem' }}
+                >
+                  Save changes to cloud
+              </Button>
+              </Col>
+              <Col xs={8} sm={8} md={8}>
+                <Button
+                  type='primary'
+                  onClick={onSaveToCloud}
+                  style={{ width: '100%' }}
+                >
+                  Save changes to cloud
+              </Button>
+              </Col>
+            </Row> */}
+
+
             <Editor
               value={code}
               onValueChange={(newCode) => setCode(newCode)}
@@ -82,7 +177,7 @@ const RobotFile = () => {
           </Space>
         </Col>
       </Row>
-    </Layout>
+    </Layout >
   );
 };
 
