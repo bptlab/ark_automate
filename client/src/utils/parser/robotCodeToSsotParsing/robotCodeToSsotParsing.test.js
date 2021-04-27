@@ -22,26 +22,20 @@ const taskSectionAsArray = parser.getRobotCodeAsArray(correctTaskSection);
 const declaredApplications = parser.getApplicationArray(settingsSectionAsArray);
 
 describe('RobotCode to SSOT Parsing Tests', () => {
-    test('ssot contains right robotName', () => {
-        const ssot = parser.parseRobotCodeToSsot(correctRobotCode);
-        expect(ssot).toHaveProperty('robotName', 'AwesomeTestRobot');
-    });
-    test('ssot contains right robotId', () => {
-        const ssot = parser.parseRobotCodeToSsot(correctRobotCode);
-        expect(ssot).toHaveProperty('_id', 12345678);
-    });
-    test('ssot contains right starterId', async () => {
+    test('ssot contains right robotMetadata', () => {
         sessionStorage.setItem('idCounter', '5416');
         const ssot = parser.parseRobotCodeToSsot(correctRobotCode);
+        expect(ssot).toHaveProperty('robotName', 'AwesomeTestRobot');
+        expect(ssot).toHaveProperty('_id', 12345678);
         expect(ssot).toHaveProperty('starterId', "Event_0ay5417");
     });
 
-    test('settings selector was found correctly', () => expect(parser.getLineNumberForSelector(settingsSectionAsArray, '*** Settings ***')).toBe(0));
-    test('settings selector was found correctly2', () => {
+    test('settings selector was found correctly', () => {
         const settingsSectionAsArrayForTest = parser.getRobotCodeAsArray(`RandomOffsetLine\n${correctSettingsSection}`);
+        expect(parser.getLineNumberForSelector(settingsSectionAsArray, '*** Settings ***')).toBe(0);
         expect(parser.getLineNumberForSelector(settingsSectionAsArrayForTest, '*** Settings ***')).toEqual(1)
     });
-    test('settings selector wasn\'t found (what is expected)', () => {
+    test('settings selector wasn\'t found, expected to throw error', () => {
         const robotCodeWithOutSettingsSelector = robotCodeAsArray.slice(1)
         expect(parser.getLineNumberForSelector(robotCodeWithOutSettingsSelector, '*** Settings ***')).toBe(undefined)
     });

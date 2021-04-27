@@ -28,7 +28,7 @@ const getEventId = () => `Event_0ay${getUniqueId()}`
 
 /**
  * @description Splits the robot code into an array and deletes all empty lines 
- * @param {String} robotCode Code from the code-editor
+ * @param {String} robotCode Code from the code editor
  * @returns Robot code without empty lines as an array
  */
 const getRobotCodeAsArray = (robotCode) => {
@@ -196,7 +196,7 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, declaredAppli
 }
 
 /**
- * @description builds a dummy startMarker element and returns them
+ * @description Builds a dummy startMarker element and returns them
  * @returns dummy startMarker as JSON => currently MARKERS aren't defined
  * in our RPAf-Syntax and therefore there aren't implemented
  */
@@ -209,7 +209,7 @@ const buildStartMarker = () => ({
 })
 
 /**
- * @description builds a dummy endMarker element and returns them
+ * @description Builds a dummy endMarker element and returns them
  * @param {Object} predecessor as an Object to get the predecessorId
  * @returns dummy endMarker as JSON => currently MARKERS aren't defined
  * in our RPAf-Syntax and therefore there aren't implemented
