@@ -120,49 +120,25 @@ const RobotFile = () => {
             size='middle'
             style={{ padding: '1rem', width: '100%' }}
           >
-            <Space direction='horizontal'
-              size='middle'
-              style={{ width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Button
                 type='primary'
                 onClick={onSaveToCloud}
-                style={{ width: '100%', display: 'inline-block' }}
+                style={{ width: '100%', marginRight: '1rem' }}
               >
                 Save changes to cloud
-              </Button>
+                </Button>
               <Button
                 type='primary'
                 onClick={showModal}
                 className={styles.syntaxModalButton}
               >
                 Show Syntax
-              </Button>
-              <Modal title="Robot Framework Syntax" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={false}>
-                <Table dataSource={dataSource} columns={columns} pagination={false} />
-              </Modal>
-            </Space>
-
-            {/*             <Row justify='center' width='100%'>
-              <Col xs={16} sm={16} md={16}>
-                <Button
-                  type='primary'
-                  onClick={onSaveToCloud}
-                  style={{ width: '100%', marginRight: '1rem' }}
-                >
-                  Save changes to cloud
-              </Button>
-              </Col>
-              <Col xs={8} sm={8} md={8}>
-                <Button
-                  type='primary'
-                  onClick={onSaveToCloud}
-                  style={{ width: '100%' }}
-                >
-                  Save changes to cloud
-              </Button>
-              </Col>
-            </Row> */}
-
+                  </Button>
+            </div>
+            <Modal title="Robot Framework Syntax" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={false}>
+              <Table dataSource={dataSource} columns={columns} pagination={false} />
+            </Modal>
 
             <Editor
               value={code}

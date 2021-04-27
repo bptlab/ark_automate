@@ -5,7 +5,6 @@
 }
 
 .syntaxModalButton {
-  width: 100%;
   background-color: var(--colorPrimaryInverted2);
   border-color: var(--colorPrimaryInverted2);
 }
