@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Input, Tooltip, Typography } from 'antd';
-import { InfoCircleOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
+import {
+  InfoCircleOutlined,
+  LockOutlined,
+  UnlockOutlined,
+} from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import styles from '../../ModelerSidebar.module.css';
 import {
@@ -16,7 +20,6 @@ const { Text } = Typography;
  * @component
  */
 const PPParameterInput = ({
-  onValueChange,
   variableName,
   isRequired,
   // eslint-disable-next-line no-unused-vars
@@ -39,16 +42,18 @@ const PPParameterInput = ({
   );
 
   /**
-   * @description changes the state for "userInputRequired" and also the parameter value 
+   * @description changes the state for "userInputRequired" and also the parameter value
    * @param {String} parameterName Name of the currently handled parameter
    */
   const changeUserInputRequirement = (parameterName) => {
+    setParameterValue('');
     setPropertyForParameter(
       selectedActivity,
       parameterName,
       'requireUserInput',
       !userInputRequired
     );
+    setPropertyForParameter(selectedActivity, parameterName, 'value', '');
     setUserInputRequired(!userInputRequired);
   };
 
@@ -72,8 +77,10 @@ const PPParameterInput = ({
    * @returns the corresponding icon
    */
   const returnLockIcon = (inputParameterName) => (
-    <UnlockOutlined onClick={() => changeUserInputRequirement(inputParameterName)} />
-  )
+    <UnlockOutlined
+      onClick={() => changeUserInputRequirement(inputParameterName)}
+    />
+  );
 
   return (
     <>
@@ -88,22 +95,25 @@ const PPParameterInput = ({
         <Input
           placeholder='Please type in value'
           defaultValue={value}
-          value={userInputRequired ? '' : parameterValue}
+          value={parameterValue}
           onChange={(event) => changeParameterValue(event, variableName)}
           suffix={
             <Tooltip title={infoText}>
               <InfoCircleOutlined />
-            </Tooltip>}
+            </Tooltip>
+          }
           addonAfter={returnLockIcon(variableName)}
           disabled={userInputRequired}
-        />)}
+        />
+      )}
 
       {userInputRequired && (
         <Button
           style={{ width: '100%' }}
           type='primary'
           className={styles.parameterButton}
-          onClick={() => changeUserInputRequirement(variableName)}>
+          onClick={() => changeUserInputRequirement(variableName)}
+        >
           Parameter will be set at execution <LockOutlined />
         </Button>
       )}
@@ -112,7 +122,6 @@ const PPParameterInput = ({
 };
 
 PPParameterInput.propTypes = {
-  onValueChange: PropTypes.func.isRequired,
   variableName: PropTypes.string.isRequired,
   isRequired: PropTypes.bool.isRequired,
   dataType: PropTypes.string.isRequired,

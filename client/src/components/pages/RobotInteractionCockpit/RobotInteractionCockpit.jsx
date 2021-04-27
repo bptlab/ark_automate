@@ -51,7 +51,10 @@ const RobotInteractionCockpit = (match) => {
       setCurrentStep(1);
       startRobotForUser(userId, robotId, parameters);
     } else {
-      customNotification('Error', 'Your Bot is not fully configured and can not be executed!');
+      customNotification(
+        'Error',
+        'Your Bot is not fully configured and can not be executed!'
+      );
     }
   };
 

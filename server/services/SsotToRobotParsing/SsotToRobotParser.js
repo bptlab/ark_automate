@@ -47,7 +47,6 @@ const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
     parameters,
     result.attributeObjects
   );
-
   return result.parsedCode;
 };
 
