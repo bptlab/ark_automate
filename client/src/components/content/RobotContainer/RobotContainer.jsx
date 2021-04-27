@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Row, Typography, Popconfirm, Tooltip, notification } from 'antd';
+import { Col, Row, Typography, Popconfirm, Tooltip } from 'antd';
 import {
   PlayCircleOutlined,
   EditOutlined,
