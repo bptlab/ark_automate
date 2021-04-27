@@ -507,8 +507,6 @@ const initSsotSessionStorage = (robotId) => {
       });
 };
 
-
-
 export {
   getRobotId,
   getRpaTask,

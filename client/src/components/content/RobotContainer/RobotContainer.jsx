@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 import React, { useState } from 'react';
-import { Col, Row, Typography, Popconfirm, Tooltip } from 'antd';
+import { Col, Row, Typography, Popconfirm, Tooltip, notification } from 'antd';
 import {
   PlayCircleOutlined,
   EditOutlined,
@@ -23,8 +23,8 @@ const { Title } = Typography;
 const RobotContainer = (props) => {
   const { robotId, robotName, userId, refreshOverview } = props;
   const [name, setRobotName] = useState(robotName);
-  const [popConfirmVisible, setPopConfirmVisible] = React.useState(false);
-  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [popConfirmVisible, setPopConfirmVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [hoveredUpon, setHoveredUpon] = useState(false);
 
   /**
@@ -53,12 +53,14 @@ const RobotContainer = (props) => {
    */
   const deleteRobot = () => {
     setConfirmLoading(true);
+
     deleteRobotFromDB(robotId).then(() => {
-      setTimeout(() => {
-        setPopConfirmVisible(false);
-        setConfirmLoading(false);
-        refreshOverview(robotId);
-      }, 1000);
+      notification.success({
+        message: `Successfully deleted robot '${name}'`,
+      });
+      setPopConfirmVisible(false);
+      setConfirmLoading(false);
+      refreshOverview();
     });
   };
 
