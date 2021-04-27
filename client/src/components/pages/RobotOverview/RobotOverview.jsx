@@ -115,6 +115,7 @@ const RobotOverview = () => {
             // eslint-disable-next-line no-underscore-dangle
             robotId={val._id}
             robotName={val.robotName}
+            refreshOverview={() => retrieveBotList(userId)}
           />
         ))}
       </>

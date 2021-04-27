@@ -33,35 +33,6 @@ exports.getAvailableTasksForApplications = async (req, res) => {
   }
 };
 
-// GET /rpa-framework/commands/get-vars-for-task?application=Browser&task=Open+Browser
-exports.getVarsForTask = async (req, res) => {
-  try {
-    const { application } = req.query;
-    const { task } = req.query;
-    res.set('Content-Type', 'application/json');
-
-    if (application != null && task != null) {
-      await mongoose.model('rpa-task').findOne(
-        {
-          Application: application,
-          Task: task,
-        },
-        {
-          inputVars: 1,
-          outputValue: 1,
-        },
-        (err, tasks) => {
-          res.send(tasks);
-        }
-      );
-    } else {
-      res.send('Please set valid application and task parameters.');
-    }
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 // GET /rpa-framework/commands/getAllParameters
 exports.getAllParameters = async (req, res) => {
   const parameterObjects = await mongoose.model('rpa-task').find().exec();

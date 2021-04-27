@@ -101,30 +101,6 @@ describe('ssot/renameRobot', () => {
   });
 });
 
-describe('ssot/retrieveRobotMetadata', () => {
-  it('gets the correct robot metadata', async () => {
-    await dbLoader.loadSsotInDb();
-
-    const request = httpMocks.createRequest({
-      params: {
-        robotId: testRobotId,
-      },
-    });
-    const response = httpMocks.createResponse();
-
-    await ssotRetrievalController.retrieveRobotMetadata(request, response);
-    const data = await response._getData();
-
-    expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data.robotName)).toEqual(
-      JSON.stringify(testSsot.robotName)
-    );
-    expect(JSON.stringify(data.starterId)).toEqual(
-      JSON.stringify(testSsot.starterId)
-    );
-  });
-});
-
 describe('ssot/shareRobotWithUser', () => {
   it('successfully creates a userAccessObject for robot and user', async () => {
     const request = httpMocks.createRequest({
@@ -188,28 +164,6 @@ describe('ssot/createNewRobot', () => {
     const data2 = await response2._getData();
     expect(response.statusCode).toBe(200);
     expect(JSON.stringify(data2[0]._id)).toEqual(JSON.stringify(newRobotId));
-  });
-});
-
-describe('ssot/parser/get-robot-code', () => {
-  it('successfully retrieves parsed code for ssot', async () => {
-    await dbLoader.loadSsotInDb();
-    await dbLoader.loadAttributesInDb();
-    await dbLoader.loadParametersInDb();
-
-    const request = httpMocks.createRequest({
-      query: {
-        robotId: testRobotId,
-      },
-    });
-    const response = httpMocks.createResponse();
-
-    await ssotParsingController.getRobotCode(request, response);
-    expect(response.statusCode).toBe(200);
-
-    const data = await response._getData();
-    expect(data).toMatch('*** Settings ***');
-    expect(data).toMatch('*** Tasks ***');
   });
 });
 
@@ -406,5 +360,196 @@ describe('ssot/getAllAttributes/:robotId', () => {
         testData.testAttributes3,
       ])
     );
+  });
+});
+
+describe('ssot/delete/:robotId', () => {
+  it('successfully deletes the robots ssot', async () => {
+    await dbLoader.loadSsotInDb();
+    const ssotBefore = await mongoose.model('SSoT').find().exec();
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const usableTestRobotId = mongoose.Types.ObjectId(testRobotId);
+    const foundSsots = await mongoose.model('SSoT').find().exec();
+    expect(foundSsots.length).toBe(0);
+
+    const foundSsotById = await mongoose
+      .model('SSoT')
+      .findById({ _id: usableTestRobotId })
+      .exec();
+
+    expect(foundSsotById).toBe(null);
+    expect(foundSsotById).not.toBe(ssotBefore);
+  });
+
+  it('successfully deletes the user access object to a robot', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadUserAccessObjectsInDb();
+
+    const loadedUserAccessObjects = await mongoose
+      .model('userAccessObject')
+      .find()
+      .exec();
+    expect(loadedUserAccessObjects.length).toBe(2);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const foundUserAccessObjects = await mongoose
+      .model('userAccessObject')
+      .find()
+      .exec();
+    expect(foundUserAccessObjects.length).toBe(
+      loadedUserAccessObjects.length - 1
+    );
+
+    const usableTestRobotId = mongoose.Types.ObjectId(testRobotId);
+    const foundUserAccessObjectsById = await mongoose
+      .model('userAccessObject')
+      .find({ robotId: usableTestRobotId })
+      .exec();
+
+    expect(foundUserAccessObjectsById.length).toBe(0);
+  });
+
+  it('successfully deletes the attributes to a robots activities', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+
+    const loadedAttributes = await mongoose
+      .model('rpaAttributes')
+      .find()
+      .exec();
+    expect(loadedAttributes.length).toBe(3);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
+    expect(foundAttributes.length).toBe(0);
+    expect(foundAttributes.length).not.toBe(loadedAttributes.length);
+    expect(foundAttributes).not.toBe(loadedAttributes);
+  });
+
+  it('successfully deletes the parameters to a robots activities', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadParametersInDb();
+
+    const loadedParameters = await mongoose.model('parameter').find().exec();
+    expect(loadedParameters.length).toBe(3);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const foundParameters = await mongoose.model('parameter').find().exec();
+    expect(foundParameters.length).toBe(0);
+    expect(foundParameters.length).not.toBe(loadedParameters.length);
+    expect(foundParameters).not.toBe(loadedParameters);
+  });
+
+  it('successfully deletes the jobs to a robot', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadJobInDb();
+
+    const loadedJobs = await mongoose.model('job').find().exec();
+    expect(loadedJobs.length).toBe(1);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const foundJobs = await mongoose.model('job').find().exec();
+    expect(foundJobs.length).toBe(0);
+    expect(foundJobs.length).not.toBe(loadedJobs.length);
+    expect(foundJobs).not.toBe(loadedJobs);
+  });
+
+  it('sucessfully deletes every robot artifact to a given robotId', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadJobInDb();
+    await dbLoader.loadParametersInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadUserAccessObjectsInDb();
+    await dbLoader.loadTasksInDb();
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const usableTestRobotId = mongoose.Types.ObjectId(testRobotId);
+    const foundSsotById = await mongoose
+      .model('SSoT')
+      .findById({ _id: usableTestRobotId })
+      .exec();
+    expect(foundSsotById).toBe(null);
+
+    const foundUserAccessObjectsById = await mongoose
+      .model('userAccessObject')
+      .find({ robotId: usableTestRobotId })
+      .exec();
+    expect(foundUserAccessObjectsById.length).toBe(0);
+
+    const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
+    expect(foundAttributes.length).toBe(0);
+
+    const foundParameters = await mongoose.model('parameter').find().exec();
+    expect(foundParameters.length).toBe(0);
+
+    const foundJobs = await mongoose.model('job').find().exec();
+    expect(foundJobs.length).toBe(0);
   });
 });

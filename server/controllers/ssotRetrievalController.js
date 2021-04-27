@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 const mongoose = require('mongoose');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
@@ -111,26 +112,6 @@ exports.shareRobotWithUser = async (req, res) => {
   }
 };
 
-// GET /retrieveMetadataForRobot/78d09f66d2ed466cf20b06f7
-exports.retrieveRobotMetadata = async (req, res) => {
-  try {
-    res.set('Content-Type', 'application/json');
-    const { robotId } = req.params;
-
-    const ssotData = await mongoose
-      .model('SSoT')
-      .findById(robotId, {
-        starterId: 1,
-        robotName: 1,
-      })
-      .exec();
-
-    res.send(ssotData);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 // GET /createNewRobot?userId=78d09f66d2ed466cf20b06f7&robotName=NewRobot
 exports.createNewRobot = async (req, res) => {
   try {
@@ -144,13 +125,13 @@ exports.createNewRobot = async (req, res) => {
       predecessorIds: [],
       successorIds: [],
       type: 'MARKER',
-      id: 'Event_startEvent'
-    }
+      id: 'Event_startEvent',
+    };
 
     const ssot = await mongoose.model('SSoT').create({
       starterId: '',
       robotName: nameWithEmptyspace,
-      elements: [ initialStartEvent ],
+      elements: [initialStartEvent],
     });
 
     const updatedSsot = await ssot
@@ -184,18 +165,50 @@ exports.overwriteRobot = async (req, res) => {
 
     const ssotData = await mongoose
       .model('SSoT')
-      .findByIdAndUpdate(
-        updatedSsot['_id'],
-        updatedSsot,
-        {
-          new: true,
-          useFindAndModify: false,
-          upsert: true
-        }
-      )
+      // eslint-disable-next-line no-underscore-dangle
+      .findByIdAndUpdate(updatedSsot._id, updatedSsot, {
+        new: true,
+        useFindAndModify: false,
+        upsert: true,
+      })
       .exec();
 
     res.send(ssotData);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// DELETE /ssot/delete/78d09f66d2ed466cf20b06f7
+exports.deleteRobot = async (req, res) => {
+  try {
+    res.set('Content-Type', 'application/json');
+    const { robotId } = req.params;
+    const usableRobotId = mongoose.Types.ObjectId(robotId);
+
+    const response = await mongoose
+      .model('SSoT')
+      .deleteOne({ _id: usableRobotId })
+      .exec();
+
+    await mongoose
+      .model('userAccessObject')
+      .deleteMany({ robotId: usableRobotId })
+      .exec();
+
+    await mongoose
+      .model('rpaAttributes')
+      .deleteMany({ robotId: usableRobotId })
+      .exec();
+
+    await mongoose
+      .model('parameter')
+      .deleteMany({ robotId: usableRobotId })
+      .exec();
+
+    await mongoose.model('job').deleteMany({ robot_id: usableRobotId }).exec();
+
+    res.send(response);
   } catch (err) {
     console.error(err);
   }

@@ -14,8 +14,8 @@ const getSsotFromDB = async (robotId) => {
 };
 
 /**
- * @description Fetch all those Ssot names and Ids, which are available for the current user
- * @param { String } userId - String including the user Id
+ * @description Fetch all those ssot names and ids, which are available for the current user
+ * @param { String } userId - String including the user id
  */
 const fetchSsotsForUser = async (userId) => {
   const requestString = `/ssot/getAvailableRobotsForUser/${userId}`;
@@ -24,7 +24,7 @@ const fetchSsotsForUser = async (userId) => {
 };
 
 /**
- * @description This function renames the robot in Ssot
+ * @description This function renames the robot in the ssot
  * @param { String } robotId - String including the robotId
  * @param { String } newName - String with the new RobotName
  */
@@ -36,7 +36,7 @@ const changeSsotName = async (robotId, newName) => {
 };
 
 /**
- * @description Fetches all the Metadata for a single Robot
+ * @description Fetches all the metadata for a single robot
  * @param {String} robotId - String including the robotId
  */
 const retrieveMetadataForRobot = async (robotId) => {
@@ -47,7 +47,7 @@ const retrieveMetadataForRobot = async (robotId) => {
 
 /**
  * @description Create a new robot with the specified name for the specified user
- * @param {String} newName - String including the user Id
+ * @param {String} newName - String including the userId
  */
 const createNewRobot = async (userId, newName) => {
   const adjustedName = newName.replace(/\s/g, '+');
@@ -56,10 +56,22 @@ const createNewRobot = async (userId, newName) => {
   return response;
 };
 
+/**
+ * @description Will send a backend call to delete a robot
+ * @param {String} robotId Id of the robot that is deleted
+ */
+const deleteRobotFromDB = async (robotId) => {
+  const requestStringParameters = `/ssot/delete/${robotId}`;
+  await fetch(requestStringParameters, { method: 'DELETE' }).catch((err) => {
+    console.error(err);
+  });
+};
+
 export {
   getSsotFromDB,
   fetchSsotsForUser,
   changeSsotName,
   retrieveMetadataForRobot,
   createNewRobot,
+  deleteRobotFromDB,
 };
