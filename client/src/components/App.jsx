@@ -6,7 +6,6 @@ import Error from './pages/Error/Error';
 import RobotFile from './pages/RobotFile/RobotFile';
 import RobotOverview from './pages/RobotOverview/RobotOverview';
 import RobotInteractionCockpit from './pages/RobotInteractionCockpit/RobotInteractionCockpit';
-import './App.css';
 
 /**
  * @description route component of the application
