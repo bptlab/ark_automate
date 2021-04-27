@@ -85,7 +85,14 @@ paths:
           description: Not Found
   #### Robots ####
   # GET /ssot/:id
-  /robots:
+  /robots/{robotId}:
+    parameters:
+      - name: robotId
+        in: path
+        description: The id of a robot
+        required: true
+        schema:
+          $ref: '#/components/schemas/RobotIds'
     get:
       tags:
         - Robots
@@ -98,6 +105,87 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Robots'
+  # GET /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
+  /robots/{robotId}/robotName:
+    parameters:
+      - name: robotId
+        in: path
+        description: The id of a robot
+        required: true
+        schema:
+          $ref: '#/components/schemas/RobotIds'
+    patch:
+      tags:
+        - Robots
+      summary: Updates the name of a robot
+      operationId: setRobotName
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotNameObjects'
+        description: Object with new robot name
+        required: true
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Bad Request
+  # // GET /shareRobotWithUser?userId=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
+  /robots/userAccess:
+    post:
+      tags:
+        - Robots
+      summary: Share a robot with a user
+      operationId: createUserAccessObject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAccessObjects'
+        description: Object that connects a user with a robot
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccessObjects'
+        400:
+          description: Bad Request
+
+  # GET ssot/getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
+  /robots/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        description: The id of a user
+        required: true
+        schema:
+          $ref: '#/components/schemas/ObjectIds'
+    get:
+      tags:
+        - Robots
+      summary: Get all robots for a specific user
+      operationId: getRobotsForUser
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - _id
+                    - robotName
+                  properties:
+                    _id:
+                      $ref: '#/components/schemas/RobotIds'
+                    robotName:
+                      $ref: '#/components/schemas/RobotNames'
 
 components:
   schemas:
@@ -155,6 +243,32 @@ components:
       type: string
       example: Open Workbook
     #### Robots ####
+    UserAccessObjects:
+      type: object
+      required:
+        - AccessLevel
+        - robotId
+        - userId
+      properties:
+        AccessLevel:
+          type: string
+          example: ReadWrite
+        robotId:
+          $ref: '#/components/schemas/RobotIds'
+        userId:
+          $ref: '#/components/schemas/ObjectIds'
+    RobotNameObjects:
+      type: object
+      required:
+        - newRobotName
+      properties:
+        newRobotName:
+          type: string
+          minLength: 1
+          example: Automating emails
+    RobotIds:
+      type: integer
+      example: 606199015d691786a44a608f
     EventIds:
       type: string
       minLength: 1
@@ -205,7 +319,7 @@ components:
         - robotName
       properties:
         _id:
-          $ref: '#/components/schemas/ObjectIds'
+          $ref: '#/components/schemas/RobotIds'
         starterId:
           $ref: '#/components/schemas/EventIds'
         robotName:
