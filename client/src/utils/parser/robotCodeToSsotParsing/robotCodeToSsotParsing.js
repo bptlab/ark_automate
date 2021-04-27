@@ -264,7 +264,7 @@ const buildSingleParameterObject = (singleAtrributeObject, singleElementFromTask
         const singleParameterObject = { ...singleInputVariable };
 
         singleParameterObject.requireUserInput = (currentParameterRequiresUserInput)
-        if (currentParameterIsEmpty) {
+        if (currentParameterIsEmpty || currentParameterRequiresUserInput) {
             singleParameterObject.value = '';
         } else if (currentParameterTakesOutputValue) {
             const outputValueName = singleParamArray[index].slice(2).slice(0, singleParamArray[index].length - 3).trim()
