@@ -506,6 +506,7 @@ const initSsotSessionStorage = (robotId) => {
         console.error(error);
       });
 };
+
 export {
   getRobotId,
   getRpaTask,

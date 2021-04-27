@@ -1,12 +1,17 @@
 /* eslint-disable no-alert */
 import React, { useState } from 'react';
-import { Col, Row, Typography } from 'antd';
-import { PlayCircleOutlined, EditOutlined } from '@ant-design/icons';
+import { Col, Row, Typography, Popconfirm, Tooltip, notification } from 'antd';
+import {
+  PlayCircleOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  WarningOutlined,
+} from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
 import { initSsotSessionStorage } from '../../../utils/attributeAndParamUtils';
-import { changeSsotName } from '../../../api/ssotRetrieval';
+import { changeSsotName, deleteRobotFromDB } from '../../../api/ssotRetrieval';
 
 const { Title } = Typography;
 
@@ -16,8 +21,10 @@ const { Title } = Typography;
  * @category Client
  */
 const RobotContainer = (props) => {
-  const { robotId, robotName, userId } = props;
+  const { robotId, robotName, userId, refreshOverview } = props;
   const [name, setRobotName] = useState(robotName);
+  const [popConfirmVisible, setPopConfirmVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [hoveredUpon, setHoveredUpon] = useState(false);
 
   /**
@@ -41,6 +48,22 @@ const RobotContainer = (props) => {
       });
   };
 
+  /**
+   * @description Deletes the robot
+   */
+  const deleteRobot = () => {
+    setConfirmLoading(true);
+
+    deleteRobotFromDB(robotId).then(() => {
+      notification.success({
+        message: `Successfully deleted robot '${name}'`,
+      });
+      setPopConfirmVisible(false);
+      setConfirmLoading(false);
+      refreshOverview();
+    });
+  };
+
   return (
     <Col
       xs={24}
@@ -54,23 +77,46 @@ const RobotContainer = (props) => {
       {hoveredUpon && (
         <Col className={[styles.box, styles.robotBox, styles.selectedRobotBox]}>
           <Row align='middle' style={{ height: '55%' }}>
-            <Col type='flex' span={12}>
+            <Col type='flex' span={8}>
               <Link
                 to={{
                   pathname: `/interaction_cockpit/${robotId}`,
                   state: { userId },
                 }}
               >
-                <PlayCircleOutlined
-                  onClick={initLocalSsot}
-                  className={styles.clickableIcon}
-                />
+                <Tooltip title='Execute Robot'>
+                  <PlayCircleOutlined
+                    onClick={initLocalSsot}
+                    className={styles.clickableIcon}
+                  />
+                </Tooltip>
               </Link>
             </Col>
-            <Col type='flex' span={12}>
+            <Col type='flex' span={8}>
               <Link to={`/modeler/${robotId}`}>
-                <EditOutlined className={styles.clickableIcon} />
+                <Tooltip title='Edit Robot'>
+                  <EditOutlined className={styles.clickableIcon} />
+                </Tooltip>
               </Link>
+            </Col>
+            <Col type='flex' span={8}>
+              <Popconfirm
+                title='Delete Robot?'
+                visible={popConfirmVisible}
+                onConfirm={deleteRobot}
+                okButtonProps={{ loading: confirmLoading }}
+                onCancel={() => setPopConfirmVisible(false)}
+                okText='Delete'
+                icon={<WarningOutlined />}
+                placement='left'
+              >
+                <Tooltip title='Delete Robot'>
+                  <DeleteOutlined
+                    onClick={() => setPopConfirmVisible(true)}
+                    className={styles.clickableIcon}
+                  />
+                </Tooltip>
+              </Popconfirm>
             </Col>
           </Row>
 
@@ -78,7 +124,15 @@ const RobotContainer = (props) => {
             <Title
               className={styles.title}
               level={3}
-              editable={{ onChange: renameRobot }}
+              editable={{
+                onChange: renameRobot,
+                tooltip: false,
+                icon: (
+                  <Tooltip title='Edit Robot Name' placement='bottom'>
+                    <EditOutlined />
+                  </Tooltip>
+                ),
+              }}
             >
               {name}
             </Title>
@@ -106,6 +160,7 @@ RobotContainer.propTypes = {
   robotName: PropTypes.string.isRequired,
   robotId: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
+  refreshOverview: PropTypes.func.isRequired,
 };
 
 export default RobotContainer;
