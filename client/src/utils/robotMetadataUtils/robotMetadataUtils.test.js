@@ -5,13 +5,13 @@
 jest.mock('../../api/ssot');
 jest.mock('../downloadString');
 jest.mock('../attributeAndParamUtils');
-jest.mock('../BpmnToSsotParsing/BpmnToSsotParsing');
+jest.mock('../parser/BpmnToSsotParsing/BpmnToSsotParsing');
 
 import { downloadRobotFile, onSaveToCloud } from './robotMetadataUtils';
 import getParsedRobotFile from '../../api/ssot';
 import downloadString from '../downloadString';
 import { upsert } from '../attributeAndParamUtils';
-import { parseBpmnToSsot } from '../BpmnToSsotParsing/BpmnToSsotParsing';
+import { parseBpmnToSsot } from '../parser/BpmnToSsotParsing/BpmnToSsotParsing';
 import constants from '../modelerSidebarFunctionality/modelerSidebarFunctionalityTestingUtils';
 
 describe('Robot Metadata Utilities Tests', () => {
