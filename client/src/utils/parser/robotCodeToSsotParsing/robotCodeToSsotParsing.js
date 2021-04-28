@@ -535,7 +535,7 @@ const parseRobotCodeToSsot = (robotCode) => {
   return undefined;
 };
 
-module.exports = {
+export {
   parseRobotCodeToSsot,
   getLineNumberForSelector,
   getRobotCodeAsArray,
