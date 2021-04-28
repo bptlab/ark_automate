@@ -3,7 +3,7 @@
 }
 
 .requiredStar {
-  color : var(--colorBackgroundCta) !important;
+  color: var(--colorBackgroundCta) !important;
 }
 
 .title {
@@ -30,4 +30,3 @@
   background-color: var(--color-Background);
   border-color: var(--colorBackgroundCta);
 }
-

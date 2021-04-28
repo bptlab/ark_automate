@@ -1,4 +1,4 @@
-import customNotification from './notificationUtils'
+import customNotification from './notificationUtils';
 /**
  * @category Client
  * @module
@@ -217,8 +217,14 @@ const getParameterObject = (robotId, activityId) => {
     (element) => element.activityId === activityId
   );
 
-  const application = (matchingAttributeObject !== undefined ? matchingAttributeObject.rpaApplication : undefined);
-  const task = (matchingAttributeObject !== undefined ? matchingAttributeObject.rpaTask : undefined);
+  const application =
+    matchingAttributeObject !== undefined
+      ? matchingAttributeObject.rpaApplication
+      : undefined;
+  const task =
+    matchingAttributeObject !== undefined
+      ? matchingAttributeObject.rpaTask
+      : undefined;
 
   if (application && task) {
     const localComboStorage = JSON.parse(
@@ -442,7 +448,11 @@ const upsert = async () => {
     },
   });
 
-  customNotification('Success', 'Successfully saved to cloud', 'CloudUploadOutlined');
+  customNotification(
+    'Success',
+    'Successfully saved to cloud',
+    'CloudUploadOutlined'
+  );
 };
 
 /**

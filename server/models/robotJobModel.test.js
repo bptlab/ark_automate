@@ -7,7 +7,7 @@ const { testJob } = require('../utils/TestingUtils/testData.js');
 // eslint-disable-next-line no-unused-vars
 const jobsModel = require('./robotJobModel.js');
 
-const Job = mongoose.model('job')
+const Job = mongoose.model('job');
 
 /**
  * Connect to a new in-memory database before running any tests.

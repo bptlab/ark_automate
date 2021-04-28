@@ -9,14 +9,14 @@ const singleParameterSchema = new Schema({
   type: String,
   isRequired: Boolean,
   infoText: String,
-  index: Number
+  index: Number,
 });
 
 const parameterObjectSchema = new Schema({
   robotId: mongoose.Types.ObjectId,
   activityId: String,
   outputVariable: String,
-  rpaParameters: [ singleParameterSchema ],
+  rpaParameters: [singleParameterSchema],
 });
 
 const instructionSchema = new Schema({
@@ -24,7 +24,7 @@ const instructionSchema = new Schema({
   name: String,
   predecessorIds: [String],
   successorIds: [String],
-  id: String
+  id: String,
 });
 
 const rpaAttributesObjectSchema = new Schema({
@@ -43,8 +43,8 @@ const markerSchema = new Schema({
 
 const ssotSchema = new Schema({
   starterId: String,
-  robotName: {type: String, required: [true, 'robotName required']},
-  elements: {type: [instructionSchema, markerSchema]},
+  robotName: { type: String, required: [true, 'robotName required'] },
+  elements: { type: [instructionSchema, markerSchema] },
 });
 
 mongoose.model('parameter', parameterObjectSchema);

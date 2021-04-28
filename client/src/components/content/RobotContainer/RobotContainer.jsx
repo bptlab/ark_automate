@@ -55,7 +55,7 @@ const RobotContainer = (props) => {
     setConfirmLoading(true);
 
     deleteRobotFromDB(robotId).then(() => {
-      customNotification('Success', `Successfully deleted robot ${name}`)
+      customNotification('Success', `Successfully deleted robot ${name}`);
       setPopConfirmVisible(false);
       setConfirmLoading(false);
       refreshOverview();

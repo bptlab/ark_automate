@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select } from 'antd';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import styles from '../../ModelerSidebar.module.css';
 import { getRpaTask } from '../../../../../utils/attributeAndParamUtils';
 
@@ -15,7 +15,7 @@ const PPTaskDropdown = ({
   onTaskSelection,
   disabled,
   listOfTasks,
-  selectedActivity
+  selectedActivity,
 }) => (
   <>
     <Select
@@ -39,7 +39,7 @@ PPTaskDropdown.propTypes = {
   listOfTasks: PropTypes.arrayOf(PropTypes.shape).isRequired,
   onTaskSelection: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
-  selectedActivity: PropTypes.string.isRequired
+  selectedActivity: PropTypes.string.isRequired,
 };
 
 export default PPTaskDropdown;
