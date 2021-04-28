@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Button, Space, Row, Col } from 'antd';
-import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
+import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import 'prismjs/components/prism-robotframework';
 import getParsedRobotFile from '../../../api/ssot';
+import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils';
+import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
+import { upsert } from '../../../utils/attributeAndParamUtils';
+import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';
+import customNotification from '../../../utils/notificationUtils';
+import RobotFileSyntaxModal from '../../content/RobotFileSyntaxModal/RobotFileSyntaxModal';
 
 /**
  * @description View of the robot file
@@ -18,10 +23,22 @@ const RobotFile = () => {
     'Please wait, your robot file is being loaded.'
   );
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
   /**
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
+    initAvailableApplicationsSessionStorage();
+
     const robotId = JSON.parse(sessionStorage.getItem('robotId'));
     getParsedRobotFile(robotId)
       .then((response) => response.text())
@@ -35,14 +52,18 @@ const RobotFile = () => {
    * This function will retrieve the code from the editor, parse it to a ssot and write the
    * resulting ssot into the sessionStorage.
    */
-  const onSaveToCloud = async () => {
-    // eslint-disable-next-line no-unused-vars
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
+  const onSaveToCloud = () => {
+    const ssot = parseRobotCodeToSsot(code);
+    if (typeof ssot === 'undefined') {
+      customNotification(
+        'Warning',
+        'Because a parsing error occurred, the robot was not saved to cloud.'
+      );
+    } else {
+      sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
 
-    /**
-     * please parse here to ssot and upsert
-     * use the variables robotId and code for parsing.
-     */
+      upsert();
+    }
   };
 
   return (
@@ -55,13 +76,26 @@ const RobotFile = () => {
             size='middle'
             style={{ padding: '1rem', width: '100%' }}
           >
-            <Button
-              type='primary'
-              onClick={onSaveToCloud}
-              style={{ width: '100%' }}
-            >
-              Save changes to cloud
-            </Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button
+                type='primary'
+                onClick={onSaveToCloud}
+                style={{ width: '100%', marginRight: '1rem' }}
+              >
+                Save changes to cloud
+              </Button>
+              <Button
+                type='primary'
+                onClick={showModal}
+                className={styles.syntaxModalButton}
+              >
+                Show Syntax
+              </Button>
+            </div>
+            <RobotFileSyntaxModal
+              visible={isModalVisible}
+              handleClose={handleModalClose}
+            />
             <Editor
               value={code}
               onValueChange={(newCode) => setCode(newCode)}

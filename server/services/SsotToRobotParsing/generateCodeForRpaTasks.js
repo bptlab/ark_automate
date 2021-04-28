@@ -26,9 +26,8 @@ const setOutputVar = (paramObject) => {
   let newCodeLine = FOURSPACE;
 
   if (paramObject.outputVariable) {
-    newCodeLine += `\${${paramObject.outputVariable}} =${FOURSPACE}`;
+    newCodeLine += `\${${paramObject.outputVariable}} = `;
   }
-
   return newCodeLine;
 };
 
@@ -44,11 +43,22 @@ const appendRpaInputParameter = (parameterObject) => {
     (a, b) => a.index - b.index
   );
   sortedInputs.forEach((parameter) => {
-    // regex will return -1 if no $$text$$ was found
-    newCodeLine +=
-      parameter.value.search(/\$\$(.*?)\$\$/) < 0
-        ? `${FOURSPACE}${parameter.value}`
-        : `${FOURSPACE}$\{${parameter.value.split('$$')[1]}}`;
+    newCodeLine += FOURSPACE;
+    if (parameter.requireUserInput && parameter.value === '') {
+      newCodeLine += `!!${parameter.name}!!`;
+      return;
+    }
+    if (parameter.value === '') {
+      newCodeLine += `%%${parameter.name}%%`;
+      return;
+    }
+    if (parameter.value.search(/\$\$(.*?)\$\$/) >= 0) {
+      // eslint-disable-next-line no-useless-escape
+      newCodeLine += `$\{${parameter.value.split('$$')[1]}\}`;
+      return;
+    }
+
+    newCodeLine += parameter.value;
   });
 
   return newCodeLine;

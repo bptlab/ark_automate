@@ -1,8 +1,9 @@
+import customNotification from './notificationUtils'
 /**
  * @category Client
  * @module
  */
-import initSessionStorage from './sessionStorage';
+import initSessionStorage from './sessionStorageUtils/sessionStorage';
 import { getAvailableApplications } from '../api/applicationAndTaskSelection';
 import { getSsotFromDB } from '../api/ssotRetrieval';
 
@@ -253,6 +254,7 @@ const getParameterObject = (robotId, activityId) => {
     );
     return matchingParameterObject;
   }
+  return undefined;
 };
 
 /**
@@ -439,6 +441,8 @@ const upsert = async () => {
       'Content-Type': 'application/json;charset=utf-8',
     },
   });
+
+  customNotification('Success', 'Successfully saved to cloud', 'CloudUploadOutlined');
 };
 
 /**

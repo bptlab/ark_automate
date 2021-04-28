@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /**
  * @category Client
  * @module
@@ -5,6 +6,7 @@
 const mongoose = require('mongoose');
 // eslint-disable-next-line no-unused-vars
 const ssotModels = require('../../models/singleSourceOfTruthModel.js');
+// eslint-disable-next-line no-unused-vars
 const jobsModel = require('../../models/robotJobModel.js');
 const { generateCodeBase } = require('./generateCodeBase');
 const {
@@ -27,7 +29,6 @@ const parseSsotToRobotCode = async (ssot) => {
     parameters,
     result.attributeObjects
   );
-
   return result.parsedCode;
 };
 
@@ -46,7 +47,6 @@ const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
     parameters,
     result.attributeObjects
   );
-
   return result.parsedCode;
 };
 
