@@ -1,4 +1,5 @@
-/* eslint-disable no-alert */
+import customNotification from '../../notificationUtils';
+
 const { parseString } = require('xmljs2');
 
 /**
@@ -6,7 +7,7 @@ const { parseString } = require('xmljs2');
  * @module
  */
 
-const SsotBaseObjects = require('./SsotBaseObjects');
+const SsotBaseObjects = require('../SsotBaseObjects');
 
 const ssotBaseElement = SsotBaseObjects.baseElement;
 
@@ -136,7 +137,7 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
  * @returns {Array}  Array of elements for single source of truth
  */
 const enrichMarkerElements = (elementsArray) => {
-  const eventRegularExpression = new RegExp('^Event_.*$');
+  const eventRegularExpression = (/^Event_.*$/);
   elementsArray.forEach((element) => {
     if (eventRegularExpression.test(element.id)) {
       element.type = 'MARKER';
@@ -157,9 +158,12 @@ const getStartEventId = (bpmnJson) => {
   });
 
   if (startEventIds.length === 0) {
-    alert("There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
-  } else if (startEventIds.length > 1) {
-    alert("There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.");
+    customNotification('Error', 'There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.')
+    return undefined;
+  }
+  if (startEventIds.length > 1) {
+    customNotification('Error', 'There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.')
+    return undefined;
   }
   return startEventIds;
 }
@@ -173,12 +177,14 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
   const bpmnJson = await parseString(bpmnXml.xml);
   const startEventId = getStartEventId(bpmnJson);
 
+  if (typeof startEventId === 'undefined') return undefined;
+
   // Build basic ssot-frame
   const ssot = {
     _id: robotId,
     starterId: startEventId[0],
     robotName,
-  }; 
+  };
 
   let flows = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
   if (typeof flows === 'undefined') flows = [];
@@ -188,8 +194,8 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
 
   const bpmnStartEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
   const bpmnEndEvent = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
-  const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
-    .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'])
+  const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task']
+    .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'])
     .concat(bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'])
 
   let elementsArray = findElements(flows, bpmnShapes);
@@ -201,4 +207,4 @@ const parseBpmnToSsot = async (bpmnXml, robotId) => {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export {parseBpmnToSsot};
+export { parseBpmnToSsot };

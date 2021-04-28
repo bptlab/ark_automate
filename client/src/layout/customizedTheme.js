@@ -10,12 +10,16 @@ const customizedTheme = {
   '@body-background': corporateDesign.colorBackground,
   '@layout-body-background': corporateDesign.colorBackground,
   '@border-radius-base': '5px',
+  '@label-color': corporateDesign.colorPrimaryInvertedText,
+
   // text
   '@heading-color': corporateDesign.colorBackgroundText,
   '@text-color': corporateDesign.colorBackgroundText,
   '@text-color-dark': corporateDesign.colorPrimaryInvertedText,
   // button
   '@btn-primary-bg': corporateDesign.colorBackgroundCta,
+  // input
+  '@input-color': corporateDesign.colorBackgroundText,
   // sider
   '@layout-sider-background': corporateDesign.colorPrimaryInverted2,
   // component

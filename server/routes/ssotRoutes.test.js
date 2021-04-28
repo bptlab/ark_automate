@@ -15,7 +15,7 @@ const rpaTaskModel = require('../models/rpaTaskModel');
 const testData = require('../utils/TestingUtils/testData');
 const {
   testSsot,
-  testSsotId,
+  testRobotId,
   testUserId,
 } = require('../utils/TestingUtils/testData');
 
@@ -50,7 +50,7 @@ describe('/ssot/getAvailableRobotsForUser', () => {
     expect(response.statusCode).toBe(200);
     // Catches error "Received: serializes to the same string"
     // Solution found here https://github.com/facebook/jest/issues/8475#issuecomment-537830532
-    expect(JSON.stringify(data[0]._id)).toEqual(JSON.stringify(testSsotId));
+    expect(JSON.stringify(data[0]._id)).toEqual(JSON.stringify(testRobotId));
   });
 });
 
@@ -60,7 +60,7 @@ describe('ssot/get/:id', () => {
 
     const request = httpMocks.createRequest({
       params: {
-        id: testSsotId,
+        id: testRobotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -69,7 +69,7 @@ describe('ssot/get/:id', () => {
     const data = await response._getData();
 
     expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data._id)).toEqual(JSON.stringify(testSsotId));
+    expect(JSON.stringify(data._id)).toEqual(JSON.stringify(testRobotId));
   });
 });
 
@@ -79,7 +79,7 @@ describe('ssot/renameRobot', () => {
 
     const request = httpMocks.createRequest({
       query: {
-        id: testSsotId,
+        id: testRobotId,
         newName: 'newTestRobot',
       },
     });
@@ -94,33 +94,9 @@ describe('ssot/renameRobot', () => {
     );
 
     // verify if really in DB
-    const ssot = await mongoose.model('SSoT').findById(testSsotId).exec();
+    const ssot = await mongoose.model('SSoT').findById(testRobotId).exec();
     expect(JSON.stringify(ssot.robotName)).toEqual(
       JSON.stringify('newTestRobot')
-    );
-  });
-});
-
-describe('ssot/retrieveRobotMetadata', () => {
-  it('gets the correct robot metadata', async () => {
-    await dbLoader.loadSsotInDb();
-
-    const request = httpMocks.createRequest({
-      params: {
-        robotId: testSsotId,
-      },
-    });
-    const response = httpMocks.createResponse();
-
-    await ssotRetrievalController.retrieveRobotMetadata(request, response);
-    const data = await response._getData();
-
-    expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data.robotName)).toEqual(
-      JSON.stringify(testSsot.robotName)
-    );
-    expect(JSON.stringify(data.starterId)).toEqual(
-      JSON.stringify(testSsot.starterId)
     );
   });
 });
@@ -130,7 +106,7 @@ describe('ssot/shareRobotWithUser', () => {
     const request = httpMocks.createRequest({
       query: {
         userId: testUserId,
-        robotId: testSsotId,
+        robotId: testRobotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -140,19 +116,19 @@ describe('ssot/shareRobotWithUser', () => {
 
     expect(response.statusCode).toBe(200);
     expect(JSON.stringify(data.userId)).toEqual(JSON.stringify(testUserId));
-    expect(JSON.stringify(data.robotId)).toEqual(JSON.stringify(testSsotId));
+    expect(JSON.stringify(data.robotId)).toEqual(JSON.stringify(testRobotId));
 
     // verify if really in DB
     const userAccessObject = await mongoose
       .model('userAccessObject')
       .find({
         userId: testUserId,
-        robotId: testSsotId,
+        robotId: testRobotId,
       })
       .exec();
 
     expect(JSON.stringify(userAccessObject[0].robotId)).toBe(
-      JSON.stringify(testSsotId)
+      JSON.stringify(testRobotId)
     );
     expect(JSON.stringify(userAccessObject[0].userId)).toEqual(
       JSON.stringify(testUserId)
@@ -174,7 +150,7 @@ describe('ssot/createNewRobot', () => {
     expect(response.statusCode).toBe(200);
 
     const data = await response._getData();
-    const newSsotId = data.robotId;
+    const newRobotId = data.robotId;
 
     // verify if really in DB
     const request2 = httpMocks.createRequest({
@@ -187,33 +163,11 @@ describe('ssot/createNewRobot', () => {
 
     const data2 = await response2._getData();
     expect(response.statusCode).toBe(200);
-    expect(JSON.stringify(data2[0]._id)).toEqual(JSON.stringify(newSsotId));
+    expect(JSON.stringify(data2[0]._id)).toEqual(JSON.stringify(newRobotId));
   });
 });
 
-describe('ssot/parser/get-robot-code', () => {
-  it('successfully retrieves parsed code for ssot', async () => {
-    await dbLoader.loadSsotInDb();
-    await dbLoader.loadAttributesInDb();
-    await dbLoader.loadParametersInDb();
-
-    const request = httpMocks.createRequest({
-      query: {
-        robotId: testSsotId,
-      },
-    });
-    const response = httpMocks.createResponse();
-
-    await ssotParsingController.getRobotCode(request, response);
-    expect(response.statusCode).toBe(200);
-
-    const data = await response._getData();
-    expect(data).toMatch('*** Settings ***');
-    expect(data).toMatch('*** Tasks ***');
-  });
-});
-
-describe('ssot/parser/getForId/:botId', () => {
+describe('ssot/parser/getForId/:robotId', () => {
   it('successfully retrieves parsed code for ssot', async () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
@@ -221,7 +175,7 @@ describe('ssot/parser/getForId/:botId', () => {
 
     const request = httpMocks.createRequest({
       params: {
-        botId: testSsotId,
+        robotId: testRobotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -254,7 +208,7 @@ describe('ssot/overwriteRobot/:robotId', () => {
     const request = httpMocks.createRequest({
       method: 'POST',
       params: {
-        botId: testSsotId,
+        robotId: testRobotId,
       },
       body: adaptedSsot,
     });
@@ -267,7 +221,7 @@ describe('ssot/overwriteRobot/:robotId', () => {
     expect(data.elements.length).toBe(1);
 
     // verify if really in DB
-    const newSsot = await mongoose.model('SSoT').findById(testSsotId).exec();
+    const newSsot = await mongoose.model('SSoT').findById(testRobotId).exec();
     expect(JSON.stringify(data)).toEqual(JSON.stringify(newSsot));
   });
 });
@@ -282,7 +236,7 @@ describe('ssot/updateManyParameters', () => {
       body: [
         {
           activityId: testSsot.elements[2].id,
-          ssotId: testSsotId,
+          robotId: testRobotId,
           rpaParameters: [
             {
               name: 'filename',
@@ -307,7 +261,7 @@ describe('ssot/updateManyParameters', () => {
     const newParamObject = await mongoose
       .model('parameter')
       .findOne({
-        ssotId: testSsotId,
+        robotId: testRobotId,
         activityId: testSsot.elements[2].id,
       })
       .exec();
@@ -322,7 +276,7 @@ describe('ssot/getAllParameters/:robotId', () => {
 
     const request = httpMocks.createRequest({
       params: {
-        robotId: testSsotId,
+        robotId: testRobotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -353,7 +307,7 @@ describe('ssot/updateManyAttributes', () => {
       body: [
         {
           activityId: 'Activity_175v5b5',
-          ssotId: '606199015d691786a44a608f',
+          robotId: '606199015d691786a44a608f',
           rpaApplication: newAppValue,
           rpaTask: newTaskValue,
         },
@@ -370,7 +324,7 @@ describe('ssot/updateManyAttributes', () => {
     const newAttributesObject = await mongoose
       .model('rpaAttributes')
       .findOne({
-        ssotId: testSsotId,
+        robotId: testRobotId,
         activityId: testSsot.elements[2].id,
       })
       .exec();
@@ -386,7 +340,7 @@ describe('ssot/getAllAttributes/:robotId', () => {
 
     const request = httpMocks.createRequest({
       params: {
-        robotId: testSsotId,
+        robotId: testRobotId,
       },
     });
     const response = httpMocks.createResponse();
@@ -406,5 +360,196 @@ describe('ssot/getAllAttributes/:robotId', () => {
         testData.testAttributes3,
       ])
     );
+  });
+});
+
+describe('ssot/delete/:robotId', () => {
+  it('successfully deletes the robots ssot', async () => {
+    await dbLoader.loadSsotInDb();
+    const ssotBefore = await mongoose.model('SSoT').find().exec();
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const usableTestRobotId = mongoose.Types.ObjectId(testRobotId);
+    const foundSsots = await mongoose.model('SSoT').find().exec();
+    expect(foundSsots.length).toBe(0);
+
+    const foundSsotById = await mongoose
+      .model('SSoT')
+      .findById({ _id: usableTestRobotId })
+      .exec();
+
+    expect(foundSsotById).toBe(null);
+    expect(foundSsotById).not.toBe(ssotBefore);
+  });
+
+  it('successfully deletes the user access object to a robot', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadUserAccessObjectsInDb();
+
+    const loadedUserAccessObjects = await mongoose
+      .model('userAccessObject')
+      .find()
+      .exec();
+    expect(loadedUserAccessObjects.length).toBe(2);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const foundUserAccessObjects = await mongoose
+      .model('userAccessObject')
+      .find()
+      .exec();
+    expect(foundUserAccessObjects.length).toBe(
+      loadedUserAccessObjects.length - 1
+    );
+
+    const usableTestRobotId = mongoose.Types.ObjectId(testRobotId);
+    const foundUserAccessObjectsById = await mongoose
+      .model('userAccessObject')
+      .find({ robotId: usableTestRobotId })
+      .exec();
+
+    expect(foundUserAccessObjectsById.length).toBe(0);
+  });
+
+  it('successfully deletes the attributes to a robots activities', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+
+    const loadedAttributes = await mongoose
+      .model('rpaAttributes')
+      .find()
+      .exec();
+    expect(loadedAttributes.length).toBe(3);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
+    expect(foundAttributes.length).toBe(0);
+    expect(foundAttributes.length).not.toBe(loadedAttributes.length);
+    expect(foundAttributes).not.toBe(loadedAttributes);
+  });
+
+  it('successfully deletes the parameters to a robots activities', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadParametersInDb();
+
+    const loadedParameters = await mongoose.model('parameter').find().exec();
+    expect(loadedParameters.length).toBe(3);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const foundParameters = await mongoose.model('parameter').find().exec();
+    expect(foundParameters.length).toBe(0);
+    expect(foundParameters.length).not.toBe(loadedParameters.length);
+    expect(foundParameters).not.toBe(loadedParameters);
+  });
+
+  it('successfully deletes the jobs to a robot', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadJobInDb();
+
+    const loadedJobs = await mongoose.model('job').find().exec();
+    expect(loadedJobs.length).toBe(1);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const foundJobs = await mongoose.model('job').find().exec();
+    expect(foundJobs.length).toBe(0);
+    expect(foundJobs.length).not.toBe(loadedJobs.length);
+    expect(foundJobs).not.toBe(loadedJobs);
+  });
+
+  it('sucessfully deletes every robot artifact to a given robotId', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadJobInDb();
+    await dbLoader.loadParametersInDb();
+    await dbLoader.loadAttributesInDb();
+    await dbLoader.loadUserAccessObjectsInDb();
+    await dbLoader.loadTasksInDb();
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotRetrievalController.deleteRobot(request, response);
+    expect(response.statusCode).toBe(200);
+
+    // verify if really deleted
+    const usableTestRobotId = mongoose.Types.ObjectId(testRobotId);
+    const foundSsotById = await mongoose
+      .model('SSoT')
+      .findById({ _id: usableTestRobotId })
+      .exec();
+    expect(foundSsotById).toBe(null);
+
+    const foundUserAccessObjectsById = await mongoose
+      .model('userAccessObject')
+      .find({ robotId: usableTestRobotId })
+      .exec();
+    expect(foundUserAccessObjectsById.length).toBe(0);
+
+    const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
+    expect(foundAttributes.length).toBe(0);
+
+    const foundParameters = await mongoose.model('parameter').find().exec();
+    expect(foundParameters.length).toBe(0);
+
+    const foundJobs = await mongoose.model('job').find().exec();
+    expect(foundJobs.length).toBe(0);
   });
 });

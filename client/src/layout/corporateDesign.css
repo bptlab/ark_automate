@@ -9,4 +9,10 @@
   --colorBackground2: #ffffff;
   --colorBackgroundText: #1d1d1f;
   --colorBackgroundCta: #ff6b00;
+  --colorSuccessNotificationBackground: #ebffeb;
+  --colorSuccessNotificationIcon: #08c908;
+  --colorWarningNotificationBackground: #ffffD0;
+  --colorWarningNotificationIcon: #ff6b00;
+  --colorErrorNotificationBackground: #ffbbbb;
+  --colorErrorNotificationIcon: #cc0000;
 }

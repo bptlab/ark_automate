@@ -1,11 +1,12 @@
 const testUserId = '604a3ba6561e2d1fad4eda60';
 const user2Id = '604a3ba6561e2d1fad4eda00';
 
-const testSsotId = '606199015d691786a44a608f';
+const testRobotId = '606199015d691786a44a608f';
+const testJobId = '605c68a86d596e0d6bed0077';
 
 const testSsot = {
-  id: testSsotId,
-  _id: testSsotId, // needed because we sometimes access the id with _id, sometimes with id
+  id: testRobotId,
+  _id: testRobotId, // needed because we sometimes access the id with _id, sometimes with id
   starterId: 'Event_1wm4a0f',
   robotName: 'Sandros Testbot',
   elements: [
@@ -54,7 +55,7 @@ const testSsot = {
 
 const testUserAccessObject = {
   AccessLevel: '0',
-  robotId: testSsotId,
+  robotId: testRobotId,
   userId: testUserId,
 };
 
@@ -121,18 +122,24 @@ const testRpaTask3 = {
 };
 
 const testJob = {
-  _id: '605c68a86d596e0d6bed0077',
+  _id: testJobId,
   __v: 0,
   user_id: testUserId,
-  robot_id: testSsotId,
+  robot_id: testRobotId,
   status: 'waiting',
-  parameters: [],
+  parameters: [
+    {
+      _id: '60780432cb11ef12444785ee',
+      parameterId: '6062f0ad92ffd3044c6ee387',
+      value: 'TESTVALUE',
+    },
+  ],
 };
 
 const testAttributes1 = {
   _id: '6062f0ad1abb38158c2dfa41',
   activityId: 'Activity_1elomab',
-  ssotId: testSsotId,
+  robotId: testRobotId,
   rpaApplication: 'Excel.Application',
   rpaTask: 'Open Workbook',
   __v: 0,
@@ -141,7 +148,7 @@ const testAttributes1 = {
 const testAttributes2 = {
   _id: '6062f0ad1abb38158c2dfa42',
   activityId: 'Activity_175v5b5',
-  ssotId: testSsotId,
+  robotId: testRobotId,
   rpaApplication: 'Excel.Application',
   rpaTask: 'Find Empty Row',
   __v: 0,
@@ -150,7 +157,7 @@ const testAttributes2 = {
 const testAttributes3 = {
   _id: '6062f0ad1abb38158c2dfa43',
   activityId: 'Activity_1x8wlwh',
-  ssotId: testSsotId,
+  robotId: testRobotId,
   rpaApplication: 'Browser',
   rpaTask: 'Open Browser',
   __v: 0,
@@ -160,7 +167,7 @@ const testParameter1 = {
   _id: '6062f0ad1abb38158c2dfa69',
   __v: 0,
   activityId: 'Activity_1elomab',
-  ssotId: '606199015d691786a44a608f',
+  robotId: '606199015d691786a44a608f',
   rpaParameters: [
     {
       _id: '6062f0ad92ffd3044c6ee389',
@@ -178,7 +185,7 @@ const testParameter2 = {
   _id: '6062f0ad1abb38158c2dfa68',
   __v: 0,
   activityId: 'Activity_175v5b5',
-  ssotId: '606199015d691786a44a608f',
+  robotId: '606199015d691786a44a608f',
   rpaParameters: [
     {
       _id: '6062f0ad92ffd3044c6ee388',
@@ -196,7 +203,7 @@ const testParameter3 = {
   _id: '6062f0ad1abb38158c2dfa67',
   __v: 0,
   activityId: 'Activity_1x8wlwh',
-  ssotId: '606199015d691786a44a608f',
+  robotId: testRobotId,
   rpaParameters: [
     {
       _id: '6062f0ad92ffd3044c6ee387',
@@ -206,9 +213,13 @@ const testParameter3 = {
       infoText: 'Open Browser',
       index: 0,
       value: 'http://localhost:3000',
+      requireUserInput: true,
     },
   ],
 };
+
+const testRobotCode =
+  '*** Settings *** Library    RPA.Excel.Application Library    RPA.Browser *** Tasks *** Excel.Application #FirstActivity Open Workbook    C://Users/Filepath #SecondActivity Find Empty Row    StonksOnlyGoUp.xls Browser #ThirdActivity Open Browser    TESTVALUE';
 
 module.exports = {
   testSsot,
@@ -216,16 +227,18 @@ module.exports = {
   testUserAccessObject2,
   testUserId,
   user2Id,
-  testSsotId,
+  testRobotId,
   numberOfTestTasks,
   testRpaTask1,
   testRpaTask2,
   testRpaTask3,
   testJob,
+  testJobId,
   testAttributes1,
   testAttributes2,
   testAttributes3,
   testParameter1,
   testParameter2,
   testParameter3,
+  testRobotCode,
 };

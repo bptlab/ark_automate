@@ -4,7 +4,13 @@ const mongoose = require('mongoose');
 const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
 const socketHelperFunctions = require('./socketHelperFunctions');
 const testData = require('../utils/TestingUtils/testData');
-const { testSsotId, testUserId } = require('../utils/TestingUtils/testData');
+
+const {
+  testRobotId,
+  testUserId,
+  testJobId,
+  testRobotCode,
+} = require('../utils/TestingUtils/testData');
 
 const dbLoader = require('../utils/TestingUtils/databaseLoader');
 
@@ -28,12 +34,17 @@ describe('robot code retrieval', () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
+    await dbLoader.loadJobInDb();
 
-    const robotCode = await socketHelperFunctions.getRobotCode(testSsotId);
+    const robotCode = await socketHelperFunctions.getRobotCodeForJob(
+      testRobotId,
+      testJobId
+    );
     expect(robotCode).not.toBeUndefined();
     expect(robotCode).not.toBeNull();
-    expect(robotCode).toMatch('*** Settings ***');
-    expect(robotCode).toMatch('*** Tasks ***');
+    expect(String(robotCode).replace(/\s/g, '')).toEqual(
+      String(testRobotCode).replace(/\s/g, '')
+    );
   });
 });
 
@@ -55,7 +66,7 @@ describe('job creation', () => {
   it('sucessfully creates a job', async () => {
     const jobId = await socketHelperFunctions.createJob(
       testUserId,
-      testSsotId,
+      testRobotId,
       'testStatus',
       []
     );

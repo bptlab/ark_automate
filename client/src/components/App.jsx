@@ -5,7 +5,7 @@ import Home from './pages/Home/Home';
 import Error from './pages/Error/Error';
 import RobotFile from './pages/RobotFile/RobotFile';
 import RobotOverview from './pages/RobotOverview/RobotOverview';
-import './App.css';
+import RobotInteractionCockpit from './pages/RobotInteractionCockpit/RobotInteractionCockpit';
 
 /**
  * @description route component of the application
@@ -20,6 +20,10 @@ const App = () => (
         <Route path='/modeler/:robotId' component={Modeler} />
         <Route path='/robotfile' component={RobotFile} />
         <Route path='/robot_overview' component={RobotOverview} />
+        <Route
+          path='/interaction_cockpit/:robotId'
+          component={RobotInteractionCockpit}
+        />
         <Route component={Error} />
       </Switch>
     </div>

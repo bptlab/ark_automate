@@ -41,7 +41,7 @@ describe('Checking robot parameters for Executability', () => {
 });
 
 describe('Checking robot attributes for Executability', () => {
-  it('correctly assigns bot as executable', () => {
+  it('correctly assigns robot as executable', () => {
     const correctListOfParameters = [attributeObject1, attributeObject2];
     const response = configuredRobotActivitesCorrectly(correctListOfParameters);
     expect(response).toBe(true);

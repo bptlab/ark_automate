@@ -3,3 +3,9 @@
   font-size: 1.25rem;
   background-color: var(--colorBackground2);
 }
+
+.syntaxModalButton {
+  background-color: var(--colorPrimaryInverted2);
+  border-color: var(--colorPrimaryInverted2);
+}
+

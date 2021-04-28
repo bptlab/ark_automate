@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Input, Space, Row, Select } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotContainer from '../../content/RobotContainer/RobotContainer';
-import socket from '../../../utils/socket/socketConnections';
+import { joinRoomForUser } from '../../../api/socketHandler/socketEmitter';
+import {
+  successRoomConnection,
+  errorRoomConnection,
+  newClientJoined,
+} from '../../../api/socketHandler/socketListeners';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
-import initSessionStorage from '../../../utils/sessionStorage';
+import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
 import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 
 const { Search } = Input;
@@ -48,10 +53,10 @@ const RobotOverview = () => {
    * @description The socket will join a new user room whenever the userId state changes
    */
   useEffect(() => {
-    socket.emit('joinUserRoom', userId);
-    socket.on('successUserRoomConnection', (message) => message);
-    socket.on('errorUserRoomConnection', (message) => message);
-    socket.on('newClientJoinedUserRoom', (message) => message);
+    joinRoomForUser(userId);
+    successRoomConnection();
+    errorRoomConnection();
+    newClientJoined();
   }, [userId]);
 
   /**
@@ -73,7 +78,7 @@ const RobotOverview = () => {
   };
 
   /**
-   * @description Creates a new bot for the current userId
+   * @description Creates a new robot for the current userId
    */
   const initiateRobotCreation = () => {
     const robotName = 'New Robot';
@@ -110,6 +115,7 @@ const RobotOverview = () => {
             // eslint-disable-next-line no-underscore-dangle
             robotId={val._id}
             robotName={val.robotName}
+            refreshOverview={() => retrieveBotList(userId)}
           />
         ))}
       </>

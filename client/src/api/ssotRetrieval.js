@@ -4,9 +4,9 @@
  */
 
 /**
-* @description Fetch the ssot correlating to the specified Id
-* @param { String } robotId - String including the Id of the robot to be retrieved
-*/
+ * @description Fetch the ssot correlating to the specified Id
+ * @param { String } robotId - String including the Id of the robot to be retrieved
+ */
 const getSsotFromDB = async (robotId) => {
   const requestString = `/ssot/get/${robotId}`;
   const response = await fetch(requestString);
@@ -14,29 +14,29 @@ const getSsotFromDB = async (robotId) => {
 };
 
 /**
-* @description Fetch all those Ssot names and Ids, which are available for the current user
-* @param { String } userId - String including the user Id
-*/
+ * @description Fetch all those ssot names and ids, which are available for the current user
+ * @param { String } userId - String including the user id
+ */
 const fetchSsotsForUser = async (userId) => {
   const requestString = `/ssot/getAvailableRobotsForUser/${userId}`;
   const response = await fetch(requestString);
   return response;
 };
 
-/** 
-* @description This function renames the robot in Ssot
-* @param { String } ssotId - String including the ssotId
-* @param { String } newName - String with the new RobotName
-*/
-const changeSsotName = async (ssotId, newName) => {
+/**
+ * @description This function renames the robot in the ssot
+ * @param { String } robotId - String including the robotId
+ * @param { String } newName - String with the new RobotName
+ */
+const changeSsotName = async (robotId, newName) => {
   const adjustedName = newName.replace(/\s/g, '+');
-  const requestString = `/ssot/renameRobot?id=${ssotId}&newName=${adjustedName}`;
+  const requestString = `/ssot/renameRobot?id=${robotId}&newName=${adjustedName}`;
   const response = await fetch(requestString);
   return response;
 };
 
 /**
- * @description Fetches all the Metadata for a single Robot
+ * @description Fetches all the metadata for a single robot
  * @param {String} robotId - String including the robotId
  */
 const retrieveMetadataForRobot = async (robotId) => {
@@ -47,7 +47,7 @@ const retrieveMetadataForRobot = async (robotId) => {
 
 /**
  * @description Create a new robot with the specified name for the specified user
- * @param {String} newName - String including the user Id
+ * @param {String} newName - String including the userId
  */
 const createNewRobot = async (userId, newName) => {
   const adjustedName = newName.replace(/\s/g, '+');
@@ -56,10 +56,22 @@ const createNewRobot = async (userId, newName) => {
   return response;
 };
 
+/**
+ * @description Will send a backend call to delete a robot
+ * @param {String} robotId Id of the robot that is deleted
+ */
+const deleteRobotFromDB = async (robotId) => {
+  const requestStringParameters = `/ssot/delete/${robotId}`;
+  await fetch(requestStringParameters, { method: 'DELETE' }).catch((err) => {
+    console.error(err);
+  });
+};
+
 export {
   getSsotFromDB,
   fetchSsotsForUser,
   changeSsotName,
   retrieveMetadataForRobot,
   createNewRobot,
+  deleteRobotFromDB,
 };
