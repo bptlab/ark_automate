@@ -1,4 +1,5 @@
 client/node_modules/
+client/coverage
 server/node_modules/
 .idea/
 .env

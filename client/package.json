@@ -31,6 +31,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
+    "coverage": "craco test --collectCoverage",
     "eject": "react-scripts eject",
     "lint": "eslint --ignore-path ../.gitignore --ext .js,.jsx .",
     "docs": "jsdoc -c ../documentationConfig.json -r -R ../README.md"

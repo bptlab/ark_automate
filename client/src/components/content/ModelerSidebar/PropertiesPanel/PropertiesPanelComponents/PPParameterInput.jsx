@@ -20,7 +20,6 @@ const { Text } = Typography;
  * @component
  */
 const PPParameterInput = ({
-  onValueChange,
   variableName,
   isRequired,
   // eslint-disable-next-line no-unused-vars
@@ -47,12 +46,14 @@ const PPParameterInput = ({
    * @param {String} parameterName Name of the currently handled parameter
    */
   const changeUserInputRequirement = (parameterName) => {
+    setParameterValue('');
     setPropertyForParameter(
       selectedActivity,
       parameterName,
       'requireUserInput',
       !userInputRequired
     );
+    setPropertyForParameter(selectedActivity, parameterName, 'value', '');
     setUserInputRequired(!userInputRequired);
   };
 
@@ -94,9 +95,8 @@ const PPParameterInput = ({
         <Input
           placeholder='Please type in value'
           defaultValue={value}
-          value={userInputRequired ? '' : parameterValue}
+          value={parameterValue}
           onChange={(event) => changeParameterValue(event, variableName)}
-          onPressEnter={(event) => onValueChange(event, variableName)}
           suffix={
             <Tooltip title={infoText}>
               <InfoCircleOutlined />
@@ -122,7 +122,6 @@ const PPParameterInput = ({
 };
 
 PPParameterInput.propTypes = {
-  onValueChange: PropTypes.func.isRequired,
   variableName: PropTypes.string.isRequired,
   isRequired: PropTypes.bool.isRequired,
   dataType: PropTypes.string.isRequired,

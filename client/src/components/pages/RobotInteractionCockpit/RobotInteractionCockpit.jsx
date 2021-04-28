@@ -7,6 +7,7 @@ import RobotInteractionInputSection from '../../content/RobotInteractionSections
 import { isRobotExecutable } from '../../../utils/robotExecution';
 import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
 import { getActivityAndParameterInformation } from './RobotInteractionCockpitFunctionality';
+import customNotification from '../../../utils/notificationUtils';
 
 const { Step } = Steps;
 const { Title } = Typography;
@@ -50,8 +51,10 @@ const RobotInteractionCockpit = (match) => {
       setCurrentStep(1);
       startRobotForUser(userId, robotId, parameters);
     } else {
-      // eslint-disable-next-line no-alert
-      alert('Your Bot is not fully configured and can not be executed!');
+      customNotification(
+        'Error',
+        'Your Bot is not fully configured and can not be executed!'
+      );
     }
   };
 

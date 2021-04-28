@@ -26,7 +26,7 @@ import constants from './modelerSidebarFunctionalityTestingUtils';
 
 describe('Sidebar Functionality: Small Utilities', () => {
   it('handle modeler element changed with no new selection', async () => {
-    const setElementStateCallCounter = 0;
+    let setElementStateCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({

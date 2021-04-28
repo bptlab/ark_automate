@@ -4,7 +4,7 @@ import { Typography, Layout, Space, Button } from 'antd';
 import PropTypes from 'prop-types';
 import PropertiesPanel from './PropertiesPanel/PropertiesPanel';
 import styles from './ModelerSidebar.module.css';
-import parseSsotToBpmn from '../../../utils/ssotToBpmnParsing/ssotToBpmnParsing';
+import parseSsotToBpmn from '../../../utils/parser/ssotToBpmnParsing/ssotToBpmnParsing';
 import {
   nameChangedHandler,
   applicationChangedHandler,
