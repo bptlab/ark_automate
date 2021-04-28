@@ -224,7 +224,7 @@ const getInstructionBlocksFromTaskSection = (
       return;
     }
 
-    currentLine = currentLine.replaceAll(/( {4})/g, splitPlaceholder);
+    currentLine = currentLine.replace(/( {4})/g, splitPlaceholder);
 
     if (currentLineDefinesOutputValue) {
       const outputValueName = getOutputName(currentLine);
