@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Button, Space, Row, Col, Modal, Table } from 'antd';
+import { Layout, Button, Space, Row, Col } from 'antd';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import getParsedRobotFile from '../../../api/ssot';
-import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils'
+import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
 import { upsert } from '../../../utils/attributeAndParamUtils';
 import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';
 import customNotification from '../../../utils/notificationUtils';
+import RobotFileSyntaxModal from '../../content/RobotFileSyntaxModal/RobotFileSyntaxModal';
 
 /**
  * @description View of the robot file
@@ -28,11 +29,7 @@ const RobotFile = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
+  const handleModalClose = () => {
     setIsModalVisible(false);
   };
 
@@ -58,7 +55,10 @@ const RobotFile = () => {
   const onSaveToCloud = () => {
     const ssot = parseRobotCodeToSsot(code);
     if (typeof ssot === 'undefined') {
-      customNotification('Warning', 'Because a parsing error occurred, the robot was not saved to cloud.')
+      customNotification(
+        'Warning',
+        'Because a parsing error occurred, the robot was not saved to cloud.'
+      );
     } else {
       sessionStorage.setItem('ssotLocal', JSON.stringify(ssot));
 
@@ -77,19 +77,22 @@ const RobotFile = () => {
       key: '2',
       name: 'Empty Variable Field',
       syntax: '%%parameterName%%',
-      description: 'Highlights a field which has not been configured yet in the ssot',
+      description:
+        'Highlights a field which has not been configured yet in the ssot',
     },
     {
       key: '3',
       name: 'Requires User Input',
       syntax: '!!parameterName!!',
-      description: 'Highlights a parameter which should be specified by the user when starting the robot',
+      description:
+        'Highlights a parameter which should be specified by the user when starting the robot',
     },
     {
       key: '4',
       name: 'Variable',
       syntax: '$(variableName)',
-      description: 'Used to pass in a variable, which could be the output of a previous activity',
+      description:
+        'Used to pass in a variable, which could be the output of a previous activity',
     },
   ];
   const columns = [
@@ -127,19 +130,19 @@ const RobotFile = () => {
                 style={{ width: '100%', marginRight: '1rem' }}
               >
                 Save changes to cloud
-                </Button>
+              </Button>
               <Button
                 type='primary'
                 onClick={showModal}
                 className={styles.syntaxModalButton}
               >
                 Show Syntax
-                  </Button>
+              </Button>
             </div>
-            <Modal title="Robot Framework Syntax" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={false}>
-              <Table dataSource={dataSource} columns={columns} pagination={false} />
-            </Modal>
-
+            <RobotFileSyntaxModal
+              visible={isModalVisible}
+              handleClose={handleModalClose}
+            />
             <Editor
               value={code}
               onValueChange={(newCode) => setCode(newCode)}
@@ -153,7 +156,7 @@ const RobotFile = () => {
           </Space>
         </Col>
       </Row>
-    </Layout >
+    </Layout>
   );
 };
 
