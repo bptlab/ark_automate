@@ -336,7 +336,7 @@ paths:
         204:
           description: No Content
         400:
-          description: Bad Reque
+          description: Bad Request
   /robots/rpaattributes/{robotId}:
     parameters:
       - name: robotId
