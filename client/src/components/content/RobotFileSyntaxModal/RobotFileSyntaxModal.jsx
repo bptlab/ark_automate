@@ -1,12 +1,14 @@
 import React from 'react';
 import { Modal, Table } from 'antd';
+import PropTypes from 'prop-types';
 
 /**
  * @description View of the robot file
  * @category Client
  * @component
  */
-const RobotFileSyntaxModal = (visible, handleClose) => {
+const RobotFileSyntaxModal = (props) => {
+  const { visible, handleClose } = props;
   const dataSource = [
     {
       key: '1',
@@ -66,6 +68,11 @@ const RobotFileSyntaxModal = (visible, handleClose) => {
       <Table dataSource={dataSource} columns={columns} pagination={false} />
     </Modal>
   );
+};
+
+RobotFileSyntaxModal.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default RobotFileSyntaxModal;

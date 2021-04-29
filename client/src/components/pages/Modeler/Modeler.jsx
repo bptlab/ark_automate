@@ -4,9 +4,14 @@ import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
 import { getSsotFromDB } from '../../../api/ssotRetrieval';
-import { setRobotId, getAttributesFromDB, getParameterFromDB, getParameterForRobotFromDB } from '../../../utils/attributeAndParamUtils';
+import {
+  setRobotId,
+  getAttributesFromDB,
+  getParameterFromDB,
+  getParameterForRobotFromDB,
+} from '../../../utils/attributeAndParamUtils';
 import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
-import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils'
+import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
@@ -64,10 +69,9 @@ const Modeler = (match) => {
       .then((data) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
-      })
+      });
     initSessionStorage('taskToApplicationCache', JSON.stringify({}));
     initAvailableApplicationsSessionStorage();
-
   }, []);
 
   return (

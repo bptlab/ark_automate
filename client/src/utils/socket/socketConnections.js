@@ -1,7 +1,7 @@
 import socketIoClient from 'socket.io-client';
 
-const endpoint = 'http://localhost:5001'
+const endpoint = 'http://localhost:5001';
 
-const socket = socketIoClient(endpoint)
+const socket = socketIoClient(endpoint);
 
-export default socket 
+export default socket;

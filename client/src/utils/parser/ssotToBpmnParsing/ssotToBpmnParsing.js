@@ -12,9 +12,10 @@ const DEFAULT_STARTEVENT_POSITION = '200,330';
  * @description Will search through the ssot and return the only element without a predecessor
  * @param {Object} ssot The ssot to process
  */
-const findStartElement = (ssot) => (
-    ssot.elements.find((element) => (element.type === 'MARKER' && element.predecessorIds.length < 1)
-    ));
+const findStartElement = (ssot) =>
+  ssot.elements.find(
+    (element) => element.type === 'MARKER' && element.predecessorIds.length < 1
+  );
 
 /**
  * @description Will create an order within the elements based on their positioning in the flow
@@ -22,14 +23,16 @@ const findStartElement = (ssot) => (
  * @returns {Array} The elements of the ssot in the correct order in which they appear in the flow
  */
 const buildCorrectOrder = (ssot) => {
-    const startElement = findStartElement(ssot);
-    const elementsInOrder = [startElement];
-    let currentElement = startElement;
-    for (let i = 1; i < ssot.elements.length; i += 1) {
-        currentElement = ssot.elements.find((element) => (element.id === currentElement.successorIds[0]));
-        elementsInOrder.push(currentElement);
-    }
-    return elementsInOrder;
+  const startElement = findStartElement(ssot);
+  const elementsInOrder = [startElement];
+  let currentElement = startElement;
+  for (let i = 1; i < ssot.elements.length; i += 1) {
+    currentElement = ssot.elements.find(
+      (element) => element.id === currentElement.successorIds[0]
+    );
+    elementsInOrder.push(currentElement);
+  }
+  return elementsInOrder;
 };
 
 /**
@@ -40,12 +43,12 @@ const buildCorrectOrder = (ssot) => {
  * @returns {String} The now set id of the shape
  */
 const updateIdForElement = (modeling, cli, element, cliResult) => {
-    const bpmnObject = cli.element(cliResult);
-    const newId = element.id;
+  const bpmnObject = cli.element(cliResult);
+  const newId = element.id;
 
-    const updatedIdProperty = { id: newId }
-    modeling.updateProperties(bpmnObject, updatedIdProperty);
-    return newId;
+  const updatedIdProperty = { id: newId };
+  modeling.updateProperties(bpmnObject, updatedIdProperty);
+  return newId;
 };
 
 /**
@@ -57,22 +60,30 @@ const updateIdForElement = (modeling, cli, element, cliResult) => {
  * @returns {String} The id of the element created in the diagram
  */
 const drawElement = (cli, modeling, element, previousElement) => {
-    let createdElement;
-    switch (element.type) {
-        case 'INSTRUCTION':
-            createdElement = cli.append(previousElement, 'bpmn:Task', DEFAULT_SPACING);
-            break;
-        case 'MARKER':
-            // currently this is can only be an end event; in the future ther eshould be another switch here
-            createdElement = cli.append(previousElement, 'bpmn:EndEvent', DEFAULT_SPACING);
-            break;
-        default:
-            break;
-    }
+  let createdElement;
+  switch (element.type) {
+    case 'INSTRUCTION':
+      createdElement = cli.append(
+        previousElement,
+        'bpmn:Task',
+        DEFAULT_SPACING
+      );
+      break;
+    case 'MARKER':
+      // currently this is can only be an end event; in the future ther eshould be another switch here
+      createdElement = cli.append(
+        previousElement,
+        'bpmn:EndEvent',
+        DEFAULT_SPACING
+      );
+      break;
+    default:
+      break;
+  }
 
-    const newId = updateIdForElement(modeling, cli, element, createdElement);
-    if (element.name) cli.setLabel(newId, element.name);
-    return newId;
+  const newId = updateIdForElement(modeling, cli, element, createdElement);
+  if (element.name) cli.setLabel(newId, element.name);
+  return newId;
 };
 
 /**
@@ -80,7 +91,8 @@ const drawElement = (cli, modeling, element, previousElement) => {
  * @param {*} cli The modeling cli extension
  */
 const removeDefaultStarter = (cli) => {
-    if (cli.elements().includes(DEFAULT_STARTER)) cli.removeShape(DEFAULT_STARTER);
+  if (cli.elements().includes(DEFAULT_STARTER))
+    cli.removeShape(DEFAULT_STARTER);
 };
 
 /**
@@ -91,12 +103,16 @@ const removeDefaultStarter = (cli) => {
  * @returns {String} The id of the element created in the diagram
  */
 const drawStartElement = (cli, modeling, element) => {
-    removeDefaultStarter(cli);
-    const startElement = cli.create('bpmn:StartEvent', DEFAULT_STARTEVENT_POSITION, DEFAULT_PARENT);
-    const newId = updateIdForElement(modeling, cli, element, startElement);
+  removeDefaultStarter(cli);
+  const startElement = cli.create(
+    'bpmn:StartEvent',
+    DEFAULT_STARTEVENT_POSITION,
+    DEFAULT_PARENT
+  );
+  const newId = updateIdForElement(modeling, cli, element, startElement);
 
-    if (element.name) cli.setLabel(newId, element.name);
-    return newId;
+  if (element.name) cli.setLabel(newId, element.name);
+  return newId;
 };
 
 /**
@@ -106,14 +122,23 @@ const drawStartElement = (cli, modeling, element) => {
  * @returns {String} The parsed XML BPMN diagram as a String
  */
 const parseSsotToBpmn = (modeler, ssot) => {
-    const sortedElements = buildCorrectOrder(ssot);
-    const cli = modeler.get('cli');
-    const modeling = modeler.get('modeling');
+  const sortedElements = buildCorrectOrder(ssot);
+  const cli = modeler.get('cli');
+  const modeling = modeler.get('modeling');
 
-    let lastDrawnElement = drawStartElement(cli, modeling, sortedElements.shift());
-    sortedElements.forEach((elementToDraw) => {
-        lastDrawnElement = drawElement(cli, modeling, elementToDraw, lastDrawnElement);
-    });
+  let lastDrawnElement = drawStartElement(
+    cli,
+    modeling,
+    sortedElements.shift()
+  );
+  sortedElements.forEach((elementToDraw) => {
+    lastDrawnElement = drawElement(
+      cli,
+      modeling,
+      elementToDraw,
+      lastDrawnElement
+    );
+  });
 };
 
 export default parseSsotToBpmn;

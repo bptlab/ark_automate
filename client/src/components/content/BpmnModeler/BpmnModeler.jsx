@@ -29,21 +29,18 @@ const BpmnModeler = (props) => {
       keyboard: {
         bindTo: window,
       },
-      additionalModules: [
-        propertiesProviderModule,
-        CliModule
-      ],
+      additionalModules: [propertiesProviderModule, CliModule],
       moddleExtensions: {
-        camunda: camundaModdleDescriptor
+        camunda: camundaModdleDescriptor,
       },
       cli: {
-        bindTo: 'cli'
-      }
+        bindTo: 'cli',
+      },
     });
-    props.onModelerUpdate(newModeler)
+    props.onModelerUpdate(newModeler);
 
     const openBpmnDiagram = (xml) => {
-      newModeler.importXML(xml, error => {
+      newModeler.importXML(xml, (error) => {
         if (error) {
           console.error('fail import xml');
         }
