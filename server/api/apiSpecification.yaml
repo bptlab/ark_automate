@@ -5,9 +5,6 @@ info:
     Ark Automate is a platform that allows office users and software developers to automate business or everyday processes by simply sketching the steps of their process. By using simple flowcharts or powerful BPMN in their process outlines, users can create small software solutions using RPA that finish their tasks much faster and more reliably.
   version: 1.0.0
   title: Ark-Automate API
-  license:
-    name: LICENSE (MIT)
-    url: https://github.com/bptlab/ark_automate
 
 servers:
   - url: '{protocol}://{server}/api/v1'
@@ -27,7 +24,7 @@ tags:
 paths:
   #### RPA Functionalities ####
   /functionalities:
-    #GET /rpa-framework/commands/get-available-applications
+    # used to be: GET /rpa-framework/commands/get-available-applications
     get:
       tags:
         - RPA-Functionalities
@@ -43,7 +40,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Functionalities'
   /functionalities/applications:
-    #// GET /rpa-framework/commands/get-available-tasks-for-application?application=Browser
+    # used to be: GET /rpa-framework/commands/get-available-applications
     get:
       tags:
         - RPA-Functionalities
@@ -66,7 +63,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/Applications'
-    # GET /ssot/:id
+    # used to be: GET /rpa-framework/commands/get-available-tasks-for-application?application=Browser
     get:
       tags:
         - RPA-Functionalities
@@ -92,7 +89,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/RobotIds'
-    # GET /ssot/:id
+    # used to be: /ssot/:id
     get:
       tags:
         - Robots
@@ -105,7 +102,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Robots'
-    # // POST /overwriteRobot/78d09f66d2ed466cf20b06f7
+    # used to be: POST /overwriteRobot/78d09f66d2ed466cf20b06f7
     put:
       tags:
         - Robots
@@ -131,7 +128,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/RobotIds'
-    # GET /parser/getForId/:robotId
+    # used to be: /parser/getForId/:robotId
     get:
       tags:
         - Robots
@@ -152,7 +149,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/RobotIds'
-    # GET /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
+    # used to be: /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
     patch:
       tags:
         - Robots
@@ -171,7 +168,7 @@ paths:
         400:
           description: Bad Request
   /robots/userAccess:
-    # // GET /shareRobotWithUser?userId=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
+    # used to be: GET /shareRobotWithUser?userId=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
     post:
       tags:
         - Robots
@@ -201,7 +198,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/ObjectIds'
-    # GET ssot/getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
+    # used to be: GET ssot/getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
     get:
       tags:
         - Robots
@@ -224,7 +221,7 @@ paths:
                       $ref: '#/components/schemas/RobotIds'
                     robotName:
                       $ref: '#/components/schemas/RobotNames'
-    # // GET /createNewRobot?userId=78d09f66d2ed466cf20b06f7&robotName=NewRobot
+    # used to be: GET /createNewRobot?userId=78d09f66d2ed466cf20b06f7&robotName=NewRobot
     post:
       tags:
         - Robots
@@ -263,7 +260,7 @@ paths:
         400:
           description: Bad Request
   /robots/parameters:
-    # // POST /ssot/updateManyParameters/
+    # used to be: POST /ssot/updateManyParameters/
     put:
       tags:
         - Robots
@@ -296,7 +293,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/RobotIds'
-    # // GET /getAllParameters/604f537ed699a2eb47433184'
+    # used to be: GET /getAllParameters/604f537ed699a2eb47433184'
     get:
       tags:
         - Robots
@@ -312,7 +309,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Parameters'
   /robots/rpaattributes:
-    # // POST /ssot/updateManyAttributes/
+    # used to be: POST /ssot/updateManyAttributes/
     put:
       tags:
         - Robots
@@ -345,7 +342,7 @@ paths:
         required: true
         schema:
           $ref: '#/components/schemas/RobotIds'
-    # // GET /getAllAttributes/604f537ed699a2eb47433184'
+    # used to be: GET /getAllAttributes/604f537ed699a2eb47433184'
     get:
       tags:
         - Robots
