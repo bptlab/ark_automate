@@ -9,7 +9,7 @@ import {
   newClientJoined,
 } from '../../../api/socketHandler/socketListeners';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
-import initSessionStorage from '../../../utils/sessionStorage';
+import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
 import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 
 const { Search } = Input;
@@ -115,6 +115,7 @@ const RobotOverview = () => {
             // eslint-disable-next-line no-underscore-dangle
             robotId={val._id}
             robotName={val.robotName}
+            refreshOverview={() => retrieveBotList(userId)}
           />
         ))}
       </>

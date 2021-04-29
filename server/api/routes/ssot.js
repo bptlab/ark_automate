@@ -21,6 +21,7 @@ router.get('/renameRobot', retrievalController.renameRobot);
 router.get('/shareRobotWithUser', retrievalController.shareRobotWithUser);
 router.get('/createNewRobot', retrievalController.createNewRobot);
 router.post('/overwriteRobot/:robotId', retrievalController.overwriteRobot);
+router.delete('/delete/:robotId', retrievalController.deleteRobot);
 
 /// VARIABLE ROUTES ///
 router.post('/updateManyParameters', variableController.updateMany);

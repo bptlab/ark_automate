@@ -27,13 +27,11 @@ const RobotInteractionInputParameter = ({
         updateParameterValue(parameterId, event.target.value)
       }
       suffix={
-        <>
-          <Tooltip title={infoText}>
-            <InfoCircleOutlined
-              style={{ color: corporateDesign.colorBackgroundCta }}
-            />
-          </Tooltip>
-        </>
+        <Tooltip title={infoText} placement='topRight' arrowPointAtCenter>
+          <InfoCircleOutlined
+            style={{ color: corporateDesign.colorBackgroundCta }}
+          />
+        </Tooltip>
       }
     />
   </>

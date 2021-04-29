@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-escape */
 /**
  * @category Client
  * @module
@@ -27,7 +28,6 @@ const parseSsotToRobotCode = async (ssot) => {
     parameters,
     result.attributeObjects
   );
-
   return result.parsedCode;
 };
 
@@ -46,7 +46,6 @@ const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
     parameters,
     result.attributeObjects
   );
-
   return result.parsedCode;
 };
 

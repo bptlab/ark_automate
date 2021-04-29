@@ -11,4 +11,8 @@
   --colorBackgroundCta: #ff6b00;
   --colorSuccessNotificationBackground: #ebffeb;
   --colorSuccessNotificationIcon: #08c908;
+  --colorWarningNotificationBackground: #ffffd0;
+  --colorWarningNotificationIcon: #ff6b00;
+  --colorErrorNotificationBackground: #ffbbbb;
+  --colorErrorNotificationIcon: #cc0000;
 }
