@@ -5,9 +5,9 @@
 const mongoose = require('mongoose');
 const { ACTIVITY_IDENTIFIER } = require('./robotCodeConstants');
 // eslint-disable-next-line no-unused-vars
-const ssotModels = require('../../models/singleSourceOfTruthModel.js');
+const ssotModels = require('../../api/models/singleSourceOfTruthModel.js');
 // eslint-disable-next-line no-unused-vars
-const jobsModel = require('../../models/robotJobModel.js');
+const jobsModel = require('../../api/models/robotJobModel.js');
 
 /**
  * @description For all activities in the ssot this method will retrieve the associated parameter objects

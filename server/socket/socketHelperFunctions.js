@@ -2,9 +2,9 @@
 require('express');
 const mongoose = require('mongoose');
 const ssotToRobotParser = require('../services/SsotToRobotParsing/SsotToRobotParser.js');
-const ssotModels = require('../models/singleSourceOfTruthModel.js');
-const userAccessObject = require('../models/userAccessObjectModel.js');
-const jobsModel = require('../models/robotJobModel.js');
+const ssotModels = require('../api/models/singleSourceOfTruthModel.js');
+const userAccessObject = require('../api/models/userAccessObjectModel.js');
+const jobsModel = require('../api/models/robotJobModel.js');
 
 mongoose.set('useFindAndModify', false);
 

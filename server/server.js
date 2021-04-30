@@ -8,8 +8,8 @@ const socketio = require('socket.io');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
-const rpaFrameworkRouter = require('./routes/rpaFramework');
-const ssotRouter = require('./routes/ssot');
+const rpaFrameworkRouter = require('./api/routes/rpaFramework');
+const ssotRouter = require('./api/routes/ssot');
 const { socketManager } = require('./socket/socketManager');
 
 // Multi-process to utilize all CPU cores.
