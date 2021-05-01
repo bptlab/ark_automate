@@ -113,14 +113,15 @@ const getOutputName = (currentLine) => {
 };
 
 /**
- * @description retrieves the rpa task from the current code line
+ * @description retrieves the rpa task from the current code line; if there are no params, 
+ * the indexOfFirstSplitPlaceholder returns -1 and therefore the function returns the whole line
  * @param {String} currentLine current line of RPAf code
  * @param {String} splitPlaceholder placeholder to split the string
  * @returns rpaTask as string
  */
 const getRpaTask = (currentLine, splitPlaceholder) => {
   const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
-  return currentLine.slice(0, indexOfFirstSplitPlaceholder);
+  return (indexOfFirstSplitPlaceholder === -1 ? currentLine : currentLine.slice(0, indexOfFirstSplitPlaceholder));
 };
 
 /**
