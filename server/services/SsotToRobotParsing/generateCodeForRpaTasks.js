@@ -94,19 +94,13 @@ const writeCodeForElement = (
   const currentElement = elements.find((element) => element.id === id);
   let combinedCode = codeToAppend;
   let newCodeLine = '';
-  let newPreviousApplication = previousApplication;
+  const newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
     const currentAttributeObject = attributes.find(
       (attribute) => attribute.activityId === id
     );
     if (currentAttributeObject) {
-      if (currentAttributeObject.rpaApplication !== previousApplication) {
-        newPreviousApplication = currentAttributeObject.rpaApplication;
-        newCodeLine += currentAttributeObject.rpaApplication + LINEBREAK;
-      } else {
-        newPreviousApplication = previousApplication;
-      }
-      newCodeLine += COMMENT + currentElement.name + LINEBREAK;
+      newCodeLine += currentElement.name + LINEBREAK
       const currentParameterObject = parameters.find(
         (parameter) => parameter.activityId === id
       );
