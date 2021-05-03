@@ -1,7 +1,7 @@
 const correctSettingsSection =
   '*** Settings ***\nLibrary    RPA.Excel.Application\nLibrary    RPA.HTTP';
 const correctTaskSection =
-  '*** Tasks ***\nExcel.Application\n#activity One\n    Open Application    %%visible%%    TestPETER';
+  '*** Tasks ***\nactivity One\n    Open Application    %%visible%%    TestPETER';
 const taskAndApplicationCombinations = [
   {
     _id: '6061d5627dee5516b3824ade',

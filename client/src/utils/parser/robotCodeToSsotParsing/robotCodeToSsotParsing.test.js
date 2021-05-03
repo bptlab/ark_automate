@@ -92,7 +92,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
   test('instruction blocks are generated correct', () => {
     const instructionBlocks = parser.getInstructionBlocksFromTaskSection(
       taskSectionAsArray,
-      declaredApplications
+      taskAndApplicationCombinations
     );
     expect(instructionBlocks).toEqual(correctInstructionBlocks);
   });
