@@ -197,7 +197,10 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, taskAndApplic
         instructionBlocks.length - 1
       ].outputName = outputValueName;
 
-      currentLine = currentLineWithoutOutputVariableName(currentLine, splitPlaceholder);
+      currentLine = currentLineWithoutOutputVariableName(
+        currentLine,
+        splitPlaceholder
+      );
     }
 
     if (!errorWasThrown) {

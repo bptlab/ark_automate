@@ -5,7 +5,7 @@ import {
   taskAndApplicationCombinations,
   correctElementsArray,
   correctInstructionBlocks,
-} from './robotCodeTestSnippets';
+} from './robotCodeTestData';
 
 jest.mock('../../notificationUtils');
 
