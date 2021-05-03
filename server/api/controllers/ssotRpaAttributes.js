@@ -46,7 +46,7 @@ exports.retrieveAttributesForRobot = async (req, res) => {
   res.send(attributeObjects);
 };
 
-// DELETE /deleteAttributes/604f537ed699a2eb47433184' TODO
+// DELETE /deleteAttributes?robotId=604f537ed699a2eb47433184&activityListId=[%22Activity_0oswbuk%22]' TODO
 exports.deleteMany = async (req, res) => {
   const { activityIdList } = req.query;
   const { robotId } = req.query;

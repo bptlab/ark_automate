@@ -574,6 +574,7 @@ describe('/deleteParameters', () => {
     await ssotVariableController.deleteMany(request, response);
 
     const foundParameters = await mongoose.model('parameter').find().exec();
+    console.log(foundParameters);
     expect(foundParameters.length).toBe(2);
 
     expect(response.statusCode).toBe(200);
@@ -600,6 +601,7 @@ describe('/deleteAttributes', () => {
     await ssotAttributesController.deleteMany(request, response);
 
     const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
+    console.log(foundAttributes);
     expect(foundAttributes.length).toBe(2);
 
     expect(response.statusCode).toBe(200);
