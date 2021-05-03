@@ -102,7 +102,7 @@ describe('Ssot Parsing', () => {
     );
   });
 
-  it('parses all the elements of the ssot in the correct order', async () => {
+  it('parses all the elements of the ssot and job object correctly', async () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
