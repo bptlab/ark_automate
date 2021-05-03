@@ -77,6 +77,18 @@ exports.socketManager = (io, socket) => {
   });
 
   socket.on('updatedRobotJobStatus', ({ jobId, status }) => {
+    console.log('Hallo der Durchlauf hatte den folgenden Status :) ', status);
     socketHelperFunctions.updateRobotJobStatus(jobId, status);
+  });
+  socket.on('updatedRobotJob', ({ data }) => {
+    // try catch is a hacky solution but handles the problem so far
+    try {
+      console.log(
+        'Hallo folgendes neues JsonLog Objekt wurde gesendet ',
+        JSON.parse(data)
+      );
+    } catch (e) {
+      console.log('Neues Json Objekt konnte nicht gesendet werden!');
+    }
   });
 };
