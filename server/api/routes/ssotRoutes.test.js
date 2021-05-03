@@ -32,7 +32,7 @@ afterEach(async () => dbHandler.clearDatabase());
 /**
  * Remove and close the db and server.
  */
-afterAll(async () => dbHandler.closeDatabase());
+//afterAll(async () => dbHandler.closeDatabase());
 
 describe('/ssot/getAvailableRobotsForUser', () => {
   it('retreives the list of robots for user correctly', async () => {
@@ -551,5 +551,57 @@ describe('ssot/delete/:robotId', () => {
 
     const foundJobs = await mongoose.model('job').find().exec();
     expect(foundJobs.length).toBe(0);
+  });
+});
+
+describe('/deleteParameters', () => {
+  it('deletes removed activity related parameter', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadParametersInDb();
+
+    let deletedActivityList = [testSsot.elements[2].id];
+    deletedActivityList = JSON.stringify(deletedActivityList);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        activityIdList: deletedActivityList,
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotVariableController.deleteMany(request, response);
+
+    const foundParameters = await mongoose.model('parameter').find().exec();
+    expect(foundParameters.length).toBe(2);
+
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe('/deleteAttributes', () => {
+  it('deletes removed activity related parameter', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+
+    let deletedActivityList = [testSsot.elements[2].id];
+    deletedActivityList = JSON.stringify(deletedActivityList);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      params: {
+        activityIdList: deletedActivityList,
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotAttributesController.deleteMany(request, response);
+
+    const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
+    expect(foundAttributes.length).toBe(2);
+
+    expect(response.statusCode).toBe(200);
   });
 });

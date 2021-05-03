@@ -45,3 +45,25 @@ exports.retrieveAttributesForRobot = async (req, res) => {
 
   res.send(attributeObjects);
 };
+
+// DELETE /deleteAttributes/604f537ed699a2eb47433184' TODO
+exports.deleteMany = async (req, res) => {
+  const { activityIdList } = req.query;
+  const { robotId } = req.query;
+  const usablerobotId = mongoose.Types.ObjectId(robotId);
+
+  try {
+    const deletedActivities = JSON.parse(activityIdList);
+    const deletionResult = await mongoose
+      .model('rpaAttributes')
+      .deleteMany({
+        activityId: { $in: deletedActivities },
+        robotId: usablerobotId,
+      })
+      .exec();
+
+    res.send(deletionResult);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};

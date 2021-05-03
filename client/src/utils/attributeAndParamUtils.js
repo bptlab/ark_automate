@@ -410,11 +410,66 @@ const setOutputValueName = (activityId, value) => {
 };
 
 /**
+ * @description If there is more than one unused parameter Object, delete it in the DB
+ * @param {Array} parameterObject List of all attributes saved in the sessionStorage
+ * @param {Array} usedIds The activityIds that are still being used
+ */
+const deleteUnusedParameterFromDB = (parameterObject, usedIds, robotId) => {
+  const unusedParameters = parameterObject.filter(
+    (singleParameter) => !usedIds.includes(singleParameter.activityId)
+  );
+  if (unusedParameters && unusedParameters.length > 0) {
+    let unusedParameterIds = unusedParameters.map(
+      (singleUnusedParameter) => singleUnusedParameter.activityId
+    );
+    unusedParameterIds = JSON.stringify(unusedParameterIds);
+    fetch(
+      `/ssot/deleteParameters?robotId=${robotId}&activityIdList=${unusedParameterIds}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+      }
+    );
+  }
+};
+
+/**
+ * @description If there is more than one unused attribute Object, delete it in the DB
+ * @param {Array} attributes List of all attributes saved in the sessionStorage
+ * @param {Array} usedIds The activityIds that are still being used
+ */
+const deleteUnusedAttributesFromDB = (attributes, usedIds, robotId) => {
+  const unusedAttributes = attributes.filter(
+    (singleAttribute) => !usedIds.includes(singleAttribute.activityId)
+  );
+  if (unusedAttributes && unusedAttributes.length > 0) {
+    let unusedAttributeIds = unusedAttributes.map(
+      (singleUnusedAttribute) => singleUnusedAttribute.activityId
+    );
+    unusedAttributeIds = JSON.stringify(unusedAttributeIds);
+    fetch(
+      `/ssot/deleteAttributes?robotId=${robotId}&activityIdList=${unusedAttributeIds}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+      }
+    );
+  }
+};
+
+/**
  * @description Will send three backend calls to upsert the ssot, the attribute objects and the parameter objects to the database.
  * The objects are taken from the session storage, so no parameters are required
  */
 const upsert = async () => {
   const ssot = sessionStorage.getItem('ssotLocal');
+  const usedIds = JSON.parse(ssot).elements.map(
+    (singleElement) => singleElement.id
+  );
   const robotId = JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
   const requestStringSsot = `/ssot/overwriteRobot/${robotId}`;
   // eslint-disable-next-line no-unused-vars
@@ -426,22 +481,42 @@ const upsert = async () => {
     },
   });
 
-  const attributes = sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH);
+  const attributes = JSON.parse(
+    sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH)
+  );
+  let stillUsedAttributes = attributes.filter((singleAttribute) =>
+    usedIds.includes(singleAttribute.activityId)
+  );
+  stillUsedAttributes = JSON.stringify(stillUsedAttributes);
+  sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, stillUsedAttributes);
+
+  deleteUnusedAttributesFromDB(attributes, usedIds, robotId);
+
   const requestStringAttributes = `/ssot/updateManyAttributes`;
   // eslint-disable-next-line no-unused-vars
   const responseAttributes = await fetch(requestStringAttributes, {
-    body: attributes,
+    body: stillUsedAttributes,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
   });
 
-  const parameterObject = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
+  const parameterObject = JSON.parse(
+    sessionStorage.getItem(PARAMETER_STORAGE_PATH)
+  );
+  let stillUsedParameters = parameterObject.filter((singleParameter) =>
+    usedIds.includes(singleParameter.activityId)
+  );
+  stillUsedParameters = JSON.stringify(stillUsedParameters);
+  sessionStorage.setItem(PARAMETER_STORAGE_PATH, stillUsedParameters);
+
+  deleteUnusedParameterFromDB(parameterObject, usedIds, robotId);
+
   const requestStringParameters = `/ssot/updateManyParameters`;
   // eslint-disable-next-line no-unused-vars
   const responseParameters = await fetch(requestStringParameters, {
-    body: parameterObject,
+    body: stillUsedParameters,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
