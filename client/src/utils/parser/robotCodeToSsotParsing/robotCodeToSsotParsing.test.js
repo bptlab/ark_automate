@@ -19,7 +19,7 @@ sessionStorage.setItem('robotName', 'AwesomeTestRobot');
 sessionStorage.setItem('robotId', '12345678');
 sessionStorage.setItem(
   'availableApplications',
-  '["Excel.Application","Excel.Files","HTTP"]'
+  '["Excel.Application","Excel.Files","HTTP","Testing"]'
 );
 sessionStorage.setItem(
   'TaskApplicationCombinations',
@@ -75,7 +75,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
     ).toEqual(3));
 
   test('all applications were found', () =>
-    expect(['HTTP', 'Excel.Application']).toEqual(
+    expect(['Testing', 'Excel.Application']).toEqual(
       expect.arrayContaining(declaredApplications)
     ));
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-template-curly-in-string */
 const correctSettingsSection =
-  '*** Settings ***\nLibrary    RPA.Excel.Application\nLibrary    RPA.HTTP';
+  '*** Settings ***\nLibrary    RPA.Excel.Application\nLibrary    RPA.Testing';
 const correctTaskSection =
   '*** Tasks ***\nfirst Activity\n    Open Application    %%visible%%    !!TestPETER!!\nsecond Activity\n    ${OUTPUT} = TaskWithOutput    ${path}';
 const taskAndApplicationCombinations = [
@@ -38,9 +38,11 @@ const taskAndApplicationCombinations = [
         name: 'path',
         type: 'String',
         isRequired: false,
-        infoText: 'Path to save to. If not given, uses path given when opened or created.',
-        index: '0'
-      }]
+        infoText:
+          'Path to save to. If not given, uses path given when opened or created.',
+        index: '0',
+      },
+    ],
   },
   {
     _id: '6062e52f241bffc33838f279',

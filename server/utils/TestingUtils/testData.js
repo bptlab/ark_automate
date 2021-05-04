@@ -219,7 +219,7 @@ const testParameter3 = {
 };
 
 const testRobotCode =
-  '*** Settings *** Library    RPA.Excel.Application Library    RPA.Browser *** Tasks *** FirstActivity Open Workbook    C://Users/Filepath SecondActivity Find Empty Row    StonksOnlyGoUp.xls ThirdActivity Open Browser    TESTVALUE';
+  '*** Settings *** Library    RPA.Excel.Application Library    RPA.Browser *** Tasks *** FirstActivity RPA.Excel.Application.Open Workbook    C://Users/Filepath SecondActivity Find Empty Row    StonksOnlyGoUp.xls ThirdActivity Open Browser    TESTVALUE';
 
 module.exports = {
   testSsot,
