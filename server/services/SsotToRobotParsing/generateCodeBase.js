@@ -10,7 +10,7 @@ const {
 } = require('./robotCodeConstants');
 
 // eslint-disable-next-line no-unused-vars
-const ssotModels = require('../../models/singleSourceOfTruthModel.js');
+const ssotModels = require('../../api/models/singleSourceOfTruthModel.js');
 
 /**
  * @description Collects the applications used by the robot
