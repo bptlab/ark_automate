@@ -50,7 +50,7 @@ exports.retrieveParametersForRobot = async (req, res) => {
   res.send(parameterObjects);
 };
 
-// DELETE /deleteParameters?robotId=604f537ed699a2eb47433184&activityListId=[%22Activity_0oswbuk%22]' TODO
+// DELETE /deleteParameters?robotId=604f537ed699a2eb47433184&activityListId=["Activity_0oswbuk"]'
 exports.deleteMany = async (req, res) => {
   const { activityIdList } = req.query;
   const { robotId } = req.query;

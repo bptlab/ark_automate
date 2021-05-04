@@ -32,7 +32,7 @@ afterEach(async () => dbHandler.clearDatabase());
 /**
  * Remove and close the db and server.
  */
-//afterAll(async () => dbHandler.closeDatabase());
+afterAll(async () => dbHandler.closeDatabase());
 
 describe('/ssot/getAvailableRobotsForUser', () => {
   it('retreives the list of robots for user correctly', async () => {
@@ -559,12 +559,15 @@ describe('/deleteParameters', () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadParametersInDb();
 
-    let deletedActivityList = [testSsot.elements[2].id];
+    let deletedActivityList = [
+      testSsot.elements[2].id,
+      testSsot.elements[3].id,
+    ];
     deletedActivityList = JSON.stringify(deletedActivityList);
 
     const request = httpMocks.createRequest({
       method: 'DELETE',
-      params: {
+      query: {
         activityIdList: deletedActivityList,
         robotId: testRobotId,
       },
@@ -574,8 +577,7 @@ describe('/deleteParameters', () => {
     await ssotVariableController.deleteMany(request, response);
 
     const foundParameters = await mongoose.model('parameter').find().exec();
-    console.log(foundParameters);
-    expect(foundParameters.length).toBe(2);
+    expect(foundParameters.length).toBe(1);
 
     expect(response.statusCode).toBe(200);
   });
@@ -586,12 +588,15 @@ describe('/deleteAttributes', () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
 
-    let deletedActivityList = [testSsot.elements[2].id];
+    let deletedActivityList = [
+      testSsot.elements[2].id,
+      testSsot.elements[3].id,
+    ];
     deletedActivityList = JSON.stringify(deletedActivityList);
 
     const request = httpMocks.createRequest({
       method: 'DELETE',
-      params: {
+      query: {
         activityIdList: deletedActivityList,
         robotId: testRobotId,
       },
@@ -601,8 +606,7 @@ describe('/deleteAttributes', () => {
     await ssotAttributesController.deleteMany(request, response);
 
     const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
-    console.log(foundAttributes);
-    expect(foundAttributes.length).toBe(2);
+    expect(foundAttributes.length).toBe(1);
 
     expect(response.statusCode).toBe(200);
   });
