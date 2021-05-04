@@ -70,10 +70,10 @@ const deleteRobotFromDB = async (robotId) => {
 /**
  * @description Sends a callout to the backend to delete parameters for the given activities
  * @param {String} robotId Id of the robot that is being used
- * @param {String} unusedAttributeListString Stringified List of Activity Ids
+ * @param {String} unusedActivityListString Stringified List of Activity Ids
  */
-const deleteParametersForActivities = (robotId, unusedAttributeListString) => {
-  const requestStringParameters = `/ssot/deleteAttributes?robotId=${robotId}&activityIdList=${unusedAttributeListString}`;
+const deleteParametersForActivities = (robotId, unusedActivityListString) => {
+  const requestStringParameters = `/ssot/deleteAttributes?robotId=${robotId}&activityIdList=${unusedActivityListString}`;
   fetch(requestStringParameters, {
     method: 'DELETE',
     headers: {
@@ -85,12 +85,12 @@ const deleteParametersForActivities = (robotId, unusedAttributeListString) => {
 };
 
 /**
- * @description Sends a callout to the backend to delete parameters for the given activities
+ * @description Sends a callout to the backend to delete attributes for the given activities
  * @param {String} robotId Id of the robot that is being used
- * @param {String} unusedAttributeListString Stringified List of Activity Ids
+ * @param {String} unusedActivityListString Stringified List of Activity Ids
  */
-const deleteAttributesForActivities = (robotId, unusedAttributeListString) => {
-  const requestStringParameters = `/ssot/deleteAttributes?robotId=${robotId}&activityIdList=${unusedAttributeListString}`;
+const deleteAttributesForActivities = (robotId, unusedActivityListString) => {
+  const requestStringParameters = `/ssot/deleteAttributes?robotId=${robotId}&activityIdList=${unusedActivityListString}`;
   fetch(requestStringParameters, {
     method: 'DELETE',
     headers: {
