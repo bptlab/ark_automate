@@ -161,6 +161,42 @@ const currentLineWithoutOutputVariableName = (
   return currentLine;
 };
 
+const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
+  console.log(allMatchingCombinations);
+  console.log(rpaTask);
+  if (allMatchingCombinations.length === 0) {
+    customNotification(
+      'Error',
+      `The described task "${rpaTask}" could not be assigned to an application.`
+    );
+    return undefined;
+  }
+  if (allMatchingCombinations.length > 1) {
+    if (rpaTask === 'Open Application') {
+      let correctExampleText = '';
+      allMatchingCombinations.forEach((singleCombination) => {
+        correctExampleText += `\n${singleCombination.Application}.${rpaTask}`;
+      });
+      customNotification(
+        'Error',
+        `Multiple Applications with task "${rpaTask}" found. Give the full name you want to use like: ${correctExampleText}`
+      );
+      return undefined;
+    }
+    if (rpaTask === 'Open Workbook') {
+      console.log('Workb');
+      return allMatchingCombinations[0];
+    }
+    customNotification(
+      'Error',
+      `Due to an internal error, several applications were found for your rpaTask "${rpaTask}". Please contact the Ark Automate team.`
+    );
+    return undefined;
+    // handle openApplication and openWorkbook
+  }
+  return allMatchingCombinations[0];
+};
+
 /**
  * @description "preprocesses" the code in a usable data format
  * @param {Array} robotCodeTaskSection robot code w/o empty lines as an array of Strings
@@ -217,19 +253,30 @@ const getInstructionBlocksFromTaskSection = (
     }
 
     if (!errorWasThrown) {
-      const rpaTask = getRpaTask(currentLine, splitPlaceholder);
-      const matchingCombination = taskAndApplicationCombinations.filter(
-        (singleCombination) => singleCombination.Task === rpaTask
-      )[0];
+      let rpaTask = getRpaTask(currentLine, splitPlaceholder);
+      const allMatchingCombinations = taskAndApplicationCombinations.filter(
+        (singleCombination) => {
+          if (rpaTask === singleCombination.Task) return true;
+          if (
+            rpaTask.endsWith(singleCombination.Task) &&
+            rpaTask.startsWith(singleCombination.Application)
+          )
+            return true;
 
-      if (matchingCombination.length === 0) {
-        customNotification(
-          'Error',
-          `Die beschriebene Task "${rpaTask}" konnte keiner Application zugeordnet werden`
-        );
+          return false;
+        }
+      );
+
+      const matchingCombination = returnMatchingCombination(
+        rpaTask,
+        allMatchingCombinations
+      );
+      if (typeof matchingCombination === 'undefined') {
         errorWasThrown = true;
         return;
       }
+
+      rpaTask = rpaTask.replace(`${matchingCombination.Application}.`, '');
 
       const rpaParameters = getRpaParameters(
         currentLine,
@@ -245,6 +292,7 @@ const getInstructionBlocksFromTaskSection = (
         matchingCombination.Application;
     }
   });
+  console.log(instructionBlocks);
   return errorWasThrown ? undefined : instructionBlocks;
 };
 

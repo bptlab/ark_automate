@@ -94,20 +94,25 @@ const writeCodeForElement = (
   const currentElement = elements.find((element) => element.id === id);
   let combinedCode = codeToAppend;
   let newCodeLine = '';
-  const newPreviousApplication = previousApplication;
+  // const newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
     const currentAttributeObject = attributes.find(
       (attribute) => attribute.activityId === id
     );
     if (currentAttributeObject) {
-      newCodeLine += currentElement.name + LINEBREAK
+      newCodeLine += currentElement.name + LINEBREAK;
       const currentParameterObject = parameters.find(
         (parameter) => parameter.activityId === id
       );
       if (currentParameterObject) {
         newCodeLine += setOutputVar(currentParameterObject);
       }
-      newCodeLine += currentAttributeObject.rpaTask;
+      console.log(currentAttributeObject);
+      if (currentAttributeObject.rpaTask === 'Open Application') {
+        newCodeLine += `${currentAttributeObject.rpaTask}.${currentAttributeObject.rpaTask}`;
+      } else {
+        newCodeLine += currentAttributeObject.rpaTask;
+      }
       if (currentParameterObject) {
         newCodeLine += appendRpaInputParameter(currentParameterObject);
       }
