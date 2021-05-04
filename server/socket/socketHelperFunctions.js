@@ -70,7 +70,7 @@ exports.getAllUserIds = async () => {
  * @description Creates a Job in the database for a robot execution of a specific user
  * @param {String} userId the id of the user that wants to execute a robot
  * @param {String} robotId the id of the robot to be executed
- * @param {String} status the current status of the job (either waiting, executing, success or failed)
+ * @param {String} status the current status of the job (either waiting, executing, successful or failed)
  * @param {Array} parameters different parameters the user defined before executing the robot
  */
 exports.createJob = async (userId, robotId, status, parameters) => {
@@ -98,11 +98,37 @@ exports.createJob = async (userId, robotId, status, parameters) => {
  * @param {String} status the current status of the job (either waiting, executing, success or failed)
  */
 exports.updateRobotJobStatus = async (jobId, status) => {
+  console.log('status ', status);
   await jobsModel.Job.findByIdAndUpdate(jobId, { status }, (err) => {
     if (err) {
       console.error(err);
     }
   });
+};
+
+/**
+ * @description Finds a specific job in the database and updates the status of the Job
+ * @param {String} jobId the id of the job that we want to update
+ * @param {String} status the current status of the job (either waiting, executing, success or failed)
+ */
+exports.updateRobotJobErrors = async (jobId, errorLog) => {
+  const errors = errorLog.robot_run.activities
+    .filter((activity) => activity.status === 'FAIL')
+    .map((activity) => ({
+      activity_name: activity.activity_name,
+      tasks: activity.tasks,
+      message: activity.message,
+    }));
+  console.log(errors, 'ERRORS');
+  await jobsModel.Job.findByIdAndUpdate(
+    jobId,
+    { loggedErrors: errors },
+    (err) => {
+      if (err) {
+        console.error(err);
+      }
+    }
+  );
 };
 
 /**

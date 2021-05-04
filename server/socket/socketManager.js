@@ -76,19 +76,27 @@ exports.socketManager = (io, socket) => {
     }
   });
 
-  socket.on('updatedRobotJobStatus', ({ jobId, status }) => {
+  /* socket.on('updatedRobotJobStatus', ({ jobId, status }) => {
     console.log('Hallo der Durchlauf hatte den folgenden Status :) ', status);
     socketHelperFunctions.updateRobotJobStatus(jobId, status);
-  });
-  socket.on('updatedRobotJob', ({ data }) => {
+  }); */
+  socket.on('updatedRobotJob', ({ jobId, robotLogs }) => {
+    console.log(
+      'Hallo folgendes neues JsonLog Objekt wurde gesendet ',
+      robotLogs
+    );
     // try catch is a hacky solution but handles the problem so far
-    try {
-      console.log(
-        'Hallo folgendes neues JsonLog Objekt wurde gesendet ',
-        JSON.parse(data)
+    if (robotLogs.final_message === 'Execution completed') {
+      console.log('Hallo Welt');
+      socketHelperFunctions.updateRobotJobStatus(
+        jobId,
+        robotLogs.robot_run.status === 'FAIL' ? 'failed' : 'successful'
       );
-    } catch (e) {
-      console.log('Neues Json Objekt konnte nicht gesendet werden!');
+      if (robotLogs.robot_run.status === 'FAIL') {
+        socketHelperFunctions.updateRobotJobErrors(jobId, robotLogs);
+      }
     }
+
+    socket.emit('liveRobotMonitoring', robotLogs);
   });
 };
