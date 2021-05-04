@@ -47,7 +47,7 @@ exports.retrieveAttributesForRobot = async (req, res) => {
 };
 
 // DELETE /deleteAttributes?robotId=604f537ed699a2eb47433184&activityListId=["Activity_0oswbuk"]'
-exports.deleteMany = async (req, res) => {
+exports.deleteForActivities = async (req, res) => {
   const { activityIdList } = req.query;
   const { robotId } = req.query;
   const usablerobotId = mongoose.Types.ObjectId(robotId);

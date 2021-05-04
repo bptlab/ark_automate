@@ -574,7 +574,7 @@ describe('/deleteParameters', () => {
     });
     const response = httpMocks.createResponse();
 
-    await ssotVariableController.deleteMany(request, response);
+    await ssotVariableController.deleteForActivities(request, response);
 
     const foundParameters = await mongoose.model('parameter').find().exec();
     expect(foundParameters.length).toBe(1);
@@ -584,7 +584,7 @@ describe('/deleteParameters', () => {
 });
 
 describe('/deleteAttributes', () => {
-  it('deletes removed activity related parameter', async () => {
+  it('deletes removed activity related attributes', async () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
 
@@ -603,7 +603,7 @@ describe('/deleteAttributes', () => {
     });
     const response = httpMocks.createResponse();
 
-    await ssotAttributesController.deleteMany(request, response);
+    await ssotAttributesController.deleteForActivities(request, response);
 
     const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
     expect(foundAttributes.length).toBe(1);
