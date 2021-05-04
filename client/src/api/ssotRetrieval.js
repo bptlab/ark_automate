@@ -73,7 +73,7 @@ const deleteRobotFromDB = async (robotId) => {
  * @param {String} unusedActivityListString Stringified List of Activity Ids
  */
 const deleteParametersForActivities = (robotId, unusedActivityListString) => {
-  const requestStringParameters = `/ssot/deleteAttributes?robotId=${robotId}&activityIdList=${unusedActivityListString}`;
+  const requestStringParameters = `/ssot/deleteParameters?robotId=${robotId}&activityIdList=${unusedActivityListString}`;
   fetch(requestStringParameters, {
     method: 'DELETE',
     headers: {
