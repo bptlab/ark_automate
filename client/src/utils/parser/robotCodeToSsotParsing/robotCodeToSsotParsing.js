@@ -113,7 +113,7 @@ const getOutputName = (currentLine) => {
 };
 
 /**
- * @description retrieves the rpa task from the current code line; if there are no parameters, 
+ * @description retrieves the rpa task from the current code line; if there are no parameters,
  * the indexOfFirstSplitPlaceholder returns -1 and therefore the function returns the whole line
  * @param {String} currentLine current line of RPAf code
  * @param {String} splitPlaceholder placeholder to split the string
@@ -121,7 +121,9 @@ const getOutputName = (currentLine) => {
  */
 const getRpaTask = (currentLine, splitPlaceholder) => {
   const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
-  return (indexOfFirstSplitPlaceholder === -1 ? currentLine : currentLine.slice(0, indexOfFirstSplitPlaceholder));
+  return indexOfFirstSplitPlaceholder === -1
+    ? currentLine
+    : currentLine.slice(0, indexOfFirstSplitPlaceholder);
 };
 
 /**
@@ -132,7 +134,8 @@ const getRpaTask = (currentLine, splitPlaceholder) => {
  * @returns rpaParameters as array
  */
 const getRpaParameters = (currentLine, splitPlaceholder, rpaTask) => {
-  const parametersWithoutRpaTask = currentLine.replace(rpaTask + splitPlaceholder,
+  const parametersWithoutRpaTask = currentLine.replace(
+    rpaTask + splitPlaceholder,
     ''
   );
   return parametersWithoutRpaTask.split([splitPlaceholder]);
@@ -165,7 +168,10 @@ const currentLineWithoutOutputVariableName = (
  * @returns Array of Objects with the following schema:
  *      instructionBlocks = [rpaApplication:String, rpaTask:String, name:String, paramArray:Array]
  */
-const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, taskAndApplicationCombinations) => {
+const getInstructionBlocksFromTaskSection = (
+  robotCodeTaskSection,
+  taskAndApplicationCombinations
+) => {
   let errorWasThrown;
   const instructionBlocks = [];
   const regexForOutputVariable = /\${(.)+} =/;
@@ -174,8 +180,12 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, taskAndApplic
   robotCodeTaskSection.slice(1).forEach((line) => {
     if (errorWasThrown) return;
     let currentLine = line;
-    const currentLineIncludesSplitPlaceholder = currentLine.includes(splitPlaceholder);
-    const currentLineDefinesOutputValue = regexForOutputVariable.test(currentLine);
+    const currentLineIncludesSplitPlaceholder = currentLine.includes(
+      splitPlaceholder
+    );
+    const currentLineDefinesOutputValue = regexForOutputVariable.test(
+      currentLine
+    );
     const currentLineStartsWithFourspace = currentLine.startsWith(FOURSPACE);
 
     if (!currentLineStartsWithFourspace) {
@@ -184,7 +194,10 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, taskAndApplic
     }
 
     if (currentLineIncludesSplitPlaceholder) {
-      customNotification('Error', `It is not allowed to use & or § as param values \nError location: "${line}"`);
+      customNotification(
+        'Error',
+        `It is not allowed to use & or § as param values \nError location: "${line}"`
+      );
       errorWasThrown = true;
       return;
     }
@@ -205,19 +218,31 @@ const getInstructionBlocksFromTaskSection = (robotCodeTaskSection, taskAndApplic
 
     if (!errorWasThrown) {
       const rpaTask = getRpaTask(currentLine, splitPlaceholder);
-      const matchingCombination = taskAndApplicationCombinations.filter((singleCombination) => singleCombination.Task === rpaTask)[0]
+      const matchingCombination = taskAndApplicationCombinations.filter(
+        (singleCombination) => singleCombination.Task === rpaTask
+      )[0];
 
       if (matchingCombination.length === 0) {
-        customNotification('Error', `Die beschriebene Task "${rpaTask}" konnte keiner Application zugeordnet werden`);
+        customNotification(
+          'Error',
+          `Die beschriebene Task "${rpaTask}" konnte keiner Application zugeordnet werden`
+        );
         errorWasThrown = true;
         return;
       }
 
-      const rpaParameters = getRpaParameters(currentLine, splitPlaceholder, rpaTask);
+      const rpaParameters = getRpaParameters(
+        currentLine,
+        splitPlaceholder,
+        rpaTask
+      );
 
       instructionBlocks[instructionBlocks.length - 1].rpaTask = rpaTask;
-      instructionBlocks[instructionBlocks.length - 1].paramArray = rpaParameters;
-      instructionBlocks[instructionBlocks.length - 1].rpaApplication = matchingCombination.Application;
+      instructionBlocks[
+        instructionBlocks.length - 1
+      ].paramArray = rpaParameters;
+      instructionBlocks[instructionBlocks.length - 1].rpaApplication =
+        matchingCombination.Application;
     }
   });
   return errorWasThrown ? undefined : instructionBlocks;
@@ -359,9 +384,14 @@ const getElementsArray = (
   )
     return undefined;
 
-  const taskAndApplicationCombinations = JSON.parse(
+  let taskAndApplicationCombinations = JSON.parse(
     sessionStorage.getItem('TaskApplicationCombinations')
   );
+  taskAndApplicationCombinations = taskAndApplicationCombinations.filter(
+    (singleCombination) =>
+      declaredApplications.includes(singleCombination.Application)
+  );
+
   const instructionArray = getInstructionBlocksFromTaskSection(
     robotCodeTaskSection,
     taskAndApplicationCombinations
