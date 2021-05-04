@@ -6,7 +6,6 @@ const {
   ACTIVITY_IDENTIFIER,
   FOURSPACE,
   LINEBREAK,
-  COMMENT,
 } = require('./robotCodeConstants');
 
 /**
@@ -80,7 +79,6 @@ const successorTasksExist = (currentElement) =>
  * @param {Array} parameters All parameter objects of the robot
  * @param {Array} attributes All attribute objects of the robot
  * @param {String} codeToAppend The current code we want to extend
- * @param {String} previousApplication Name of the rpa application of the previous element
  * @returns {string} Generated .robot code for the tasks section
  */
 const writeCodeForElement = (
@@ -88,13 +86,11 @@ const writeCodeForElement = (
   elements,
   parameters,
   attributes,
-  codeToAppend,
-  previousApplication
+  codeToAppend
 ) => {
   const currentElement = elements.find((element) => element.id === id);
   let combinedCode = codeToAppend;
   let newCodeLine = '';
-  // const newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
     const currentAttributeObject = attributes.find(
       (attribute) => attribute.activityId === id
@@ -107,9 +103,11 @@ const writeCodeForElement = (
       if (currentParameterObject) {
         newCodeLine += setOutputVar(currentParameterObject);
       }
-      console.log(currentAttributeObject);
-      if (currentAttributeObject.rpaTask === 'Open Application') {
-        newCodeLine += `${currentAttributeObject.rpaTask}.${currentAttributeObject.rpaTask}`;
+      if (
+        currentAttributeObject.rpaTask === 'Open Application' ||
+        currentAttributeObject.rpaTask === 'Open Workbook'
+      ) {
+        newCodeLine += `RPA.${currentAttributeObject.rpaApplication}.${currentAttributeObject.rpaTask}`;
       } else {
         newCodeLine += currentAttributeObject.rpaTask;
       }
@@ -130,12 +128,13 @@ const writeCodeForElement = (
         elements,
         parameters,
         attributes,
-        combinedCode,
-        newPreviousApplication
+        combinedCode
       );
     });
   }
-  return combinedCode;
+  return combinedCode.endsWith(LINEBREAK)
+    ? combinedCode.slice(0, -1)
+    : combinedCode;
 };
 
 /**

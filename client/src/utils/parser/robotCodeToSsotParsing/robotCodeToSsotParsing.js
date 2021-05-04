@@ -122,8 +122,8 @@ const getOutputName = (currentLine) => {
 const getRpaTask = (currentLine, splitPlaceholder) => {
   const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
   return indexOfFirstSplitPlaceholder === -1
-    ? currentLine
-    : currentLine.slice(0, indexOfFirstSplitPlaceholder);
+    ? currentLine.replace('RPA.', '')
+    : currentLine.slice(0, indexOfFirstSplitPlaceholder).replace('RPA.', '');
 };
 
 /**
@@ -133,10 +133,10 @@ const getRpaTask = (currentLine, splitPlaceholder) => {
  * @param {String} instructionBlocks current intruction block to get the rpaTask
  * @returns rpaParameters as array
  */
-const getRpaParameters = (currentLine, splitPlaceholder, rpaTask) => {
-  const parametersWithoutRpaTask = currentLine.replace(
-    rpaTask + splitPlaceholder,
-    ''
+const getRpaParameters = (currentLine, splitPlaceholder) => {
+  const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
+  const parametersWithoutRpaTask = currentLine.slice(
+    indexOfFirstSplitPlaceholder + splitPlaceholder.length
   );
   return parametersWithoutRpaTask.split([splitPlaceholder]);
 };
@@ -162,8 +162,6 @@ const currentLineWithoutOutputVariableName = (
 };
 
 const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
-  console.log(allMatchingCombinations);
-  console.log(rpaTask);
   if (allMatchingCombinations.length === 0) {
     customNotification(
       'Error',
@@ -172,7 +170,7 @@ const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
     return undefined;
   }
   if (allMatchingCombinations.length > 1) {
-    if (rpaTask === 'Open Application') {
+    if (rpaTask === 'Open Application' || rpaTask === 'Open Workbook') {
       let correctExampleText = '';
       allMatchingCombinations.forEach((singleCombination) => {
         correctExampleText += `\n${singleCombination.Application}.${rpaTask}`;
@@ -183,16 +181,6 @@ const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
       );
       return undefined;
     }
-    if (rpaTask === 'Open Workbook') {
-      console.log('Workb');
-      return allMatchingCombinations[0];
-    }
-    customNotification(
-      'Error',
-      `Due to an internal error, several applications were found for your rpaTask "${rpaTask}". Please contact the Ark Automate team.`
-    );
-    return undefined;
-    // handle openApplication and openWorkbook
   }
   return allMatchingCombinations[0];
 };
@@ -278,11 +266,7 @@ const getInstructionBlocksFromTaskSection = (
 
       rpaTask = rpaTask.replace(`${matchingCombination.Application}.`, '');
 
-      const rpaParameters = getRpaParameters(
-        currentLine,
-        splitPlaceholder,
-        rpaTask
-      );
+      const rpaParameters = getRpaParameters(currentLine, splitPlaceholder);
 
       instructionBlocks[instructionBlocks.length - 1].rpaTask = rpaTask;
       instructionBlocks[
@@ -292,7 +276,6 @@ const getInstructionBlocksFromTaskSection = (
         matchingCombination.Application;
     }
   });
-  console.log(instructionBlocks);
   return errorWasThrown ? undefined : instructionBlocks;
 };
 
