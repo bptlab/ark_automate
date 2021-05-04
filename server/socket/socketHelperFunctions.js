@@ -98,7 +98,6 @@ exports.createJob = async (userId, robotId, status, parameters) => {
  * @param {String} status the current status of the job (either waiting, executing, success or failed)
  */
 exports.updateRobotJobStatus = async (jobId, status) => {
-  console.log('status ', status);
   await jobsModel.Job.findByIdAndUpdate(jobId, { status }, (err) => {
     if (err) {
       console.error(err);
@@ -119,7 +118,6 @@ exports.updateRobotJobErrors = async (jobId, errorLog) => {
       tasks: activity.tasks,
       message: activity.message,
     }));
-  console.log(errors, 'ERRORS');
   await jobsModel.Job.findByIdAndUpdate(
     jobId,
     { loggedErrors: errors },
