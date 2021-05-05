@@ -4,12 +4,10 @@ import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
 import { getSsotFromDB } from '../../../api/ssotRetrieval';
-import {
-  setRobotId,
-  getAttributesFromDB,
-  getParameterFromDB,
-  getParameterForRobotFromDB,
-} from '../../../utils/attributeAndParamUtils';
+import { getAllParametersForRobot } from '../../../api/variableRetrieval';
+import { getAllAttributes } from '../../../api/attributeRetrieval';
+import { getAllParameters } from '../../../api/applicationAndTaskSelection';
+import { setRobotId } from '../../../utils/attributeAndParamUtils';
 import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
 import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 
@@ -47,14 +45,14 @@ const Modeler = (match) => {
         console.error(error);
       });
 
-    getAttributesFromDB(robotId)
+    getAllAttributes(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('attributeLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
       });
 
-    getParameterFromDB(robotId)
+    getAllParameters(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
@@ -64,7 +62,7 @@ const Modeler = (match) => {
         );
       });
 
-    getParameterForRobotFromDB(robotId)
+    getAllParametersForRobot(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));

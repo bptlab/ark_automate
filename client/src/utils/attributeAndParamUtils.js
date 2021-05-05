@@ -4,11 +4,23 @@ import customNotification from './notificationUtils';
  * @module
  */
 import initSessionStorage from './sessionStorageUtils/sessionStorage';
-import { getAvailableApplications } from '../api/applicationAndTaskSelection';
+import {
+  getAvailableApplications,
+  getAllParameters,
+} from '../api/applicationAndTaskSelection';
+import {
+  getAllAttributes,
+  updateManyAttributes,
+} from '../api/attributeRetrieval';
+import {
+  getAllParametersForRobot,
+  updateManyParameters,
+} from '../api/variableRetrieval';
 import {
   getSsotFromDB,
   deleteParametersForActivities,
   deleteAttributesForActivities,
+  updateRobot,
 } from '../api/ssotRetrieval';
 
 /**
@@ -130,9 +142,8 @@ const getRpaApplication = (activityId) => {
 };
 
 /**
- *
- * @param {String} activityId id of the currently selected activity
  * @description this util function returns the activityId for the selected activity
+ * @param {String} activityId id of the currently selected activity
  * @returns the selected RPA task for the selected activity from localStorage
  */
 const getRpaTask = (activityId) => {
@@ -366,27 +377,6 @@ const parameterPropertyStatus = (
 };
 
 /**
- * @description Will send a backend call to retrieve all attribute objects related to the provided robotId
- * @param {String} robotId Id of the robot for which to retrieve the values
- * @returns {Array} Array of attribute objects related to the robot
- */
-const getAttributesFromDB = async (robotId) => {
-  const reqString = `/ssot/getAllAttributes/${robotId}`;
-  const response = await fetch(reqString);
-  return response;
-};
-
-/**
- * @description Will send a backend call to retrieve all rpa-task objects for the purpose of retrieving the related parameter and possibly output value
- * @returns {Array} Array of all rpa-task objects
- */
-const getParameterFromDB = async () => {
-  const reqString = `/rpa-framework/commands/getAllParameters`;
-  const response = await fetch(reqString);
-  return response;
-};
-
-/**
  * @description Will set the new value as the name of the output variable in local session storage
  * @param {String} robotId Id of the robot/ssot for which to change the value
  * @param {String} activityId Id of the activity for which to change the value for
@@ -465,15 +455,7 @@ const upsert = async () => {
     (singleElement) => singleElement.id
   );
   const robotId = JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
-  const requestStringSsot = `/ssot/overwriteRobot/${robotId}`;
-  // eslint-disable-next-line no-unused-vars
-  const responseSsot = await fetch(requestStringSsot, {
-    body: ssot,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-    },
-  });
+  updateRobot(robotId, ssot);
 
   const attributes = JSON.parse(
     sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH)
@@ -485,16 +467,7 @@ const upsert = async () => {
   sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, stillUsedAttributes);
 
   deleteUnusedAttributesFromDB(attributes, usedElementIds, robotId);
-
-  const requestStringAttributes = `/ssot/updateManyAttributes`;
-  // eslint-disable-next-line no-unused-vars
-  const responseAttributes = await fetch(requestStringAttributes, {
-    body: stillUsedAttributes,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-    },
-  });
+  updateManyAttributes(stillUsedAttributes);
 
   const parameterObject = JSON.parse(
     sessionStorage.getItem(PARAMETER_STORAGE_PATH)
@@ -506,33 +479,13 @@ const upsert = async () => {
   sessionStorage.setItem(PARAMETER_STORAGE_PATH, stillUsedParameters);
 
   deleteUnusedParameterFromDB(parameterObject, usedElementIds, robotId);
-
-  const requestStringParameters = `/ssot/updateManyParameters`;
-  // eslint-disable-next-line no-unused-vars
-  const responseParameters = await fetch(requestStringParameters, {
-    body: stillUsedParameters,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-    },
-  });
+  updateManyParameters(stillUsedParameters);
 
   customNotification(
     'Success',
     'Successfully saved to cloud',
     'CloudUploadOutlined'
   );
-};
-
-/**
- * @description Will send a backend call to retrieve all parameter objects related to the provided robotId
- * @param {String} robotId Id of the robot for which to retrieve the values
- * @returns {Array} Array of parameter objects related to the robot
- */
-const getParameterForRobotFromDB = async (robotId) => {
-  const reqString = `/ssot/getAllParameters/${robotId}`;
-  const response = await fetch(reqString);
-  return response;
 };
 
 /**
@@ -550,14 +503,14 @@ const initSsotSessionStorage = (robotId) => {
       console.error(error);
     });
 
-  getAttributesFromDB(robotId)
+  getAllAttributes(robotId)
     .then((response) => response.json())
     .then((data) => {
       initSessionStorage('attributeLocalStorage', JSON.stringify([]));
       sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
     });
 
-  getParameterFromDB(robotId)
+  getAllParameters(robotId)
     .then((response) => response.json())
     .then((data) => {
       initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
@@ -567,7 +520,7 @@ const initSsotSessionStorage = (robotId) => {
       );
     });
 
-  getParameterForRobotFromDB(robotId)
+  getAllParametersForRobot(robotId)
     .then((response) => response.json())
     .then((data) => {
       initSessionStorage('parameterLocalStorage', JSON.stringify([]));
@@ -591,20 +544,17 @@ const initSsotSessionStorage = (robotId) => {
 };
 
 export {
-  getRobotId,
   getRpaTask,
-  setRobotId,
-  setRpaTask,
-  resetRpaApplication,
-  getParameterObject,
-  setSingleParameter,
-  setPropertyForParameter,
-  parameterPropertyStatus,
-  getAttributesFromDB,
-  getParameterFromDB,
-  setOutputValueName,
-  getRpaApplication,
+  getRobotId,
+  setRobotId, // just used in Modeler.jsx
+  setRpaTask, // just used in modelerSidebarFunctionality.js
+  resetRpaApplication, // just used in modelerSidebarFunctionality.js
+  getParameterObject, // just used in modelerSidebarFunctionality.js
+  setSingleParameter, // just used in modelerSidebarFunctionality.js
+  setPropertyForParameter, // just used in PPParameterInput.jsx
+  parameterPropertyStatus, // just used in PPParameterInput.jsx
+  setOutputValueName, // just used in modelerSidebarFunctionality.js
+  getRpaApplication, // just used in PPApplicationDropdown.jsx
   upsert,
-  getParameterForRobotFromDB,
-  initSsotSessionStorage,
+  initSsotSessionStorage, // just used in RobotContainer.jsx -> could be used in Modeler.jsx though
 };

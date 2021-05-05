@@ -101,6 +101,24 @@ const deleteAttributesForActivities = (robotId, unusedActivityListString) => {
   });
 };
 
+/**
+ * @description Overwrites an existing sssot in the backend with a new one
+ * @param {String} robotId Id of the robot that is being overwritten
+ * @param {String} ssot New ssot to be written to the database
+ */
+const updateRobot = async (robotId, ssot) => {
+  const requestStringSsot = `/ssot/overwriteRobot/${robotId}`;
+  // eslint-disable-next-line no-unused-vars
+  const response = await fetch(requestStringSsot, {
+    body: ssot,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  });
+  return response;
+};
+
 export {
   getSsotFromDB,
   fetchSsotsForUser,
@@ -110,4 +128,5 @@ export {
   deleteRobotFromDB,
   deleteParametersForActivities,
   deleteAttributesForActivities,
+  updateRobot,
 };

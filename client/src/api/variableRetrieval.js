@@ -35,9 +35,27 @@ const updateVariablesForRobot = async (
  * @param { String } robotId Id of the robot we want to get all the parameters for
  */
 const getAllParametersForRobot = async (robotId) => {
-  const requestString = `/ssot/getAllParameters/${robotId}`;
-  const response = await fetch(requestString);
+  const response = await fetch(`/ssot/getAllParameters/${robotId}`);
   return response;
 };
 
-export { updateVariablesForRobot, getAllParametersForRobot };
+/**
+ * @description Will send a backend call to update all given parameter objects with the new one's
+ * @param {Array} updatedParameters All updated parameters objects to overwrite the old attribute objects with
+ */
+const updateManyParameters = async (updatedParameters) => {
+  const response = await fetch(`/ssot/updateManyParameters`, {
+    body: updatedParameters,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  });
+  return response;
+};
+
+export {
+  updateVariablesForRobot,
+  getAllParametersForRobot,
+  updateManyParameters,
+};
