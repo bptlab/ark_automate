@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../../utils/TestingUtils/TestDatabaseHandler');
-const dbLoader = require('../../utils/TestingUtils/databaseLoader');
-const rpaController = require('../controllers/rpaFrameworkCommandsController');
-const testData = require('../../utils/TestingUtils/testData');
+const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');
+const dbLoader = require('../../../utils/TestingUtils/databaseLoader');
+const rpaController = require('../../controllers/rpaFrameworkCommandsController');
+const testData = require('../../../utils/TestingUtils/testData');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -21,7 +21,7 @@ beforeAll(async () => dbHandler.connect());
  */
 afterAll(async () => dbHandler.closeDatabase());
 
-describe('/commands/get-available-applications', () => {
+describe('GET /functionalities/applications', () => {
   it('retreives the list of all available apps correctly', async () => {
     await dbLoader.loadTasksInDb();
     const response = httpMocks.createResponse();
@@ -36,10 +36,10 @@ describe('/commands/get-available-applications', () => {
   });
 });
 
-describe('/commands/get-available-tasks-for-application', () => {
+describe('GET /functionalities/{application}/tasks', () => {
   it('retrieves the list of all available tasks for an application correctly', async () => {
     const request = httpMocks.createRequest({
-      query: {
+      params: {
         application: testData.testRpaTask1.Application,
       },
     });
@@ -56,7 +56,7 @@ describe('/commands/get-available-tasks-for-application', () => {
   });
 });
 
-describe('/commands/getAllParameters', () => {
+describe('GET /functionalities', () => {
   it('retrieves the list of all available parameter Objects correctly', async () => {
     const response = httpMocks.createResponse();
     await rpaController.getAllParameters({}, response);

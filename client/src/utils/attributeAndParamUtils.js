@@ -367,7 +367,7 @@ const parameterPropertyStatus = (
  * @returns {Array} Array of attribute objects related to the robot
  */
 const getAttributesFromDB = async (robotId) => {
-  const reqString = `/ssot/getAllAttributes/${robotId}`;
+  const reqString = `/robots/rpaattributes/${robotId}`;
   const response = await fetch(reqString);
   return response;
 };
@@ -377,7 +377,7 @@ const getAttributesFromDB = async (robotId) => {
  * @returns {Array} Array of all rpa-task objects
  */
 const getParameterFromDB = async () => {
-  const reqString = `/rpa-framework/commands/getAllParameters`;
+  const reqString = `/functionalities`;
   const response = await fetch(reqString);
   return response;
 };
@@ -416,33 +416,35 @@ const setOutputValueName = (activityId, value) => {
 const upsert = async () => {
   const ssot = sessionStorage.getItem('ssotLocal');
   const robotId = JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
-  const requestStringSsot = `/ssot/overwriteRobot/${robotId}`;
+  const requestStringSsot = `/robots/${robotId}`;
   // eslint-disable-next-line no-unused-vars
   const responseSsot = await fetch(requestStringSsot, {
     body: ssot,
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
   });
 
-  const attributes = sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH);
-  const requestStringAttributes = `/ssot/updateManyAttributes`;
+  const attributeObjectList = sessionStorage.getItem(
+    APPLICATION_TASK_STORAGE_PATH
+  );
+  const requestStringAttributes = `/robots/rpaattributes`;
   // eslint-disable-next-line no-unused-vars
   const responseAttributes = await fetch(requestStringAttributes, {
-    body: attributes,
-    method: 'POST',
+    body: { attributeObjectList },
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
   });
 
-  const parameterObject = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
-  const requestStringParameters = `/ssot/updateManyParameters`;
+  const parameterObjectsList = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
+  const requestStringParameters = `/robots/parameters`;
   // eslint-disable-next-line no-unused-vars
   const responseParameters = await fetch(requestStringParameters, {
-    body: parameterObject,
-    method: 'POST',
+    body: { parameterObjectsList },
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
@@ -461,7 +463,7 @@ const upsert = async () => {
  * @returns {Array} Array of parameter objects related to the robot
  */
 const getParameterForRobotFromDB = async (robotId) => {
-  const reqString = `/ssot/getAllParameters/${robotId}`;
+  const reqString = `/robots/parameters/${robotId}`;
   const response = await fetch(reqString);
   return response;
 };

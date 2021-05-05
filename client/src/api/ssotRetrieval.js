@@ -8,7 +8,7 @@
  * @param { String } robotId - String including the Id of the robot to be retrieved
  */
 const getSsotFromDB = async (robotId) => {
-  const requestString = `/ssot/get/${robotId}`;
+  const requestString = `/robots/${robotId}`;
   const response = await fetch(requestString);
   return response;
 };
@@ -18,7 +18,7 @@ const getSsotFromDB = async (robotId) => {
  * @param { String } userId - String including the user id
  */
 const fetchSsotsForUser = async (userId) => {
-  const requestString = `/ssot/getAvailableRobotsForUser/${userId}`;
+  const requestString = `/users/${userId}/robots`;
   const response = await fetch(requestString);
   return response;
 };
@@ -26,12 +26,20 @@ const fetchSsotsForUser = async (userId) => {
 /**
  * @description This function renames the robot in the ssot
  * @param { String } robotId - String including the robotId
- * @param { String } newName - String with the new RobotName
+ * @param { String } newRobotName - String with the new RobotName
  */
-const changeSsotName = async (robotId, newName) => {
-  const adjustedName = newName.replace(/\s/g, '+');
-  const requestString = `/ssot/renameRobot?id=${robotId}&newName=${adjustedName}`;
-  const response = await fetch(requestString);
+const changeSsotName = async (robotId, newRobotName) => {
+  const payload = {
+    newRobotName,
+  };
+  const requestString = `/robots/${robotId}/robotName`;
+  const response = await fetch(requestString, {
+    body: payload,
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  });
   return response;
 };
 
@@ -49,10 +57,19 @@ const retrieveMetadataForRobot = async (robotId) => {
  * @description Create a new robot with the specified name for the specified user
  * @param {String} newName - String including the userId
  */
-const createNewRobot = async (userId, newName) => {
-  const adjustedName = newName.replace(/\s/g, '+');
-  const requestString = `/ssot/createNewRobot?userId=${userId}&robotName=${adjustedName}`;
-  const response = await fetch(requestString);
+const createNewRobot = async (userId, robotName) => {
+  const body = {
+    userId,
+    robotName,
+  };
+  const requestString = `/users/${userId}/robots`;
+  const response = await fetch(requestString, {
+    body,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  });
   return response;
 };
 
@@ -61,7 +78,7 @@ const createNewRobot = async (userId, newName) => {
  * @param {String} robotId Id of the robot that is deleted
  */
 const deleteRobotFromDB = async (robotId) => {
-  const requestStringParameters = `/ssot/delete/${robotId}`;
+  const requestStringParameters = `/robots/${robotId}`;
   await fetch(requestStringParameters, { method: 'DELETE' }).catch((err) => {
     console.error(err);
   });

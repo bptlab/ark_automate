@@ -24,11 +24,11 @@ tags:
 paths:
   #### RPA Functionalities ####
   /functionalities:
-    # used to be: GET /rpa-framework/commands/get-available-applications
+    # used to be: GET /rpa-framework/commands/getAllParameters
     get:
       tags:
         - RPA-Functionalities
-      summary: Get all functionality objects including task, application and parameters
+      summary: Get all available Task and Application combinations with the input parameters and possible output values
       operationId: getFunctionalities
       responses:
         200:
@@ -102,6 +102,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Robots'
+    # used to be: /ssot/:id
+     delete:
+       tags:
+         - Robots
+       summary: Deletes a robot with a specific id
+       operationId: deleteSpecificRobot
+       responses:
+         200:
+           description: OK
     # used to be: POST /overwriteRobot/78d09f66d2ed466cf20b06f7
     put:
       tags:
@@ -190,7 +199,7 @@ paths:
                 $ref: '#/components/schemas/UserAccessObjects'
         400:
           description: Bad Request
-  /robots/{userId}:
+  /users/{userId}/robots:
     parameters:
       - name: userId
         in: path
