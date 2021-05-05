@@ -67,6 +67,40 @@ const deleteRobotFromDB = async (robotId) => {
   });
 };
 
+/**
+ * @description Sends a callout to the backend to delete parameters for the given activities
+ * @param {String} robotId Id of the robot that is being used
+ * @param {String} unusedActivityListString Stringified List of Activity Ids
+ */
+const deleteParametersForActivities = (robotId, unusedActivityListString) => {
+  const requestStringParameters = `/ssot/deleteParameters?robotId=${robotId}&activityIdList=${unusedActivityListString}`;
+  fetch(requestStringParameters, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  }).catch((err) => {
+    console.error(err);
+  });
+};
+
+/**
+ * @description Sends a callout to the backend to delete attributes for the given activities
+ * @param {String} robotId Id of the robot that is being used
+ * @param {String} unusedActivityListString Stringified List of Activity Ids
+ */
+const deleteAttributesForActivities = (robotId, unusedActivityListString) => {
+  const requestStringParameters = `/ssot/deleteAttributes?robotId=${robotId}&activityIdList=${unusedActivityListString}`;
+  fetch(requestStringParameters, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  }).catch((err) => {
+    console.error(err);
+  });
+};
+
 export {
   getSsotFromDB,
   fetchSsotsForUser,
@@ -74,4 +108,6 @@ export {
   retrieveMetadataForRobot,
   createNewRobot,
   deleteRobotFromDB,
+  deleteParametersForActivities,
+  deleteAttributesForActivities,
 };

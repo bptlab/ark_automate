@@ -553,3 +553,61 @@ describe('ssot/delete/:robotId', () => {
     expect(foundJobs.length).toBe(0);
   });
 });
+
+describe('/deleteParameters', () => {
+  it('deletes removed activity related parameter', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadParametersInDb();
+
+    let deletedActivityList = [
+      testSsot.elements[2].id,
+      testSsot.elements[3].id,
+    ];
+    deletedActivityList = JSON.stringify(deletedActivityList);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      query: {
+        activityIdList: deletedActivityList,
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotVariableController.deleteForActivities(request, response);
+
+    const foundParameters = await mongoose.model('parameter').find().exec();
+    expect(foundParameters.length).toBe(1);
+
+    expect(response.statusCode).toBe(200);
+  });
+});
+
+describe('/deleteAttributes', () => {
+  it('deletes removed activity related attributes', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+
+    let deletedActivityList = [
+      testSsot.elements[2].id,
+      testSsot.elements[3].id,
+    ];
+    deletedActivityList = JSON.stringify(deletedActivityList);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      query: {
+        activityIdList: deletedActivityList,
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotAttributesController.deleteForActivities(request, response);
+
+    const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
+    expect(foundAttributes.length).toBe(1);
+
+    expect(response.statusCode).toBe(200);
+  });
+});

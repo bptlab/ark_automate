@@ -29,6 +29,7 @@ router.get(
   '/getAllParameters/:robotId',
   variableController.retrieveParametersForRobot
 );
+router.delete('/deleteParameters', variableController.deleteForActivities);
 
 /// RPA ATTRIBUTES ROUTES ///
 router.post('/updateManyAttributes', rpaAttributesController.updateMany);
@@ -36,5 +37,6 @@ router.get(
   '/getAllAttributes/:robotId',
   rpaAttributesController.retrieveAttributesForRobot
 );
+router.delete('/deleteAttributes', rpaAttributesController.deleteForActivities);
 
 module.exports = router;
