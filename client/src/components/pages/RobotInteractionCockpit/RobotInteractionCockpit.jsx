@@ -2,6 +2,7 @@
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
+import { Row, Col } from 'antd';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
 import { isRobotExecutable } from '../../../utils/robotExecution';
@@ -24,6 +25,25 @@ const RobotInteractionCockpit = (match) => {
   const [parameterList, setParameterList] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [parameters, setParameters] = useState([]);
+  const [logs, setLogs] = useState([
+    {
+      activity_name: 'Browser1',
+      tasks: [
+        { task_name: 'Capture Page Screenshot', status: 'PASS' },
+        { task_name: 'Open Chrome Browser', status: 'FAIL' },
+      ],
+      status: 'FAIL',
+      message:
+        'BrowserNotFoundError: Failed to start a browser:\n- Chrome: Message: unknown error: cannot find Chrome binary\n\n',
+    },
+    {
+      activity_name: 'Say hello',
+      tasks: [{ task_name: 'Open Workbook', status: 'PASS' }],
+      status: 'PASS',
+      message: '',
+    },
+  ]);
+  const [robotState, setRobotState] = useState('idle');
 
   /**
    * @description Equivalent to ComponentDidMount in class based components
@@ -50,12 +70,19 @@ const RobotInteractionCockpit = (match) => {
     if (robotIsExecutable) {
       setCurrentStep(1);
       startRobotForUser(userId, robotId, parameters);
+      startLogDisplaying();
     } else {
       customNotification(
         'Error',
         'Your Bot is not fully configured and can not be executed!'
       );
     }
+  };
+
+  const startLogDisplaying = () => {
+    // check in to socket room
+    // when socket broadcasts message, setLogs(log.robot_run.activities)
+    // if socket broadcast run complete, setCurrentStep(2)
   };
 
   /**
@@ -92,7 +119,7 @@ const RobotInteractionCockpit = (match) => {
       <Card style={{ margin: '24px', borderRadius: '5px' }}>
         <Steps current={currentStep}>
           <Step title='Input' description='Define input for robot' />
-          <Step title='Execution' description='Check current status' />
+          <Step title='Execution' description='Observe Robot Run' />
           <Step title='Done' description='Get return value' />
         </Steps>
       </Card>
@@ -120,6 +147,29 @@ const RobotInteractionCockpit = (match) => {
                 </Button>
               </>
             )}
+          {currentStep !== 0 && (
+            <>
+              <Row>
+                <Col span={8}>
+                  <Title style={{ marginBottom: '0px' }} level={5}>
+                    Robot Status: {robotState}
+                  </Title>
+                </Col>
+                <Col span={16}>
+                  <Title style={{ marginBottom: '0px' }} level={5}>
+                    Robot Run Logs
+                  </Title>
+                  {logs.map((log) => (
+                    <Card>
+                      <p>Activity: {log.activity_name}</p>
+                      <p>Status: {log.status}</p>
+                      {log.message && <p>Error Message: {log.message}</p>}
+                    </Card>
+                  ))}
+                </Col>
+              </Row>
+            </>
+          )}
         </Space>
       </Card>
     </Layout>
