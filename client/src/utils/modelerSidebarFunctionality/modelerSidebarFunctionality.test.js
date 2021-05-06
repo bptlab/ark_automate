@@ -14,13 +14,12 @@ import {
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
 } from './modelerSidebarFunctionality';
+import { setRpaTask, resetRpaApplication } from '../localSsot/attributes';
 import {
   setSingleParameter,
-  resetRpaApplication,
-  setRpaTask,
-  getParameterObject,
   setOutputValueName,
-} from '../attributeAndParamUtils';
+} from '../localSsot/parameters';
+import { getParameterObject } from '../attributeAndParamUtils';
 import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
 import constants from './modelerSidebarFunctionalityTestingUtils';
 

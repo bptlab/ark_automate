@@ -7,7 +7,7 @@
  * @description Fetch the ssot correlating to the specified Id
  * @param { String } robotId - String including the Id of the robot to be retrieved
  */
-const getSsotFromDB = async (robotId) => {
+const getSsot = async (robotId) => {
   const requestString = `/ssot/get/${robotId}`;
   const response = await fetch(requestString);
   return response;
@@ -120,7 +120,7 @@ const updateRobot = async (robotId, ssot) => {
 };
 
 export {
-  getSsotFromDB,
+  getSsot,
   fetchSsotsForUser,
   changeSsotName,
   retrieveMetadataForRobot,

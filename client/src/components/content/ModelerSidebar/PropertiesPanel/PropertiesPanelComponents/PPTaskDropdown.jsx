@@ -2,7 +2,7 @@ import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import styles from '../../ModelerSidebar.module.css';
-import { getRpaTask } from '../../../../../utils/attributeAndParamUtils';
+import { getRpaTask } from '../../../../../utils/localSsot/attributes';
 
 const { Option } = Select;
 

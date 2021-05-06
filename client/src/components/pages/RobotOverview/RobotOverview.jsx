@@ -9,7 +9,7 @@ import {
   newClientJoined,
 } from '../../../api/socketHandler/socketListeners';
 import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
-import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
+import { initSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 
 const { Search } = Input;

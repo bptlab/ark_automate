@@ -8,13 +8,12 @@
 import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
 /* import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
  */
+import { setRpaTask, resetRpaApplication } from '../localSsot/attributes';
 import {
   setSingleParameter,
-  resetRpaApplication,
-  setRpaTask,
-  getParameterObject,
   setOutputValueName,
-} from '../attributeAndParamUtils';
+} from '../localSsot/parameters';
+import { getParameterObject } from '../attributeAndParamUtils';
 
 /**
  * @description Will update the element state upon selection od a new element.
