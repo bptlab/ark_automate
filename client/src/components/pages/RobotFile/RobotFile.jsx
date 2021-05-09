@@ -6,7 +6,7 @@ import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import getParsedRobotFile from '../../../api/ssot';
 import { initAvailableApplicationsSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
-import { upsert } from '../../../utils/attributeAndParamUtils';
+import { upsert } from '../../../utils/localSsot/ssot';
 import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';

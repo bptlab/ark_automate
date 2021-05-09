@@ -10,7 +10,7 @@ jest.mock('../parser/BpmnToSsotParsing/BpmnToSsotParsing');
 import { downloadRobotFile, onSaveToCloud } from './robotMetadataUtils';
 import getParsedRobotFile from '../../api/ssot';
 import downloadString from '../downloadString';
-import { upsert } from '../attributeAndParamUtils';
+import { upsert } from '../localSsot/ssot';
 import { parseBpmnToSsot } from '../parser/BpmnToSsotParsing/BpmnToSsotParsing';
 import constants from '../modelerSidebarFunctionality/modelerSidebarFunctionalityTestingUtils';
 

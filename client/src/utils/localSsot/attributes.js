@@ -108,7 +108,7 @@ const resetRpaApplication = (robotId, activityId, newApplication) => {
  */
 const getRpaApplication = (activityId) => {
   const localApplicationTaskStorage = JSON.parse(
-    sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH)
+    sessionStorage.getItem(ATTRIBUTE_STORAGE_PATH)
   );
   const matchingEntry = localApplicationTaskStorage.find(
     (element) => element.activityId === activityId
