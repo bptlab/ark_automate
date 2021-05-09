@@ -161,6 +161,12 @@ const currentLineWithoutOutputVariableName = (
   return currentLine;
 };
 
+/**
+ * @description this function returns the matching task object for the rpaTask or throws a notification
+ * @param {String} rpaTask rpaTask from current robotCode line
+ * @param {Array} allMatchingCombinations all combinations from database that match the rpaTask
+ * @returns the matching task object for the rpaTask or undefined if an error occurs
+ */
 const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
   if (allMatchingCombinations.length === 0) {
     customNotification(
@@ -188,7 +194,7 @@ const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
 /**
  * @description "preprocesses" the code in a usable data format
  * @param {Array} robotCodeTaskSection robot code w/o empty lines as an array of Strings
- * @param {Array} declaredApplications all declared Aplications from ***settings*** section as Strings
+ * @param {Array} taskAndApplicationCombinations all declared tasks and applications from database
  * @returns Array of Objects with the following schema:
  *      instructionBlocks = [rpaApplication:String, rpaTask:String, name:String, paramArray:Array]
  */
