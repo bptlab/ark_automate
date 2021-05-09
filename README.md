@@ -36,7 +36,7 @@ Before running, please always make sure to have the most recent module versions 
 To run a development preview of the app, navigate to the server directory and run `heroku local` to start the API server, navigate into the client folder and run `npm start` again to also start the frontend.  
 Now check http://localhost:3000/ to have a look at the app.
 
-To run the local client, follow the steps at the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
+To run the local client, follow the steps in the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
 
 ## Contribute
 
