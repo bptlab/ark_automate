@@ -25,4 +25,26 @@ const newClientJoined = () => {
   socket.on('newClientJoinedUserRoom', (message) => message);
 };
 
-export { successRoomConnection, errorRoomConnection, newClientJoined };
+/**
+ * @description Register listener on when a new robot log update has been send
+ */
+const newRobotMonitorUpdate = (logSetterMethod) => {
+  socket.on('liveRobotMonitoring', (robotLogs) => {
+    logSetterMethod(robotLogs);
+  });
+};
+
+/**
+ * @description Register listener on when a new robot status has been set
+ */
+const newRobotStatusUpdate = (statusSetterMethod) => {
+  socket.on('changedRobotStatus', (status) => statusSetterMethod(status));
+};
+
+export {
+  successRoomConnection,
+  errorRoomConnection,
+  newClientJoined,
+  newRobotMonitorUpdate,
+  newRobotStatusUpdate,
+};

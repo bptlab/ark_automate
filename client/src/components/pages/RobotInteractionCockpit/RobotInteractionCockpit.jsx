@@ -1,14 +1,25 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect, useRef } from 'react';
-import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
-import { Row, Col } from 'antd';
+import { Layout, Card, Steps, Space, Button, Typography, Row, Col } from 'antd';
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  Loading3QuartersOutlined,
+  PauseCircleOutlined,
+} from '@ant-design/icons';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
 import { isRobotExecutable } from '../../../utils/robotExecution';
 import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
 import { getActivityAndParameterInformation } from './RobotInteractionCockpitFunctionality';
 import customNotification from '../../../utils/notificationUtils';
+import {
+  newRobotMonitorUpdate,
+  newRobotStatusUpdate,
+} from '../../../api/socketHandler/socketListeners';
+import socket from '../../../utils/socket/socketConnections';
+import RobotLogCard from './RobotLogCard';
 
 const { Step } = Steps;
 const { Title } = Typography;
@@ -25,25 +36,8 @@ const RobotInteractionCockpit = (match) => {
   const [parameterList, setParameterList] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [parameters, setParameters] = useState([]);
-  const [logs, setLogs] = useState([
-    {
-      activity_name: 'Browser1',
-      tasks: [
-        { task_name: 'Capture Page Screenshot', status: 'PASS' },
-        { task_name: 'Open Chrome Browser', status: 'FAIL' },
-      ],
-      status: 'FAIL',
-      message:
-        'BrowserNotFoundError: Failed to start a browser:\n- Chrome: Message: unknown error: cannot find Chrome binary\n\n',
-    },
-    {
-      activity_name: 'Say hello',
-      tasks: [{ task_name: 'Open Workbook', status: 'PASS' }],
-      status: 'PASS',
-      message: '',
-    },
-  ]);
-  const [robotState, setRobotState] = useState('idle');
+  const [logs, setLogs] = useState({});
+  const [robotState, setRobotState] = useState('waiting');
 
   /**
    * @description Equivalent to ComponentDidMount in class based components
@@ -63,6 +57,14 @@ const RobotInteractionCockpit = (match) => {
   }, [robotId]);
 
   /**
+   * @description When changing into execution step the listeners for status and log updates are enabled
+   */
+  useEffect(() => {
+    newRobotMonitorUpdate(setLogs);
+    newRobotStatusUpdate(setRobotState);
+  }, [currentStep]);
+
+  /**
    * @description Sends a job to the server to execute a specfic robot for a specific user
    */
   const startRobot = async () => {
@@ -70,19 +72,12 @@ const RobotInteractionCockpit = (match) => {
     if (robotIsExecutable) {
       setCurrentStep(1);
       startRobotForUser(userId, robotId, parameters);
-      startLogDisplaying();
     } else {
       customNotification(
         'Error',
         'Your Bot is not fully configured and can not be executed!'
       );
     }
-  };
-
-  const startLogDisplaying = () => {
-    // check in to socket room
-    // when socket broadcasts message, setLogs(log.robot_run.activities)
-    // if socket broadcast run complete, setCurrentStep(2)
   };
 
   /**
@@ -111,6 +106,64 @@ const RobotInteractionCockpit = (match) => {
       currentParameters.push({ parameterId, value });
     }
     setParameters(currentParameters);
+  };
+
+  const displayStatusIcon = (status) => {
+    if (status === 'PASS' || status === 'successful') {
+      return (
+        <CheckCircleOutlined
+          style={{
+            position: 'relative',
+            top: '40%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            'font-size': '3rem',
+            color: 'green',
+            margin: '10px 10px 10px 10px',
+          }}
+        />
+      );
+    }
+    if (status === 'FAIL' || status === 'failed') {
+      return (
+        <CloseCircleOutlined
+          style={{
+            position: 'relative',
+            top: '40%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            'font-size': '3rem',
+            color: 'red',
+            margin: '10px 10px 10px 10px',
+          }}
+        />
+      );
+    }
+    if (status === 'running') {
+      return (
+        <Loading3QuartersOutlined
+          spin
+          style={{
+            top: '40%',
+            left: '50%',
+            'font-size': '3rem',
+            color: 'grey',
+          }}
+        />
+      );
+    }
+    if (status === 'waiting') {
+      return (
+        <PauseCircleOutlined
+          style={{
+            top: '40%',
+            left: '50%',
+            'font-size': '3rem',
+            color: 'grey',
+          }}
+        />
+      );
+    }
   };
 
   return (
@@ -150,22 +203,48 @@ const RobotInteractionCockpit = (match) => {
           {currentStep !== 0 && (
             <>
               <Row>
-                <Col span={8}>
-                  <Title style={{ marginBottom: '0px' }} level={5}>
-                    Robot Status: {robotState}
+                <Col span={12}>
+                  <Title
+                    style={{
+                      marginBottom: '0px',
+                      marginLeft: '10px',
+                    }}
+                    level={5}
+                  >
+                    Robot Status
                   </Title>
+                  <Card style={{ margin: '10px' }} hoverable>
+                    <Row>
+                      <Col span={18}>
+                        <Title
+                          style={{
+                            marginBottom: '0px',
+                            top: '35%',
+                            position: 'absolute',
+                          }}
+                          level={5}
+                        >
+                          {robotState.toLocaleUpperCase()}
+                        </Title>
+                      </Col>
+                      <Col span={6}>{displayStatusIcon(robotState)}</Col>
+                    </Row>
+                  </Card>
                 </Col>
-                <Col span={16}>
-                  <Title style={{ marginBottom: '0px' }} level={5}>
+                <Col span={12}>
+                  <Title
+                    style={{ marginBottom: '0px', marginLeft: '10px' }}
+                    level={5}
+                  >
                     Robot Run Logs
                   </Title>
-                  {logs.map((log) => (
-                    <Card>
-                      <p>Activity: {log.activity_name}</p>
-                      <p>Status: {log.status}</p>
-                      {log.message && <p>Error Message: {log.message}</p>}
-                    </Card>
-                  ))}
+                  {logs.robot_run &&
+                    logs.robot_run.activities.map((log) => (
+                      <RobotLogCard
+                        log={log}
+                        displayStatusIcon={displayStatusIcon}
+                      />
+                    ))}
                 </Col>
               </Row>
             </>
