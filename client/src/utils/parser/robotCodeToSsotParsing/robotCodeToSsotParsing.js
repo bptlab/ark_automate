@@ -61,7 +61,9 @@ const getApplicationArray = (robotCodeSettingsSection) => {
     const elementStartsWithLibrary = line.startsWith('Library ');
     const rpaAliasIsCorrect = regexForRpaAlias.test(line);
     const applicationIsAvailable = availableApplications.includes(
-      line.split('RPA.')[1].trim()
+      typeof line.split('RPA.')[1] === 'undefined'
+        ? ''
+        : line.split('RPA.')[1].trim()
     );
 
     if (!elementStartsWithLibrary) {
