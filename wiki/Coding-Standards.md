@@ -75,7 +75,7 @@ Another Code Formatting Tool being used is [Prettier](https://prettier.io/). Her
 - We use only arrow functions. Please do not use the `function` keyword.
 
 ### Documentation
-Please do not use inline comments to explain the idea behind a variable or a function. Only use those for Sources where you found a special solution or workaround or for especially complex code snippets.
+Please do not use inline comments to explain the idea behind a variable or a function. Only use those for sources where you found a special solution or workaround or for especially complex code snippets. Further comments regarding the documentation with JSDoc are also ok/appreciated.
 
 Please document every written function for our automated documentation [JSDoc](https://jsdoc.app/). See our Guide for that [here](https://github.com/bptlab/ark_automate/wiki/How-to-write-code-documentation).
 
