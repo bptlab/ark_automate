@@ -4,7 +4,9 @@
 
 jest.mock('../../api/ssot');
 jest.mock('../downloadString');
-jest.mock('../attributeAndParamUtils');
+jest.mock('../localSsot/parameters');
+jest.mock('../localSsot/attributes');
+jest.mock('../localSsot/ssot');
 jest.mock('../parser/BpmnToSsotParsing/BpmnToSsotParsing');
 
 import { downloadRobotFile, onSaveToCloud } from './robotMetadataUtils';

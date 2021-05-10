@@ -2,8 +2,10 @@
 /* eslint-disable import/first */
 /* eslint-disable no-undef */
 
-jest.mock('../attributeAndParamUtils');
 jest.mock('../../api/applicationAndTaskSelection');
+jest.mock('../localSsot/parameters');
+jest.mock('../localSsot/attributes');
+jest.mock('../localSsot/ssot');
 
 import {
   nameChangedHandler,
@@ -18,8 +20,8 @@ import { setRpaTask, resetRpaApplication } from '../localSsot/attributes';
 import {
   setSingleParameter,
   setOutputValueName,
+  getParameterObject,
 } from '../localSsot/parameters';
-import { getParameterObject } from '../attributeAndParamUtils';
 import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
 import constants from './modelerSidebarFunctionalityTestingUtils';
 

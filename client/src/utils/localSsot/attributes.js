@@ -6,6 +6,19 @@
 const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 
 /**
+ * @description Will get the parameter object for an activiy in local session storage
+ * @param {String} activityId Id of the activity for which to change the value for
+ */
+const getAttributeObjectForActivity = (activityId) => {
+  const localAttributeStorage = JSON.parse(
+    sessionStorage.getItem(ATTRIBUTE_STORAGE_PATH)
+  );
+  return localAttributeStorage.find(
+    (element) => element.activityId === activityId
+  );
+};
+
+/**
  * @description This function gets the selected RPA task for the selected activity from the session storage
  * @param {String} activityId Id of the currently selected activity
  * @returns The selected RPA task for the selected activity from session storage
@@ -121,4 +134,10 @@ const getRpaApplication = (activityId) => {
   return selectedApplication;
 };
 
-export { getRpaTask, setRpaTask, resetRpaApplication, getRpaApplication };
+export {
+  getAttributeObjectForActivity,
+  getRpaTask,
+  setRpaTask,
+  resetRpaApplication,
+  getRpaApplication,
+};

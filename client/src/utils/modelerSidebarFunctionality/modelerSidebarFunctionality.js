@@ -12,8 +12,8 @@ import { setRpaTask, resetRpaApplication } from '../localSsot/attributes';
 import {
   setSingleParameter,
   setOutputValueName,
+  getParameterObject,
 } from '../localSsot/parameters';
-import { getParameterObject } from '../attributeAndParamUtils';
 
 /**
  * @description Will update the element state upon selection od a new element.
