@@ -61,19 +61,21 @@ Another Code Formatting Tool being used is [Prettier](https://prettier.io/). Her
 
 ### Naming
 - Variable Names in `lowerCamelCase`
+- use PascalCase for the naming of components (.jsx files)
+- use camelCase for the naming of all other files (.js files mainly)
+- use UPPERCASE for constants
 - "Single Source of Truth" is abbreviated with `Ssot` or `ssot` (don't use `SSoT` or `SSOT`)
 - use `Robot` in all cases instead of `Bot`
 - use `Application` in all cases instead of `App` (in context of supported RPA Applications)
-
 
 ### General Code-Style
 - Do not use double empty lines
 - Space after openning bracket and before closing bracket (Goal: `import { Space } from AntD`)
 - Always use single-quotation marks
-- We use arrow functions only in the frontend. Please do not use the `function` keyword.
+- We use only arrow functions. Please do not use the `function` keyword.
 
 ### Documentation
-Please do not use inline comments to explain the idea behind a variable or a function. Only use those for Sources where you found a special solution or woraround or for especially complex code snippets.
+Please do not use inline comments to explain the idea behind a variable or a function. Only use those for Sources where you found a special solution or workaround or for especially complex code snippets.
 
 Please document every written function for our automated documentation [JSDoc](https://jsdoc.app/). See our Guide for that [here](https://github.com/bptlab/ark_automate/wiki/How-to-write-code-documentation).
 
@@ -96,4 +98,4 @@ exports.yourFunction()  // for exports
 
 
 ### Other
-- Do not fix Eslint warnings by adding the "fix-comment"
+- Try to avoid to fix Eslint warnings by adding the "fix-comment"
