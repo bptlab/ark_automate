@@ -43,6 +43,10 @@ const BpmnModeler = (props) => {
         delete entries['append.text-annotation'];
         delete entries['append.gateway'];
         delete entries['append.intermediate-event'];
+        delete entries['lane-insert-above'];
+        delete entries['lane-divide-two'];
+        delete entries['lane-divide-three'];
+        delete entries['lane-insert-below'];
         delete entries.replace;
         return entries;
       };
