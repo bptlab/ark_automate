@@ -89,7 +89,7 @@ describe('POST /users/robotAccess', () => {
 describe('POST /users/{userId}/robots', () => {
   it('successfully creates a new ssot', async () => {
     const request = httpMocks.createRequest({
-      query: {
+      body: {
         userId: testUserId,
         robotName: testSsot.robotName,
       },

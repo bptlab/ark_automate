@@ -426,24 +426,26 @@ const upsert = async () => {
     },
   });
 
-  const attributeObjectList = sessionStorage.getItem(
-    APPLICATION_TASK_STORAGE_PATH
+  const attributeObjectList = JSON.parse(
+    sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH)
   );
   const requestStringAttributes = `/robots/rpaattributes`;
   // eslint-disable-next-line no-unused-vars
   const responseAttributes = await fetch(requestStringAttributes, {
-    body: { attributeObjectList },
+    body: JSON.stringify({ attributeObjectList }),
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
   });
 
-  const parameterObjectsList = sessionStorage.getItem(PARAMETER_STORAGE_PATH);
+  const parameterObjectsList = JSON.parse(
+    sessionStorage.getItem(PARAMETER_STORAGE_PATH)
+  );
   const requestStringParameters = `/robots/parameters`;
   // eslint-disable-next-line no-unused-vars
   const responseParameters = await fetch(requestStringParameters, {
-    body: { parameterObjectsList },
+    body: JSON.stringify({ parameterObjectsList }),
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',

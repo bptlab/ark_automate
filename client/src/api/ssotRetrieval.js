@@ -33,23 +33,14 @@ const changeSsotName = async (robotId, newRobotName) => {
     newRobotName,
   };
   const requestString = `/robots/${robotId}/robotName`;
-  const response = await fetch(requestString, {
-    body: payload,
+  const requestParams = {
+    body: JSON.stringify(payload),
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
-  });
-  return response;
-};
-
-/**
- * @description Fetches all the metadata for a single robot
- * @param {String} robotId - String including the robotId
- */
-const retrieveMetadataForRobot = async (robotId) => {
-  const requestString = `/ssot/retrieveMetadataForRobot/${robotId}`;
-  const response = await fetch(requestString);
+  };
+  const response = await fetch(requestString, requestParams);
   return response;
 };
 
@@ -64,7 +55,7 @@ const createNewRobot = async (userId, robotName) => {
   };
   const requestString = `/users/${userId}/robots`;
   const response = await fetch(requestString, {
-    body,
+    body: JSON.stringify(body),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -88,7 +79,6 @@ export {
   getSsotFromDB,
   fetchSsotsForUser,
   changeSsotName,
-  retrieveMetadataForRobot,
   createNewRobot,
   deleteRobotFromDB,
 };

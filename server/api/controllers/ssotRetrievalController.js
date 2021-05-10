@@ -155,8 +155,6 @@ exports.renameRobot = async (req, res) => {
     const usableRobotId = mongoose.Types.ObjectId(robotId);
     const { newRobotName } = req.body;
 
-    console.log(robotId);
-    console.log(newRobotName);
     const ssot = await mongoose
       .model('SSoT')
       .findByIdAndUpdate(
@@ -265,9 +263,9 @@ exports.shareRobotWithUser = async (req, res) => {
 exports.createNewRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    const { userId } = req.query;
+    const { userId } = req.body;
     const usableUserId = mongoose.Types.ObjectId(userId);
-    const { robotName } = req.query;
+    const { robotName } = req.body;
     const nameWithEmptyspace = robotName.replace(/\+/g, ' ');
 
     const initialStartEvent = {
