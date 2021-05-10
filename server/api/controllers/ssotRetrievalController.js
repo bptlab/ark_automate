@@ -205,8 +205,10 @@ exports.shareRobotWithUser = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
 
-    const uao = await mongoose.model('userAccessObject').create(req.body);
-    res.send(uao);
+    const userObject = await mongoose
+      .model('userAccessObject')
+      .create(req.body);
+    res.send(userObject);
   } catch (err) {
     console.error(err);
   }
@@ -287,7 +289,7 @@ exports.createNewRobot = async (req, res) => {
       })
       .exec();
 
-    const uao = await mongoose.model('userAccessObject').create({
+    const userObject = await mongoose.model('userAccessObject').create({
       AccessLevel: 'ReadWrite',
       robotId: ssot.id,
       userId: usableUserId,

@@ -46,13 +46,6 @@ async function mockFetch(url) {
         json: async () => MOCK_ROBOT_LIST,
       };
     }
-    case `/users/${USER_ID}/robots`: {
-      return {
-        ok: true,
-        status: 200,
-        json: async () => MOCK_ROBOT_INFO,
-      };
-    } //TODO
     default: {
       throw new Error(`Unhandled request: ${url}`);
     }

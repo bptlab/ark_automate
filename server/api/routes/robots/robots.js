@@ -12,9 +12,7 @@ router.use('/rpaattributes', rpaattributesRouter);
 router.get('/:robotId', retrievalController.getSingleSourceOfTruth);
 router.put('/:robotId', retrievalController.overwriteRobot);
 router.delete('/:robotId', retrievalController.deleteRobot);
-
 router.patch('/:robotId/robotName', retrievalController.renameRobot);
-
 router.get('/:robotId/robotCode', parsingController.getRobotCodeForId);
 
 module.exports = router;
