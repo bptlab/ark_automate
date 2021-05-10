@@ -61,7 +61,7 @@ const getApplicationArray = (robotCodeSettingsSection) => {
     const elementStartsWithLibrary = line.startsWith('Library ');
     const rpaAliasIsCorrect = regexForRpaAlias.test(line);
     const applicationIsAvailable = availableApplications.includes(
-      line.split('RPA.')[1]
+      line.split('RPA.')[1].trim()
     );
 
     if (!elementStartsWithLibrary) {
@@ -84,7 +84,7 @@ const getApplicationArray = (robotCodeSettingsSection) => {
       customNotification(
         'Error',
         `The Application "${String(
-          line.split('RPA.')[1]
+          line.split('RPA.')[1].trim()
         )}" is currently not supported. `
       );
       errorWasThrown = true;
@@ -93,7 +93,7 @@ const getApplicationArray = (robotCodeSettingsSection) => {
 
   const declaredApplications = errorWasThrown
     ? undefined
-    : robotCode.map((line) => line.split('RPA.')[1]);
+    : robotCode.map((line) => line.split('RPA.')[1].trim());
 
   return declaredApplications;
 };
@@ -162,12 +162,34 @@ const currentLineWithoutOutputVariableName = (
 };
 
 /**
+ * @description counts the number of occurences of the current task in the subset
+ * of all Task/Application combinations for the current robot code
+ * @param {Array} allMatchingCombinations all combinations from database that match the rpaTask
+ * @param {*} rpaTask paTask from current robotCode line
+ * @returns number of occurrences of the rpaTask in allMatchingCombinations
+ */
+const numberOfOccurrencesOfTask = (allMatchingCombinations, rpaTask) => {
+  let numberOfOccurrences = 0;
+  allMatchingCombinations.forEach((singleObject) => {
+    if (singleObject.Task === rpaTask) {
+      numberOfOccurrences += 1;
+    }
+  });
+  return numberOfOccurrences;
+};
+
+/**
  * @description this function returns the matching task object for the rpaTask or throws a notification
  * @param {String} rpaTask rpaTask from current robotCode line
  * @param {Array} allMatchingCombinations all combinations from database that match the rpaTask
  * @returns the matching task object for the rpaTask or undefined if an error occurs
  */
 const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
+  const numberOfOccurrences = numberOfOccurrencesOfTask(
+    allMatchingCombinations,
+    rpaTask
+  );
+
   if (allMatchingCombinations.length === 0) {
     customNotification(
       'Error',
@@ -175,18 +197,16 @@ const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
     );
     return undefined;
   }
-  if (allMatchingCombinations.length > 1) {
-    if (rpaTask === 'Open Application' || rpaTask === 'Open Workbook') {
-      let correctExampleText = '';
-      allMatchingCombinations.forEach((singleCombination) => {
-        correctExampleText += `\n${singleCombination.Application}.${rpaTask}`;
-      });
-      customNotification(
-        'Error',
-        `Multiple Applications with task "${rpaTask}" found. Give the full name you want to use like: ${correctExampleText}`
-      );
-      return undefined;
-    }
+  if (numberOfOccurrences > 1) {
+    let correctExampleText = '';
+    allMatchingCombinations.forEach((singleCombination) => {
+      correctExampleText += `\n${singleCombination.Application}.${rpaTask}`;
+    });
+    customNotification(
+      'Error',
+      `Multiple Applications with task "${rpaTask}" found. Give the full name you want to use like: ${correctExampleText}`
+    );
+    return undefined;
   }
   return allMatchingCombinations[0];
 };
