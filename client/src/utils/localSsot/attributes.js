@@ -33,7 +33,10 @@ const getAttributeObjectForActivity = (activityId) => {
  */
 const getRpaTask = (activityId) => {
   const matchingEntry = getAttributeObjectForActivity(activityId);
-  let selectedTask;
+   if (matchingEntry) {
+     return matchingEntry.rpaTask;
+   }
+   return undefined;
   if (matchingEntry) {
     selectedTask = matchingEntry.rpaTask;
   }
