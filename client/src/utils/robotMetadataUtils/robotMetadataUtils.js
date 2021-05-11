@@ -22,7 +22,6 @@ const onSaveToCloud = async (modeler, robotId) => {
   const result = await parseBpmnToSsot(xml, robotId);
   const ssot = JSON.stringify(result);
   sessionStorage.setItem('ssotLocal', ssot);
-
   upsert();
 };
 

@@ -160,7 +160,7 @@ const upsert = async () => {
   sessionStorage.setItem(ATTRIBUTE_STORAGE_PATH, stillUsedAttributes);
 
   deleteUnusedAttributesFromDB(localAttributeStorage, usedElementIds, robotId);
-  updateManyAttributes(stillUsedAttributes);
+  updateManyAttributes(localAttributeStorage);
 
   const localParameterStorage = getParameterStorage();
   let stillUsedParameters = localParameterStorage.filter((singleParameter) =>
@@ -170,8 +170,7 @@ const upsert = async () => {
   sessionStorage.setItem(PARAMETER_STORAGE_PATH, stillUsedParameters);
 
   deleteUnusedParameterFromDB(localParameterStorage, usedElementIds, robotId);
-  updateManyParameters(stillUsedParameters);
-
+  updateManyParameters(localParameterStorage);
   customNotification(
     'Success',
     'Successfully saved to cloud',

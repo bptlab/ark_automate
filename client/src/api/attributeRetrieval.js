@@ -15,13 +15,13 @@ const getAllAttributes = async (robotId) => {
 
 /**
  * @description Will send a backend call to update all given attribute objects with the new one's
- * @param {Array} updatedAttributes All updated attribute objects to overwrite the old attribute objects with
+ * @param {Array} attributeObjectList All updated attribute objects to overwrite the old attribute objects with
  */
-const updateManyAttributes = async (updatedAttributes) => {
+const updateManyAttributes = async (attributeObjectList) => {
   const requestStringAttributes = `/robots/rpaattributes`;
   // eslint-disable-next-line no-unused-vars
   const response = await fetch(requestStringAttributes, {
-    body: JSON.stringify({ updatedAttributes }),
+    body: JSON.stringify({ attributeObjectList }),
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
