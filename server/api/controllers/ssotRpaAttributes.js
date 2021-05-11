@@ -95,3 +95,58 @@ exports.retrieveAttributesForRobot = async (req, res) => {
 
   res.send(attributeObjects);
 };
+
+/**
+ * @swagger
+ * /robots/rpaattributes/{robotId}:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     delete:
+ *       tags:
+ *         - Robots
+ *       summary: Delete attributes related to the specified activities
+ *       operationId: deleteAttributes
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - activityIdListObject
+ *               properties:
+ *                 activityIdList:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/ActivityIds'
+ *         description: list of activities for which the attributes should be deleted
+ *         required: true
+ *       responses:
+ *         204:
+ *           description: No Content
+ *         400:
+ *           description: Bad Request
+ */
+exports.deleteForActivities = async (req, res) => {
+  const { activityIdList } = req.body;
+  const { robotId } = req.params;
+  const usablerobotId = mongoose.Types.ObjectId(robotId);
+
+  try {
+    const deletionResult = await mongoose
+      .model('rpaAttributes')
+      .deleteMany({
+        activityId: { $in: activityIdList },
+        robotId: usablerobotId,
+      })
+      .exec();
+
+    res.send(deletionResult);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};

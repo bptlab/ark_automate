@@ -99,3 +99,33 @@ describe('GET /robots/rpaattributes/{robotId}', () => {
     );
   });
 });
+
+describe('DELETE /robots/rpaattributes/{robotId}', () => {
+  it('deletes removed activity related attributes', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadAttributesInDb();
+
+    const deletedActivityList = [
+      testSsot.elements[2].id,
+      testSsot.elements[3].id,
+    ];
+    let payload = { activityIdList: deletedActivityList };
+    payload = JSON.stringify(payload);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      body: payload,
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotAttributesController.deleteForActivities(request, response);
+
+    const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
+    expect(foundAttributes.length).toBe(1);
+
+    expect(response.statusCode).toBe(200);
+  });
+});

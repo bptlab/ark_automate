@@ -99,3 +99,58 @@ exports.retrieveParametersForRobot = async (req, res) => {
 
   res.send(parameterObjects);
 };
+
+/**
+ * @swagger
+ * /robots/parameters/{robotId}:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     delete:
+ *       tags:
+ *         - Robots
+ *       summary: Delete parameters related to the specified activities
+ *       operationId: deleteParameters
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - activityIdListObject
+ *               properties:
+ *                 activityIdList:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/ActivityIds'
+ *         description: updated parameter object
+ *         required: true
+ *       responses:
+ *         204:
+ *           description: No Content
+ *         400:
+ *           description: Bad Request
+ */
+exports.deleteForActivities = async (req, res) => {
+  const { activityIdList } = req.body;
+  const { robotId } = req.params;
+  const usablerobotId = mongoose.Types.ObjectId(robotId);
+
+  try {
+    const deletionResult = await mongoose
+      .model('parameter')
+      .deleteMany({
+        activityId: { $in: activityIdList },
+        robotId: usablerobotId,
+      })
+      .exec();
+
+    res.send(deletionResult);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};

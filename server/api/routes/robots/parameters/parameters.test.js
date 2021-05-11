@@ -91,3 +91,33 @@ describe('GET /robots/parameters/{robotId}', () => {
     );
   });
 });
+
+describe('DELETE /robots/parameters/{robotId}', () => {
+  it('deletes removed activity related parameter', async () => {
+    await dbLoader.loadSsotInDb();
+    await dbLoader.loadParametersInDb();
+
+    const deletedActivityList = [
+      testSsot.elements[2].id,
+      testSsot.elements[3].id,
+    ];
+    let payload = { activityIdList: deletedActivityList };
+    payload = JSON.stringify(payload);
+
+    const request = httpMocks.createRequest({
+      method: 'DELETE',
+      body: payload,
+      params: {
+        robotId: testRobotId,
+      },
+    });
+    const response = httpMocks.createResponse();
+
+    await ssotVariableController.deleteForActivities(request, response);
+
+    const foundParameters = await mongoose.model('parameter').find().exec();
+    expect(foundParameters.length).toBe(1);
+
+    expect(response.statusCode).toBe(200);
+  });
+});
