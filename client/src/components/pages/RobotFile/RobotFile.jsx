@@ -3,7 +3,7 @@ import { Layout, Button, Space, Row, Col } from 'antd';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import getParsedRobotFile from '../../../api/ssot';
+import { getParsedRobotFile } from '../../../api/ssot';
 import { initAvailableApplicationsSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
 import { upsert } from '../../../utils/localSsot/ssot';

@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
-import { getSsot } from '../../../api/ssotRetrieval';
+import { getSsot } from '../../../api/ssot';
 import { getAllParametersForRobot } from '../../../api/variableRetrieval';
 import { getAllAttributes } from '../../../api/attributeRetrieval';
 import { getAllRpaFunctionalities } from '../../../api/applicationAndTaskSelection';

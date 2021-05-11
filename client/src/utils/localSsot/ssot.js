@@ -3,12 +3,7 @@
  * @module
  */
 import customNotification from '../notificationUtils';
-import {
-  getSsot,
-  deleteParametersForActivities,
-  deleteAttributesForActivities,
-  updateRobot,
-} from '../../api/ssotRetrieval';
+import { getSsot, updateRobot } from '../../api/ssot';
 import {
   getAllAttributes,
   updateManyAttributes,
@@ -22,8 +17,11 @@ import {
   getAllParametersForRobot,
   updateManyParameters,
 } from '../../api/variableRetrieval';
-import { getParameterStorage } from './parameters';
-import { getAttributeStorage } from './attributes';
+import { getParameterStorage, deleteUnusedParameterFromDB } from './parameters';
+import {
+  getAttributeStorage,
+  deleteUnusedAttributesFromDB,
+} from './attributes';
 
 const ROBOT_ID_PATH = 'robotId';
 const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
@@ -102,42 +100,6 @@ const initSsotSessionStorage = (robotId) => {
       .catch((error) => {
         console.error(error);
       });
-};
-
-/**
- * @description If there is more than one unused attribute object, delete it in the database
- * @param {Array} attributes List of all attributes saved in the session storage
- * @param {Array} usedElementIds The activityIds that are still being used
- * @param {String} robotId The Id of the robot
- */
-const deleteUnusedAttributesFromDB = (attributes, usedElementIds, robotId) => {
-  const unusedAttributes = attributes.filter(
-    (singleAttribute) => !usedElementIds.includes(singleAttribute.activityId)
-  );
-  if (unusedAttributes && unusedAttributes.length > 0) {
-    const unusedActivityIds = unusedAttributes.map(
-      (unusedAttributeObject) => unusedAttributeObject.activityId
-    );
-    deleteAttributesForActivities(robotId, unusedActivityIds);
-  }
-};
-
-/**
- * @description If there is more than one unused parameter object, delete it in the database
- * @param {Array} parameters List of all parameters saved in the session storage
- * @param {Array} usedElementIds The activityIds that are still being used
- * @param {String} robotId The Id of the robot
- */
-const deleteUnusedParameterFromDB = (parameters, usedElementIds, robotId) => {
-  const unusedParameters = parameters.filter(
-    (singleParameter) => !usedElementIds.includes(singleParameter.activityId)
-  );
-  if (unusedParameters && unusedParameters.length > 0) {
-    const unusedActivityIds = unusedParameters.map(
-      (unusedParameterObject) => unusedParameterObject.activityId
-    );
-    deleteParametersForActivities(robotId, unusedActivityIds);
-  }
 };
 
 /**

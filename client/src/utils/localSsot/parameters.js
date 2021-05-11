@@ -2,6 +2,7 @@
  * @category Client
  * @module
  */
+import { deleteParametersForActivities } from '../../api/ssot';
 import getRpaFunctionalitiesObject from '../rpaFunctionality/functionalities';
 import { getAttributeObjectForActivity } from './attributes';
 
@@ -36,16 +37,21 @@ const createParameterObject = (
       rpaParameters.push(elementCopy);
     });
   }
-
-  const newParameterObject = {
-    activityId,
-    outputVariable:
-      rpaFunctionalitiesObject && rpaFunctionalitiesObject.outputValue
-        ? `${activityId}_output`
-        : undefined,
-    rpaParameters,
-    robotId,
-  };
+  let newParameterObject;
+  if (rpaFunctionalitiesObject && rpaFunctionalitiesObject.outputValue) {
+    newParameterObject = {
+      activityId,
+      robotId,
+      outputVariable: `${activityId}_output`,
+      rpaParameters,
+    };
+  } else {
+    newParameterObject = {
+      activityId,
+      robotId,
+      rpaParameters,
+    };
+  }
 
   localParameterStorage.push(newParameterObject);
   sessionStorage.setItem(
@@ -108,7 +114,6 @@ const checkIfParameterObjectCorrect = (
     ) {
       return true;
     }
-    return false;
   }
   return false;
 };
@@ -281,6 +286,24 @@ const setOutputValueName = (activityId, value) => {
   );
 };
 
+/**
+ * @description If there is more than one unused parameter object, delete it in the database
+ * @param {Array} parameters List of all parameters saved in the session storage
+ * @param {Array} usedElementIds The activityIds that are still being used
+ * @param {String} robotId The Id of the robot
+ */
+const deleteUnusedParameterFromDB = (parameters, usedElementIds, robotId) => {
+  const unusedParameters = parameters.filter(
+    (singleParameter) => !usedElementIds.includes(singleParameter.activityId)
+  );
+  if (unusedParameters && unusedParameters.length > 0) {
+    const unusedActivityIds = unusedParameters.map(
+      (unusedParameterObject) => unusedParameterObject.activityId
+    );
+    deleteParametersForActivities(robotId, unusedActivityIds);
+  }
+};
+
 export {
   getParameterStorage,
   setSingleParameter,
@@ -288,4 +311,5 @@ export {
   parameterPropertyStatus,
   setOutputValueName,
   getParameterObject,
+  deleteUnusedParameterFromDB,
 };

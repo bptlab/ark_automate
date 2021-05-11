@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
 import { initSsotSessionStorage } from '../../../utils/localSsot/ssot';
-import { changeSsotName, deleteRobotFromDB } from '../../../api/ssotRetrieval';
+import { changeSsotName, deleteRobotFromDB } from '../../../api/ssot';
 import customNotification from '../../../utils/notificationUtils';
 
 const { Title } = Typography;

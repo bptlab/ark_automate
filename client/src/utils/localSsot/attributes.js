@@ -2,6 +2,7 @@
  * @category Client
  * @module
  */
+import { deleteAttributesForActivities } from '../../api/ssot';
 
 const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 
@@ -33,14 +34,10 @@ const getAttributeObjectForActivity = (activityId) => {
  */
 const getRpaTask = (activityId) => {
   const matchingEntry = getAttributeObjectForActivity(activityId);
-   if (matchingEntry) {
-     return matchingEntry.rpaTask;
-   }
-   return undefined;
   if (matchingEntry) {
-    selectedTask = matchingEntry.rpaTask;
+    return matchingEntry.rpaTask;
   }
-  return selectedTask;
+  return undefined;
 };
 
 /**
@@ -130,6 +127,24 @@ const getRpaApplication = (activityId) => {
   return selectedApplication;
 };
 
+/**
+ * @description If there is more than one unused attribute object, delete it in the database
+ * @param {Array} attributes List of all attributes saved in the session storage
+ * @param {Array} usedElementIds The activityIds that are still being used
+ * @param {String} robotId The Id of the robot
+ */
+const deleteUnusedAttributesFromDB = (attributes, usedElementIds, robotId) => {
+  const unusedAttributes = attributes.filter(
+    (singleAttribute) => !usedElementIds.includes(singleAttribute.activityId)
+  );
+  if (unusedAttributes && unusedAttributes.length > 0) {
+    const unusedActivityIds = unusedAttributes.map(
+      (unusedAttributeObject) => unusedAttributeObject.activityId
+    );
+    deleteAttributesForActivities(robotId, unusedActivityIds);
+  }
+};
+
 export {
   getAttributeStorage,
   getAttributeObjectForActivity,
@@ -137,4 +152,5 @@ export {
   setRpaTask,
   setRpaApplication,
   getRpaApplication,
+  deleteUnusedAttributesFromDB,
 };
