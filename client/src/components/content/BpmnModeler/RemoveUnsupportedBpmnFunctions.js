@@ -1,7 +1,6 @@
 import PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider';
 
 const removeUnsupportedBpmnFunctions = () => {
-  console.log('MOIN!');
   const { getPaletteEntries } = PaletteProvider.prototype;
   // eslint-disable-next-line func-names
   PaletteProvider.prototype.getPaletteEntries = function () {
