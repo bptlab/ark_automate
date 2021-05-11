@@ -7,3 +7,19 @@
   margin: '24px' !important;
   border-radius: '5px' !important;
 }
+
+.statusIconStyle {
+  position: relative;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  margin: 10px;
+}
+
+.loadingStatusIconStyle {
+  top: 40%;
+  left: 50%;
+  font-size: 3rem;
+  color: grey;
+}

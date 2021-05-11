@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import PropTypes from 'prop-types';
 import CliModule from 'bpmn-js-cli';
+import removeUnsupportedBpmnFunctions from './RemoveUnsupportedBpmnFunctions';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
@@ -28,7 +29,14 @@ const BpmnModeler = (props) => {
       keyboard: {
         bindTo: window,
       },
-      additionalModules: [propertiesProviderModule, CliModule],
+      additionalModules: [
+        {
+          __init__: ['customContextPadProvider'],
+          customContextPadProvider: ['type', removeUnsupportedBpmnFunctions()],
+        },
+        propertiesProviderModule,
+        CliModule,
+      ],
       cli: {
         bindTo: 'cli',
       },
