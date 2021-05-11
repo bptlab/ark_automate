@@ -106,9 +106,9 @@ exports.updateRobotJobStatus = async (jobId, status) => {
 };
 
 /**
- * @description Finds a specific job in the database and updates the status of the Job
+ * @description Updates the given Job when the run has failed with the list of failing activities
  * @param {String} jobId the id of the job that we want to update
- * @param {String} status the current status of the job (either waiting, executing, success or failed)
+ * @param {Array} errorLog the list of logs of the robots activites
  */
 exports.updateRobotJobErrors = async (jobId, errorLog) => {
   const errors = errorLog.robot_run.activities
