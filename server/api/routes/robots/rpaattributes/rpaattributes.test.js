@@ -109,8 +109,7 @@ describe('DELETE /robots/rpaattributes/{robotId}', () => {
       testSsot.elements[2].id,
       testSsot.elements[3].id,
     ];
-    let payload = { activityIdList: deletedActivityList };
-    payload = JSON.stringify(payload);
+    const payload = { activityIdList: deletedActivityList };
 
     const request = httpMocks.createRequest({
       method: 'DELETE',
