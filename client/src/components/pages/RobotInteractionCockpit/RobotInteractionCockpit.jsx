@@ -18,7 +18,6 @@ import {
   newRobotMonitorUpdate,
   newRobotStatusUpdate,
 } from '../../../api/socketHandler/socketListeners';
-import socket from '../../../utils/socket/socketConnections';
 import RobotLogCard from './RobotLogCard';
 
 const { Step } = Steps;
@@ -164,6 +163,7 @@ const RobotInteractionCockpit = (match) => {
         />
       );
     }
+    return undefined;
   };
 
   return (
