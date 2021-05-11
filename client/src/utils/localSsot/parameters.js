@@ -283,12 +283,9 @@ const setOutputValueName = (activityId, value) => {
 
 export {
   getParameterStorage,
-  getParameterObjectForActivity,
   setSingleParameter,
   setPropertyForParameter,
   parameterPropertyStatus,
   setOutputValueName,
-  checkIfParameterObjectCorrect,
-  createParameterObject,
   getParameterObject,
 };

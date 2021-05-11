@@ -115,10 +115,9 @@ const deleteUnusedAttributesFromDB = (attributes, usedElementIds, robotId) => {
     (singleAttribute) => !usedElementIds.includes(singleAttribute.activityId)
   );
   if (unusedAttributes && unusedAttributes.length > 0) {
-    let unusedActivityIds = unusedAttributes.map(
+    const unusedActivityIds = unusedAttributes.map(
       (unusedAttributeObject) => unusedAttributeObject.activityId
     );
-    unusedActivityIds = JSON.stringify(unusedActivityIds);
     deleteAttributesForActivities(robotId, unusedActivityIds);
   }
 };
@@ -134,10 +133,9 @@ const deleteUnusedParameterFromDB = (parameters, usedElementIds, robotId) => {
     (singleParameter) => !usedElementIds.includes(singleParameter.activityId)
   );
   if (unusedParameters && unusedParameters.length > 0) {
-    let unusedActivityIds = unusedParameters.map(
+    const unusedActivityIds = unusedParameters.map(
       (unusedParameterObject) => unusedParameterObject.activityId
     );
-    unusedActivityIds = JSON.stringify(unusedActivityIds);
     deleteParametersForActivities(robotId, unusedActivityIds);
   }
 };
@@ -181,4 +179,4 @@ const upsert = async () => {
   );
 };
 
-export { getRobotId, setRobotId, initSsotSessionStorage, upsert };
+export { setRobotId, initSsotSessionStorage, upsert };

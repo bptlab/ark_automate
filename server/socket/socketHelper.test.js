@@ -35,6 +35,7 @@ describe('robot code retrieval', () => {
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
     await dbLoader.loadJobInDb();
+    await dbLoader.loadTasksInDb();
 
     const robotCode = await socketHelperFunctions.getRobotCodeForJob(
       testRobotId,
@@ -79,8 +80,8 @@ describe('job creation', () => {
   });
 });
 
-describe('updating of job status', () => {
-  it('sucessfully updates a job', async () => {
+describe('updating of job', () => {
+  it('sucessfully updates a job status', async () => {
     await dbLoader.loadJobInDb();
 
     await socketHelperFunctions.updateRobotJobStatus(
@@ -92,8 +93,26 @@ describe('updating of job status', () => {
     const foundJob = await mongoose.model('job').findById(testData.testJob._id);
     expect(foundJob).not.toBeNull();
     expect(foundJob).not.toBeUndefined();
-
     expect(foundJob.status).toEqual('updatedStatus');
+  });
+
+  it('sucessfully updates a job error object', async () => {
+    await dbLoader.loadJobInDb();
+
+    await socketHelperFunctions.updateRobotJobErrors(
+      testData.testJob._id,
+      testData.failingRobotRunLog
+    );
+
+    const foundJob = await mongoose.model('job').findById(testData.testJob._id);
+    expect(foundJob.loggedErrors.length).toEqual(2);
+    expect(foundJob.loggedErrors[0].activity_name).toBe('Browser3');
+    expect(foundJob.loggedErrors[0].tasks.length).toBe(2);
+    expect(foundJob.loggedErrors[0].message).toBe(
+      "No keyword with name 'Open Chro Browser' found. Did you mean:\n    RPA.Browser.Selenium.Open Chrome Browser"
+    );
+    expect(foundJob.loggedErrors[1].activity_name).toBe('Save file');
+    expect(foundJob.loggedErrors[1].message).toBe('Test Failing Message');
   });
 });
 

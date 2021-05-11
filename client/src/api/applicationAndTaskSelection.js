@@ -8,12 +8,7 @@
  * @param {String} application - String with currently selected application from ApplicationDropdown
  */
 const fetchTasksFromDB = async (application) => {
-  const response = await fetch(
-    `/rpa-framework/commands/get-available-tasks-for-application?application=${application.replaceAll(
-      ' ',
-      '+'
-    )}`
-  );
+  const response = await fetch(`/functionalities/${application}/tasks`);
   return response;
 };
 
@@ -21,9 +16,7 @@ const fetchTasksFromDB = async (application) => {
  * @description Fetch all applications from MongoDB
  */
 const getAvailableApplications = async () => {
-  const response = await fetch(
-    '/rpa-framework/commands/get-available-applications'
-  );
+  const response = await fetch('/functionalities/applications');
   return response;
 };
 
@@ -32,7 +25,7 @@ const getAvailableApplications = async () => {
  * @returns {Array} Array of all rpa-task objects
  */
 const getAllParameters = async () => {
-  const response = await fetch(`/rpa-framework/commands/getAllParameters`);
+  const response = await fetch(`/functionalities`);
   return response;
 };
 

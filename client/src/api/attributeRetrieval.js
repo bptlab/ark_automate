@@ -9,7 +9,7 @@
  * @returns {Array} Array of attribute objects related to the robot
  */
 const getAllAttributes = async (robotId) => {
-  const response = await fetch(`/ssot/getAllAttributes/${robotId}`);
+  const response = await fetch(`/robots/rpaattributes/${robotId}`);
   return response;
 };
 
@@ -18,9 +18,11 @@ const getAllAttributes = async (robotId) => {
  * @param {Array} updatedAttributes All updated attribute objects to overwrite the old attribute objects with
  */
 const updateManyAttributes = async (updatedAttributes) => {
-  const response = await fetch(`/ssot/updateManyAttributes`, {
-    body: updatedAttributes,
-    method: 'POST',
+  const requestStringAttributes = `/robots/rpaattributes`;
+  // eslint-disable-next-line no-unused-vars
+  const response = await fetch(requestStringAttributes, {
+    body: JSON.stringify({ updatedAttributes }),
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
