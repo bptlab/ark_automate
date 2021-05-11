@@ -76,7 +76,7 @@ exports.socketManager = (io, socket) => {
     }
   });
 
-  socket.on('updatedRobotJob', ({ userId, jobId, robotLogs }) => {
+  socket.on('updatedLiveRobotLog', ({ userId, jobId, robotLogs }) => {
     io.to(userId).emit('changedRobotStatus', 'running');
     if (robotLogs.final_message === 'Execution completed') {
       socketHelperFunctions.updateRobotJobStatus(
