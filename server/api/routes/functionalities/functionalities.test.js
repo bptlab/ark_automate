@@ -32,6 +32,8 @@ describe('GET /functionalities/applications', () => {
     expect(data).toEqual([
       testData.testRpaTask1.Application,
       testData.testRpaTask2.Application,
+      testData.testRpaTask4.Application,
+      testData.testRpaTask5.Application,
     ]);
   });
 });

@@ -36,6 +36,8 @@ Before running, please always make sure to have the most recent module versions 
 To run a development preview of the app, navigate to the server directory and run `npm run local` to start the API server, navigate into the client folder and run `npm start` again to also start the frontend.  
 Now check http://localhost:3000/ to have a look at the app.
 
+To run the local client, follow the steps in the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
+
 ## Contribute
 
 Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](.github/CONTRIBUTING.md). By participating in this project, you agree to abide by its [Code of Conduct](.github/CODE_OF_CONDUCT.md) at all times.
