@@ -28,13 +28,15 @@ For this step, an invitation to our Heroku project is necessary. Please create y
 
 ### Setup linter
 
-We use ESLint with the AirBnB Codestyle. Simply install the Plug-in ([VSCode](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)) for your IDE and it should recognize the config files. Otherwise follow [this guide](https://eslint.org/docs/user-guide/getting-started). 
+We use ESLint with the AirBnB Codestyle. Simply install the Plug-in ([VSCode](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)) for your IDE and it should recognize the config files. Otherwise follow [this guide](https://eslint.org/docs/user-guide/getting-started).
 
 ## Run application
 
 Before running, please always make sure to have the most recent module versions installed using `npm install` in the server, as well as the client directory.
 To run a development preview of the app, navigate to the server directory and run `heroku local` to start the API server, navigate into the client folder and run `npm start` again to also start the frontend.  
 Now check http://localhost:3000/ to have a look at the app.
+
+To run the local client, follow the steps in the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
 
 ## Contribute
 
@@ -53,5 +55,6 @@ These four participants will push the project forward as part of their bachelor'
 At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community.
 
 ## Project documentation
-Our [architecture](https://github.com/bptlab/ark_automate/wiki/Architecture-in-2021), as well as our current [vision of the project](https://github.com/bptlab/ark_automate/wiki/Vision-for-2021) can be found in our [wiki](https://github.com/bptlab/ark_automate/wiki). 
+
+Our [architecture](https://github.com/bptlab/ark_automate/wiki/Architecture-in-2021), as well as our current [vision of the project](https://github.com/bptlab/ark_automate/wiki/Vision-for-2021) can be found in our [wiki](https://github.com/bptlab/ark_automate/wiki).
 Please also see the [code documentation website](https://bptlab.github.io/ark_automate/) for the documentation of the code including examples.

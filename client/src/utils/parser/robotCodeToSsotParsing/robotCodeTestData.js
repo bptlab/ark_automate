@@ -1,7 +1,8 @@
+/* eslint-disable no-template-curly-in-string */
 const correctSettingsSection =
-  '*** Settings ***\nLibrary    RPA.Excel.Application\nLibrary    RPA.HTTP';
+  '*** Settings ***\nLibrary    RPA.Excel.Application\nLibrary    RPA.Testing';
 const correctTaskSection =
-  '*** Tasks ***\nExcel.Application\n#activity One\n    Open Application    %%visible%%    TestPETER';
+  '*** Tasks ***\nfirst Activity\n    Open Application    %%visible%%    !!TestPETER!!\nsecond Activity\n    ${OUTPUT} = TaskWithOutput    ${path}';
 const taskAndApplicationCombinations = [
   {
     _id: '6061d5627dee5516b3824ade',
@@ -23,6 +24,23 @@ const taskAndApplicationCombinations = [
         isRequired: false,
         infoText: 'Show alert popups',
         index: 1,
+      },
+    ],
+  },
+  {
+    _id: '6085975cae268e739f0f3b95',
+    Application: 'Testing',
+    Task: 'TaskWithOutput',
+    Code: 'TaskWithOutput',
+    outputValue: true,
+    inputVars: [
+      {
+        name: 'path',
+        type: 'String',
+        isRequired: false,
+        infoText:
+          'Path to save to. If not given, uses path given when opened or created.',
+        index: '0',
       },
     ],
   },
@@ -112,27 +130,41 @@ const correctElementsArray = [
     predecessorIds: [],
   },
   {
-    successorIds: ['Event_0ay5419'],
+    successorIds: ['Activity_0ay5419'],
     id: 'Activity_0ay5418',
     type: 'INSTRUCTION',
-    name: 'activity One',
+    name: 'first Activity',
     predecessorIds: ['Event_0ay5417'],
   },
   {
+    successorIds: ['Event_0ay5420'],
+    id: 'Activity_0ay5419',
+    type: 'INSTRUCTION',
+    name: 'second Activity',
+    predecessorIds: ['Activity_0ay5418'],
+  },
+  {
     successorIds: [],
-    id: 'Event_0ay5419',
+    id: 'Event_0ay5420',
     type: 'MARKER',
     name: 'END',
-    predecessorIds: ['Activity_0ay5418'],
+    predecessorIds: ['Activity_0ay5419'],
   },
 ];
 
 const correctInstructionBlocks = [
   {
     rpaApplication: 'Excel.Application',
-    name: 'activity One',
+    name: 'first Activity',
     rpaTask: 'Open Application',
-    paramArray: ['%%visible%%', 'TestPETER'],
+    paramArray: ['%%visible%%', '!!TestPETER!!'],
+  },
+  {
+    rpaApplication: 'Testing',
+    outputName: 'OUTPUT',
+    name: 'second Activity',
+    rpaTask: 'TaskWithOutput',
+    paramArray: ['${path}'],
   },
 ];
 
