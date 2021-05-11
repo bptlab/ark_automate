@@ -129,12 +129,7 @@ const RobotInteractionCockpit = (match) => {
       return (
         <Loading3QuartersOutlined
           spin
-          style={{
-            top: '40%',
-            left: '50%',
-            'font-size': '3rem',
-            color: 'grey',
-          }}
+          className={styles.loadingStatusIconStyle}
         />
       );
     }
@@ -186,7 +181,7 @@ const RobotInteractionCockpit = (match) => {
           {currentStep !== 0 && (
             <>
               <Row>
-                <Col  xs={24} lg={24} xl={12}>
+                <Col xs={24} lg={24} xl={12}>
                   <Title
                     style={{
                       marginBottom: '0px',
@@ -201,7 +196,6 @@ const RobotInteractionCockpit = (match) => {
                       <Col span={18}>
                         <Title
                           style={{
-                            marginBottom: '0px',
                             top: '35%',
                             position: 'absolute',
                           }}
@@ -214,7 +208,7 @@ const RobotInteractionCockpit = (match) => {
                     </Row>
                   </Card>
                 </Col>
-                <Col  lg={24} xl={12}>
+                <Col lg={24} xl={12}>
                   <Title
                     style={{ marginBottom: '0px', marginLeft: '10px' }}
                     level={5}

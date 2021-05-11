@@ -16,3 +16,10 @@
   font-size: 3rem;
   margin: 10px 10px 10px 10px;
 }
+
+.loadingStatusIconStyle {
+  top: 40%;
+  left: 50%;
+  font-size: 3rem;
+  color: grey;
+}
