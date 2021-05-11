@@ -35,6 +35,7 @@ describe('robot code retrieval', () => {
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
     await dbLoader.loadJobInDb();
+    await dbLoader.loadTasksInDb();
 
     const robotCode = await socketHelperFunctions.getRobotCodeForJob(
       testRobotId,

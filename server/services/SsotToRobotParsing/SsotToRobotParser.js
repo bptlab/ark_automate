@@ -23,7 +23,7 @@ const parseSsotToRobotCode = async (ssot) => {
   // eslint-disable-next-line prefer-const
   const result = await generateCodeBase(ssot);
   const parameters = await retrieveParameters(ssot);
-  result.parsedCode += generateCodeForRpaTasks(
+  result.parsedCode += await generateCodeForRpaTasks(
     ssot.elements,
     parameters,
     result.attributeObjects
@@ -41,7 +41,7 @@ const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
   // eslint-disable-next-line prefer-const
   const result = await generateCodeBase(ssot);
   const parameters = await retrieveParametersFromSsotAndJob(ssot, jobId);
-  result.parsedCode += generateCodeForRpaTasks(
+  result.parsedCode += await generateCodeForRpaTasks(
     ssot.elements,
     parameters,
     result.attributeObjects

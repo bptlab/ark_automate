@@ -39,18 +39,11 @@ const MOCK_ROBOT_INFO = {
 
 async function mockFetch(url) {
   switch (url) {
-    case `/ssot/getAvailableRobotsForUser/${USER_ID}`: {
+    case `/users/${USER_ID}/robots`: {
       return {
         ok: true,
         status: 200,
         json: async () => MOCK_ROBOT_LIST,
-      };
-    }
-    case `/ssot/createNewRobot?userId=${USER_ID}&robotName=New+Robot`: {
-      return {
-        ok: true,
-        status: 200,
-        json: async () => MOCK_ROBOT_INFO,
       };
     }
     default: {

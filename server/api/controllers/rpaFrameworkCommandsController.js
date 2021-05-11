@@ -2,22 +2,64 @@ const mongoose = require('mongoose');
 // eslint-disable-next-line no-unused-vars
 const rpaModels = require('../models/rpaTaskModel');
 
-// GET /rpa-framework/commands/get-available-applications
+/**
+ * @swagger
+ * /functionalities/applications:
+ *     get:
+ *       tags:
+ *         - RPA-Functionalities
+ *       summary: Get all applications that ark automate supports
+ *       operationId: getApplications
+ *       responses:
+ *         200:
+ *           description: OK
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/Applications'
+ */
 exports.getAvailableApplications = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    await mongoose.model('rpa-task').distinct('Application', (err, tasks) => {
-      res.send(tasks);
-    });
+    const tasks = await mongoose.model('rpa-task').distinct('Application');
+    res.send(tasks);
   } catch (err) {
     console.error(err);
   }
 };
 
-// GET /rpa-framework/commands/get-available-tasks-for-application?application=Browser
+/**
+ * @swagger
+ * /functionalities/{application}/tasks:
+ *     parameters:
+ *       - name: application
+ *         in: path
+ *         description: The name of an application
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/Applications'
+ *     get:
+ *       tags:
+ *         - RPA-Functionalities
+ *       summary: Gets all the tasks to execute for an application
+ *       operationId: getTasks
+ *       responses:
+ *         200:
+ *           description: OK
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/Tasks'
+ *         404:
+ *           description: Not Found
+ */
 exports.getAvailableTasksForApplications = async (req, res) => {
   try {
-    const { application } = req.query;
+    const { application } = req.params;
     res.set('Content-Type', 'application/json');
     if (application != null) {
       await mongoose
@@ -33,8 +75,25 @@ exports.getAvailableTasksForApplications = async (req, res) => {
   }
 };
 
-// GET /rpa-framework/commands/getAllParameters
-exports.getAllParameters = async (req, res) => {
+/**
+ * @swagger
+ * /functionalities:
+ *     get:
+ *       tags:
+ *         - RPA-Functionalities
+ *       summary: Get all available Task and Application combinations with the input parameters and possible output values
+ *       operationId: getFunctionalities
+ *       responses:
+ *         200:
+ *           description: OK
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/Functionalities'
+ */
+exports.getAllRpaFunctionalities = async (req, res) => {
   const parameterObjects = await mongoose.model('rpa-task').find().exec();
 
   res.send(parameterObjects);

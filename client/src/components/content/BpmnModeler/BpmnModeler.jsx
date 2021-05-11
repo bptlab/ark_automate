@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import CamundaBpmnModeler from 'bpmn-js/lib/Modeler';
 import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
-import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 import PropTypes from 'prop-types';
 import CliModule from 'bpmn-js-cli';
 import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
@@ -30,13 +29,11 @@ const BpmnModeler = (props) => {
         bindTo: window,
       },
       additionalModules: [propertiesProviderModule, CliModule],
-      moddleExtensions: {
-        camunda: camundaModdleDescriptor,
-      },
       cli: {
         bindTo: 'cli',
       },
     });
+
     props.onModelerUpdate(newModeler);
 
     const openBpmnDiagram = (xml) => {

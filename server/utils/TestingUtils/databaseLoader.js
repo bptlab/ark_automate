@@ -51,6 +51,10 @@ const loadTasksInDb = async () => {
   await rpaTask2.save();
   const rpaTask3 = await new RpaTask(testData.testRpaTask3);
   await rpaTask3.save();
+  const rpaTask4 = await new RpaTask(testData.testRpaTask4);
+  await rpaTask4.save();
+  const rpaTask5 = await new RpaTask(testData.testRpaTask5);
+  await rpaTask5.save();
 };
 
 module.exports = {

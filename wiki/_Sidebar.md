@@ -8,6 +8,7 @@ Back to the [Wiki home](https://github.com/bptlab/ark_automate/wiki)
 
 - Documentation
     - [The repo structure](https://github.com/bptlab/ark_automate/wiki/Documentation-Folder-structure)
+    - [Coding Standards](https://github.com/bptlab/ark_automate/wiki/Coding-standards)
     - [Code documentation](https://bptlab.github.io/ark_automate/)
     - [Our single source of truth](https://github.com/bptlab/ark_automate/wiki/Documentation-single-source-of-truth)
     - [Corporate identity of Ark_automate](https://github.com/bptlab/ark_automate/wiki/Documentation-Corporate-Identity)

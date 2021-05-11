@@ -287,9 +287,10 @@ const setSingleParameter = (activityId, value, parameterName) => {
   const matchingSingleParameter = matchingParameterObject.rpaParameters.find(
     (element) => element.name === parameterName
   );
-  const singleParametersWithoutMatch = matchingParameterObject.rpaParameters.filter(
-    (element) => element.name !== parameterName
-  );
+  const singleParametersWithoutMatch =
+    matchingParameterObject.rpaParameters.filter(
+      (element) => element.name !== parameterName
+    );
 
   const editedParameter = matchingSingleParameter;
   editedParameter.value = value.target.value;
@@ -371,7 +372,7 @@ const parameterPropertyStatus = (
  * @returns {Array} Array of attribute objects related to the robot
  */
 const getAttributesFromDB = async (robotId) => {
-  const reqString = `/ssot/getAllAttributes/${robotId}`;
+  const reqString = `/robots/rpaattributes/${robotId}`;
   const response = await fetch(reqString);
   return response;
 };
@@ -381,7 +382,7 @@ const getAttributesFromDB = async (robotId) => {
  * @returns {Array} Array of all rpa-task objects
  */
 const getParameterFromDB = async () => {
-  const reqString = `/rpa-framework/commands/getAllParameters`;
+  const reqString = `/functionalities`;
   const response = await fetch(reqString);
   return response;
 };
@@ -428,10 +429,9 @@ const deleteUnusedParameterFromDB = (
     (singleParameter) => !usedElementIds.includes(singleParameter.activityId)
   );
   if (unusedParameters && unusedParameters.length > 0) {
-    let unusedParameterIds = unusedParameters.map(
+    const unusedParameterIds = unusedParameters.map(
       (singleUnusedParameter) => singleUnusedParameter.activityId
     );
-    unusedParameterIds = JSON.stringify(unusedParameterIds);
     deleteParametersForActivities(robotId, unusedParameterIds);
   }
 };
@@ -447,10 +447,9 @@ const deleteUnusedAttributesFromDB = (attributes, usedElementIds, robotId) => {
     (singleAttribute) => !usedElementIds.includes(singleAttribute.activityId)
   );
   if (unusedAttributes && unusedAttributes.length > 0) {
-    let unusedAttributeIds = unusedAttributes.map(
+    const unusedAttributeIds = unusedAttributes.map(
       (singleUnusedAttribute) => singleUnusedAttribute.activityId
     );
-    unusedAttributeIds = JSON.stringify(unusedAttributeIds);
     deleteAttributesForActivities(robotId, unusedAttributeIds);
   }
 };
@@ -465,53 +464,55 @@ const upsert = async () => {
     (singleElement) => singleElement.id
   );
   const robotId = JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
-  const requestStringSsot = `/ssot/overwriteRobot/${robotId}`;
+  const requestStringSsot = `/robots/${robotId}`;
   // eslint-disable-next-line no-unused-vars
   const responseSsot = await fetch(requestStringSsot, {
     body: ssot,
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
   });
 
-  const attributes = JSON.parse(
+  const attributeObjectList = JSON.parse(
     sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH)
   );
-  let stillUsedAttributes = attributes.filter((singleAttribute) =>
+
+  let stillUsedAttributes = attributeObjectList.filter((singleAttribute) =>
     usedElementIds.includes(singleAttribute.activityId)
   );
   stillUsedAttributes = JSON.stringify(stillUsedAttributes);
   sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, stillUsedAttributes);
 
-  deleteUnusedAttributesFromDB(attributes, usedElementIds, robotId);
+  deleteUnusedAttributesFromDB(attributeObjectList, usedElementIds, robotId);
 
-  const requestStringAttributes = `/ssot/updateManyAttributes`;
+  // eslint-disable-next-line no-unused-vars
+  const requestStringAttributes = `/robots/rpaattributes`;
   // eslint-disable-next-line no-unused-vars
   const responseAttributes = await fetch(requestStringAttributes, {
-    body: stillUsedAttributes,
-    method: 'POST',
+    body: JSON.stringify({ attributeObjectList }),
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
   });
 
-  const parameterObject = JSON.parse(
+  const parameterObjectsList = JSON.parse(
     sessionStorage.getItem(PARAMETER_STORAGE_PATH)
   );
-  let stillUsedParameters = parameterObject.filter((singleParameter) =>
+  let stillUsedParameters = parameterObjectsList.filter((singleParameter) =>
     usedElementIds.includes(singleParameter.activityId)
   );
   stillUsedParameters = JSON.stringify(stillUsedParameters);
   sessionStorage.setItem(PARAMETER_STORAGE_PATH, stillUsedParameters);
 
-  deleteUnusedParameterFromDB(parameterObject, usedElementIds, robotId);
+  deleteUnusedParameterFromDB(parameterObjectsList, usedElementIds, robotId);
 
-  const requestStringParameters = `/ssot/updateManyParameters`;
+  const requestStringParameters = `/robots/parameters`;
   // eslint-disable-next-line no-unused-vars
   const responseParameters = await fetch(requestStringParameters, {
-    body: stillUsedParameters,
-    method: 'POST',
+    body: JSON.stringify({ parameterObjectsList }),
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
@@ -530,7 +531,7 @@ const upsert = async () => {
  * @returns {Array} Array of parameter objects related to the robot
  */
 const getParameterForRobotFromDB = async (robotId) => {
-  const reqString = `/ssot/getAllParameters/${robotId}`;
+  const reqString = `/robots/parameters/${robotId}`;
   const response = await fetch(reqString);
   return response;
 };
