@@ -5,7 +5,9 @@
     "start": "node server",
     "build": "",
     "test": "jest --runInBand",
-    "lint": "eslint --ignore-path ../.gitignore --ext .js,.jsx ."
+    "lint": "eslint --ignore-path ../.gitignore --ext .js,.jsx .",
+    "local": "nodemon --exec \"heroku local\" --signal SIGTERM",
+    "mac_m1_test": "env MONGOMS_ARCH=x64 npm run test"
   },
   "cacheDirectories": [
     "node_modules",
@@ -16,7 +18,10 @@
     "express": "^4.16.4",
     "mongodb": "^3.6.5",
     "mongoose": "^5.12.1",
-    "socket.io": "^4.0.0"
+    "nodemon": "^2.0.7",
+    "socket.io": "^4.0.0",
+    "swagger-jsdoc": "5.0.1",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "eslint": "^7.17.0",
@@ -37,5 +42,11 @@
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "nodemonConfig": {
+    "ext": "js,json,yaml",
+    "ignore": [
+      "*.test.js"
+    ]
   }
 }
