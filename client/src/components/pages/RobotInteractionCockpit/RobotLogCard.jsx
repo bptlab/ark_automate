@@ -16,23 +16,23 @@ const RobotLogCard = (props) => {
       type='inner'
     >
       <Row>
-        <Col span={16}>
+        <Col xs={24} md={16}>
           {log.message && <p>Error Message: {log.message}</p>}
           {log.tasks &&
             log.tasks.map((task) => (
               <Card size='small'>
                 <Row>
-                  <Col span={16}>
+                  <Col xs={24} lg={24} xl={16}>
                     <p>Task: {task.task_name}</p>
                   </Col>
-                  <Col span={8}>
+                  <Col xs={24} lg={24} xl={8}>
                     <p>Status: {task.status}</p>
                   </Col>
                 </Row>
               </Card>
             ))}
         </Col>
-        <Col span={8}>
+        <Col xs={24} md={8}>
           <>{displayStatusIcon(log.status)}</>
         </Col>
       </Row>

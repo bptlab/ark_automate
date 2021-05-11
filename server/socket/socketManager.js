@@ -91,6 +91,6 @@ exports.socketManager = (io, socket) => {
         socketHelperFunctions.updateRobotJobErrors(jobId, robotLogs);
       }
     }
-    io.to(userId).emit('liveRobotMonitoring', robotLogs);
+    io.to(userId).emit('changedRobotRunLogs', robotLogs);
   });
 };

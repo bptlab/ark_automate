@@ -19,6 +19,7 @@ import {
   newRobotStatusUpdate,
 } from '../../../api/socketHandler/socketListeners';
 import RobotLogCard from './RobotLogCard';
+import styles from './RobotInteractionCockpit.module.css';
 
 const { Step } = Steps;
 const { Title } = Typography;
@@ -111,30 +112,16 @@ const RobotInteractionCockpit = (match) => {
     if (status === 'PASS' || status === 'successful') {
       return (
         <CheckCircleOutlined
-          style={{
-            position: 'relative',
-            top: '40%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            'font-size': '3rem',
-            color: 'green',
-            margin: '10px 10px 10px 10px',
-          }}
+          className={styles.statusIconStyle}
+          style={{ color: 'green' }}
         />
       );
     }
     if (status === 'FAIL' || status === 'failed') {
       return (
         <CloseCircleOutlined
-          style={{
-            position: 'relative',
-            top: '40%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            'font-size': '3rem',
-            color: 'red',
-            margin: '10px 10px 10px 10px',
-          }}
+          className={styles.statusIconStyle}
+          style={{ color: 'red' }}
         />
       );
     }
@@ -154,12 +141,8 @@ const RobotInteractionCockpit = (match) => {
     if (status === 'waiting') {
       return (
         <PauseCircleOutlined
-          style={{
-            top: '40%',
-            left: '50%',
-            'font-size': '3rem',
-            color: 'grey',
-          }}
+          className={styles.statusIconStyle}
+          style={{ color: 'grey' }}
         />
       );
     }
@@ -170,7 +153,7 @@ const RobotInteractionCockpit = (match) => {
     <Layout>
       <HeaderNavbar selectedKey={4} />
       <Card style={{ margin: '24px', borderRadius: '5px' }}>
-        <Steps current={currentStep}>
+        <Steps responsive current={currentStep}>
           <Step title='Input' description='Define input for robot' />
           <Step title='Execution' description='Observe Robot Run' />
           <Step title='Done' description='Get return value' />
@@ -203,7 +186,7 @@ const RobotInteractionCockpit = (match) => {
           {currentStep !== 0 && (
             <>
               <Row>
-                <Col span={12}>
+                <Col  xs={24} lg={24} xl={12}>
                   <Title
                     style={{
                       marginBottom: '0px',
@@ -231,7 +214,7 @@ const RobotInteractionCockpit = (match) => {
                     </Row>
                   </Card>
                 </Col>
-                <Col span={12}>
+                <Col  lg={24} xl={12}>
                   <Title
                     style={{ marginBottom: '0px', marginLeft: '10px' }}
                     level={5}
