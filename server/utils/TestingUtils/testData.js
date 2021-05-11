@@ -65,7 +65,7 @@ const testUserAccessObject2 = {
   userId: user2Id,
 };
 
-const numberOfTestTasks = 3;
+const numberOfTestTasks = 5;
 const testRpaTask1 = {
   Application: 'Browser',
   Task: 'Click Button',
@@ -116,6 +116,38 @@ const testRpaTask3 = {
       type: 'String',
       isRequired: true,
       infoText: 'password',
+      index: 0,
+    },
+  ],
+};
+
+const testRpaTask4 = {
+  Application: 'Excel.Application',
+  Task: 'Open Workbook',
+  Code: 'Open Workbook',
+  outputValue: false,
+  inputVars: [
+    {
+      name: 'path',
+      type: 'String',
+      isRequired: true,
+      infoText: 'path',
+      index: 0,
+    },
+  ],
+};
+
+const testRpaTask5 = {
+  Application: 'Excel.Files',
+  Task: 'Open Workbook',
+  Code: 'Open Workbook',
+  outputValue: false,
+  inputVars: [
+    {
+      name: 'path',
+      type: 'String',
+      isRequired: true,
+      infoText: 'path',
       index: 0,
     },
   ],
@@ -232,6 +264,8 @@ module.exports = {
   testRpaTask1,
   testRpaTask2,
   testRpaTask3,
+  testRpaTask4,
+  testRpaTask5,
   testJob,
   testJobId,
   testAttributes1,
