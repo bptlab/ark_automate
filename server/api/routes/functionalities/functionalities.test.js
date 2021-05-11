@@ -22,7 +22,7 @@ beforeAll(async () => dbHandler.connect());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('GET /functionalities/applications', () => {
-  it('retreives the list of all available apps correctly', async () => {
+  it('retrieves the list of all available apps correctly', async () => {
     await dbLoader.loadTasksInDb();
     const response = httpMocks.createResponse();
     await rpaController.getAvailableApplications({}, response);

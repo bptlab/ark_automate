@@ -23,9 +23,8 @@ const rpaModels = require('../models/rpaTaskModel');
 exports.getAvailableApplications = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    await mongoose.model('rpa-task').distinct('Application', (err, tasks) => {
-      res.send(tasks);
-    });
+    const tasks = await mongoose.model('rpa-task').distinct('Application');
+    res.send(tasks);
   } catch (err) {
     console.error(err);
   }
