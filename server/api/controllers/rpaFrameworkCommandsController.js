@@ -94,7 +94,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
  *                 items:
  *                   $ref: '#/components/schemas/Functionalities'
  */
-exports.getAllParameters = async (req, res) => {
+exports.getAllRpaFunctionalities = async (req, res) => {
   const parameterObjects = await mongoose.model('rpa-task').find().exec();
 
   res.send(parameterObjects);

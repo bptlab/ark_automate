@@ -8,6 +8,6 @@ router.get(
   '/:application/tasks',
   commandsController.getAvailableTasksForApplications
 );
-router.get('/', commandsController.getAllParameters);
+router.get('/', commandsController.getAllRpaFunctionalities);
 
 module.exports = router;

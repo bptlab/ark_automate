@@ -59,7 +59,7 @@ describe('GET /functionalities/{application}/tasks', () => {
 describe('GET /functionalities', () => {
   it('retrieves the list of all available parameter Objects correctly', async () => {
     const response = httpMocks.createResponse();
-    await rpaController.getAllParameters({}, response);
+    await rpaController.getAllRpaFunctionalities({}, response);
     const data = await response._getData();
 
     expect(response.statusCode).toBe(200);
