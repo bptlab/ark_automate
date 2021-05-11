@@ -77,7 +77,6 @@ exports.socketManager = (io, socket) => {
   });
 
   socket.on('updatedLiveRobotLog', ({ jobId, robotLogs }) => {
-    console.log(robotLogs);
     if (robotLogs.final_message === 'Execution completed') {
       socketHelperFunctions.updateRobotJobStatus(
         jobId,
