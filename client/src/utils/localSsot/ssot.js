@@ -22,19 +22,21 @@ import {
   getAllParametersForRobot,
   updateManyParameters,
 } from '../../api/variableRetrieval';
+import { getParameterStorage } from './parameters';
+import { getAttributeStorage } from './attributes';
 
 const ROBOT_ID_PATH = 'robotId';
-const APPLICATION_TASK_STORAGE_PATH = 'attributeLocalStorage';
+const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
 
 /**
- * @description This function gets the robotId of the currently opened robot from the session storage
- * @returns Currently saved robotId from session storage
+ * @description Gets the robotId of the currently opened robot from the session storage
+ * @returns Currently saved robotId
  */
 const getRobotId = () => JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
 
 /**
- * @description This function writes the robotId of the currently opened robot to the session storage
+ * @description Writes the robotId of the currently opened robot into the session storage
  * @param {String} robotId The robotId ot the currently opened robot
  */
 const setRobotId = (robotId) => {
@@ -42,8 +44,8 @@ const setRobotId = (robotId) => {
 };
 
 /**
- * @description Will initialize the ssot in local session storage
- * @param {String} robotId Id of the robot for which we want to initialize the ssot locally
+ * @description Initializes the ssot in the session storage
+ * @param {String} robotId Id of the robot for which we want to initialize the ssot in the session storage
  */
 const initSsotSessionStorage = (robotId) => {
   getSsot(robotId)
@@ -59,25 +61,31 @@ const initSsotSessionStorage = (robotId) => {
   getAllAttributes(robotId)
     .then((response) => response.json())
     .then((data) => {
-      initSessionStorage('attributeLocalStorage', JSON.stringify([]));
       sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
+    })
+    .catch((error) => {
+      console.error(error);
     });
 
   getAllParameters(robotId)
     .then((response) => response.json())
     .then((data) => {
-      initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
       sessionStorage.setItem(
         'TaskApplicationCombinations',
         JSON.stringify(data)
       );
+    })
+    .catch((error) => {
+      console.error(error);
     });
 
   getAllParametersForRobot(robotId)
     .then((response) => response.json())
     .then((data) => {
-      initSessionStorage('parameterLocalStorage', JSON.stringify([]));
       sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
+    })
+    .catch((error) => {
+      console.error(error);
     });
 
   initSessionStorage('taskToApplicationCache', JSON.stringify({}));
@@ -97,8 +105,8 @@ const initSsotSessionStorage = (robotId) => {
 };
 
 /**
- * @description If there is more than one unused attribute Object, delete it in the DB
- * @param {Array} attributes List of all attributes saved in the sessionStorage
+ * @description If there is more than one unused attribute object, delete it in the database
+ * @param {Array} attributes List of all attributes saved in the session storage
  * @param {Array} usedElementIds The activityIds that are still being used
  * @param {String} robotId The Id of the robot
  */
@@ -107,71 +115,63 @@ const deleteUnusedAttributesFromDB = (attributes, usedElementIds, robotId) => {
     (singleAttribute) => !usedElementIds.includes(singleAttribute.activityId)
   );
   if (unusedAttributes && unusedAttributes.length > 0) {
-    let unusedAttributeIds = unusedAttributes.map(
-      (singleUnusedAttribute) => singleUnusedAttribute.activityId
+    let unusedActivityIds = unusedAttributes.map(
+      (unusedAttributeObject) => unusedAttributeObject.activityId
     );
-    unusedAttributeIds = JSON.stringify(unusedAttributeIds);
-    deleteAttributesForActivities(robotId, unusedAttributeIds);
+    unusedActivityIds = JSON.stringify(unusedActivityIds);
+    deleteAttributesForActivities(robotId, unusedActivityIds);
   }
 };
 
 /**
- * @description If there is more than one unused parameter Object, delete it in the DB
- * @param {Array} parameterObject List of all parameters saved in the sessionStorage
+ * @description If there is more than one unused parameter object, delete it in the database
+ * @param {Array} parameters List of all parameters saved in the session storage
  * @param {Array} usedElementIds The activityIds that are still being used
  * @param {String} robotId The Id of the robot
  */
-const deleteUnusedParameterFromDB = (
-  parameterObject,
-  usedElementIds,
-  robotId
-) => {
-  const unusedParameters = parameterObject.filter(
+const deleteUnusedParameterFromDB = (parameters, usedElementIds, robotId) => {
+  const unusedParameters = parameters.filter(
     (singleParameter) => !usedElementIds.includes(singleParameter.activityId)
   );
   if (unusedParameters && unusedParameters.length > 0) {
-    let unusedParameterIds = unusedParameters.map(
-      (singleUnusedParameter) => singleUnusedParameter.activityId
+    let unusedActivityIds = unusedParameters.map(
+      (unusedParameterObject) => unusedParameterObject.activityId
     );
-    unusedParameterIds = JSON.stringify(unusedParameterIds);
-    deleteParametersForActivities(robotId, unusedParameterIds);
+    unusedActivityIds = JSON.stringify(unusedActivityIds);
+    deleteParametersForActivities(robotId, unusedActivityIds);
   }
 };
 
 /**
- * @description Will send three backend calls to upsert the ssot, the attribute objects and the parameter objects to the database.
- * The objects are taken from the session storage, so no parameters are required
+ * @description Sends three backend calls to upsert the ssot, the attribute objects and the parameter objects to the database.
+ * The objects are taken from the session storage, so no parameters are required.
  */
 const upsert = async () => {
   const ssot = sessionStorage.getItem('ssotLocal');
   const usedElementIds = JSON.parse(ssot).elements.map(
     (singleElement) => singleElement.id
   );
-  const robotId = JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
+  const robotId = getRobotId();
   updateRobot(robotId, ssot);
 
-  const attributes = JSON.parse(
-    sessionStorage.getItem(APPLICATION_TASK_STORAGE_PATH)
-  );
-  let stillUsedAttributes = attributes.filter((singleAttribute) =>
+  const localAttributeStorage = getAttributeStorage();
+  let stillUsedAttributes = localAttributeStorage.filter((singleAttribute) =>
     usedElementIds.includes(singleAttribute.activityId)
   );
   stillUsedAttributes = JSON.stringify(stillUsedAttributes);
-  sessionStorage.setItem(APPLICATION_TASK_STORAGE_PATH, stillUsedAttributes);
+  sessionStorage.setItem(ATTRIBUTE_STORAGE_PATH, stillUsedAttributes);
 
-  deleteUnusedAttributesFromDB(attributes, usedElementIds, robotId);
+  deleteUnusedAttributesFromDB(localAttributeStorage, usedElementIds, robotId);
   updateManyAttributes(stillUsedAttributes);
 
-  const parameterObject = JSON.parse(
-    sessionStorage.getItem(PARAMETER_STORAGE_PATH)
-  );
-  let stillUsedParameters = parameterObject.filter((singleParameter) =>
+  const localParameterStorage = getParameterStorage();
+  let stillUsedParameters = localParameterStorage.filter((singleParameter) =>
     usedElementIds.includes(singleParameter.activityId)
   );
   stillUsedParameters = JSON.stringify(stillUsedParameters);
   sessionStorage.setItem(PARAMETER_STORAGE_PATH, stillUsedParameters);
 
-  deleteUnusedParameterFromDB(parameterObject, usedElementIds, robotId);
+  deleteUnusedParameterFromDB(localParameterStorage, usedElementIds, robotId);
   updateManyParameters(stillUsedParameters);
 
   customNotification(

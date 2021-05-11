@@ -8,7 +8,7 @@
 import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
 /* import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
  */
-import { setRpaTask, resetRpaApplication } from '../localSsot/attributes';
+import { setRpaTask, setRpaApplication } from '../localSsot/attributes';
 import {
   setSingleParameter,
   setOutputValueName,
@@ -182,7 +182,7 @@ const applicationChangedHandler = (
   });
 
   setterObject.setSelectedApplication(value);
-  resetRpaApplication(robotId, elementState.currentElement.id, value);
+  setRpaApplication(robotId, elementState.currentElement.id, value);
   getTasksForApplication(value, setterObject);
 
   setterObject.setOutputVariableName(undefined);

@@ -6,8 +6,16 @@
 const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 
 /**
- * @description Will get the parameter object for an activiy in local session storage
- * @param {String} activityId Id of the activity for which to change the value for
+ * @description Will get the attribute object array from the session storage
+ * @returns {Array} parameter local storage
+ */
+const getAttributeStorage = () =>
+  JSON.parse(sessionStorage.getItem(ATTRIBUTE_STORAGE_PATH));
+
+/**
+ * @description Will get the attribute object for an activiy from session storage
+ * @param {String} activityId Id of the activity for which to get the attribute object
+ * @returns The attribute object for the selected activity or undefined if not available
  */
 const getAttributeObjectForActivity = (activityId) => {
   const localAttributeStorage = JSON.parse(
@@ -19,18 +27,12 @@ const getAttributeObjectForActivity = (activityId) => {
 };
 
 /**
- * @description This function gets the selected RPA task for the selected activity from the session storage
+ * @description This function gets the selected rpa task for the selected activity from session storage
  * @param {String} activityId Id of the currently selected activity
- * @returns The selected RPA task for the selected activity from session storage
+ * @returns The selected rpa task for the selected activity from session storage or undefined if not available
  */
 const getRpaTask = (activityId) => {
-  const localAttributeStorage = JSON.parse(
-    sessionStorage.getItem(ATTRIBUTE_STORAGE_PATH)
-  );
-  const matchingEntry = localAttributeStorage.find(
-    (element) => element.activityId === activityId
-  );
-
+  const matchingEntry = getAttributeObjectForActivity(activityId);
   let selectedTask;
   if (matchingEntry) {
     selectedTask = matchingEntry.rpaTask;
@@ -39,29 +41,28 @@ const getRpaTask = (activityId) => {
 };
 
 /**
- * @description Stores the RPA Task for the currently selected activity in the session storage
+ * @description Stores the rpa task for the currently selected activity in the session storage
  * @param {string} robotId Id of the currently opened robot
  * @param {string} activityId Id of the currently selected activity
  * @param {string} application Name of the selected application
- * @param {string} newTask Name of the selected task from dropdown
+ * @param {string} newTask Name of the selected task
  */
 const setRpaTask = (robotId, activityId, application, newTask) => {
-  const localApplicationTaskStorage = JSON.parse(
+  const localAttributeStorage = JSON.parse(
     sessionStorage.getItem(ATTRIBUTE_STORAGE_PATH)
   );
-
-  let matchingActivity = localApplicationTaskStorage.find(
+  let matchingEntry = localAttributeStorage.find(
     (element) => element.activityId === activityId
   );
-  const arrayWithoutMatchingElement = localApplicationTaskStorage.filter(
+  const newLocalAttributeStorage = localAttributeStorage.filter(
     (element) =>
       element.robotId === robotId && element.activityId !== activityId
   );
 
-  if (matchingActivity) {
-    matchingActivity.rpaTask = newTask;
+  if (matchingEntry) {
+    matchingEntry.rpaTask = newTask;
   } else {
-    matchingActivity = {
+    matchingEntry = {
       activityId,
       robotId,
       rpaApplication: application,
@@ -69,64 +70,56 @@ const setRpaTask = (robotId, activityId, application, newTask) => {
     };
   }
 
-  arrayWithoutMatchingElement.push(matchingActivity);
+  newLocalAttributeStorage.push(matchingEntry);
   sessionStorage.setItem(
     ATTRIBUTE_STORAGE_PATH,
-    JSON.stringify(arrayWithoutMatchingElement)
+    JSON.stringify(newLocalAttributeStorage)
   );
 };
 
 /**
- * @description Retireves or creates a new attribute object for the given activity and will set the task to undefined.
- * Use this function to reset the associated task for that activity.
+ * @description Sets the rpaApplication attribute for an activity to a new application and sets rpaTask to undefined
  * @param {string} robotId Id of the currently opened robot
  * @param {string} activityId Id of the currently selected activity
- * @param {string} newApplication Name of the selected RPA application
+ * @param {string} newApplication Name of the selected rpa application
  */
-const resetRpaApplication = (robotId, activityId, newApplication) => {
-  const localApplicationTaskStorage = JSON.parse(
+const setRpaApplication = (robotId, activityId, newApplication) => {
+  const localAttributeStorage = JSON.parse(
     sessionStorage.getItem(ATTRIBUTE_STORAGE_PATH)
   );
-
-  let matchingActivity = localApplicationTaskStorage.find(
+  let matchingEntry = localAttributeStorage.find(
     (element) => element.activityId === activityId
   );
-  const arrayWithoutMatchingElement = localApplicationTaskStorage.filter(
+  const newLocalAttributeStorage = localAttributeStorage.filter(
     (element) =>
       element.robotId === robotId && element.activityId !== activityId
   );
 
-  if (matchingActivity) {
-    matchingActivity.rpaApplication = newApplication;
+  if (matchingEntry) {
+    matchingEntry.rpaApplication = newApplication;
   } else {
-    matchingActivity = {
+    matchingEntry = {
       activityId,
       robotId,
       rpaApplication: newApplication,
     };
   }
 
-  matchingActivity.rpaTask = undefined;
-  arrayWithoutMatchingElement.push(matchingActivity);
+  matchingEntry.rpaTask = undefined;
+  newLocalAttributeStorage.push(matchingEntry);
   sessionStorage.setItem(
     ATTRIBUTE_STORAGE_PATH,
-    JSON.stringify(arrayWithoutMatchingElement)
+    JSON.stringify(newLocalAttributeStorage)
   );
 };
 
 /**
- * @param {String} activityId id of the currently selected activity
- * @description this util function returns the RPA application for the selected activity
- * @returns the selected RPA application for the selected activity from localStorage
+ * @description Gets the rpa application for the selected activity from session storage
+ * @param {String} activityId Id of the currently selected activity
+ * @returns The selected rpa application for the selected activity or undefined
  */
 const getRpaApplication = (activityId) => {
-  const localApplicationTaskStorage = JSON.parse(
-    sessionStorage.getItem(ATTRIBUTE_STORAGE_PATH)
-  );
-  const matchingEntry = localApplicationTaskStorage.find(
-    (element) => element.activityId === activityId
-  );
-
+  const matchingEntry = getAttributeObjectForActivity(activityId);
   let selectedApplication;
   if (matchingEntry) {
     selectedApplication = matchingEntry.rpaApplication;
@@ -135,9 +128,10 @@ const getRpaApplication = (activityId) => {
 };
 
 export {
+  getAttributeStorage,
   getAttributeObjectForActivity,
   getRpaTask,
   setRpaTask,
-  resetRpaApplication,
+  setRpaApplication,
   getRpaApplication,
 };

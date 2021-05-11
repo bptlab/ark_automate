@@ -16,7 +16,7 @@ import {
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
 } from './modelerSidebarFunctionality';
-import { setRpaTask, resetRpaApplication } from '../localSsot/attributes';
+import { setRpaTask, setRpaApplication } from '../localSsot/attributes';
 import {
   setSingleParameter,
   setOutputValueName,
@@ -399,7 +399,7 @@ describe('Sidebar Functionality: Application Change', () => {
       JSON.stringify(taskToApplication)
     );
 
-    resetRpaApplication.mockImplementation(
+    setRpaApplication.mockImplementation(
       (robotId, selectedElementId, value) => {
         expect(value).toEqual(constants.MOCK_VALUE);
         expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
@@ -413,7 +413,7 @@ describe('Sidebar Functionality: Application Change', () => {
       constants.MOCK_ELEMENT_STATE,
       MOCK_SETTER_OBJECT
     );
-    expect(resetRpaApplication).toHaveBeenCalledTimes(1);
+    expect(setRpaApplication).toHaveBeenCalledTimes(1);
   });
 
   it('handle application change WITHOUT cache existing', async () => {
@@ -456,7 +456,7 @@ describe('Sidebar Functionality: Application Change', () => {
       JSON.stringify(taskToApplication)
     );
 
-    resetRpaApplication.mockImplementation(
+    setRpaApplication.mockImplementation(
       (robotId, selectedElementId, value) => {
         expect(value).toEqual(constants.MOCK_VALUE);
         expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
@@ -475,7 +475,7 @@ describe('Sidebar Functionality: Application Change', () => {
       constants.MOCK_ELEMENT_STATE,
       MOCK_SETTER_OBJECT
     );
-    expect(resetRpaApplication).toHaveBeenCalledTimes(1);
+    expect(setRpaApplication).toHaveBeenCalledTimes(1);
     expect(fetchTasksFromDB).toHaveBeenCalledTimes(1);
   });
 });
