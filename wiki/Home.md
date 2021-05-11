@@ -16,6 +16,10 @@ In our Wiki you can find the following:
   - write [tests](https://github.com/bptlab/ark_automate/wiki/How-to-write-tests)
   - sytle [our components using css](https://github.com/bptlab/ark_automate/wiki/How-to-style-using-css)
 
+## API documentation
+
+The OpenApi documentation of the offered API can be found when fetching the /docs route from the running backend, which is up to date with everything in the Code, as it is generated at runtime.
+WHen running a local version of the software you can access the documentation using `localhost:5000/docs`
 
 ## How to contribute to the wiki
 

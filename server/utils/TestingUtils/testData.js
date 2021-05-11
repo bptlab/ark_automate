@@ -65,7 +65,7 @@ const testUserAccessObject2 = {
   userId: user2Id,
 };
 
-const numberOfTestTasks = 3;
+const numberOfTestTasks = 5;
 const testRpaTask1 = {
   Application: 'Browser',
   Task: 'Click Button',
@@ -121,6 +121,38 @@ const testRpaTask3 = {
   ],
 };
 
+const testRpaTask4 = {
+  Application: 'Excel.Application',
+  Task: 'Open Workbook',
+  Code: 'Open Workbook',
+  outputValue: false,
+  inputVars: [
+    {
+      name: 'path',
+      type: 'String',
+      isRequired: true,
+      infoText: 'path',
+      index: 0,
+    },
+  ],
+};
+
+const testRpaTask5 = {
+  Application: 'Excel.Files',
+  Task: 'Open Workbook',
+  Code: 'Open Workbook',
+  outputValue: false,
+  inputVars: [
+    {
+      name: 'path',
+      type: 'String',
+      isRequired: true,
+      infoText: 'path',
+      index: 0,
+    },
+  ],
+};
+
 const testJob = {
   _id: testJobId,
   __v: 0,
@@ -134,6 +166,7 @@ const testJob = {
       value: 'TESTVALUE',
     },
   ],
+  loggedErrors: [],
 };
 
 const testAttributes1 = {
@@ -221,6 +254,75 @@ const testParameter3 = {
 const testRobotCode =
   '*** Settings *** Library    RPA.Excel.Application Library    RPA.Browser *** Tasks *** FirstActivity RPA.Excel.Application.Open Workbook    C://Users/Filepath SecondActivity Find Empty Row    StonksOnlyGoUp.xls ThirdActivity Open Browser    TESTVALUE';
 
+const failingRobotRunLog = {
+  robot_run: {
+    name: 'DanielTest2',
+    activity_count: 8,
+    activities: [
+      {
+        activity_name: 'Browser1',
+        tasks: [{ task_name: 'Open Chrome Browser', status: 'PASS' }],
+        status: 'PASS',
+        message: '',
+      },
+      {
+        activity_name: 'Say hello',
+        tasks: [{ task_name: 'Open Workbook', status: 'PASS' }],
+        status: 'PASS',
+        message: '',
+      },
+      {
+        activity_name: 'Say Goodbye!',
+        tasks: [
+          { task_name: 'Set Worksheet Value', status: 'PASS' },
+          { task_name: 'Set Worksheet Value', status: 'PASS' },
+        ],
+        status: 'PASS',
+        message: '',
+      },
+      {
+        activity_name: 'Browser2',
+        tasks: [{ task_name: 'Open Chrome Browser', status: 'PASS' }],
+        status: 'PASS',
+        message: '',
+      },
+      {
+        activity_name: 'Browser3',
+        tasks: [
+          { task_name: 'Open Chro Browser', status: 'FAIL' },
+          { task_name: 'Set Worksheet Value', status: 'NOT RUN' },
+        ],
+        status: 'FAIL',
+        message:
+          "No keyword with name 'Open Chro Browser' found. Did you mean:\n    RPA.Browser.Selenium.Open Chrome Browser",
+      },
+      {
+        activity_name: 'Interrupt',
+        tasks: [{ task_name: 'Set Worksheet Value', status: 'PASS' }],
+        status: 'PASS',
+        message: '',
+      },
+      {
+        activity_name: 'Browser4',
+        tasks: [
+          { task_name: 'Open Chrome Browser', status: 'PASS' },
+          { task_name: 'Set Worksheet Value', status: 'PASS' },
+        ],
+        status: 'PASS',
+        message: '',
+      },
+      {
+        activity_name: 'Save file',
+        tasks: [{ task_name: 'Save Workbook', status: 'FAIL' }],
+        status: 'FAIL',
+        message: 'Test Failing Message',
+      },
+    ],
+    status: 'FAIL',
+  },
+  final_message: 'Execution completed',
+};
+
 module.exports = {
   testSsot,
   testUserAccessObject,
@@ -232,6 +334,8 @@ module.exports = {
   testRpaTask1,
   testRpaTask2,
   testRpaTask3,
+  testRpaTask4,
+  testRpaTask5,
   testJob,
   testJobId,
   testAttributes1,
@@ -241,4 +345,5 @@ module.exports = {
   testParameter2,
   testParameter3,
   testRobotCode,
+  failingRobotRunLog,
 };

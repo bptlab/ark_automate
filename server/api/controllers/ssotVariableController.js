@@ -4,15 +4,41 @@ const ssotModels = require('../models/singleSourceOfTruthModel.js');
 const userAccessModels = require('../models/userAccessObjectModel.js');
 const rpaModels = require('../models/rpaTaskModel');
 
-// POST /ssot/updateManyParameters/
-// do not forget the payload in the body for this request
+/**
+ * @swagger
+ * /robots/parameters:
+ *     put:
+ *       tags:
+ *         - Robots
+ *       summary: Overwrite existing parameter objects with updated one's
+ *       operationId: overwriteParameters
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - parameterObjectsList
+ *               properties:
+ *                 parameterObjectsList:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Parameters'
+ *         description: updated parameter object
+ *         required: true
+ *       responses:
+ *         204:
+ *           description: No Content
+ *         400:
+ *           description: Bad Request
+ */
 exports.updateMany = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    const parameterList = req.body;
+    const { parameterObjectsList } = req.body;
 
     const updateList = [];
-    parameterList.forEach((element) => {
+    parameterObjectsList.forEach((element) => {
       const updateElement = {
         updateOne: {
           filter: {
@@ -36,7 +62,31 @@ exports.updateMany = async (req, res) => {
   }
 };
 
-// GET /getAllParameters/604f537ed699a2eb47433184'
+/**
+ * @swagger
+ * /robots/parameters/{robotId}:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     get:
+ *       tags:
+ *         - Robots
+ *       summary: Get all parameter objects for a specific robot
+ *       operationId: getParametersForRobot
+ *       responses:
+ *         200:
+ *           description: OK
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/Parameters'
+ */
 exports.retrieveParametersForRobot = async (req, res) => {
   const { robotId } = req.params;
 
@@ -48,4 +98,59 @@ exports.retrieveParametersForRobot = async (req, res) => {
     .exec();
 
   res.send(parameterObjects);
+};
+
+/**
+ * @swagger
+ * /robots/parameters/{robotId}:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     delete:
+ *       tags:
+ *         - Robots
+ *       summary: Delete parameters related to the specified activities
+ *       operationId: deleteParameters
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - activityIdListObject
+ *               properties:
+ *                 activityIdList:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/ActivityIds'
+ *         description: updated parameter object
+ *         required: true
+ *       responses:
+ *         204:
+ *           description: No Content
+ *         400:
+ *           description: Bad Request
+ */
+exports.deleteForActivities = async (req, res) => {
+  const { activityIdList } = req.body;
+  const { robotId } = req.params;
+  const usablerobotId = mongoose.Types.ObjectId(robotId);
+
+  try {
+    const deletionResult = await mongoose
+      .model('parameter')
+      .deleteMany({
+        activityId: { $in: activityIdList },
+        robotId: usablerobotId,
+      })
+      .exec();
+
+    res.send(deletionResult);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };

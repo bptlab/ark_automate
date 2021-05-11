@@ -107,6 +107,7 @@ describe('Ssot Parsing', () => {
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
     await dbLoader.loadJobInDb();
+    await dbLoader.loadTasksInDb();
 
     const parserResultString = await parser.parseCodeForJob(
       testRobotId,

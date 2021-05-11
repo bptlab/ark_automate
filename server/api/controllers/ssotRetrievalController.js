@@ -4,20 +4,74 @@ const mongoose = require('mongoose');
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 const userAccessModels = require('../models/userAccessObjectModel.js');
 
-// GET /ssot/:id
+/**
+ * @swagger
+ * /robots/{robotId}:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     get:
+ *       tags:
+ *         - Robots
+ *       summary: Get a robot with a specific id
+ *       operationId: getSpecificRobot
+ *       responses:
+ *         200:
+ *           description: OK
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Robots'
+ */
 exports.getSingleSourceOfTruth = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
 
-    const { id } = req.params;
-    const ssot = await mongoose.model('SSoT').findById(id).exec();
+    const { robotId } = req.params;
+    const ssot = await mongoose.model('SSoT').findById(robotId).exec();
     res.send(ssot);
   } catch (err) {
     console.error(err);
   }
 };
 
-// GET /getAvailableRobotsForUser/78d09f66d2ed466cf20b06f7
+/**
+ * @swagger
+ * /users/{userId}/robots:
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         description: The id of a user
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/ObjectIds'
+ *     get:
+ *       tags:
+ *         - Users
+ *       summary: Get all robots for a specific user
+ *       operationId: getRobotsForUser
+ *       responses:
+ *         200:
+ *           description: OK
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - _id
+ *                     - robotName
+ *                   properties:
+ *                     _id:
+ *                      $ref: '#/components/schemas/RobotIds'
+ *                     robotName:
+ *                       $ref: '#/components/schemas/RobotNames'
+ */
 exports.getRobotList = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
@@ -66,20 +120,46 @@ exports.getRobotList = async (req, res) => {
   }
 };
 
-// GET /renameRobot?id=78d09f66d2ed466cf20b06f7&newName=Bot+Browser
+/**
+ * @swagger
+ * /robots/{robotId}/robotName:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     patch:
+ *       tags:
+ *         - Robots
+ *       summary: Updates the name of a robot
+ *       operationId: setRobotName
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RobotNameObjects'
+ *         description: Object with new robot name
+ *         required: true
+ *       responses:
+ *         204:
+ *           description: No Content
+ *         400:
+ *           description: Bad Request
+ */
 exports.renameRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    const { id } = req.query;
-    const usableUserId = mongoose.Types.ObjectId(id);
-    const { newName } = req.query;
-    const newNameWithEmptyspace = newName.replace(/\+/g, ' ');
+    const { robotId } = req.params;
+    const usableRobotId = mongoose.Types.ObjectId(robotId);
+    const { newRobotName } = req.body;
 
     const ssot = await mongoose
       .model('SSoT')
       .findByIdAndUpdate(
-        { _id: usableUserId },
-        { robotName: newNameWithEmptyspace },
+        { _id: usableRobotId },
+        { robotName: newRobotName },
         {
           new: true,
           useFindAndModify: false,
@@ -96,29 +176,98 @@ exports.renameRobot = async (req, res) => {
   }
 };
 
-// GET /shareRobotWithUser?userId=78d09f66d2ed466cf20b06f7&robotId=78d09f66d2ed466cf20b06f7
+/**
+ * @swagger
+ * /users/robotAccess:
+ *     post:
+ *       tags:
+ *         - Users
+ *       summary: Share a robot with a user
+ *       operationId: createUserAccessObject
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserAccessObjects'
+ *         description: Object that connects a user with a robot
+ *         required: true
+ *       responses:
+ *         201:
+ *           description: Created
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/UserAccessObjects'
+ *         400:
+ *           description: Bad Request
+ */
 exports.shareRobotWithUser = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
 
-    const uao = await mongoose.model('userAccessObject').create({
-      AccessLevel: 'ReadWrite',
-      robotId: req.query.robotId,
-      userId: req.query.userId,
-    });
-    res.send(uao);
+    const userObject = await mongoose
+      .model('userAccessObject')
+      .create(req.body);
+    res.send(userObject);
   } catch (err) {
     console.error(err);
   }
 };
 
-// GET /createNewRobot?userId=78d09f66d2ed466cf20b06f7&robotName=NewRobot
+/**
+ * @swagger
+ * /users/{userId}/robots:
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         description: The id of a user
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/ObjectIds'
+ *     post:
+ *       tags:
+ *         - Users
+ *       summary: Create a new robot for a specific user
+ *       operationId: createRobotForUser
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - userId
+ *                 - robotName
+ *               properties:
+ *                 userId:
+ *                   $ref: '#/components/schemas/ObjectIds'
+ *                 robotName:
+ *                   $ref: '#/components/schemas/RobotNames'
+ *         description: Object that contains the new robotObject and a new userAccessObject
+ *         required: true
+ *       responses:
+ *         201:
+ *           description: Created
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 required:
+ *                   - robotId
+ *                   - robotName
+ *                 properties:
+ *                   robotId:
+ *                     $ref: '#/components/schemas/RobotIds'
+ *                   robotName:
+ *                     $ref: '#/components/schemas/RobotNames'
+ *         400:
+ *           description: Bad Request
+ */
 exports.createNewRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    const { userId } = req.query;
+    const { userId } = req.body;
     const usableUserId = mongoose.Types.ObjectId(userId);
-    const { robotName } = req.query;
+    const { robotName } = req.body;
     const nameWithEmptyspace = robotName.replace(/\+/g, ' ');
 
     const initialStartEvent = {
@@ -140,7 +289,7 @@ exports.createNewRobot = async (req, res) => {
       })
       .exec();
 
-    const uao = await mongoose.model('userAccessObject').create({
+    const userObject = await mongoose.model('userAccessObject').create({
       AccessLevel: 'ReadWrite',
       robotId: ssot.id,
       userId: usableUserId,
@@ -157,7 +306,34 @@ exports.createNewRobot = async (req, res) => {
   }
 };
 
-// POST /overwriteRobot/78d09f66d2ed466cf20b06f7
+/**
+ * @swagger
+ * /robots/{robotId}:
+ *   parameters:
+ *     - name: robotId
+ *       in: path
+ *       description: The id of a robot
+ *       required: true
+ *       schema:
+ *         $ref: '#/components/schemas/RobotIds'
+ *   put:
+ *     tags:
+ *       - Robots
+ *     summary: Overwrite the existing robot with an updated one
+ *     operationId: overwriteRobot
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Robots'
+ *       description: updated Robot object
+ *       required: true
+ *     responses:
+ *       204:
+ *         description: No Content
+ *       400:
+ *         description: Bad Request
+ */
 exports.overwriteRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
@@ -179,7 +355,25 @@ exports.overwriteRobot = async (req, res) => {
   }
 };
 
-// DELETE /ssot/delete/78d09f66d2ed466cf20b06f7
+/**
+ * @swagger
+ * /robots/{robotId}:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     delete:
+ *       tags:
+ *         - Robots
+ *       summary: Deletes a robot with a specific id
+ *       operationId: deleteSpecificRobot
+ *       responses:
+ *         200:
+ *           description: OK
+ */
 exports.deleteRobot = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');

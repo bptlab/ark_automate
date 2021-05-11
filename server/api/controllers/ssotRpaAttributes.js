@@ -2,15 +2,41 @@ const mongoose = require('mongoose');
 // eslint-disable-next-line no-unused-vars
 const ssotModels = require('../models/singleSourceOfTruthModel.js');
 
-// POST /ssot/updateManyAttributes/
-// do not forget the payload in the body for this request
+/**
+ * @swagger
+ * /robots/rpaattributes:
+ *     put:
+ *       tags:
+ *         - Robots
+ *       summary: Overwrite existing rpa attribute objects with updated one's
+ *       operationId: overwriteAttributes
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - attributeObjectList
+ *               properties:
+ *                 attributeObjectList:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/RPAAttributes'
+ *         description: updated attributes object
+ *         required: true
+ *       responses:
+ *         204:
+ *           description: No Content
+ *         400:
+ *           description: Bad Request
+ */
 exports.updateMany = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    const attributeList = req.body;
+    const { attributeObjectList } = req.body;
 
     const updateList = [];
-    attributeList.forEach((element) => {
+    attributeObjectList.forEach((element) => {
       const updateElement = {
         updateOne: {
           filter: {
@@ -34,7 +60,31 @@ exports.updateMany = async (req, res) => {
   }
 };
 
-// GET /getAllAttributes/604f537ed699a2eb47433184'
+/**
+ * @swagger
+ * /robots/rpaattributes/{robotId}:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     get:
+ *       tags:
+ *         - Robots
+ *       summary: Get all rpa attribute objects for a specific robot
+ *       operationId: getAttributesForRobot
+ *       responses:
+ *         200:
+ *           description: OK
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/RPAAttributes'
+ */
 exports.retrieveAttributesForRobot = async (req, res) => {
   const { robotId } = req.params;
 
@@ -44,4 +94,59 @@ exports.retrieveAttributesForRobot = async (req, res) => {
     .exec();
 
   res.send(attributeObjects);
+};
+
+/**
+ * @swagger
+ * /robots/rpaattributes/{robotId}:
+ *     parameters:
+ *       - name: robotId
+ *         in: path
+ *         description: The id of a robot
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RobotIds'
+ *     delete:
+ *       tags:
+ *         - Robots
+ *       summary: Delete attributes related to the specified activities
+ *       operationId: deleteAttributes
+ *       requestBody:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - activityIdListObject
+ *               properties:
+ *                 activityIdList:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/ActivityIds'
+ *         description: list of activities for which the attributes should be deleted
+ *         required: true
+ *       responses:
+ *         204:
+ *           description: No Content
+ *         400:
+ *           description: Bad Request
+ */
+exports.deleteForActivities = async (req, res) => {
+  const { activityIdList } = req.body;
+  const { robotId } = req.params;
+  const usablerobotId = mongoose.Types.ObjectId(robotId);
+
+  try {
+    const deletionResult = await mongoose
+      .model('rpaAttributes')
+      .deleteMany({
+        activityId: { $in: activityIdList },
+        robotId: usablerobotId,
+      })
+      .exec();
+
+    res.send(deletionResult);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };

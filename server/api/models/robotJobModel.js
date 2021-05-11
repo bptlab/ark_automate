@@ -7,6 +7,20 @@ const inputParameterSchema = new Schema({
   value: Schema.Types.Mixed,
 });
 
+const tasksStatusSchema = new Schema({
+  task_name: String,
+  status: String,
+});
+
+const activityErrorSchema = new Schema({
+  activity_name: { type: String, required: [true, 'Activity name required'] },
+  tasks: {
+    type: [tasksStatusSchema],
+    required: [true, 'At least on task required'],
+  },
+  message: { type: String, required: [true, 'Error messsage required'] },
+});
+
 // eslint-disable-next-line camelcase
 const Job_Schema = new Schema({
   user_id: {
@@ -19,6 +33,7 @@ const Job_Schema = new Schema({
   },
   status: { type: String, required: [true, 'Status required'] },
   parameters: [inputParameterSchema],
+  loggedErrors: [activityErrorSchema],
 });
 
 const Job = mongoose.model('job', Job_Schema);

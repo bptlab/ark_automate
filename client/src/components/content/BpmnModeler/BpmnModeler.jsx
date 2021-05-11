@@ -67,14 +67,7 @@ const BpmnModeler = (props) => {
       keyboard: {
         bindTo: window,
       },
-      additionalModules: [
-        {
-          __init__: ['customContextPadProvider'],
-          customContextPadProvider: ['type', CustomContextPadProvider],
-        },
-        propertiesProviderModule,
-        CliModule,
-      ],
+      additionalModules: [propertiesProviderModule, CliModule],
       cli: {
         bindTo: 'cli',
       },
