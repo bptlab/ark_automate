@@ -16,7 +16,7 @@ import {
 import { initSessionStorage } from '../sessionStorageUtils/sessionStorageUtils';
 import {
   getAvailableApplications,
-  getAllParameters,
+  getAllRpaFunctionalities,
 } from '../../api/applicationAndTaskSelection';
 import {
   getAllParametersForRobot,
@@ -67,7 +67,7 @@ const initSsotSessionStorage = (robotId) => {
       console.error(error);
     });
 
-  getAllParameters(robotId)
+  getAllRpaFunctionalities(robotId)
     .then((response) => response.json())
     .then((data) => {
       sessionStorage.setItem(

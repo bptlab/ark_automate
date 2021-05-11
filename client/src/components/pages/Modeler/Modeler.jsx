@@ -6,7 +6,7 @@ import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
 import { getSsot } from '../../../api/ssotRetrieval';
 import { getAllParametersForRobot } from '../../../api/variableRetrieval';
 import { getAllAttributes } from '../../../api/attributeRetrieval';
-import { getAllParameters } from '../../../api/applicationAndTaskSelection';
+import { getAllRpaFunctionalities } from '../../../api/applicationAndTaskSelection';
 import { setRobotId } from '../../../utils/localSsot/ssot';
 import {
   initAvailableApplicationsSessionStorage,
@@ -54,7 +54,7 @@ const Modeler = (match) => {
         sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
       });
 
-    getAllParameters(robotId)
+    getAllRpaFunctionalities(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));

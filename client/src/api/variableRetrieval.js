@@ -16,6 +16,7 @@ const getAllParametersForRobot = async (robotId) => {
 /**
  * @description Will send a backend call to update all given parameter objects with the new one's
  * @param {Array} parameterObjectsList All updated parameters objects to overwrite the old attribute objects with
+ * @returns {Array} Array of all updated parameter objects
  */
 const updateManyParameters = async (parameterObjectsList) => {
   const requestStringParameters = `/robots/parameters`;

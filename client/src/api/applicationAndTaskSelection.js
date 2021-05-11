@@ -24,9 +24,9 @@ const getAvailableApplications = async () => {
  * @description Will send a backend call to retrieve all rpa-task objects for the purpose of retrieving the related parameter and possibly output value
  * @returns {Array} Array of all rpa-task objects
  */
-const getAllParameters = async () => {
+const getAllRpaFunctionalities = async () => {
   const response = await fetch(`/functionalities`);
   return response;
 };
 
-export { getAvailableApplications, fetchTasksFromDB, getAllParameters };
+export { getAvailableApplications, fetchTasksFromDB, getAllRpaFunctionalities };

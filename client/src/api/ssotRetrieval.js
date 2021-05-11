@@ -115,6 +115,7 @@ const deleteAttributesForActivities = (robotId, activityIdList) => {
  * @description Overwrites an existing sssot in the backend with a new one
  * @param {String} robotId Id of the robot that is being overwritten
  * @param {String} ssot New ssot to be written to the database
+ * @returns {Object} Updated ssot object
  */
 const updateRobot = async (robotId, ssot) => {
   const requestStringSsot = `/robots/${robotId}`;
