@@ -7,7 +7,7 @@
  * @description Fetch the ssot correlating to the specified Id
  * @param { String } robotId - String including the Id of the robot to be retrieved
  */
-const getSsotFromDB = async (robotId) => {
+const getSsot = async (robotId) => {
   const requestString = `/robots/${robotId}`;
   const response = await fetch(requestString);
   return response;
@@ -99,7 +99,6 @@ const deleteParametersForActivities = (robotId, activityIdList) => {
  * @param {String} unusedActivityListString Stringified List of Activity Ids
  */
 const deleteAttributesForActivities = (robotId, activityIdList) => {
-  console.log(activityIdList);
   const requestStringParameters = `/robots/parameters/${robotId}`;
   fetch(requestStringParameters, {
     method: 'DELETE',
@@ -112,12 +111,32 @@ const deleteAttributesForActivities = (robotId, activityIdList) => {
   });
 };
 
+/**
+ * @description Overwrites an existing sssot in the backend with a new one
+ * @param {String} robotId Id of the robot that is being overwritten
+ * @param {String} ssot New ssot to be written to the database
+ * @returns {Object} Updated ssot object
+ */
+const updateRobot = async (robotId, ssot) => {
+  const requestStringSsot = `/robots/${robotId}`;
+  // eslint-disable-next-line no-unused-vars
+  const response = await fetch(requestStringSsot, {
+    body: ssot,
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  });
+  return response;
+};
+
 export {
-  getSsotFromDB,
+  getSsot,
   fetchSsotsForUser,
   changeSsotName,
   createNewRobot,
   deleteRobotFromDB,
   deleteParametersForActivities,
   deleteAttributesForActivities,
+  updateRobot,
 };

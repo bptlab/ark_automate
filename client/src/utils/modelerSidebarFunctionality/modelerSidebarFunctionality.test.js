@@ -2,8 +2,10 @@
 /* eslint-disable import/first */
 /* eslint-disable no-undef */
 
-jest.mock('../attributeAndParamUtils');
 jest.mock('../../api/applicationAndTaskSelection');
+jest.mock('../localSsot/parameters');
+jest.mock('../localSsot/attributes');
+jest.mock('../localSsot/ssot');
 
 import {
   nameChangedHandler,
@@ -14,13 +16,12 @@ import {
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
 } from './modelerSidebarFunctionality';
+import { setRpaTask, setRpaApplication } from '../localSsot/attributes';
 import {
   setSingleParameter,
-  resetRpaApplication,
-  setRpaTask,
-  getParameterObject,
   setOutputValueName,
-} from '../attributeAndParamUtils';
+  getParameterObject,
+} from '../localSsot/parameters';
 import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
 import constants from './modelerSidebarFunctionalityTestingUtils';
 
@@ -398,7 +399,7 @@ describe('Sidebar Functionality: Application Change', () => {
       JSON.stringify(taskToApplication)
     );
 
-    resetRpaApplication.mockImplementation(
+    setRpaApplication.mockImplementation(
       (robotId, selectedElementId, value) => {
         expect(value).toEqual(constants.MOCK_VALUE);
         expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
@@ -412,7 +413,7 @@ describe('Sidebar Functionality: Application Change', () => {
       constants.MOCK_ELEMENT_STATE,
       MOCK_SETTER_OBJECT
     );
-    expect(resetRpaApplication).toHaveBeenCalledTimes(1);
+    expect(setRpaApplication).toHaveBeenCalledTimes(1);
   });
 
   it('handle application change WITHOUT cache existing', async () => {
@@ -455,7 +456,7 @@ describe('Sidebar Functionality: Application Change', () => {
       JSON.stringify(taskToApplication)
     );
 
-    resetRpaApplication.mockImplementation(
+    setRpaApplication.mockImplementation(
       (robotId, selectedElementId, value) => {
         expect(value).toEqual(constants.MOCK_VALUE);
         expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
@@ -474,7 +475,7 @@ describe('Sidebar Functionality: Application Change', () => {
       constants.MOCK_ELEMENT_STATE,
       MOCK_SETTER_OBJECT
     );
-    expect(resetRpaApplication).toHaveBeenCalledTimes(1);
+    expect(setRpaApplication).toHaveBeenCalledTimes(1);
     expect(fetchTasksFromDB).toHaveBeenCalledTimes(1);
   });
 });

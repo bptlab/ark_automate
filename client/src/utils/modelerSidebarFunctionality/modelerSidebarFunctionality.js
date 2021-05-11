@@ -8,13 +8,12 @@
 import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
 /* import { fetchTasksFromDB } from '../../../api/applicationAndTaskSelection';
  */
+import { setRpaTask, setRpaApplication } from '../localSsot/attributes';
 import {
   setSingleParameter,
-  resetRpaApplication,
-  setRpaTask,
-  getParameterObject,
   setOutputValueName,
-} from '../attributeAndParamUtils';
+  getParameterObject,
+} from '../localSsot/parameters';
 
 /**
  * @description Will update the element state upon selection od a new element.
@@ -183,7 +182,7 @@ const applicationChangedHandler = (
   });
 
   setterObject.setSelectedApplication(value);
-  resetRpaApplication(robotId, elementState.currentElement.id, value);
+  setRpaApplication(robotId, elementState.currentElement.id, value);
   getTasksForApplication(value, setterObject);
 
   setterObject.setOutputVariableName(undefined);

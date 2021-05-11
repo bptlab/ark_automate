@@ -5,9 +5,9 @@
  * @module
  */
 
-import getParsedRobotFile from '../../api/ssot';
+import { getParsedRobotFile } from '../../api/ssot';
 import downloadString from '../downloadString';
-import { upsert } from '../attributeAndParamUtils';
+import { upsert } from '../localSsot/ssot';
 import { parseBpmnToSsot } from '../parser/BpmnToSsotParsing/BpmnToSsotParsing';
 
 /**
@@ -22,7 +22,6 @@ const onSaveToCloud = async (modeler, robotId) => {
   const result = await parseBpmnToSsot(xml, robotId);
   const ssot = JSON.stringify(result);
   sessionStorage.setItem('ssotLocal', ssot);
-
   upsert();
 };
 

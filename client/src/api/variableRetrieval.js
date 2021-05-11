@@ -13,4 +13,22 @@ const getAllParametersForRobot = async (robotId) => {
   return response;
 };
 
-export { getAllParametersForRobot };
+/**
+ * @description Will send a backend call to update all given parameter objects with the new one's
+ * @param {Array} parameterObjectsList All updated parameters objects to overwrite the old attribute objects with
+ * @returns {Array} Array of all updated parameter objects
+ */
+const updateManyParameters = async (parameterObjectsList) => {
+  const requestStringParameters = `/robots/parameters`;
+  // eslint-disable-next-line no-unused-vars
+  const response = await fetch(requestStringParameters, {
+    body: JSON.stringify({ parameterObjectsList }),
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  });
+  return response;
+};
+
+export { getAllParametersForRobot, updateManyParameters };
