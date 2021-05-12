@@ -1,5 +1,5 @@
 import { getAllAttributes } from '../api/attributeRetrieval';
-import { getAllParametersForRobot } from '../api/variableRetrieval';
+import { getAllParametersForRobot } from '../api/parameterRetrieval';
 
 const configuredRobotParamsCorrectly = (parameterObjects) => {
   let executability = true;
