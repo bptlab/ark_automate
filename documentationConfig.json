@@ -14,7 +14,12 @@
       "./../server/services",
       "./../server/utils"
     ],
-    "exclude": ["./../client/node_modules", "./../server/node_modules"],
+    "exclude": [
+      "./../client/node_modules",
+      "./../server/node_modules",
+      "./../server/api/controllers",
+      "./../server/utils/openApiDocumentation"
+    ],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
   }
