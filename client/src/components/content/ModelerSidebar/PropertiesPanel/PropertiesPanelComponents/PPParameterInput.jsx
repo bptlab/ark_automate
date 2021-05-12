@@ -15,12 +15,12 @@ import {
 const { Text } = Typography;
 
 /**
- * @description Renders a parameter input field for a given variable
+ * @description Renders a parameter input field for a given parameter
  * @category Client
  * @component
  */
 const PPParameterInput = ({
-  variableName,
+  parameterName,
   isRequired,
   // eslint-disable-next-line no-unused-vars
   dataType,
@@ -33,23 +33,23 @@ const PPParameterInput = ({
     parameterPropertyStatus(
       robotId,
       selectedActivity,
-      variableName,
+      parameterName,
       'requireUserInput'
     )
   );
   const [parameterValue, setParameterValue] = useState(
-    parameterPropertyStatus(robotId, selectedActivity, variableName, 'value')
+    parameterPropertyStatus(robotId, selectedActivity, parameterName, 'value')
   );
 
   /**
    * @description changes the state for "userInputRequired" and also the parameter value
-   * @param {String} parameterName Name of the currently handled parameter
+   * @param {String} currentParameterName Name of the currently handled parameter
    */
-  const changeUserInputRequirement = (parameterName) => {
+  const changeUserInputRequirement = (currentParameterName) => {
     setParameterValue('');
     setPropertyForParameter(
       selectedActivity,
-      parameterName,
+      currentParameterName,
       'requireUserInput',
       !userInputRequired
     );
@@ -60,12 +60,12 @@ const PPParameterInput = ({
   /**
    * @description changes the parameter value
    * @param {Object} event from the input field
-   * @param {String} parameterName Name of the currently handled parameter
+   * @param {String} currentParameterName Name of the currently handled parameter
    */
-  const changeParameterValue = (event, parameterName) => {
+  const changeParameterValue = (event, currentParameterName) => {
     setPropertyForParameter(
       selectedActivity,
-      parameterName,
+      currentParameterName,
       'value',
       event.target.value
     );
@@ -84,7 +84,7 @@ const PPParameterInput = ({
 
   return (
     <>
-      <Text className={styles[`label-on-dark-background`]}>{variableName}</Text>
+      <Text className={styles[`label-on-dark-background`]}>{parameterName}</Text>
       {isRequired && (
         <Tooltip title='This field is required' className={styles.requiredStar}>
           &nbsp;*
@@ -96,13 +96,13 @@ const PPParameterInput = ({
           placeholder='Please type in value'
           defaultValue={value}
           value={parameterValue}
-          onChange={(event) => changeParameterValue(event, variableName)}
+          onChange={(event) => changeParameterValue(event, parameterName)}
           suffix={
             <Tooltip title={infoText}>
               <InfoCircleOutlined />
             </Tooltip>
           }
-          addonAfter={returnLockIcon(variableName)}
+          addonAfter={returnLockIcon(parameterName)}
           disabled={userInputRequired}
         />
       )}
@@ -112,7 +112,7 @@ const PPParameterInput = ({
           style={{ width: '100%' }}
           type='primary'
           className={styles.parameterButton}
-          onClick={() => changeUserInputRequirement(variableName)}
+          onClick={() => changeUserInputRequirement(parameterName)}
         >
           Parameter will be set at execution <LockOutlined />
         </Button>
@@ -122,7 +122,7 @@ const PPParameterInput = ({
 };
 
 PPParameterInput.propTypes = {
-  variableName: PropTypes.string.isRequired,
+  parameterName: PropTypes.string.isRequired,
   isRequired: PropTypes.bool.isRequired,
   dataType: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
