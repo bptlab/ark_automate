@@ -26,7 +26,7 @@ import { fetchTasksFromDB } from '../../api/applicationAndTaskSelection';
 import constants from './modelerSidebarFunctionalityTestingUtils';
 
 describe('Sidebar Functionality: Small Utilities', () => {
-  it('handle modeler element changed with no new selection', async () => {
+  it('handles modeler element changed with no new selection', async () => {
     let setElementStateCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
@@ -42,7 +42,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
     expect(setElementStateCallCounter).toEqual(0);
   });
 
-  it('handle modeler element changed with new selection', async () => {
+  it('handles modeler element changed with new selection', async () => {
     let setElementStateCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
@@ -62,7 +62,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
     expect(setElementStateCallCounter).toEqual(1);
   });
 
-  it('handle output variable name change', async () => {
+  it('handles output variable name change', async () => {
     setOutputValueName.mockImplementation((activityId, newValue) => {
       expect(activityId).toEqual(constants.MOCK_ACTIVITY_ID);
       expect(newValue).toEqual(constants.MOCK_NEW_VALUE);
@@ -74,7 +74,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
     );
   });
 
-  it('handle input parameter change', async () => {
+  it('handles input parameter change', async () => {
     setSingleParameter.mockImplementation((activityId, value) => {
       expect(activityId).toEqual(constants.MOCK_ACTIVITY_ID);
       expect(value).toEqual(constants.MOCK_VALUE);
@@ -86,7 +86,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
     );
   });
 
-  it('handle modeler name change', async () => {
+  it('handles modeler name change', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -106,7 +106,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
 });
 
 describe('Sidebar Functionality: Modeler Selection Change', () => {
-  it('handle modeler selection change; element is not a task', async () => {
+  it('handles modeler selection change; element is not a task', async () => {
     const MOCK_CURRENT_ELEMENT = {
       id: constants.MOCK_CURRENT_ELEMENT_ID,
       businessObject: { name: 'oldTestName' },
@@ -144,7 +144,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
     );
   });
 
-  it('handle modeler selection change; element is a task and no matching attributes found; no attribute obj match found', async () => {
+  it('handles modeler selection change; element is a task and no matching attributes found; no attribute obj match found', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -184,7 +184,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
     );
   });
 
-  it('handle modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application already in sessionstorage', async () => {
+  it('handles modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application already in sessionstorage', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -237,7 +237,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
     );
   });
 
-  it('handle modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application not yet in sessionstorage', async () => {
+  it('handles modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application not yet in sessionstorage', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -297,7 +297,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
 });
 
 describe('Sidebar Functionality: Task Change', () => {
-  it('handle task change WITH parameter update', async () => {
+  it('handles task change WITH parameter update', async () => {
     let setOutputVariableNameCallCounter = 0;
     let setvariableListCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
@@ -344,7 +344,7 @@ describe('Sidebar Functionality: Task Change', () => {
     expect(setvariableListCallCounter).toEqual(1);
   });
 
-  it('handle task change WITHOUT parameter update', async () => {
+  it('handles task change WITHOUT parameter update', async () => {
     setRpaTask.mockImplementation(
       (robotId, activityId, selectedApplication, value) => {
         expect(value).toBeUndefined();
@@ -368,7 +368,7 @@ describe('Sidebar Functionality: Task Change', () => {
 });
 
 describe('Sidebar Functionality: Application Change', () => {
-  it('handle application change WITH cache existing', async () => {
+  it('handles application change WITH cache existing', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -416,7 +416,7 @@ describe('Sidebar Functionality: Application Change', () => {
     expect(setRpaApplication).toHaveBeenCalledTimes(1);
   });
 
-  it('handle application change WITHOUT cache existing', async () => {
+  it('handles application change WITHOUT cache existing', async () => {
     const MOCK_VALUE = 'cookbookApplication';
     const MOCK_ROBOT_ID = '0123456789-4711';
     const MOCK_CURRENT_ELEMENT_ID = '123450815';
