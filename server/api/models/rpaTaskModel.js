@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const rpaVariableSchema = new Schema({
+const rpaParameterSchema = new Schema({
   name: String,
   type: String,
   required: Boolean,
@@ -15,8 +15,8 @@ const rpaTaskSchema = new Schema({
   Task: { type: String, required: [true, 'Task required'] },
   Code: { type: String, required: [true, 'Code required'] },
   outputValue: Boolean,
-  inputVars: [rpaVariableSchema],
-  Output: rpaVariableSchema,
+  inputVars: [rpaParameterSchema],
+  Output: rpaParameterSchema, // TODO
 });
 
 mongoose.model('rpa-task', rpaTaskSchema);

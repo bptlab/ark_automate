@@ -42,7 +42,7 @@ const createParameterObject = (
     newParameterObject = {
       activityId,
       robotId,
-      outputVariable: `${activityId}_output`,
+      outputValue: `${activityId}_output`,
       rpaParameters,
     };
   } else {
@@ -263,9 +263,9 @@ const parameterPropertyStatus = (
 };
 
 /**
- * @description Sets the new value as the name of the output variable in the session storage
- * @param {String} activityId Id of the activity for which to change the value of the output variable for
- * @param {String} value The new value for the name of the output variable
+ * @description Sets the new value as the name of the output value in the session storage
+ * @param {String} activityId Id of the activity for which to change the value of the output value for
+ * @param {String} value The new value for the name of the output value
  */
 const setOutputValueName = (activityId, value) => {
   const localParameterStorage = getParameterStorage();
@@ -277,7 +277,7 @@ const setOutputValueName = (activityId, value) => {
   );
 
   const editedParameterObject = matchingParameterObject;
-  editedParameterObject.outputVariable = value;
+  editedParameterObject.outputValue = value;
   newLocalParameterStorage.push(editedParameterObject);
 
   sessionStorage.setItem(

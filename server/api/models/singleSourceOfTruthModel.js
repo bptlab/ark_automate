@@ -15,7 +15,7 @@ const singleParameterSchema = new Schema({
 const parameterObjectSchema = new Schema({
   robotId: mongoose.Types.ObjectId,
   activityId: String,
-  outputVariable: String,
+  outputValue: String,
   rpaParameters: [singleParameterSchema],
 });
 

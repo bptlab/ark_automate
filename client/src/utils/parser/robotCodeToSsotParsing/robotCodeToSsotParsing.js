@@ -417,7 +417,7 @@ const buildSingleParameterObject = (
     activityId,
     rpaParameters: parameterArray,
     robotId,
-    outputVariable: singleElementFromTasksSection.outputName,
+    outputValue: singleElementFromTasksSection.outputName,
   };
 };
 
