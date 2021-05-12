@@ -8,12 +8,7 @@
   },
   "plugins": ["node_modules/better-docs/category"],
   "source": {
-    "include": [
-      "./../client/src",
-      "./../server/controllers",
-      "./../server/services",
-      "./../server/utils"
-    ],
+    "include": ["./../client/src", "./../server/services", "./../server/utils"],
     "exclude": [
       "./../client/node_modules",
       "./../server/node_modules",
