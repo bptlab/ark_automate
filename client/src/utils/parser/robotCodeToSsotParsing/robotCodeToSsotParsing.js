@@ -232,12 +232,10 @@ const getInstructionBlocksFromTaskSection = (
   robotCodeTaskSection.slice(1).forEach((line) => {
     if (errorWasThrown) return;
     let currentLine = line;
-    const currentLineIncludesSplitPlaceholder = currentLine.includes(
-      splitPlaceholder
-    );
-    const currentLineDefinesOutputValue = regexForOutputVariable.test(
-      currentLine
-    );
+    const currentLineIncludesSplitPlaceholder =
+      currentLine.includes(splitPlaceholder);
+    const currentLineDefinesOutputValue =
+      regexForOutputVariable.test(currentLine);
     const currentLineStartsWithFourspace = currentLine.startsWith(FOURSPACE);
 
     if (!currentLineStartsWithFourspace) {
@@ -258,9 +256,8 @@ const getInstructionBlocksFromTaskSection = (
 
     if (currentLineDefinesOutputValue) {
       const outputValueName = getOutputName(currentLine);
-      instructionBlocks[
-        instructionBlocks.length - 1
-      ].outputName = outputValueName;
+      instructionBlocks[instructionBlocks.length - 1].outputName =
+        outputValueName;
 
       currentLine = currentLineWithoutOutputVariableName(
         currentLine,
@@ -297,9 +294,8 @@ const getInstructionBlocksFromTaskSection = (
       const rpaParameters = getRpaParameters(currentLine, splitPlaceholder);
 
       instructionBlocks[instructionBlocks.length - 1].rpaTask = rpaTask;
-      instructionBlocks[
-        instructionBlocks.length - 1
-      ].paramArray = rpaParameters;
+      instructionBlocks[instructionBlocks.length - 1].paramArray =
+        rpaParameters;
       instructionBlocks[instructionBlocks.length - 1].rpaApplication =
         matchingCombination.Application;
     }
@@ -369,12 +365,8 @@ const buildSingleParameterObject = (
   singleElementFromTasksSection,
   taskAndApplicationCombinations
 ) => {
-  const {
-    rpaApplication,
-    activityId,
-    rpaTask,
-    robotId,
-  } = singleAtrributeObject;
+  const { rpaApplication, activityId, rpaTask, robotId } =
+    singleAtrributeObject;
   const singleParamArray = singleElementFromTasksSection.paramArray;
 
   const combinationObject = taskAndApplicationCombinations.filter(
@@ -396,7 +388,8 @@ const buildSingleParameterObject = (
         singleParamArray[index].endsWith('}');
       const singleParameterObject = { ...singleInputVariable };
 
-      singleParameterObject.requireUserInput = currentParameterRequiresUserInput;
+      singleParameterObject.requireUserInput =
+        currentParameterRequiresUserInput;
       if (currentParameterIsEmpty || currentParameterRequiresUserInput) {
         singleParameterObject.value = '';
       } else if (currentParameterTakesOutputValue) {
@@ -522,7 +515,7 @@ const getStarterId = (elementsArray) => {
   return 'no starter id found';
 };
 /**
- * @description
+ * @description returns the line number where the selector occurs
  * @param {Array} robotCodeAsArray the complete robotCode w/o new lines as array
  * @param {String} selector the selector to get the line number for
  * @returns line number where the selector occurs
