@@ -1,0 +1,711 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> client/src/utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#clearDatabase">clearDatabase</a></li><li><a href="global.html#closeDatabase">closeDatabase</a></li><li><a href="global.html#connect">connect</a></li><li><a href="global.html#customNotification">customNotification</a></li><li><a href="global.html#getActivityAndParameterInformation">getActivityAndParameterInformation</a></li><li><a href="global.html#getIconForType">getIconForType</a></li><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li><li><a href="global.html#initSessionStorage">initSessionStorage</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_api_attributeRetrieval.html">client/src/api/attributeRetrieval</a></li><li><a href="module-client_src_api_socketHandler_socketEmitter.html">client/src/api/socketHandler/socketEmitter</a></li><li><a href="module-client_src_api_socketHandler_socketListeners.html">client/src/api/socketHandler/socketListeners</a></li><li><a href="module-client_src_api_ssot.html">client/src/api/ssot</a></li><li><a href="module-client_src_api_ssotRetrieval.html">client/src/api/ssotRetrieval</a></li><li><a href="module-client_src_api_variableRetrieval.html">client/src/api/variableRetrieval</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_localSsot_attributes.html">client/src/utils/localSsot/attributes</a></li><li><a href="module-client_src_utils_localSsot_parameters.html">client/src/utils/localSsot/parameters</a></li><li><a href="module-client_src_utils_localSsot_ssot.html">client/src/utils/localSsot/ssot</a></li><li><a href="module-client_src_utils_modelerSidebarFunctionality_modelerSidebarFunctionality.html">client/src/utils/modelerSidebarFunctionality/modelerSidebarFunctionality</a></li><li><a href="module-client_src_utils_parser_BpmnToSsotParsing_BpmnToSsotParsing.html">client/src/utils/parser/BpmnToSsotParsing/BpmnToSsotParsing</a></li><li><a href="module-client_src_utils_parser_robotCodeToSsotParsing_robotCodeToSsotParsing.html">client/src/utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing</a></li><li><a href="module-client_src_utils_parser_ssotToBpmnParsing_ssotToBpmnParsing.html">client/src/utils/parser/ssotToBpmnParsing/ssotToBpmnParsing</a></li><li><a href="module-client_src_utils_robotMetadataUtils_robotMetadataUtils.html">client/src/utils/robotMetadataUtils/robotMetadataUtils</a></li><li><a href="module-client_src_utils_rpaFunctionality_functionalities.html">client/src/utils/rpaFunctionality/functionalities</a></li><li><a href="module-server_services_SsotToRobotParsing_SsotToRobotParser.html">server/services/SsotToRobotParsing/SsotToRobotParser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#CreateRobotContainer">CreateRobotContainer</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PPApplicationDropdown">PPApplicationDropdown</a></li><li><a href="global.html#PPIdSection">PPIdSection</a></li><li><a href="global.html#PPNameSection">PPNameSection</a></li><li><a href="global.html#PPOutputValueSection">PPOutputValueSection</a></li><li><a href="global.html#PPParameterInput">PPParameterInput</a></li><li><a href="global.html#PPParameterSection">PPParameterSection</a></li><li><a href="global.html#PPRpaSection">PPRpaSection</a></li><li><a href="global.html#PPTaskDropdown">PPTaskDropdown</a></li><li><a href="global.html#PPTitleSection">PPTitleSection</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#RobotContainer">RobotContainer</a></li><li><a href="global.html#RobotFile">RobotFile</a></li><li><a href="global.html#RobotFileSyntaxModal">RobotFileSyntaxModal</a></li><li><a href="global.html#RobotInteractionCockpit">RobotInteractionCockpit</a></li><li><a href="global.html#RobotInteractionInputParameter">RobotInteractionInputParameter</a></li><li><a href="global.html#RobotInteractionInputSection">RobotInteractionInputSection</a></li><li><a href="global.html#RobotOverview">RobotOverview</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_SsotToRobotParsing_generateCodeBase.html">server/services/SsotToRobotParsing/generateCodeBase</a></li><li><a href="module-server_services_SsotToRobotParsing_generateCodeForRpaTasks.html">server/services/SsotToRobotParsing/generateCodeForRpaTasks</a></li><li><a href="module-server_services_SsotToRobotParsing_retrieveParameters.html">server/services/SsotToRobotParsing/retrieveParameters</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>client/src/utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @category Client
+ * @module
+ */
+
+const { default: customNotification } = require('../../notificationUtils');
+
+const FOURSPACE = '    ';
+
+/**
+ * @returns "uniqueId" which is just an increment from the counter in the local storage
+ */
+const getUniqueId = () => {
+  const newId = JSON.parse(sessionStorage.getItem('idCounter')) + 1;
+  sessionStorage.setItem('idCounter', newId);
+  return newId;
+};
+
+/**
+ * @returns unique Id; wrapped with the activity nomenclature
+ */
+const getActivityId = () => `Activity_0ay${getUniqueId()}`;
+
+/**
+ * @returns unique Id; wrapped with the event nomenclature
+ */
+const getEventId = () => `Event_0ay${getUniqueId()}`;
+
+/**
+ * @description Splits the robot code into an array and deletes all empty lines
+ * @param {String} robotCode Code from the code editor
+ * @returns Robot code without empty lines as an array
+ */
+const getRobotCodeAsArray = (robotCode) => {
+  const robotCodeAsArray = robotCode.split('\n');
+  for (let i = 0; i &lt; robotCodeAsArray.length; i += 1) {
+    if (robotCodeAsArray[i] === '') {
+      robotCodeAsArray.splice(i, 1);
+      i -= 1;
+    }
+  }
+  return robotCodeAsArray;
+};
+
+/**
+ * @description checks all lines of the settings section for the right syntax and returns all declared applications as an array
+ * @param {Array} robotCodeSettingsSection all lines from the settings section as an array-entry (typeof string)
+ * @returns Array of all declared applications or undefined if an error occures
+ */
+const getApplicationArray = (robotCodeSettingsSection) => {
+  if (typeof robotCodeSettingsSection === 'undefined') return undefined;
+  const robotCode = robotCodeSettingsSection.slice(1);
+  const availableApplications = JSON.parse(
+    sessionStorage.getItem('availableApplications')
+  );
+  let errorWasThrown;
+
+  robotCode.forEach((line) => {
+    const regexForRpaAlias = /Library +RPA[.][a-zA-Z]+/;
+
+    const elementStartsWithLibrary = line.startsWith('Library ');
+    const rpaAliasIsCorrect = regexForRpaAlias.test(line);
+    const applicationIsAvailable = availableApplications.includes(
+      typeof line.split('RPA.')[1] === 'undefined'
+        ? ''
+        : line.split('RPA.')[1].trim()
+    );
+
+    if (!elementStartsWithLibrary) {
+      customNotification(
+        'Error',
+        `Every line of the "*** Settings ***" Section has to start with "Library"! \nError location: "${line}"`
+      );
+      errorWasThrown = true;
+      return;
+    }
+    if (!rpaAliasIsCorrect) {
+      customNotification(
+        'Error',
+        `Application has to start with "RPA." \nError location: "${line}"`
+      );
+      errorWasThrown = true;
+      return;
+    }
+    if (!applicationIsAvailable) {
+      customNotification(
+        'Error',
+        `The Application "${String(
+          line.split('RPA.')[1].trim()
+        )}" is currently not supported. `
+      );
+      errorWasThrown = true;
+    }
+  });
+
+  const declaredApplications = errorWasThrown
+    ? undefined
+    : robotCode.map((line) => line.split('RPA.')[1].trim());
+
+  return declaredApplications;
+};
+
+/**
+ * @description retrieves the outputVariable name from the current code line
+ * @param {String} currentLine current line of RPAf code
+ * @returns outputVariable as string
+ */
+const getOutputName = (currentLine) => {
+  const indexOfEqualsSign = currentLine.indexOf('=');
+  return currentLine
+    .slice(0, indexOfEqualsSign)
+    .replace('${', '')
+    .replace('}', '')
+    .trim();
+};
+
+/**
+ * @description retrieves the rpa task from the current code line; if there are no parameters,
+ * the indexOfFirstSplitPlaceholder returns -1 and therefore the function returns the whole line
+ * @param {String} currentLine current line of RPAf code
+ * @param {String} splitPlaceholder placeholder to split the string
+ * @returns rpaTask as string
+ */
+const getRpaTask = (currentLine, splitPlaceholder) => {
+  const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
+  return indexOfFirstSplitPlaceholder === -1
+    ? currentLine.replace('RPA.', '')
+    : currentLine.slice(0, indexOfFirstSplitPlaceholder).replace('RPA.', '');
+};
+
+/**
+ * @description retrieves the rpa parameters from the current code line
+ * @param {String} currentLine current line of RPAf code
+ * @param {String} splitPlaceholder placeholder to split the string
+ * @param {String} instructionBlocks current intruction block to get the rpaTask
+ * @returns rpaParameters as array
+ */
+const getRpaParameters = (currentLine, splitPlaceholder) => {
+  const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
+  const parametersWithoutRpaTask = currentLine.slice(
+    indexOfFirstSplitPlaceholder + splitPlaceholder.length
+  );
+  return parametersWithoutRpaTask.split([splitPlaceholder]);
+};
+
+/**
+ * @description deletes everything before the first occurence of '=' and then trims all emptyspace until the rpa task name to get the expected format
+ * @param {String} currentLine current line of RPAf code
+ * @param {String} splitPlaceholder placeholder to split the string
+ * @returns the current line without the outputVariableName prefix as string
+ */
+const currentLineWithoutOutputVariableName = (
+  completeLine,
+  splitPlaceholder
+) => {
+  const indexOfEqualsSign = completeLine.indexOf('=');
+  let currentLine = completeLine.slice(indexOfEqualsSign + 1);
+  if (currentLine.startsWith(splitPlaceholder)) {
+    currentLine = currentLine.replace(splitPlaceholder, '').trim();
+  } else {
+    currentLine = currentLine.trim();
+  }
+  return currentLine;
+};
+
+/**
+ * @description counts the number of occurences of the current task in the subset
+ * of all Task/Application combinations for the current robot code
+ * @param {Array} allMatchingCombinations all combinations from database that match the rpaTask
+ * @param {*} rpaTask paTask from current robotCode line
+ * @returns number of occurrences of the rpaTask in allMatchingCombinations
+ */
+const numberOfOccurrencesOfTask = (allMatchingCombinations, rpaTask) => {
+  let numberOfOccurrences = 0;
+  allMatchingCombinations.forEach((singleObject) => {
+    if (singleObject.Task === rpaTask) {
+      numberOfOccurrences += 1;
+    }
+  });
+  return numberOfOccurrences;
+};
+
+/**
+ * @description this function returns the matching task object for the rpaTask or throws a notification
+ * @param {String} rpaTask rpaTask from current robotCode line
+ * @param {Array} allMatchingCombinations all combinations from database that match the rpaTask
+ * @returns the matching task object for the rpaTask or undefined if an error occurs
+ */
+const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
+  const numberOfOccurrences = numberOfOccurrencesOfTask(
+    allMatchingCombinations,
+    rpaTask
+  );
+
+  if (allMatchingCombinations.length === 0) {
+    customNotification(
+      'Error',
+      `The described task "${rpaTask}" could not be assigned to an application.`
+    );
+    return undefined;
+  }
+  if (numberOfOccurrences > 1) {
+    let correctExampleText = '';
+    allMatchingCombinations.forEach((singleCombination) => {
+      correctExampleText += `\n${singleCombination.Application}.${rpaTask}`;
+    });
+    customNotification(
+      'Error',
+      `Multiple Applications with task "${rpaTask}" found. Give the full name you want to use like: ${correctExampleText}`
+    );
+    return undefined;
+  }
+  return allMatchingCombinations[0];
+};
+
+/**
+ * @description "preprocesses" the code in a usable data format
+ * @param {Array} robotCodeTaskSection robot code w/o empty lines as an array of Strings
+ * @param {Array} taskAndApplicationCombinations all declared tasks and applications from database
+ * @returns Array of Objects with the following schema:
+ *      instructionBlocks = [rpaApplication:String, rpaTask:String, name:String, paramArray:Array]
+ */
+const getInstructionBlocksFromTaskSection = (
+  robotCodeTaskSection,
+  taskAndApplicationCombinations
+) => {
+  let errorWasThrown;
+  const instructionBlocks = [];
+  const regexForOutputVariable = /\${(.)+} =/;
+  const splitPlaceholder = '§&amp;§';
+
+  robotCodeTaskSection.slice(1).forEach((line) => {
+    if (errorWasThrown) return;
+    let currentLine = line;
+    const currentLineIncludesSplitPlaceholder =
+      currentLine.includes(splitPlaceholder);
+    const currentLineDefinesOutputValue =
+      regexForOutputVariable.test(currentLine);
+    const currentLineStartsWithFourspace = currentLine.startsWith(FOURSPACE);
+
+    if (!currentLineStartsWithFourspace) {
+      instructionBlocks.push({ name: currentLine });
+      return;
+    }
+
+    if (currentLineIncludesSplitPlaceholder) {
+      customNotification(
+        'Error',
+        `It is not allowed to use &amp; or § as param values \nError location: "${line}"`
+      );
+      errorWasThrown = true;
+      return;
+    }
+
+    currentLine = currentLine.trim().replace(/( {4})/g, splitPlaceholder);
+
+    if (currentLineDefinesOutputValue) {
+      const outputValueName = getOutputName(currentLine);
+      instructionBlocks[instructionBlocks.length - 1].outputName =
+        outputValueName;
+
+      currentLine = currentLineWithoutOutputVariableName(
+        currentLine,
+        splitPlaceholder
+      );
+    }
+
+    if (!errorWasThrown) {
+      let rpaTask = getRpaTask(currentLine, splitPlaceholder);
+      const allMatchingCombinations = taskAndApplicationCombinations.filter(
+        (singleCombination) => {
+          if (rpaTask === singleCombination.Task) return true;
+          if (
+            rpaTask.endsWith(singleCombination.Task) &amp;&amp;
+            rpaTask.startsWith(singleCombination.Application)
+          )
+            return true;
+
+          return false;
+        }
+      );
+
+      const matchingCombination = returnMatchingCombination(
+        rpaTask,
+        allMatchingCombinations
+      );
+      if (typeof matchingCombination === 'undefined') {
+        errorWasThrown = true;
+        return;
+      }
+
+      rpaTask = rpaTask.replace(`${matchingCombination.Application}.`, '');
+
+      const rpaParameters = getRpaParameters(currentLine, splitPlaceholder);
+
+      instructionBlocks[instructionBlocks.length - 1].rpaTask = rpaTask;
+      instructionBlocks[instructionBlocks.length - 1].paramArray =
+        rpaParameters;
+      instructionBlocks[instructionBlocks.length - 1].rpaApplication =
+        matchingCombination.Application;
+    }
+  });
+  return errorWasThrown ? undefined : instructionBlocks;
+};
+
+/**
+ * @description Builds a dummy startMarker element and returns them
+ * @returns dummy startMarker as JSON => currently MARKERS aren't defined
+ * in our RPAf-Syntax and therefore there aren't implemented
+ */
+const buildStartMarker = () => ({
+  successorIds: [],
+  id: getEventId(),
+  type: 'MARKER',
+  name: 'START',
+  predecessorIds: [],
+});
+
+/**
+ * @description Builds a dummy endMarker element and returns them
+ * @param {Object} predecessor as an Object to get the predecessorId
+ * @returns dummy endMarker as JSON => currently MARKERS aren't defined
+ * in our RPAf-Syntax and therefore there aren't implemented
+ */
+const buildEndMarker = (predecessor) => ({
+  successorIds: [],
+  id: getEventId(),
+  type: 'MARKER',
+  name: 'END',
+  predecessorIds: [predecessor ? predecessor.id : 'MarkerElement'],
+});
+
+/**
+ * @description builds the attributeObject for a single element
+ * @param {Object} currentElement current instruction element
+ * @param {Object} singleElementFromTasksSection the parsed Object from the RPAf Code
+ * @param {String} robotId the id of the current robot / ssot
+ * @returns attributeObject for a single attribute
+ */
+const buildSingleAttributeObject = (
+  currentElement,
+  singleElementFromTasksSection,
+  robotId
+) => {
+  let { rpaTask } = singleElementFromTasksSection;
+  if (!rpaTask) rpaTask = 'no Task defined';
+
+  return {
+    activityId: currentElement.id,
+    rpaApplication: singleElementFromTasksSection.rpaApplication,
+    rpaTask,
+    robotId,
+  };
+};
+
+/**
+ * @description builds the parameterObject for a single element
+ * @param {Object} singleAtrributeObject the attribute Object of the current activity
+ * @param {Object} singleElementFromTasksSection the parsed Object from the RPAf Code
+ * @param {Array} taskAndApplicationCombinations all combinations of applications and tasks
+ * @returns parameterObject for a single attribute
+ */
+const buildSingleParameterObject = (
+  singleAtrributeObject,
+  singleElementFromTasksSection,
+  taskAndApplicationCombinations
+) => {
+  const { rpaApplication, activityId, rpaTask, robotId } =
+    singleAtrributeObject;
+  const singleParamArray = singleElementFromTasksSection.paramArray;
+
+  const combinationObject = taskAndApplicationCombinations.filter(
+    (singleCombinationObject) =>
+      singleCombinationObject.Application === rpaApplication &amp;&amp;
+      singleCombinationObject.Task === rpaTask
+  )[0];
+
+  const parameterArray = combinationObject.inputVars.map(
+    (singleInputVariable, index) => {
+      const currentParameterIsEmpty =
+        singleParamArray[index].startsWith('%%') &amp;&amp;
+        singleParamArray[index].endsWith('%%');
+      const currentParameterRequiresUserInput =
+        singleParamArray[index].startsWith('!!') &amp;&amp;
+        singleParamArray[index].endsWith('!!');
+      const currentParameterTakesOutputValue =
+        singleParamArray[index].startsWith('${') &amp;&amp;
+        singleParamArray[index].endsWith('}');
+      const singleParameterObject = { ...singleInputVariable };
+
+      singleParameterObject.requireUserInput =
+        currentParameterRequiresUserInput;
+      if (currentParameterIsEmpty || currentParameterRequiresUserInput) {
+        singleParameterObject.value = '';
+      } else if (currentParameterTakesOutputValue) {
+        const outputValueName = singleParamArray[index]
+          .slice(2)
+          .slice(0, singleParamArray[index].length - 3)
+          .trim();
+        singleParameterObject.value = `$$${outputValueName}$$`;
+      } else {
+        singleParameterObject.value = singleParamArray[index];
+      }
+
+      return singleParameterObject;
+    }
+  );
+
+  return {
+    activityId,
+    rpaParameters: parameterArray,
+    robotId,
+    outputVariable: singleElementFromTasksSection.outputName,
+  };
+};
+
+/**
+ * @description build the elementsArray of the ssot
+ * @param {Array} robotCodeTaskSection robot code w/o empty lines as an array of Strings
+ * @param {Array} declaredApplications all declared Aplications from ***settings*** section as Strings
+ * @param {String} robotId the id of the current robot / ssot
+ * @returns elementsArray with all needed properties
+ */
+const getElementsArray = (
+  robotCodeTaskSection,
+  declaredApplications,
+  robotId
+) => {
+  const elementsArray = [];
+  const attributeArray = [];
+  const parameterArray = [];
+
+  if (
+    typeof robotCodeTaskSection === 'undefined' ||
+    typeof declaredApplications === 'undefined'
+  )
+    return undefined;
+
+  let taskAndApplicationCombinations = JSON.parse(
+    sessionStorage.getItem('TaskApplicationCombinations')
+  );
+  taskAndApplicationCombinations = taskAndApplicationCombinations.filter(
+    (singleCombination) =>
+      declaredApplications.includes(singleCombination.Application)
+  );
+
+  const instructionArray = getInstructionBlocksFromTaskSection(
+    robotCodeTaskSection,
+    taskAndApplicationCombinations
+  );
+  if (typeof instructionArray === 'undefined') return undefined;
+
+  elementsArray.push(buildStartMarker());
+
+  instructionArray.forEach((singleElement) => {
+    const currentElement = {};
+
+    currentElement.successorIds = [];
+    currentElement.id = getActivityId();
+    currentElement.type = 'INSTRUCTION';
+    currentElement.name = singleElement.name;
+
+    const predecessor = elementsArray[elementsArray.length - 1];
+    currentElement.predecessorIds = predecessor &amp;&amp; [predecessor.id];
+    if (predecessor) predecessor.successorIds = [currentElement.id];
+
+    elementsArray.push(currentElement);
+
+    const singleAtrributeObject = buildSingleAttributeObject(
+      currentElement,
+      singleElement,
+      robotId
+    );
+    attributeArray.push(singleAtrributeObject);
+
+    const singleParameterObject = buildSingleParameterObject(
+      singleAtrributeObject,
+      singleElement,
+      taskAndApplicationCombinations
+    );
+    parameterArray.push(singleParameterObject);
+  });
+  elementsArray.push(buildEndMarker(elementsArray[elementsArray.length - 1]));
+  const lastElement = elementsArray[elementsArray.length - 1];
+  const secontlLastElement = elementsArray[elementsArray.length - 2];
+  secontlLastElement.successorIds = [lastElement.id];
+
+  sessionStorage.removeItem('attributeLocalStorage');
+  sessionStorage.setItem(
+    'attributeLocalStorage',
+    JSON.stringify(attributeArray)
+  );
+  sessionStorage.setItem(
+    'parameterLocalStorage',
+    JSON.stringify(parameterArray)
+  );
+
+  return elementsArray;
+};
+
+/**
+ * @description retrieves the starterId of the robot from the elements array
+ * @param {Array} elementsArray Array of all elements of the robot
+ * @returns starterId as string
+ */
+const getStarterId = (elementsArray) => {
+  const starterElements = elementsArray.filter(
+    (singleElement) =>
+      singleElement.type === 'MARKER' &amp;&amp;
+      singleElement.predecessorIds.length === 0
+  );
+  if (starterElements.length === 1) {
+    return starterElements[0].id;
+  }
+  return 'no starter id found';
+};
+/**
+ * @description returns the line number where the selector occurs
+ * @param {Array} robotCodeAsArray the complete robotCode w/o new lines as array
+ * @param {String} selector the selector to get the line number for
+ * @returns line number where the selector occurs
+ */
+const getLineNumberForSelector = (robotCodeAsArray, selector) => {
+  let lineNumber;
+  robotCodeAsArray.forEach((codeLine, index) => {
+    if (codeLine.trim().includes(selector)) lineNumber = index;
+  });
+  if (typeof lineNumber === 'undefined') {
+    customNotification(
+      'Error',
+      `The required selector "${selector}" was not found`
+    );
+  }
+  return lineNumber;
+};
+
+/**
+ * @description Parses the RPA-Framework code from the code editor to the single source of truth
+ * @param {String} robotCode from the code-editor
+ * @returns Single source of truth as a JavaSctipt-object or undefined if an error occures
+ */
+const parseRobotCodeToSsot = (robotCode) => {
+  const robotId = JSON.parse(sessionStorage.getItem('robotId'));
+  const robotName = sessionStorage.getItem('robotName');
+  const robotCodeAsArray = getRobotCodeAsArray(robotCode);
+
+  const lineNumberSettingsSelector = getLineNumberForSelector(
+    robotCodeAsArray,
+    '*** Settings ***'
+  );
+  const lineNumberTasksSelector = getLineNumberForSelector(
+    robotCodeAsArray,
+    '*** Tasks ***'
+  );
+
+  let robotCodeSettingsSection;
+  let robotCodeTaskSection;
+  if (
+    typeof lineNumberSettingsSelector !== 'undefined' &amp;&amp;
+    typeof lineNumberTasksSelector !== 'undefined'
+  ) {
+    robotCodeSettingsSection = robotCodeAsArray.slice(
+      lineNumberSettingsSelector,
+      lineNumberTasksSelector
+    );
+    robotCodeTaskSection = robotCodeAsArray.slice(lineNumberTasksSelector);
+  }
+
+  const declaredApplications = getApplicationArray(robotCodeSettingsSection);
+  const elementsArray = getElementsArray(
+    robotCodeTaskSection,
+    declaredApplications,
+    robotId
+  );
+
+  if (typeof elementsArray !== 'undefined') {
+    const ssot = {
+      _id: robotId,
+      starterId: getStarterId(elementsArray),
+      robotName,
+      elements: elementsArray,
+    };
+    return ssot;
+  }
+  return undefined;
+};
+
+export {
+  parseRobotCodeToSsot,
+  getLineNumberForSelector,
+  getRobotCodeAsArray,
+  getApplicationArray,
+  getElementsArray,
+  getInstructionBlocksFromTaskSection,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

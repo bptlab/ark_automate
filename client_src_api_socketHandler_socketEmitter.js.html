@@ -1,0 +1,140 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> client/src/api/socketHandler/socketEmitter.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#clearDatabase">clearDatabase</a></li><li><a href="global.html#closeDatabase">closeDatabase</a></li><li><a href="global.html#connect">connect</a></li><li><a href="global.html#customNotification">customNotification</a></li><li><a href="global.html#getActivityAndParameterInformation">getActivityAndParameterInformation</a></li><li><a href="global.html#getIconForType">getIconForType</a></li><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li><li><a href="global.html#initSessionStorage">initSessionStorage</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_api_attributeRetrieval.html">client/src/api/attributeRetrieval</a></li><li><a href="module-client_src_api_socketHandler_socketEmitter.html">client/src/api/socketHandler/socketEmitter</a></li><li><a href="module-client_src_api_socketHandler_socketListeners.html">client/src/api/socketHandler/socketListeners</a></li><li><a href="module-client_src_api_ssot.html">client/src/api/ssot</a></li><li><a href="module-client_src_api_ssotRetrieval.html">client/src/api/ssotRetrieval</a></li><li><a href="module-client_src_api_variableRetrieval.html">client/src/api/variableRetrieval</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_localSsot_attributes.html">client/src/utils/localSsot/attributes</a></li><li><a href="module-client_src_utils_localSsot_parameters.html">client/src/utils/localSsot/parameters</a></li><li><a href="module-client_src_utils_localSsot_ssot.html">client/src/utils/localSsot/ssot</a></li><li><a href="module-client_src_utils_modelerSidebarFunctionality_modelerSidebarFunctionality.html">client/src/utils/modelerSidebarFunctionality/modelerSidebarFunctionality</a></li><li><a href="module-client_src_utils_parser_BpmnToSsotParsing_BpmnToSsotParsing.html">client/src/utils/parser/BpmnToSsotParsing/BpmnToSsotParsing</a></li><li><a href="module-client_src_utils_parser_robotCodeToSsotParsing_robotCodeToSsotParsing.html">client/src/utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing</a></li><li><a href="module-client_src_utils_parser_ssotToBpmnParsing_ssotToBpmnParsing.html">client/src/utils/parser/ssotToBpmnParsing/ssotToBpmnParsing</a></li><li><a href="module-client_src_utils_robotMetadataUtils_robotMetadataUtils.html">client/src/utils/robotMetadataUtils/robotMetadataUtils</a></li><li><a href="module-client_src_utils_rpaFunctionality_functionalities.html">client/src/utils/rpaFunctionality/functionalities</a></li><li><a href="module-server_services_SsotToRobotParsing_SsotToRobotParser.html">server/services/SsotToRobotParsing/SsotToRobotParser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#CreateRobotContainer">CreateRobotContainer</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PPApplicationDropdown">PPApplicationDropdown</a></li><li><a href="global.html#PPIdSection">PPIdSection</a></li><li><a href="global.html#PPNameSection">PPNameSection</a></li><li><a href="global.html#PPOutputValueSection">PPOutputValueSection</a></li><li><a href="global.html#PPParameterInput">PPParameterInput</a></li><li><a href="global.html#PPParameterSection">PPParameterSection</a></li><li><a href="global.html#PPRpaSection">PPRpaSection</a></li><li><a href="global.html#PPTaskDropdown">PPTaskDropdown</a></li><li><a href="global.html#PPTitleSection">PPTitleSection</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#RobotContainer">RobotContainer</a></li><li><a href="global.html#RobotFile">RobotFile</a></li><li><a href="global.html#RobotFileSyntaxModal">RobotFileSyntaxModal</a></li><li><a href="global.html#RobotInteractionCockpit">RobotInteractionCockpit</a></li><li><a href="global.html#RobotInteractionInputParameter">RobotInteractionInputParameter</a></li><li><a href="global.html#RobotInteractionInputSection">RobotInteractionInputSection</a></li><li><a href="global.html#RobotOverview">RobotOverview</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_SsotToRobotParsing_generateCodeBase.html">server/services/SsotToRobotParsing/generateCodeBase</a></li><li><a href="module-server_services_SsotToRobotParsing_generateCodeForRpaTasks.html">server/services/SsotToRobotParsing/generateCodeForRpaTasks</a></li><li><a href="module-server_services_SsotToRobotParsing_retrieveParameters.html">server/services/SsotToRobotParsing/retrieveParameters</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>client/src/api/socketHandler/socketEmitter.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @category Client
+ * @module
+ */
+import socket from '../../utils/socket/socketConnections';
+
+/**
+ * @description Emits a new event that a user joined its room
+ * @param {String} userId Id of the user for which room should be joined
+ */
+const joinRoomForUser = (userId) => {
+  socket.emit('joinUserRoom', userId, 'webApplication');
+};
+
+/**
+ * @description Emits a new event that a user wants to enqueue a robot instace for execution
+ * @param {String} userId Id of the user for which to start a robot for
+ * @param {String} robotId Id of the robot which should be started
+ */
+const startRobotForUser = (userId, robotId, parameters) => {
+  socket.emit('robotExecutionJobs', { robotId, userId, parameters });
+};
+
+export { joinRoomForUser, startRobotForUser };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>

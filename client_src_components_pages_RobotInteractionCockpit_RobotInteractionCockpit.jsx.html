@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> client/src/components/pages/RobotInteractionCockpit/RobotInteractionCockpit.jsx</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#clearDatabase">clearDatabase</a></li><li><a href="global.html#closeDatabase">closeDatabase</a></li><li><a href="global.html#connect">connect</a></li><li><a href="global.html#customNotification">customNotification</a></li><li><a href="global.html#getActivityAndParameterInformation">getActivityAndParameterInformation</a></li><li><a href="global.html#getIconForType">getIconForType</a></li><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li><li><a href="global.html#initSessionStorage">initSessionStorage</a></li></ul></div><div class="category"><h2>Client</h2><h3>Modules</h3><ul><li><a href="module-client_src_api_applicationAndTaskSelection.html">client/src/api/applicationAndTaskSelection</a></li><li><a href="module-client_src_api_attributeRetrieval.html">client/src/api/attributeRetrieval</a></li><li><a href="module-client_src_api_socketHandler_socketEmitter.html">client/src/api/socketHandler/socketEmitter</a></li><li><a href="module-client_src_api_socketHandler_socketListeners.html">client/src/api/socketHandler/socketListeners</a></li><li><a href="module-client_src_api_ssot.html">client/src/api/ssot</a></li><li><a href="module-client_src_api_ssotRetrieval.html">client/src/api/ssotRetrieval</a></li><li><a href="module-client_src_api_variableRetrieval.html">client/src/api/variableRetrieval</a></li><li><a href="module-client_src_utils_downloadString.html">client/src/utils/downloadString</a></li><li><a href="module-client_src_utils_localSsot_attributes.html">client/src/utils/localSsot/attributes</a></li><li><a href="module-client_src_utils_localSsot_parameters.html">client/src/utils/localSsot/parameters</a></li><li><a href="module-client_src_utils_localSsot_ssot.html">client/src/utils/localSsot/ssot</a></li><li><a href="module-client_src_utils_modelerSidebarFunctionality_modelerSidebarFunctionality.html">client/src/utils/modelerSidebarFunctionality/modelerSidebarFunctionality</a></li><li><a href="module-client_src_utils_parser_BpmnToSsotParsing_BpmnToSsotParsing.html">client/src/utils/parser/BpmnToSsotParsing/BpmnToSsotParsing</a></li><li><a href="module-client_src_utils_parser_robotCodeToSsotParsing_robotCodeToSsotParsing.html">client/src/utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing</a></li><li><a href="module-client_src_utils_parser_ssotToBpmnParsing_ssotToBpmnParsing.html">client/src/utils/parser/ssotToBpmnParsing/ssotToBpmnParsing</a></li><li><a href="module-client_src_utils_robotMetadataUtils_robotMetadataUtils.html">client/src/utils/robotMetadataUtils/robotMetadataUtils</a></li><li><a href="module-client_src_utils_rpaFunctionality_functionalities.html">client/src/utils/rpaFunctionality/functionalities</a></li><li><a href="module-server_services_SsotToRobotParsing_SsotToRobotParser.html">server/services/SsotToRobotParsing/SsotToRobotParser</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#CreateRobotContainer">CreateRobotContainer</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PPApplicationDropdown">PPApplicationDropdown</a></li><li><a href="global.html#PPIdSection">PPIdSection</a></li><li><a href="global.html#PPNameSection">PPNameSection</a></li><li><a href="global.html#PPOutputValueSection">PPOutputValueSection</a></li><li><a href="global.html#PPParameterInput">PPParameterInput</a></li><li><a href="global.html#PPParameterSection">PPParameterSection</a></li><li><a href="global.html#PPRpaSection">PPRpaSection</a></li><li><a href="global.html#PPTaskDropdown">PPTaskDropdown</a></li><li><a href="global.html#PPTitleSection">PPTitleSection</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#RobotContainer">RobotContainer</a></li><li><a href="global.html#RobotFile">RobotFile</a></li><li><a href="global.html#RobotFileSyntaxModal">RobotFileSyntaxModal</a></li><li><a href="global.html#RobotInteractionCockpit">RobotInteractionCockpit</a></li><li><a href="global.html#RobotInteractionInputParameter">RobotInteractionInputParameter</a></li><li><a href="global.html#RobotInteractionInputSection">RobotInteractionInputSection</a></li><li><a href="global.html#RobotOverview">RobotOverview</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_services_SsotToRobotParsing_generateCodeBase.html">server/services/SsotToRobotParsing/generateCodeBase</a></li><li><a href="module-server_services_SsotToRobotParsing_generateCodeForRpaTasks.html">server/services/SsotToRobotParsing/generateCodeForRpaTasks</a></li><li><a href="module-server_services_SsotToRobotParsing_retrieveParameters.html">server/services/SsotToRobotParsing/retrieveParameters</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>client/src/components/pages/RobotInteractionCockpit/RobotInteractionCockpit.jsx</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-plusplus */
+import React, { useState, useEffect, useRef } from 'react';
+import { Layout, Card, Steps, Space, Button, Typography, Row, Col } from 'antd';
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  Loading3QuartersOutlined,
+  PauseCircleOutlined,
+} from '@ant-design/icons';
+import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
+import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
+import { isRobotExecutable } from '../../../utils/robotExecution';
+import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
+import { getActivityAndParameterInformation } from './RobotInteractionCockpitFunctionality';
+import customNotification from '../../../utils/notificationUtils';
+import {
+  newRobotMonitorUpdate,
+  newRobotStatusUpdate,
+} from '../../../api/socketHandler/socketListeners';
+import RobotLogCard from './RobotLogCard';
+import styles from './RobotInteractionCockpit.module.css';
+
+const { Step } = Steps;
+const { Title } = Typography;
+
+/**
+ * @description Page, where you can interact with a robot and for example enter input
+ * @category Client
+ * @component
+ */
+const RobotInteractionCockpit = (match) => {
+  const { robotId } = match.match.params;
+  const { userId } = match.location.state;
+  const isMounted = useRef(true);
+  const [parameterList, setParameterList] = useState([]);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [parameters, setParameters] = useState([]);
+  const [logs, setLogs] = useState({});
+  const [robotState, setRobotState] = useState('waiting');
+
+  /**
+   * @description Equivalent to ComponentDidMount in class based components
+   */
+  useEffect(
+    () => () => {
+      isMounted.current = false;
+    },
+    []
+  );
+
+  /**
+   * @description Ensures that we only update the paramterList when the paramters we fetch form the DB have changed
+   */
+  useEffect(() => {
+    getActivityAndParameterInformation(robotId, setParameterList, isMounted);
+  }, [robotId]);
+
+  /**
+   * @description When changing into execution step the listeners for status and log updates are enabled
+   */
+  useEffect(() => {
+    newRobotMonitorUpdate(setLogs);
+    newRobotStatusUpdate(setRobotState);
+  }, [currentStep]);
+
+  /**
+   * @description Sends a job to the server to execute a specfic robot for a specific user
+   */
+  const startRobot = async () => {
+    const robotIsExecutable = await isRobotExecutable(robotId);
+    if (robotIsExecutable) {
+      setCurrentStep(1);
+      startRobotForUser(userId, robotId, parameters);
+    } else {
+      customNotification(
+        'Error',
+        'Your Bot is not fully configured and can not be executed!'
+      );
+    }
+  };
+
+  /**
+   * @description Will update the value of a parameter in the component state
+   * @param {string} parameterId Id of the parameter which value will be changed
+   * @param {string} value new value of the parameter
+   */
+  const updateParameterValue = (parameterId, value) => {
+    const currentParameters = [...parameters];
+    let found = false;
+    for (let i = 0; i &lt; currentParameters.length; i++) {
+      if (currentParameters[i].parameterId === parameterId) {
+        found = true;
+        break;
+      }
+    }
+    if (found) {
+      currentParameters.map((parameter) => {
+        if (parameter.parameterId === parameterId) {
+          // eslint-disable-next-line no-param-reassign
+          parameter.value = value;
+        }
+        return parameter;
+      });
+    } else {
+      currentParameters.push({ parameterId, value });
+    }
+    setParameters(currentParameters);
+  };
+
+  const displayStatusIcon = (status) => {
+    if (status === 'PASS' || status === 'successful') {
+      return (
+        &lt;CheckCircleOutlined
+          className={styles.statusIconStyle}
+          style={{ color: 'green' }}
+        />
+      );
+    }
+    if (status === 'FAIL' || status === 'failed') {
+      return (
+        &lt;CloseCircleOutlined
+          className={styles.statusIconStyle}
+          style={{ color: 'red' }}
+        />
+      );
+    }
+    if (status === 'running') {
+      return (
+        &lt;Loading3QuartersOutlined
+          spin
+          className={styles.loadingStatusIconStyle}
+        />
+      );
+    }
+    if (status === 'waiting') {
+      return (
+        &lt;PauseCircleOutlined
+          className={styles.statusIconStyle}
+          style={{ color: 'grey' }}
+        />
+      );
+    }
+    return undefined;
+  };
+
+  return (
+    &lt;Layout>
+      &lt;HeaderNavbar selectedKey={4} />
+      &lt;Card style={{ margin: '24px', borderRadius: '5px' }}>
+        &lt;Steps responsive current={currentStep}>
+          &lt;Step title='Input' description='Define input for robot' />
+          &lt;Step title='Execution' description='Observe Robot Run' />
+          &lt;Step title='Done' description='Get return value' />
+        &lt;/Steps>
+      &lt;/Card>
+      &lt;Card style={{ margin: '24px', marginTop: '0px' }}>
+        &lt;Space direction='vertical' size='large' style={{ width: '100%' }}>
+          {currentStep === 0 &amp;&amp; parameterList.length !== 0 &amp;&amp; (
+            &lt;>
+              &lt;RobotInteractionInputSection
+                parameterList={parameterList}
+                updateParameterValue={updateParameterValue}
+              />
+              &lt;Button type='primary' onClick={startRobot}>
+                Execute Robot
+              &lt;/Button>
+            &lt;/>
+          )}
+          {currentStep === 0 &amp;&amp;
+            (parameterList.length === 0 || parameterList === undefined) &amp;&amp; (
+              &lt;>
+                &lt;Title style={{ marginBottom: '0px' }} level={5}>
+                  No User Input Required. Ready to go!
+                &lt;/Title>
+                &lt;Button type='primary' onClick={startRobot}>
+                  Execute Robot
+                &lt;/Button>
+              &lt;/>
+            )}
+          {currentStep !== 0 &amp;&amp; (
+            &lt;>
+              &lt;Row>
+                &lt;Col xs={24} lg={24} xl={12}>
+                  &lt;Title
+                    style={{
+                      marginBottom: '0px',
+                      marginLeft: '10px',
+                    }}
+                    level={5}
+                  >
+                    Robot Status
+                  &lt;/Title>
+                  &lt;Card style={{ margin: '10px' }} hoverable>
+                    &lt;Row>
+                      &lt;Col span={18}>
+                        &lt;Title
+                          style={{
+                            top: '35%',
+                            position: 'absolute',
+                          }}
+                          level={5}
+                        >
+                          {robotState.toLocaleUpperCase()}
+                        &lt;/Title>
+                      &lt;/Col>
+                      &lt;Col span={6}>{displayStatusIcon(robotState)}&lt;/Col>
+                    &lt;/Row>
+                  &lt;/Card>
+                &lt;/Col>
+                &lt;Col lg={24} xl={12}>
+                  &lt;Title
+                    style={{ marginBottom: '0px', marginLeft: '10px' }}
+                    level={5}
+                  >
+                    Robot Run Logs
+                  &lt;/Title>
+                  {logs.robot_run &amp;&amp;
+                    logs.robot_run.activities.map((log) => (
+                      &lt;RobotLogCard
+                        log={log}
+                        displayStatusIcon={displayStatusIcon}
+                      />
+                    ))}
+                &lt;/Col>
+              &lt;/Row>
+            &lt;/>
+          )}
+        &lt;/Space>
+      &lt;/Card>
+    &lt;/Layout>
+  );
+};
+
+export default RobotInteractionCockpit;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>
