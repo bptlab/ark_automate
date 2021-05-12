@@ -3,15 +3,15 @@ import { Layout } from 'antd';
 import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
-import { getSsotFromDB } from '../../../api/ssotRetrieval';
+import { getSsot } from '../../../api/ssot';
+import { getAllParametersForRobot } from '../../../api/variableRetrieval';
+import { getAllAttributes } from '../../../api/attributeRetrieval';
+import { getAllRpaFunctionalities } from '../../../api/applicationAndTaskSelection';
+import { setRobotId } from '../../../utils/localSsot/ssot';
 import {
-  setRobotId,
-  getAttributesFromDB,
-  getParameterFromDB,
-  getParameterForRobotFromDB,
-} from '../../../utils/attributeAndParamUtils';
-import initSessionStorage from '../../../utils/sessionStorageUtils/sessionStorage';
-import initAvailableApplicationsSessionStorage from '../../../utils/sessionStorageUtils/sessionStorageUtils';
+  initAvailableApplicationsSessionStorage,
+  initSessionStorage,
+} from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
@@ -36,7 +36,7 @@ const Modeler = (match) => {
   useEffect(() => {
     setRobotId(robotId);
     initSessionStorage('idCounter', JSON.stringify('541'));
-    getSsotFromDB(robotId)
+    getSsot(robotId)
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('ssotLocal', JSON.stringify(data));
@@ -47,14 +47,14 @@ const Modeler = (match) => {
         console.error(error);
       });
 
-    getAttributesFromDB(robotId)
+    getAllAttributes(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('attributeLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
       });
 
-    getParameterFromDB(robotId)
+    getAllRpaFunctionalities(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
@@ -64,7 +64,7 @@ const Modeler = (match) => {
         );
       });
 
-    getParameterForRobotFromDB(robotId)
+    getAllParametersForRobot(robotId)
       .then((response) => response.json())
       .then((data) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));

@@ -61,7 +61,9 @@ const getApplicationArray = (robotCodeSettingsSection) => {
     const elementStartsWithLibrary = line.startsWith('Library ');
     const rpaAliasIsCorrect = regexForRpaAlias.test(line);
     const applicationIsAvailable = availableApplications.includes(
-      line.split('RPA.')[1]
+      typeof line.split('RPA.')[1] === 'undefined'
+        ? ''
+        : line.split('RPA.')[1].trim()
     );
 
     if (!elementStartsWithLibrary) {
@@ -84,7 +86,7 @@ const getApplicationArray = (robotCodeSettingsSection) => {
       customNotification(
         'Error',
         `The Application "${String(
-          line.split('RPA.')[1]
+          line.split('RPA.')[1].trim()
         )}" is currently not supported. `
       );
       errorWasThrown = true;
@@ -93,7 +95,7 @@ const getApplicationArray = (robotCodeSettingsSection) => {
 
   const declaredApplications = errorWasThrown
     ? undefined
-    : robotCode.map((line) => line.split('RPA.')[1]);
+    : robotCode.map((line) => line.split('RPA.')[1].trim());
 
   return declaredApplications;
 };
@@ -113,14 +115,17 @@ const getOutputName = (currentLine) => {
 };
 
 /**
- * @description retrieves the rpa task from the current code line
+ * @description retrieves the rpa task from the current code line; if there are no parameters,
+ * the indexOfFirstSplitPlaceholder returns -1 and therefore the function returns the whole line
  * @param {String} currentLine current line of RPAf code
  * @param {String} splitPlaceholder placeholder to split the string
  * @returns rpaTask as string
  */
 const getRpaTask = (currentLine, splitPlaceholder) => {
   const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
-  return currentLine.slice(0, indexOfFirstSplitPlaceholder);
+  return indexOfFirstSplitPlaceholder === -1
+    ? currentLine.replace('RPA.', '')
+    : currentLine.slice(0, indexOfFirstSplitPlaceholder).replace('RPA.', '');
 };
 
 /**
@@ -130,10 +135,10 @@ const getRpaTask = (currentLine, splitPlaceholder) => {
  * @param {String} instructionBlocks current intruction block to get the rpaTask
  * @returns rpaParameters as array
  */
-const getRpaParameters = (currentLine, splitPlaceholder, instructionBlocks) => {
-  const parametersWithoutRpaTask = currentLine.replace(
-    instructionBlocks[instructionBlocks.length - 1].rpaTask + splitPlaceholder,
-    ''
+const getRpaParameters = (currentLine, splitPlaceholder) => {
+  const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
+  const parametersWithoutRpaTask = currentLine.slice(
+    indexOfFirstSplitPlaceholder + splitPlaceholder.length
   );
   return parametersWithoutRpaTask.split([splitPlaceholder]);
 };
@@ -159,51 +164,84 @@ const currentLineWithoutOutputVariableName = (
 };
 
 /**
+ * @description counts the number of occurences of the current task in the subset
+ * of all Task/Application combinations for the current robot code
+ * @param {Array} allMatchingCombinations all combinations from database that match the rpaTask
+ * @param {*} rpaTask paTask from current robotCode line
+ * @returns number of occurrences of the rpaTask in allMatchingCombinations
+ */
+const numberOfOccurrencesOfTask = (allMatchingCombinations, rpaTask) => {
+  let numberOfOccurrences = 0;
+  allMatchingCombinations.forEach((singleObject) => {
+    if (singleObject.Task === rpaTask) {
+      numberOfOccurrences += 1;
+    }
+  });
+  return numberOfOccurrences;
+};
+
+/**
+ * @description this function returns the matching task object for the rpaTask or throws a notification
+ * @param {String} rpaTask rpaTask from current robotCode line
+ * @param {Array} allMatchingCombinations all combinations from database that match the rpaTask
+ * @returns the matching task object for the rpaTask or undefined if an error occurs
+ */
+const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
+  const numberOfOccurrences = numberOfOccurrencesOfTask(
+    allMatchingCombinations,
+    rpaTask
+  );
+
+  if (allMatchingCombinations.length === 0) {
+    customNotification(
+      'Error',
+      `The described task "${rpaTask}" could not be assigned to an application.`
+    );
+    return undefined;
+  }
+  if (numberOfOccurrences > 1) {
+    let correctExampleText = '';
+    allMatchingCombinations.forEach((singleCombination) => {
+      correctExampleText += `\n${singleCombination.Application}.${rpaTask}`;
+    });
+    customNotification(
+      'Error',
+      `Multiple Applications with task "${rpaTask}" found. Give the full name you want to use like: ${correctExampleText}`
+    );
+    return undefined;
+  }
+  return allMatchingCombinations[0];
+};
+
+/**
  * @description "preprocesses" the code in a usable data format
  * @param {Array} robotCodeTaskSection robot code w/o empty lines as an array of Strings
- * @param {Array} declaredApplications all declared Aplications from ***settings*** section as Strings
+ * @param {Array} taskAndApplicationCombinations all declared tasks and applications from database
  * @returns Array of Objects with the following schema:
  *      instructionBlocks = [rpaApplication:String, rpaTask:String, name:String, paramArray:Array]
  */
 const getInstructionBlocksFromTaskSection = (
   robotCodeTaskSection,
-  declaredApplications
+  taskAndApplicationCombinations
 ) => {
-  let currentApplication;
   let errorWasThrown;
   const instructionBlocks = [];
-  const regexForElementNameLine = /#/;
   const regexForOutputVariable = /\${(.)+} =/;
   const splitPlaceholder = '§&§';
 
   robotCodeTaskSection.slice(1).forEach((line) => {
     if (errorWasThrown) return;
-    let currentLine = line.trim();
-    const currentLineDefinesNewApplication = declaredApplications.includes(
-      currentLine
-    );
-    const currentLineContainsElementName = regexForElementNameLine.test(
-      currentLine
-    );
+    let currentLine = line;
     const currentLineIncludesSplitPlaceholder = currentLine.includes(
       splitPlaceholder
     );
-    const currentLineHasNoSpecifiedApplication =
-      typeof currentApplication === 'undefined';
     const currentLineDefinesOutputValue = regexForOutputVariable.test(
       currentLine
     );
+    const currentLineStartsWithFourspace = currentLine.startsWith(FOURSPACE);
 
-    if (currentLineDefinesNewApplication) {
-      currentApplication = currentLine;
-      return;
-    }
-    if (currentLineHasNoSpecifiedApplication) {
-      customNotification(
-        'Error',
-        `There is no RPA-Application specified for line "${currentLine}"`
-      );
-      errorWasThrown = true;
+    if (!currentLineStartsWithFourspace) {
+      instructionBlocks.push({ name: currentLine });
       return;
     }
 
@@ -216,15 +254,7 @@ const getInstructionBlocksFromTaskSection = (
       return;
     }
 
-    if (currentLineContainsElementName) {
-      instructionBlocks.push({
-        rpaApplication: currentApplication,
-        name: currentLine.substring(1).trim(),
-      });
-      return;
-    }
-
-    currentLine = currentLine.replace(/( {4})/g, splitPlaceholder);
+    currentLine = currentLine.trim().replace(/( {4})/g, splitPlaceholder);
 
     if (currentLineDefinesOutputValue) {
       const outputValueName = getOutputName(currentLine);
@@ -239,17 +269,39 @@ const getInstructionBlocksFromTaskSection = (
     }
 
     if (!errorWasThrown) {
-      instructionBlocks[instructionBlocks.length - 1].rpaTask = getRpaTask(
-        currentLine,
-        splitPlaceholder
+      let rpaTask = getRpaTask(currentLine, splitPlaceholder);
+      const allMatchingCombinations = taskAndApplicationCombinations.filter(
+        (singleCombination) => {
+          if (rpaTask === singleCombination.Task) return true;
+          if (
+            rpaTask.endsWith(singleCombination.Task) &&
+            rpaTask.startsWith(singleCombination.Application)
+          )
+            return true;
+
+          return false;
+        }
       );
+
+      const matchingCombination = returnMatchingCombination(
+        rpaTask,
+        allMatchingCombinations
+      );
+      if (typeof matchingCombination === 'undefined') {
+        errorWasThrown = true;
+        return;
+      }
+
+      rpaTask = rpaTask.replace(`${matchingCombination.Application}.`, '');
+
+      const rpaParameters = getRpaParameters(currentLine, splitPlaceholder);
+
+      instructionBlocks[instructionBlocks.length - 1].rpaTask = rpaTask;
       instructionBlocks[
         instructionBlocks.length - 1
-      ].paramArray = getRpaParameters(
-        currentLine,
-        splitPlaceholder,
-        instructionBlocks
-      );
+      ].paramArray = rpaParameters;
+      instructionBlocks[instructionBlocks.length - 1].rpaApplication =
+        matchingCombination.Application;
     }
   });
   return errorWasThrown ? undefined : instructionBlocks;
@@ -391,12 +443,17 @@ const getElementsArray = (
   )
     return undefined;
 
-  const taskAndApplicationCombinations = JSON.parse(
+  let taskAndApplicationCombinations = JSON.parse(
     sessionStorage.getItem('TaskApplicationCombinations')
   );
+  taskAndApplicationCombinations = taskAndApplicationCombinations.filter(
+    (singleCombination) =>
+      declaredApplications.includes(singleCombination.Application)
+  );
+
   const instructionArray = getInstructionBlocksFromTaskSection(
     robotCodeTaskSection,
-    declaredApplications
+    taskAndApplicationCombinations
   );
   if (typeof instructionArray === 'undefined') return undefined;
 

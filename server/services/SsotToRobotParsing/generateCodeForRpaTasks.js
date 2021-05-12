@@ -2,12 +2,14 @@
  * @category Server
  * @module
  */
+const mongoose = require('mongoose');
 const {
   ACTIVITY_IDENTIFIER,
   FOURSPACE,
   LINEBREAK,
-  COMMENT,
 } = require('./robotCodeConstants');
+// eslint-disable-next-line no-unused-vars
+const rpaModels = require('../../api/models/rpaTaskModel');
 
 /**
  * @description Checks whether the given element is of type instruction and contains rpa attributes
@@ -80,7 +82,6 @@ const successorTasksExist = (currentElement) =>
  * @param {Array} parameters All parameter objects of the robot
  * @param {Array} attributes All attribute objects of the robot
  * @param {String} codeToAppend The current code we want to extend
- * @param {String} previousApplication Name of the rpa application of the previous element
  * @returns {string} Generated .robot code for the tasks section
  */
 const writeCodeForElement = (
@@ -89,31 +90,28 @@ const writeCodeForElement = (
   parameters,
   attributes,
   codeToAppend,
-  previousApplication
+  duplicateTasks
 ) => {
   const currentElement = elements.find((element) => element.id === id);
   let combinedCode = codeToAppend;
   let newCodeLine = '';
-  let newPreviousApplication = previousApplication;
   if (isAnRpaInstruction(currentElement)) {
     const currentAttributeObject = attributes.find(
       (attribute) => attribute.activityId === id
     );
     if (currentAttributeObject) {
-      if (currentAttributeObject.rpaApplication !== previousApplication) {
-        newPreviousApplication = currentAttributeObject.rpaApplication;
-        newCodeLine += currentAttributeObject.rpaApplication + LINEBREAK;
-      } else {
-        newPreviousApplication = previousApplication;
-      }
-      newCodeLine += COMMENT + currentElement.name + LINEBREAK;
+      newCodeLine += currentElement.name + LINEBREAK;
       const currentParameterObject = parameters.find(
         (parameter) => parameter.activityId === id
       );
       if (currentParameterObject) {
         newCodeLine += setOutputVar(currentParameterObject);
       }
-      newCodeLine += currentAttributeObject.rpaTask;
+      if (duplicateTasks.includes(currentAttributeObject.rpaTask)) {
+        newCodeLine += `RPA.${currentAttributeObject.rpaApplication}.${currentAttributeObject.rpaTask}`;
+      } else {
+        newCodeLine += currentAttributeObject.rpaTask;
+      }
       if (currentParameterObject) {
         newCodeLine += appendRpaInputParameter(currentParameterObject);
       }
@@ -132,11 +130,13 @@ const writeCodeForElement = (
         parameters,
         attributes,
         combinedCode,
-        newPreviousApplication
+        duplicateTasks
       );
     });
   }
-  return combinedCode;
+  return combinedCode.endsWith(LINEBREAK)
+    ? combinedCode.slice(0, -1)
+    : combinedCode;
 };
 
 /**
@@ -145,10 +145,18 @@ const writeCodeForElement = (
  * @param {Object} metaData MetaData of the robot
  * @returns {string} Generated .robot code for the tasks section
  */
-const generateCodeForRpaTasks = (elements, parameters, attributes) => {
+const generateCodeForRpaTasks = async (elements, parameters, attributes) => {
   const startElement = elements.find(
     (element) => element.predecessorIds.length === 0
   );
+
+  const groupedByTask = await mongoose
+    .model('rpa-task')
+    .aggregate([{ $group: { _id: '$Task', count: { $sum: 1 } } }]);
+  const listOfDuplicates = groupedByTask
+    .filter((singleTask) => singleTask.count > 1)
+    // eslint-disable-next-line no-underscore-dangle
+    .map((singleDuplicateTask) => singleDuplicateTask._id);
 
   const codeForRpaTasks = writeCodeForElement(
     startElement.id,
@@ -156,7 +164,7 @@ const generateCodeForRpaTasks = (elements, parameters, attributes) => {
     parameters,
     attributes,
     '',
-    'None'
+    listOfDuplicates
   );
 
   return codeForRpaTasks;

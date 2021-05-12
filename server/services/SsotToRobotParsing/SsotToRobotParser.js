@@ -1,13 +1,12 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-escape */
 /**
  * @category Client
  * @module
  */
 const mongoose = require('mongoose');
-// eslint-disable-next-line no-unused-vars
-const ssotModels = require('../../models/singleSourceOfTruthModel.js');
-// eslint-disable-next-line no-unused-vars
-const jobsModel = require('../../models/robotJobModel.js');
+const ssotModels = require('../../api/models/singleSourceOfTruthModel.js');
+const jobsModel = require('../../api/models/robotJobModel.js');
 const { generateCodeBase } = require('./generateCodeBase');
 const {
   retrieveParameters,
@@ -24,7 +23,7 @@ const parseSsotToRobotCode = async (ssot) => {
   // eslint-disable-next-line prefer-const
   const result = await generateCodeBase(ssot);
   const parameters = await retrieveParameters(ssot);
-  result.parsedCode += generateCodeForRpaTasks(
+  result.parsedCode += await generateCodeForRpaTasks(
     ssot.elements,
     parameters,
     result.attributeObjects
@@ -42,7 +41,7 @@ const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
   // eslint-disable-next-line prefer-const
   const result = await generateCodeBase(ssot);
   const parameters = await retrieveParametersFromSsotAndJob(ssot, jobId);
-  result.parsedCode += generateCodeForRpaTasks(
+  result.parsedCode += await generateCodeForRpaTasks(
     ssot.elements,
     parameters,
     result.attributeObjects

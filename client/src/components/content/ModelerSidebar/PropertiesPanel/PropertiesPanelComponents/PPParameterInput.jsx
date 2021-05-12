@@ -8,9 +8,9 @@ import {
 import PropTypes from 'prop-types';
 import styles from '../../ModelerSidebar.module.css';
 import {
-  parameterPropertyStatus,
   setPropertyForParameter,
-} from '../../../../../utils/attributeAndParamUtils';
+  parameterPropertyStatus,
+} from '../../../../../utils/localSsot/parameters';
 
 const { Text } = Typography;
 

@@ -8,9 +8,14 @@ const socketio = require('socket.io');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const PORT = process.env.PORT || 5000;
-const rpaFrameworkRouter = require('./routes/rpaFramework');
-const ssotRouter = require('./routes/ssot');
+const swaggerUi = require('swagger-ui-express');
+const rpaFrameworkRouter = require('./api/routes/functionalities/functionalities');
+const ssotRouter = require('./api/routes/robots/robots');
+const userRouter = require('./api/routes/users/users');
 const { socketManager } = require('./socket/socketManager');
+const {
+  swaggerSpec,
+} = require('./utils/openApiDocumentation/docuGenerationHelper');
 
 // Multi-process to utilize all CPU cores.
 if (!isDev && cluster.isMaster) {
@@ -57,8 +62,10 @@ if (!isDev && cluster.isMaster) {
   app.use(express.static(path.resolve(__dirname, 'build')));
   app.use(express.json());
 
-  app.use('/rpa-framework', rpaFrameworkRouter);
-  app.use('/ssot', ssotRouter);
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use('/functionalities', rpaFrameworkRouter);
+  app.use('/robots', ssotRouter);
+  app.use('/users', userRouter);
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', (request, response) => {

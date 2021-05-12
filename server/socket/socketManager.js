@@ -76,7 +76,21 @@ exports.socketManager = (io, socket) => {
     }
   });
 
-  socket.on('updatedRobotJobStatus', ({ jobId, status }) => {
-    socketHelperFunctions.updateRobotJobStatus(jobId, status);
+  socket.on('updatedLiveRobotLog', ({ userId, jobId, robotLogs }) => {
+    io.to(userId).emit('changedRobotStatus', 'running');
+    if (robotLogs.final_message === 'Execution completed') {
+      socketHelperFunctions.updateRobotJobStatus(
+        jobId,
+        robotLogs.robot_run.status === 'FAIL' ? 'failed' : 'successful'
+      );
+      io.to(userId).emit(
+        'changedRobotStatus',
+        robotLogs.robot_run.status === 'FAIL' ? 'failed' : 'successful'
+      );
+      if (robotLogs.robot_run.status === 'FAIL') {
+        socketHelperFunctions.updateRobotJobErrors(jobId, robotLogs);
+      }
+    }
+    io.to(userId).emit('changedRobotRunLogs', robotLogs);
   });
 };

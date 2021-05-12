@@ -1,7 +1,5 @@
-import {
-  getParameterForRobotFromDB,
-  getAttributesFromDB,
-} from './attributeAndParamUtils';
+import { getAllAttributes } from '../api/attributeRetrieval';
+import { getAllParametersForRobot } from '../api/variableRetrieval';
 
 const configuredRobotParamsCorrectly = (parameterObjects) => {
   let executability = true;
@@ -46,12 +44,12 @@ const configuredRobotActivitesCorrectly = (attributeObjects) => {
 };
 
 const isRobotExecutable = async (robotId) => {
-  const attributes = await getAttributesFromDB(robotId);
+  const attributes = await getAllAttributes(robotId);
   const activitiesAreCorrect = configuredRobotActivitesCorrectly(
     await attributes.json()
   );
 
-  const parameters = await getParameterForRobotFromDB(robotId);
+  const parameters = await getAllParametersForRobot(robotId);
   const paramsAreCorrect = configuredRobotParamsCorrectly(
     await parameters.json()
   );
