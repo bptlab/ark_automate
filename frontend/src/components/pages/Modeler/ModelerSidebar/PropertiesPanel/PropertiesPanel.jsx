@@ -3,12 +3,12 @@ import { is } from 'bpmn-js/lib/util/ModelUtil';
 import { Space } from 'antd';
 import PropTypes from 'prop-types';
 
-import PPIdSection from './PropertiesPanelSections/PPIdSection';
-import PPTitle from './PropertiesPanelSections/PPTitleSection';
-import PPNameSection from './PropertiesPanelSections/PPNameSection';
-import PPParameterSection from './PropertiesPanelSections/PPParameterSection';
-import PPRpaSection from './PropertiesPanelSections/PPRpaSection';
-import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection';
+import PPIdSection from './PropertiesPanelSections/PPIdSection/PPIdSection';
+import PPTitle from './PropertiesPanelSections/PPTitleSection/PPTitleSection';
+import PPNameSection from './PropertiesPanelSections/PPNameSection/PPNameSection';
+import PPParameterSection from './PropertiesPanelSections/PPParameterSection/PPParameterSection';
+import PPRpaSection from './PropertiesPanelSections/PPRpaSection/PPRpaSection';
+import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection/PPOutputValueSection';
 
 /**
  * @description Shows PropertiesPanel for one selected BPMN-Element.

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Space } from 'antd';
-import PPParameterInput from '../PropertiesPanelComponents/PPParameterInput';
+import PPParameterInput from './singleComponents/PPParameterInput';
 
 const { Text } = Typography;
 

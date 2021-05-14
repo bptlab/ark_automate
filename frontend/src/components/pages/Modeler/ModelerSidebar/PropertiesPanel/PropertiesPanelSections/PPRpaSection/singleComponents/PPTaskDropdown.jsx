@@ -1,8 +1,8 @@
 import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
-import styles from '../../ModelerSidebar.module.css';
-import { getRpaTask } from '../../../../../../utils/sessionStorageUtils/localSsotController/attributes';
+import styles from '../../../../ModelerSidebar.module.css';
+import { getRpaTask } from '../../../../../../../../utils/sessionStorageUtils/localSsotController/attributes';
 
 const { Option } = Select;
 

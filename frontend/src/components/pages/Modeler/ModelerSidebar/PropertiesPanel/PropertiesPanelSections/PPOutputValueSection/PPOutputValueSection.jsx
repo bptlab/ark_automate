@@ -2,7 +2,7 @@ import React from 'react';
 import { Space, Typography, Tooltip, Input } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import corporateDesign from '../../../../../../layout/corporateDesign';
+import corporateDesign from '../../../../../../../layout/corporateDesign';
 
 const { Text } = Typography;
 

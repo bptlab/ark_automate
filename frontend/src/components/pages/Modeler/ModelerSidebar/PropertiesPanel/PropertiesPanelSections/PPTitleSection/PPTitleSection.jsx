@@ -9,7 +9,8 @@ const { Text } = Typography;
  * @component
  */
 const PPTitleSection = (element) => {
-  let title = element.element.type;
+  const { element: selectedElement } = element;
+  let { type: title } = selectedElement;
   title = title.replace('bpmn:', '');
 
   return (
