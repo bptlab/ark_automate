@@ -5,7 +5,7 @@
 jest.mock('../../../api/ssotRetrieval');
 jest.mock('./downloadStringAsFile');
 jest.mock('../../sessionStorageUtils/localSsotController/ssot');
-jest.mock('../../parser/BpmnToSsotParsing/BpmnToSsotParsing');
+jest.mock('../../parser/bpmnToSsotParsing/bpmnToSsotParsing');
 
 jest.mock('../../../api/applicationAndTaskRetrieval');
 jest.mock('../../sessionStorageUtils/localSsotController/parameters');
