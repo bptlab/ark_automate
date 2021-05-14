@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Input, Space, Row, Select } from 'antd';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import RobotContainer from '../../content/RobotContainer/RobotContainer';
+import HeaderNavbar from '../../HeaderNavbar/HeaderNavbar';
+import RobotContainer from './RobotContainer/RobotContainer';
 import { joinRoomForUser } from '../../../api/socketHandler/socketEmitter';
 import {
   successRoomConnection,
   errorRoomConnection,
   newClientJoined,
 } from '../../../api/socketHandler/socketListeners';
-import CreateRobotContainer from '../../content/RobotContainer/CreateRobotContainer';
+import CreateRobotContainer from './RobotContainer/CreateRobotContainer';
 import { initSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 

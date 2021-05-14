@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
-import BpmnModeler from '../../content/BpmnModeler/BpmnModeler';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import ModelerSidebar from '../../content/ModelerSidebar/ModelerSidebar';
+import BpmnModeler from './BpmnModeler/BpmnModeler';
+import HeaderNavbar from '../../HeaderNavbar/HeaderNavbar';
+import ModelerSidebar from './ModelerSidebar/ModelerSidebar';
 import { getSsot } from '../../../api/ssotRetrieval';
 import { getAllParametersForRobot } from '../../../api/parameterRetrieval';
 import { getAllAttributes } from '../../../api/attributeRetrieval';

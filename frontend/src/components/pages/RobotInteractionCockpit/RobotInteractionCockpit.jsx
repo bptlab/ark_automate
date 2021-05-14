@@ -8,8 +8,8 @@ import {
   Loading3QuartersOutlined,
   PauseCircleOutlined,
 } from '@ant-design/icons';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
-import RobotInteractionInputSection from '../../content/RobotInteractionSections/RobotInteractionInputSection';
+import HeaderNavbar from '../../HeaderNavbar/HeaderNavbar';
+import RobotInteractionInputSection from './RobotInteractionSections/RobotInteractionInputSection';
 import { isRobotExecutable } from '../../../utils/componentsFunctionality/robotExecutionFunctionality/robotExecution';
 import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
 import { getActivityAndParameterInformation } from './RobotInteractionCockpitFunctionality';

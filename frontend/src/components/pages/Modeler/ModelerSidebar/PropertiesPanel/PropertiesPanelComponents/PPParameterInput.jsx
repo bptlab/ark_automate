@@ -10,7 +10,7 @@ import styles from '../../ModelerSidebar.module.css';
 import {
   setPropertyForParameter,
   parameterPropertyStatus,
-} from '../../../../../utils/sessionStorageUtils/localSsotController/parameters';
+} from '../../../../../../utils/sessionStorageUtils/localSsotController/parameters';
 
 const { Text } = Typography;
 

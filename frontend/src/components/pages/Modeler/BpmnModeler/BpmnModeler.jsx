@@ -5,7 +5,7 @@ import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camu
 import PropTypes from 'prop-types';
 import CliModule from 'bpmn-js-cli';
 import removeUnsupportedBpmnFunctions from './RemoveUnsupportedBpmnFunctions';
-import { emptyBpmn } from '../../../resources/modeler/empty.bpmn';
+import { emptyBpmn } from '../../../../resources/modeler/empty.bpmn';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';

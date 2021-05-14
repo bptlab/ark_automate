@@ -3,7 +3,7 @@ import { Col, Row, Typography } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import styles from './RobotContainer.module.css';
-import corporateDesign from '../../../layout/corporateDesign';
+import corporateDesign from '../../../../layout/corporateDesign';
 
 const { Title } = Typography;
 

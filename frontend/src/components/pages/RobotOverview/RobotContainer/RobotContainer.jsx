@@ -9,9 +9,12 @@ import {
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
-import { initSsotSessionStorage } from '../../../utils/sessionStorageUtils/localSsotController/ssot';
-import { changeSsotName, deleteRobotFromDB } from '../../../api/ssotRetrieval';
-import customNotification from '../../../utils/componentsFunctionality/notificationUtils';
+import { initSsotSessionStorage } from '../../../../utils/sessionStorageUtils/localSsotController/ssot';
+import {
+  changeSsotName,
+  deleteRobotFromDB,
+} from '../../../../api/ssotRetrieval';
+import customNotification from '../../../../utils/componentsFunctionality/notificationUtils';
 
 const { Title } = Typography;
 

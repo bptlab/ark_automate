@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Button, Space, Row, Col } from 'antd';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import Editor from 'react-simple-code-editor';
-import HeaderNavbar from '../../content/HeaderNavbar/HeaderNavbar';
+import HeaderNavbar from '../../HeaderNavbar/HeaderNavbar';
 import { getParsedRobotFile } from '../../../api/ssotRetrieval';
 import { initAvailableApplicationsSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils';
 import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
@@ -11,7 +11,7 @@ import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotFile.module.css';
 import customNotification from '../../../utils/componentsFunctionality/notificationUtils';
-import RobotFileSyntaxModal from '../../content/RobotFileSyntaxModal/RobotFileSyntaxModal';
+import RobotFileSyntaxModal from './RobotFileSyntaxModal/RobotFileSyntaxModal';
 
 /**
  * @description View of the robot file
