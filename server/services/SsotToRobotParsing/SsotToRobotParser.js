@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-escape */
 /**
- * @category Client
+ * @category Frontend
  * @module
  */
 const mongoose = require('mongoose');
