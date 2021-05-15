@@ -2,7 +2,7 @@ name: Backend testing
 
 on:
   push:
-    branches: [DEV, 279_refactor_folder_structure]
+    branches: [DEV]
   pull_request:
     branches: [DEV]
   workflow_dispatch:

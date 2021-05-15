@@ -29,7 +29,7 @@ Let's focus on the **src/** folder. On the highest level the relevant file is th
 
 - **api/**: API call related functions.
 - **components/**: Stateful and stateless components. On the highest level the relevant file is the App.js. It is the one component that is being rendered in the end and that includes all the other components. In general the test and CSS file for a component are saved together with the component in one folder that contains just these files. If multiple test files are needed to test one component then put all the test files in one tests folder next to the component.  
-  Next to the App.js there is a folder in the `components/` folder that contains all the pages of the application. In addition, the `HeaderNavbar/` folder contains the navigation bar that is imported from each page.  
+  Next to the App.js there is a folder in the `components/` folder that contains all the pages of the application. In addition, the `HeaderNavbar/` folder contains the navigation bar that gets imported from each page.  
   In the pages folder, a subfolder is created for each page. the following folder structure is done logically hierarchically according to the order of imports.
 - **layout/**: Contains our corporate design and customized theme.
 - **resources/**: Contains images, fonts and other static files.
