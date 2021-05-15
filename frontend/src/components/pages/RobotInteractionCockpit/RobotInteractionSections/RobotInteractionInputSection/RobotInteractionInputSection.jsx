@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Space } from 'antd';
-import RobotInteractionInputParameter from './RobotInteractionComponents/RobotInteractionInputParameter';
+import RobotInteractionInputParameter from './singleComponents/RobotInteractionParameterInput';
 
 const { Title } = Typography;
 
 /**
- * @description Renders the name input field with the corresponding label.
+ * @description Renders all necessary input fields for inserting the missing parameters before execution
  * @category Frontend
  * @component
  */

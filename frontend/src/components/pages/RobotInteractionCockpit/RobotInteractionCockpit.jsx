@@ -1,25 +1,17 @@
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-plusplus */
 import React, { useState, useEffect, useRef } from 'react';
-import { Layout, Card, Steps, Space, Button, Typography, Row, Col } from 'antd';
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  Loading3QuartersOutlined,
-  PauseCircleOutlined,
-} from '@ant-design/icons';
+import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
 import HeaderNavbar from '../../HeaderNavbar/HeaderNavbar';
-import RobotInteractionInputSection from './RobotInteractionSections/RobotInteractionInputSection';
+import RobotInteractionInputSection from './RobotInteractionSections/RobotInteractionInputSection/RobotInteractionInputSection';
+import RobotInteractionExecutionSection from './RobotInteractionSections/RobotInteractionExecutionSection/RobotInteractionExecutionSection';
 import { isRobotExecutable } from '../../../utils/componentsFunctionality/robotExecutionFunctionality/robotExecution';
 import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
-import { getActivityAndParameterInformation } from './RobotInteractionCockpitFunctionality';
+import { getActivityAndParameterInformation } from '../../../utils/componentsFunctionality/robotInteractionCockpitFunctionality/robotInteractionCockpitFunctionality';
 import customNotification from '../../../utils/componentsFunctionality/notificationUtils';
 import {
   newRobotMonitorUpdate,
   newRobotStatusUpdate,
 } from '../../../api/socketHandler/socketListeners';
-import RobotLogCard from './RobotLogCard';
-import styles from './RobotInteractionCockpit.module.css';
 
 const { Step } = Steps;
 const { Title } = Typography;
@@ -88,7 +80,7 @@ const RobotInteractionCockpit = (match) => {
   const updateParameterValue = (parameterId, value) => {
     const currentParameters = [...parameters];
     let found = false;
-    for (let i = 0; i < currentParameters.length; i++) {
+    for (let i = 0; i < currentParameters.length; i += 1) {
       if (currentParameters[i].parameterId === parameterId) {
         found = true;
         break;
@@ -106,42 +98,6 @@ const RobotInteractionCockpit = (match) => {
       currentParameters.push({ parameterId, value });
     }
     setParameters(currentParameters);
-  };
-
-  const displayStatusIcon = (status) => {
-    if (status === 'PASS' || status === 'successful') {
-      return (
-        <CheckCircleOutlined
-          className={styles.statusIconStyle}
-          style={{ color: 'green' }}
-        />
-      );
-    }
-    if (status === 'FAIL' || status === 'failed') {
-      return (
-        <CloseCircleOutlined
-          className={styles.statusIconStyle}
-          style={{ color: 'red' }}
-        />
-      );
-    }
-    if (status === 'running') {
-      return (
-        <Loading3QuartersOutlined
-          spin
-          className={styles.loadingStatusIconStyle}
-        />
-      );
-    }
-    if (status === 'waiting') {
-      return (
-        <PauseCircleOutlined
-          className={styles.statusIconStyle}
-          style={{ color: 'grey' }}
-        />
-      );
-    }
-    return undefined;
   };
 
   return (
@@ -179,52 +135,10 @@ const RobotInteractionCockpit = (match) => {
               </>
             )}
           {currentStep !== 0 && (
-            <>
-              <Row>
-                <Col xs={24} lg={24} xl={12}>
-                  <Title
-                    style={{
-                      marginBottom: '0px',
-                      marginLeft: '10px',
-                    }}
-                    level={5}
-                  >
-                    Robot Status
-                  </Title>
-                  <Card style={{ margin: '10px' }} hoverable>
-                    <Row>
-                      <Col span={18}>
-                        <Title
-                          style={{
-                            top: '35%',
-                            position: 'absolute',
-                          }}
-                          level={5}
-                        >
-                          {robotState.toLocaleUpperCase()}
-                        </Title>
-                      </Col>
-                      <Col span={6}>{displayStatusIcon(robotState)}</Col>
-                    </Row>
-                  </Card>
-                </Col>
-                <Col lg={24} xl={12}>
-                  <Title
-                    style={{ marginBottom: '0px', marginLeft: '10px' }}
-                    level={5}
-                  >
-                    Robot Run Logs
-                  </Title>
-                  {logs.robot_run &&
-                    logs.robot_run.activities.map((log) => (
-                      <RobotLogCard
-                        log={log}
-                        displayStatusIcon={displayStatusIcon}
-                      />
-                    ))}
-                </Col>
-              </Row>
-            </>
+            <RobotInteractionExecutionSection
+              executionLogs={logs}
+              robotState={robotState}
+            />
           )}
         </Space>
       </Card>
