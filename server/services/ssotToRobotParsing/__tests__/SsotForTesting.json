@@ -1,0 +1,47 @@
+{
+  "id": "606199015d691786a44a608f",
+  "starterId": "Event_1wm4a0f",
+  "robotName": "Sandros Testbot",
+  "elements": [
+    {
+      "predecessorIds": [],
+      "successorIds": ["Activity_1elomab"],
+      "_id": "6062f0ad92ffd3044c6ee382",
+      "type": "MARKER",
+      "name": "Start Event",
+      "id": "Event_1wm4a0f"
+    },
+    {
+      "predecessorIds": ["Event_1wm4a0f"],
+      "successorIds": ["Activity_175v5b5"],
+      "_id": "6062f0ad92ffd3044c6ee383",
+      "type": "INSTRUCTION",
+      "name": "FirstActivity",
+      "id": "Activity_1elomab"
+    },
+    {
+      "predecessorIds": ["Activity_1elomab"],
+      "successorIds": ["Activity_1x8wlwh"],
+      "_id": "6062f0ad92ffd3044c6ee384",
+      "type": "INSTRUCTION",
+      "name": "SecondActivity",
+      "id": "Activity_175v5b5"
+    },
+    {
+      "predecessorIds": ["Activity_175v5b5"],
+      "successorIds": ["Event_1cuknwt"],
+      "_id": "6062f0ad92ffd3044c6ee385",
+      "type": "INSTRUCTION",
+      "name": "ThirdActivity",
+      "id": "Activity_1x8wlwh"
+    },
+    {
+      "predecessorIds": ["Activity_1x8wlwh"],
+      "successorIds": [],
+      "_id": "6062f0ad92ffd3044c6ee386",
+      "type": "MARKER",
+      "name": "finished",
+      "id": "Event_1cuknwt"
+    }
+  ]
+}
