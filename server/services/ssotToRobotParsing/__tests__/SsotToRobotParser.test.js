@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
-const parser = require('../SsotToRobotParser');
+const parser = require('../ssotToRobotParser');
 const testSsot = require('./SsotForTesting.json');
-const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');
-const dbLoader = require('../../../utils/TestingUtils/databaseLoader');
+const dbHandler = require('../../../utils/testingUtils/testDatabaseHandler');
+const dbLoader = require('../../../utils/testingUtils/databaseLoader');
 const {
   testRobotId,
   testJobId,
   testRobotCode,
-} = require('../../../utils/TestingUtils/testData');
+} = require('../../../utils/testingUtils/testData');
 
 const EXCEL1_ACTIVITY_NAME = 'FirstActivity';
 const OPEN_WORKBOOK_CMD = 'Open Workbook';

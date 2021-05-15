@@ -1,4 +1,4 @@
-const ssotToRobotparser = require('../../services/SsotToRobotParsing/SsotToRobotParser.js');
+const ssotToRobotparser = require('../../services/ssotToRobotParsing/ssotToRobotParser.js');
 
 /**
  * @swagger
