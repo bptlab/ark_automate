@@ -2,8 +2,8 @@
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');
-const dbLoader = require('../../../utils/TestingUtils/databaseLoader');
+const dbHandler = require('../../../utils/testingUtils/testDatabaseHandler');
+const dbLoader = require('../../../utils/testingUtils/databaseLoader');
 const ssotRetrievalController = require('../../controllers/ssotRetrievalController');
 const ssotParsingController = require('../../controllers/ssotParsingController');
 
@@ -13,7 +13,7 @@ const rpaTaskModel = require('../../models/rpaTaskModel');
 const {
   testSsot,
   testRobotId,
-} = require('../../../utils/TestingUtils/testData');
+} = require('../../../utils/testingUtils/testData');
 
 /**
  * Connect to a new in-memory database before running any tests.
