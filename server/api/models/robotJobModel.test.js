@@ -51,7 +51,7 @@ describe('jobs have validation for missing parameters', () => {
     });
   });
 
-  it('should be invalid if Status is empty', async () => {
+  it('should be invalid if status is empty', async () => {
     job.save((err) => {
       expect(err.errors.status).to.exist;
       expect(err.errors.status.message).equal('Status required');
