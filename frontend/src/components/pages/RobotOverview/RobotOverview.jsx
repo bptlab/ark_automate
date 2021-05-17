@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Input, Space, Row, Select } from 'antd';
-import HeaderNavbar from '../../HeaderNavbar/HeaderNavbar';
+import HeaderNavbar from '../../multiPageComponents/HeaderNavbar/HeaderNavbar';
 import RobotContainer from './RobotContainer/RobotContainer';
 import { joinRoomForUser } from '../../../api/socketHandler/socketEmitter';
 import {
@@ -9,7 +9,7 @@ import {
   newClientJoined,
 } from '../../../api/socketHandler/socketListeners';
 import CreateRobotContainer from './RobotContainer/CreateRobotContainer';
-import { initSessionStorage } from '../../../utils/sessionStorageUtils/sessionStorageUtils';
+import { initSessionStorage } from '../../../utils/sessionStorage/sessionStorageUtils';
 import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
 
 const { Search } = Input;

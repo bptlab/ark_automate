@@ -37,7 +37,7 @@ Let's focus on the **src/** folder. On the highest level the relevant file is th
   - **componentsFunctionality/**: Here all functionalities of React components are outsourced to keep the pure `.jsx` files as small as possible.
   - **parser/**: Contains our three parsers, which are stored in the frontend. Each parser has its own subfolder that also contains its tests
   - **rpaFunctionality/**: #todo
-  - **sessionStorageUtils/**: Contains all the helper files we need to interact with the session storage
+  - **sessionStorage/**: Contains all the helper files we need to interact with the session storage
   - **socket/**: #todo
 
 # Naming conventions

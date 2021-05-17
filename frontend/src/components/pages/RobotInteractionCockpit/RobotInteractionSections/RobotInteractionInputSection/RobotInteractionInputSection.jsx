@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Space } from 'antd';
-import RobotInteractionInputParameter from './singleComponents/RobotInteractionParameterInput';
+import RobotInteractionInputParameter from './subComponents/RobotInteractionParameterInput';
 
 const { Title } = Typography;
 

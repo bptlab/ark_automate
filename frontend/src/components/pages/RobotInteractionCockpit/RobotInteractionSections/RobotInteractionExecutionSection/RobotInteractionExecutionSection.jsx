@@ -7,7 +7,7 @@ import {
   PauseCircleOutlined,
 } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import RobotLogEntryCard from './singleComponents/RobotLogEntryCard';
+import RobotLogEntryCard from './subComponents/RobotLogEntryCard';
 import styles from '../../RobotInteractionCockpit.module.css';
 
 const { Title } = Typography;

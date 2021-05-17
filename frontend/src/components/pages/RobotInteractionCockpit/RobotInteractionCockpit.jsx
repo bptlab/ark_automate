@@ -1,12 +1,14 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Card, Steps, Space, Button, Typography } from 'antd';
-import HeaderNavbar from '../../HeaderNavbar/HeaderNavbar';
+import HeaderNavbar from '../../multiPageComponents/HeaderNavbar/HeaderNavbar';
 import RobotInteractionInputSection from './RobotInteractionSections/RobotInteractionInputSection/RobotInteractionInputSection';
 import RobotInteractionExecutionSection from './RobotInteractionSections/RobotInteractionExecutionSection/RobotInteractionExecutionSection';
-import { isRobotExecutable } from '../../../utils/componentsFunctionality/robotExecutionFunctionality/robotExecution';
+import {
+  isRobotExecutable,
+  getActivityAndParameterInformation,
+} from './robotInteractionCockpitFunctionality/robotInteractionCockpitFunctionality';
 import { startRobotForUser } from '../../../api/socketHandler/socketEmitter';
-import { getActivityAndParameterInformation } from '../../../utils/componentsFunctionality/robotInteractionCockpitFunctionality/robotInteractionCockpitFunctionality';
 import customNotification from '../../../utils/componentsFunctionality/notificationUtils';
 import {
   newRobotMonitorUpdate,

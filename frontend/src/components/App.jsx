@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Modeler from './pages/Modeler/Modeler';
+import Modeler from './pages/RobotModeler/RobotModeler';
 import Home from './pages/Home/Home';
 import Error from './pages/Error/Error';
-import RobotFile from './pages/RobotFile/RobotFile';
+import RobotFile from './pages/RobotCodeEditor/RobotCodeEditor';
 import RobotOverview from './pages/RobotOverview/RobotOverview';
 import RobotInteractionCockpit from './pages/RobotInteractionCockpit/RobotInteractionCockpit';
 
