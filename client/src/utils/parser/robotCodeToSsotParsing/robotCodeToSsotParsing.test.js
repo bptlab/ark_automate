@@ -35,7 +35,7 @@ const taskSectionAsArray = parser.getRobotCodeAsArray(correctTaskSection);
 const declaredApplications = parser.getApplicationArray(settingsSectionAsArray);
 
 describe('RobotCode to SSOT Parsing Tests', () => {
-  it('contains the correct robotMetadata', () => {
+  test('ssot contains right robotMetadata', () => {
     sessionStorage.setItem('idCounter', '5416');
     const ssot = parser.parseRobotCodeToSsot(correctRobotCode);
     expect(ssot).toHaveProperty('robotName', 'AwesomeTestRobot');
@@ -43,7 +43,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
     expect(ssot).toHaveProperty('starterId', 'Event_0ay5417');
   });
 
-  it('finds the settings selector correctly', () => {
+  test('settings selector was found correctly', () => {
     const settingsSectionAsArrayForTest = parser.getRobotCodeAsArray(
       `RandomOffsetLine\n${correctSettingsSection}`
     );
@@ -60,7 +60,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
       )
     ).toEqual(1);
   });
-  it("throws an error, if settings selector wasn't found", () => {
+  test("settings selector wasn't found, expected to throw error", () => {
     const robotCodeWithOutSettingsSelector = robotCodeAsArray.slice(1);
     expect(
       parser.getLineNumberForSelector(
@@ -69,17 +69,17 @@ describe('RobotCode to SSOT Parsing Tests', () => {
       )
     ).toBe(undefined);
   });
-  it('finds the tasks selector correctly', () =>
+  test('tasks selector was found correctly', () =>
     expect(
       parser.getLineNumberForSelector(robotCodeAsArray, '*** Tasks ***')
     ).toEqual(3));
 
-  it('finds all applications', () =>
+  test('all applications were found', () =>
     expect(['Testing', 'Excel.Application']).toEqual(
       expect.arrayContaining(declaredApplications)
     ));
 
-  it('has a correct elementsArray', () => {
+  test('elementsArray is correct', () => {
     sessionStorage.setItem('idCounter', '5416');
     const elementsArray = parser.getElementsArray(
       taskSectionAsArray,
@@ -89,7 +89,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
     expect(elementsArray).toEqual(correctElementsArray);
   });
 
-  it('generates correct instruction blocks', () => {
+  test('instruction blocks are generated correct', () => {
     const instructionBlocks = parser.getInstructionBlocksFromTaskSection(
       taskSectionAsArray,
       taskAndApplicationCombinations
@@ -99,7 +99,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
 });
 
 describe('Error handling while parsing', () => {
-  it("throws an error, if settings selector wasn't found", async () => {
+  test("settings selector wasn't found (and Error was thrown)", async () => {
     customNotification.mockImplementation((type, message) => {
       expect(type).toEqual('Error');
       expect(message).toEqual(
@@ -114,7 +114,7 @@ describe('Error handling while parsing', () => {
     );
   });
 
-  it('handles "Library" errors', async () => {
+  test('check "Library" error handling', async () => {
     customNotification.mockImplementation((type, message) => {
       expect(type).toEqual('Error');
       expect(
@@ -130,7 +130,7 @@ describe('Error handling while parsing', () => {
     parser.getApplicationArray(settingsSectionWithError);
   });
 
-  it('handles "RPA."-Alias errors', async () => {
+  test('check "RPA."-Alias error handling', async () => {
     customNotification.mockImplementation((type, message) => {
       expect(type).toEqual('Error');
       expect(
@@ -146,7 +146,7 @@ describe('Error handling while parsing', () => {
     parser.getApplicationArray(settingsSectionWithError);
   });
 
-  it('handles "RPA-Application is not defined" errors', async () => {
+  test('check "RPA-Application is not defined" error handling', async () => {
     customNotification.mockImplementation((type, message) => {
       expect(type).toEqual('Error');
       expect(

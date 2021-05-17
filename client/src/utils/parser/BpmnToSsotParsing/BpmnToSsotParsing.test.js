@@ -7,7 +7,7 @@ const BPMN_XML = {
 const ROBOT_ID = '54ab2d30eb3cc402041ac60f';
 
 describe('Parsing Tests', () => {
-  it('successfully parses the bpmn to ssot', async () => {
+  test('Parser testing', async () => {
     // expect.assertions(1);
     sessionStorage.setItem('robotName', 'AwesomeTestRobot');
     const Ssot = await parser.parseBpmnToSsot(BPMN_XML, ROBOT_ID);

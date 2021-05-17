@@ -32,7 +32,7 @@ describe('tasks can be created', () => {
 
 describe('tasks have validation for missing parameters', () => {
   const task = new RpaTask({});
-  it('should be invalid if application is empty', async () => {
+  it('should be invalid if Application is empty', async () => {
     task.save(
       (err) =>
         expect(err.errors.Application).to.exist &&
@@ -40,7 +40,7 @@ describe('tasks have validation for missing parameters', () => {
     );
   });
 
-  it('should be invalid if task is empty', async () => {
+  it('should be invalid if Task is empty', async () => {
     task.save(
       (err) =>
         expect(err.errors.Task).to.exist &&
@@ -48,7 +48,7 @@ describe('tasks have validation for missing parameters', () => {
     );
   });
 
-  it('should be invalid if code is empty', async () => {
+  it('should be invalid if Code is empty', async () => {
     task.save(
       (err) =>
         expect(err.errors.Code).to.exist &&

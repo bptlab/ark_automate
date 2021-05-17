@@ -30,7 +30,7 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('robot code retrieval', () => {
-  it('sucessfully retreives the robot code', async () => {
+  it('sucessfully retreives the roboto code', async () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();

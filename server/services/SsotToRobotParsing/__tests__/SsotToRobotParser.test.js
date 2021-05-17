@@ -41,8 +41,8 @@ afterEach(async () => dbHandler.clearDatabase());
  */
 afterAll(async () => dbHandler.closeDatabase());
 
-describe('ssot to robot Parsing', () => {
-  it('parses all the elements of the ssot to robot correctly', async () => {
+describe('Ssot Parsing', () => {
+  it('parses all the elements of the ssot correctly', async () => {
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
 
@@ -64,7 +64,7 @@ describe('ssot to robot Parsing', () => {
     expect(parserResultString).toMatch(BROWSER_ACTIVITY_PARAM);
   });
 
-  it('parses all the elements of the ssot to robot in the correct order', async () => {
+  it('parses all the elements of the ssot in the correct order', async () => {
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
 
