@@ -1,4 +1,4 @@
-import { getAvailableApplications } from '../../api/applicationAndTaskRetrieval';
+import { getAvailableApplications } from '../../api/routes/functionalities/functionalities';
 
 /**
  * @description Checks if passed item already exists in session storage and initializes with given value if not existing.

@@ -31,4 +31,26 @@ const updateManyAttributes = async (attributeObjectList) => {
   return response;
 };
 
-export { getAllAttributes, updateManyAttributes };
+/**
+ * @description Sends a callout to the backend to delete attributes for the given activities
+ * @param {String} robotId Id of the robot that is being used
+ * @param {String} unusedActivityListString Stringified List of Activity Ids
+ */
+const deleteAttributesForActivities = (robotId, activityIdList) => {
+  const requestStringParameters = `/robots/parameters/${robotId}`;
+  fetch(requestStringParameters, {
+    method: 'DELETE',
+    body: JSON.stringify({ activityIdList }),
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  }).catch((err) => {
+    console.error(err);
+  });
+};
+
+export {
+  getAllAttributes,
+  updateManyAttributes,
+  deleteAttributesForActivities,
+};

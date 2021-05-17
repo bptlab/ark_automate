@@ -5,7 +5,7 @@
  * @module
  */
 
-import { fetchTasksFromDB } from '../../../../../api/applicationAndTaskRetrieval';
+import { fetchTasksFromDB } from '../../../../../api/routes/functionalities/functionalities';
 import {
   setRpaTask,
   setRpaApplication,
@@ -15,7 +15,7 @@ import {
   setOutputValueName,
   getParameterObject,
 } from '../../../../../utils/sessionStorage/localSsotController/parameters';
-import { getParsedRobotFile } from '../../../../../api/ssotRetrieval';
+import { getParsedRobotFile } from '../../../../../api/routes/robots/robotsRetrieval';
 import downloadString from './downloadStringAsFile';
 import { upsert } from '../../../../../utils/sessionStorage/localSsotController/ssot';
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';

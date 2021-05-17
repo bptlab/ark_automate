@@ -10,7 +10,10 @@ import {
 } from '../../../api/socketHandler/socketListeners';
 import CreateRobotContainer from './RobotContainer/CreateRobotContainer';
 import { initSessionStorage } from '../../../utils/sessionStorage/sessionStorageUtils';
-import { fetchSsotsForUser, createNewRobot } from '../../../api/ssotRetrieval';
+import {
+  fetchSsotsForUser,
+  createNewRobot,
+} from '../../../api/routes/users/users';
 
 const { Search } = Input;
 const { Option } = Select;

@@ -1,5 +1,5 @@
-import { getAllParametersForRobot } from '../../../../api/parameterRetrieval';
-import { getAllAttributes } from '../../../../api/attributeRetrieval';
+import { getAllParametersForRobot } from '../../../../api/routes/robots/rpaParameterRetrieval';
+import { getAllAttributes } from '../../../../api/routes/robots/rpaAttributeRetrieval';
 
 const configuredRobotParamsCorrectly = (parameterObjects) => {
   let executability = true;

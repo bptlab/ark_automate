@@ -2,7 +2,7 @@
  * @category Frontend
  * @module
  */
-import { deleteAttributesForActivities } from '../../../api/ssotRetrieval';
+import { deleteAttributesForActivities } from '../../../api/routes/robots/rpaAttributeRetrieval';
 
 const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 

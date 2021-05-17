@@ -65,8 +65,8 @@ const HeaderNavbar = (props) => {
             )}
             {!onOverview && (
               <Menu.Item key={robotCodeEditorPageKey}>
-                Robot File
-                <Link to='/robotcodeeditor' />
+                Robot Code
+                <Link to='/robotcode_editor' />
               </Menu.Item>
             )}
           </>

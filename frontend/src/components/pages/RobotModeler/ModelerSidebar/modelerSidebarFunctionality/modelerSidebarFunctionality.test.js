@@ -2,12 +2,12 @@
 /* eslint-disable import/first */
 /* eslint-disable no-undef */
 
-jest.mock('../../../../../api/ssotRetrieval');
+jest.mock('../../../../../api/routes/robots/robotsRetrieval');
 jest.mock('./downloadStringAsFile');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
 jest.mock('../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing');
 
-jest.mock('../../../../../api/applicationAndTaskRetrieval');
+jest.mock('../../../../../api/routes/functionalities/functionalities');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/parameters');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/attributes');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
@@ -32,9 +32,9 @@ import {
   setOutputValueName,
   getParameterObject,
 } from '../../../../../utils/sessionStorage/localSsotController/parameters';
-import { fetchTasksFromDB } from '../../../../../api/applicationAndTaskRetrieval';
+import { fetchTasksFromDB } from '../../../../../api/routes/functionalities/functionalities';
 import constants from './modelerSidebarFunctionalityTestingUtils';
-import { getParsedRobotFile } from '../../../../../api/ssotRetrieval';
+import { getParsedRobotFile } from '../../../../../api/routes/robots/robotsRetrieval';
 import downloadString from './downloadStringAsFile';
 import { upsert } from '../../../../../utils/sessionStorage/localSsotController/ssot';
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';
