@@ -35,7 +35,7 @@ const taskSectionAsArray = parser.getRobotCodeAsArray(correctTaskSection);
 const declaredApplications = parser.getApplicationArray(settingsSectionAsArray);
 
 describe('RobotCode to SSOT Parsing Tests', () => {
-  it('ssot contains right robotMetadata', () => {
+  it('contains the correct robotMetadata', () => {
     sessionStorage.setItem('idCounter', '5416');
     const ssot = parser.parseRobotCodeToSsot(correctRobotCode);
     expect(ssot).toHaveProperty('robotName', 'AwesomeTestRobot');
