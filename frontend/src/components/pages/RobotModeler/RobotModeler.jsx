@@ -5,7 +5,7 @@ import HeaderNavbar from '../../multiPageComponents/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from './ModelerSidebar/ModelerSidebar';
 import { getSsot } from '../../../api/routes/robots/robots';
 import { getAllParametersForRobot } from '../../../api/routes/robots/rpaParameter';
-import { getAllAttributes } from '../../../api/routes/robots/rpaAttribute';
+import { getAllAttributes } from '../../../api/routes/robots/rpaAttributes';
 import { getAllRpaFunctionalities } from '../../../api/routes/functionalities/functionalities';
 import { setRobotId } from '../../../utils/sessionStorage/localSsotController/ssot';
 import {
