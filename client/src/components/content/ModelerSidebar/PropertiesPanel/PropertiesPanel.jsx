@@ -24,9 +24,9 @@ const PropertiesPanel = ({
   taskSelectionUpdated,
   disableTaskSelection,
   robotId,
-  parameterList,
+  variableList,
   parameterSelectionUpdated,
-  outputValueName,
+  outputVariableName,
   outputNameUpdated,
 }) => (
   <div className='element-properties' key={element.id}>
@@ -45,17 +45,17 @@ const PropertiesPanel = ({
             disableTaskSelection={disableTaskSelection}
             selectedActivity={selectedActivity}
           />
-          {parameterList.length > 0 && (
+          {variableList.length > 0 && (
             <PPParameterSection
               selectedActivity={selectedActivity}
-              parameterList={parameterList}
+              variableList={variableList}
               onValueChange={parameterSelectionUpdated}
               robotId={robotId}
             />
           )}
-          {outputValueName && (
+          {outputVariableName && (
             <PPOutputValueSection
-              outputValueText={outputValueName}
+              outputVariableText={outputVariableName}
               onNameChange={outputNameUpdated}
             />
           )}
@@ -73,9 +73,9 @@ PropertiesPanel.propTypes = {
   taskSelectionUpdated: PropTypes.func.isRequired,
   selectedActivity: PropTypes.string.isRequired,
   disableTaskSelection: PropTypes.bool.isRequired,
-  parameterList: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  variableList: PropTypes.arrayOf(PropTypes.shape).isRequired,
   parameterSelectionUpdated: PropTypes.func.isRequired,
-  outputValueName: PropTypes.string.isRequired,
+  outputVariableName: PropTypes.string.isRequired,
   outputNameUpdated: PropTypes.func.isRequired,
   robotId: PropTypes.string.isRequired,
 };

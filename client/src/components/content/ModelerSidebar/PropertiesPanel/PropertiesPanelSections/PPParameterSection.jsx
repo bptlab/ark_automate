@@ -12,7 +12,7 @@ const { Text } = Typography;
  */
 const PPParameterSection = ({
   selectedActivity,
-  parameterList,
+  variableList,
   onValueChange,
   robotId,
 }) => (
@@ -20,11 +20,11 @@ const PPParameterSection = ({
     <Text className='label-on-dark-background'>Parameter:</Text>
 
     <Space direction='vertical' style={{ width: '100%' }}>
-      {parameterList.map((singleInput) => (
+      {variableList.map((singleInput) => (
         <>
           <PPParameterInput
             onValueChange={onValueChange}
-            parameterName={singleInput.name}
+            variableName={singleInput.name}
             isRequired={singleInput.isRequired}
             dataType={singleInput.type}
             value={singleInput.value}
@@ -41,7 +41,7 @@ const PPParameterSection = ({
 PPParameterSection.propTypes = {
   selectedActivity: PropTypes.string.isRequired,
   onValueChange: PropTypes.func.isRequired,
-  parameterList: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  variableList: PropTypes.arrayOf(PropTypes.shape).isRequired,
   robotId: PropTypes.string.isRequired,
 };
 

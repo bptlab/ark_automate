@@ -120,7 +120,7 @@ User information about a robot (creator, released for etc.) is stored in an addi
 {
   "robotId": "604f537ed699a2eb47274184",
   "activityId": "Activity_47II",
-  "outputValue": "exampleId",
+  "outputVariable": "exampleId",
   "rpaParameters": [
     {
       "name": "Filename",

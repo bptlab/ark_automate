@@ -91,15 +91,15 @@ const checkForApplicationTask = (activityId, setterObject) => {
  * @param {Object} setterObject object containing the functions for setting the state in the React component
  */
 const updateParamSection = (activityId, robotId, setterObject) => {
-  setterObject.setOutputValueName(undefined);
+  setterObject.setOutputVariableName(undefined);
   const paramObj = getParameterObject(robotId, activityId);
   if (paramObj) {
     const paramsInOrder = paramObj.rpaParameters.sort(
       (a, b) => a.index - b.index
     );
-    setterObject.setParameterList(paramsInOrder);
-    if (paramObj.outputValue)
-      setterObject.setOutputValueName(paramObj.outputValue);
+    setterObject.setvariableList(paramsInOrder);
+    if (paramObj.outputVariable)
+      setterObject.setOutputVariableName(paramObj.outputVariable);
   }
 };
 
@@ -120,8 +120,8 @@ const modelerSelectionChangeHandler = (
     selectedElements: event.newSelection,
     currentElement: event.newSelection[0],
   });
-  setterObject.setOutputValueName(undefined);
-  setterObject.setParameterList([]);
+  setterObject.setOutputVariableName(undefined);
+  setterObject.setvariableList([]);
 
   // INFO: the updated elementState isn't automatically used in useEffect() therefore we need the following workaround
   elementState.selectedElements = event.newSelection;
@@ -185,8 +185,8 @@ const applicationChangedHandler = (
   setRpaApplication(robotId, elementState.currentElement.id, value);
   getTasksForApplication(value, setterObject);
 
-  setterObject.setOutputValueName(undefined);
-  setterObject.setParameterList([]);
+  setterObject.setOutputVariableName(undefined);
+  setterObject.setvariableList([]);
 };
 
 /**
@@ -220,12 +220,12 @@ const inputParameterChangeHandler = (activityId, value) => {
 };
 
 /**
- * @description Gets called when the name of the output value has been changed and updates
- * the output values name in the ssot
+ * @description Gets called when the name of the output variable has been changed and updates
+ * the output variables name in the ssot
  * @param {String} activityId id of the activity selected
- * @param {Object} newValue new value of the output values name
+ * @param {Object} newValue new value of the output variables name
  */
-const outputValueNameChangeHandler = (activityId, newValue) => {
+const outputVarNameChangeHandler = (activityId, newValue) => {
   setOutputValueName(activityId, newValue);
 };
 
@@ -234,7 +234,7 @@ export {
   applicationChangedHandler,
   taskChangedHandler,
   inputParameterChangeHandler,
-  outputValueNameChangeHandler,
+  outputVarNameChangeHandler,
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
 };

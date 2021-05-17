@@ -10,7 +10,7 @@ import {
   applicationChangedHandler,
   taskChangedHandler,
   inputParameterChangeHandler,
-  outputValueNameChangeHandler,
+  outputVarNameChangeHandler,
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
 } from '../../../utils/modelerSidebarFunctionality/modelerSidebarFunctionality';
@@ -29,20 +29,22 @@ const { Sider } = Layout;
  * @component
  */
 const ModelerSidebar = ({ modeler, robotId }) => {
-  const [parameterList, setParameterList] = useState([]);
-  const [outputValueName, setOutputValueName] = useState();
+  const [variableList, setvariableList] = useState([]);
+  const [outputVariableName, setOutputVariableName] = useState();
 
   const [elementState, setElementState] = useState({
     selectedElements: [],
     currentElement: null,
   });
   const [selectedApplication, setSelectedApplication] = useState('');
-  const [tasksForSelectedApplication, setTasksForSelectedApplication] =
-    useState(['']);
+  const [
+    tasksForSelectedApplication,
+    setTasksForSelectedApplication,
+  ] = useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
   const stateSetters = {
-    setParameterList,
-    setOutputValueName,
+    setvariableList,
+    setOutputVariableName,
     setElementState,
     setSelectedApplication,
     setTasksForSelectedApplication,
@@ -104,16 +106,16 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             disableTaskSelection={disableTaskSelection}
             element={elementState.currentElement}
             robotId={robotId}
-            parameterList={parameterList}
+            variableList={variableList}
             parameterSelectionUpdated={(newValue) => {
               inputParameterChangeHandler(
                 elementState.currentElement.id,
                 newValue
               );
             }}
-            outputValueName={outputValueName}
+            outputVariableName={outputVariableName}
             outputNameUpdated={(newValue) => {
-              outputValueNameChangeHandler(
+              outputVarNameChangeHandler(
                 elementState.currentElement.id,
                 newValue
               );

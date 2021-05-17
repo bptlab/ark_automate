@@ -1,5 +1,5 @@
 import { getAllAttributes } from '../api/attributeRetrieval';
-import { getAllParametersForRobot } from '../api/parameterRetrieval';
+import { getAllParametersForRobot } from '../api/variableRetrieval';
 
 const configuredRobotParamsCorrectly = (parameterObjects) => {
   let executability = true;
@@ -12,7 +12,7 @@ const configuredRobotParamsCorrectly = (parameterObjects) => {
         parameter.value === ''
       ) {
         console.error(
-          'Required parameter not specified in parameter',
+          'Required parameter not specified in paramter',
           parameter
         );
         executability = false;
