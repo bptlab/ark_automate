@@ -2,7 +2,7 @@
 
 We are using [JsDoc](https://jsdoc.app) with an [additional plugin](https://github.com/SoftwareBrothers/better-docs), which allows us to also tag components in React.
 
-Documentation will be generated as a website under which the individual parts of the software (server/client) are visible and listed with their respective classes and modules.
+Documentation will be generated as a website under which the individual parts of the software (server/frontend) are visible and listed with their respective classes and modules.
 It should be noted here, that although components are supported as a separate tag, they are in the current version still listed under the _Classes_ part of the documentation.
 
 ## How to write documentation
@@ -27,7 +27,7 @@ For components please try to use the following style (taken from the [plugins re
 The attributes are:
 
 - description: Describe the component, its use case and/or where it could be used
-- category: Either _Client_ or _Server_, based on where it is used (for React components this should most likely always be _Client_)
+- category: Either _Frontend_ or _Server_, based on where it is used (for React components this should most likely always be _Frontend_)
 - component: Tag to specify this as a component
 - example: Code which describes a possible use scenario for this component
 
@@ -47,7 +47,7 @@ To document classes, please follow the following scheme in front of the construc
 The attributes are:
 
 - description: Describe the constructor function
-- category: Either _Client_ or _Server_, based on where it is used
+- category: Either _Frontend_ or _Server_, based on where it is used
 - class: Tag to specify this as a class constructor
 - classdesc: Describe the functionality and behavior of the class
 
@@ -83,5 +83,5 @@ When grouping related functions loosely in a file because of the same context, p
 
 The attributes are:
 
-- category: Either _Client_ or _Server_, based on where it is used
+- category: Either _Frontend_ or _Server_, based on where it is used
 - module: Specify this file as a module. In the documentation, this module will receive the name of the relative filePath to the root or the specified (but optional) String passed in as a name.
