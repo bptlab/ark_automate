@@ -101,20 +101,20 @@ const RobotOverview = () => {
    * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
    */
   const createRobotBoxes = (currentSearchValue) => {
-    const filteredBotList = Object.values(robotList)
-      .filter((val) => val.robotName !== undefined)
-      .filter((val) =>
-        val.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
+    const filteredRobotList = Object.values(robotList)
+      .filter((robot) => robot.robotName !== undefined)
+      .filter((robot) =>
+        robot.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
       );
 
     return (
       <>
-        {filteredBotList.map((val) => (
+        {filteredRobotList.map((robot) => (
           <RobotContainer
             userId={userId}
             // eslint-disable-next-line no-underscore-dangle
-            robotId={val._id}
-            robotName={val.robotName}
+            robotId={robot._id}
+            robotName={robot.robotName}
             refreshOverview={() => retrieveBotList(userId)}
           />
         ))}

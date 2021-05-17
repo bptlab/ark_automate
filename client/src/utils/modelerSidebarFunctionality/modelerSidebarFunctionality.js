@@ -225,7 +225,7 @@ const inputParameterChangeHandler = (activityId, value) => {
  * @param {String} activityId id of the activity selected
  * @param {Object} newValue new value of the output values name
  */
-const outputValNameChangeHandler = (activityId, newValue) => {
+const outputValueNameChangeHandler = (activityId, newValue) => {
   setOutputValueName(activityId, newValue);
 };
 
@@ -234,7 +234,7 @@ export {
   applicationChangedHandler,
   taskChangedHandler,
   inputParameterChangeHandler,
-  outputValNameChangeHandler,
+  outputValueNameChangeHandler,
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
 };

@@ -12,7 +12,7 @@ import {
   applicationChangedHandler,
   taskChangedHandler,
   inputParameterChangeHandler,
-  outputValNameChangeHandler,
+  outputValueNameChangeHandler,
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
 } from './modelerSidebarFunctionality';
@@ -68,7 +68,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
       expect(newValue).toEqual(constants.MOCK_NEW_VALUE);
     });
 
-    outputValNameChangeHandler(
+    outputValueNameChangeHandler(
       constants.MOCK_ACTIVITY_ID,
       constants.MOCK_NEW_VALUE
     );

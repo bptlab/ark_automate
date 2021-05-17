@@ -10,7 +10,7 @@ import {
   applicationChangedHandler,
   taskChangedHandler,
   inputParameterChangeHandler,
-  outputValNameChangeHandler,
+  outputValueNameChangeHandler,
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
 } from '../../../utils/modelerSidebarFunctionality/modelerSidebarFunctionality';
@@ -37,10 +37,8 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     currentElement: null,
   });
   const [selectedApplication, setSelectedApplication] = useState('');
-  const [
-    tasksForSelectedApplication,
-    setTasksForSelectedApplication,
-  ] = useState(['']);
+  const [tasksForSelectedApplication, setTasksForSelectedApplication] =
+    useState(['']);
   const [disableTaskSelection, setDisableTaskSelection] = useState(true);
   const stateSetters = {
     setParameterList,
@@ -115,7 +113,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
             }}
             outputValueName={outputValueName}
             outputNameUpdated={(newValue) => {
-              outputValNameChangeHandler(
+              outputValueNameChangeHandler(
                 elementState.currentElement.id,
                 newValue
               );
