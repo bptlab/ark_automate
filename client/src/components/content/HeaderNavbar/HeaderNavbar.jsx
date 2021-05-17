@@ -71,7 +71,6 @@ const HeaderNavbar = (props) => {
         {onRobotInteraction && (
           <Menu.Item key={robotInteractionPageKey}>
             Robot Interaction Cockpit
-            <Link to='/robotfile' />
           </Menu.Item>
         )}
       </Menu>
