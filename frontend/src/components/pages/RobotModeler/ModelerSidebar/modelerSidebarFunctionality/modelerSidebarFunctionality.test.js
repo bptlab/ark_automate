@@ -2,7 +2,7 @@
 /* eslint-disable import/first */
 /* eslint-disable no-undef */
 
-jest.mock('../../../../../api/routes/robots/robotsRetrieval');
+jest.mock('../../../../../api/routes/robots/robots');
 jest.mock('./downloadStringAsFile');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
 jest.mock('../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing');
@@ -34,7 +34,7 @@ import {
 } from '../../../../../utils/sessionStorage/localSsotController/parameters';
 import { fetchTasksFromDB } from '../../../../../api/routes/functionalities/functionalities';
 import constants from './modelerSidebarFunctionalityTestingUtils';
-import { getParsedRobotFile } from '../../../../../api/routes/robots/robotsRetrieval';
+import { getParsedRobotFile } from '../../../../../api/routes/robots/robots';
 import downloadString from './downloadStringAsFile';
 import { upsert } from '../../../../../utils/sessionStorage/localSsotController/ssot';
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';

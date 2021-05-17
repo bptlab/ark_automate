@@ -15,7 +15,7 @@ import {
   setOutputValueName,
   getParameterObject,
 } from '../../../../../utils/sessionStorage/localSsotController/parameters';
-import { getParsedRobotFile } from '../../../../../api/routes/robots/robotsRetrieval';
+import { getParsedRobotFile } from '../../../../../api/routes/robots/robots';
 import downloadString from './downloadStringAsFile';
 import { upsert } from '../../../../../utils/sessionStorage/localSsotController/ssot';
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';

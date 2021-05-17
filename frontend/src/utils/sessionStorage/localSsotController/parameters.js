@@ -2,7 +2,7 @@
  * @category Frontend
  * @module
  */
-import { deleteParametersForActivities } from '../../../api/routes/robots/rpaParameterRetrieval';
+import { deleteParametersForActivities } from '../../../api/routes/robots/rpaParameter';
 import getRpaFunctionalitiesObject from '../localFunctionalitiesController/functionalities';
 import { getAttributeObjectForActivity } from './attributes';
 

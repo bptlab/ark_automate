@@ -3,9 +3,9 @@ import { Layout } from 'antd';
 import BpmnModeler from './BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../multiPageComponents/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from './ModelerSidebar/ModelerSidebar';
-import { getSsot } from '../../../api/routes/robots/robotsRetrieval';
-import { getAllParametersForRobot } from '../../../api/routes/robots/rpaParameterRetrieval';
-import { getAllAttributes } from '../../../api/routes/robots/rpaAttributeRetrieval';
+import { getSsot } from '../../../api/routes/robots/robots';
+import { getAllParametersForRobot } from '../../../api/routes/robots/rpaParameter';
+import { getAllAttributes } from '../../../api/routes/robots/rpaAttribute';
 import { getAllRpaFunctionalities } from '../../../api/routes/functionalities/functionalities';
 import { setRobotId } from '../../../utils/sessionStorage/localSsotController/ssot';
 import {

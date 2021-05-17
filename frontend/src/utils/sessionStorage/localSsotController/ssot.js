@@ -3,14 +3,11 @@
  * @module
  */
 import customNotification from '../../componentsFunctionality/notificationUtils';
-import {
-  getSsot,
-  updateRobot,
-} from '../../../api/routes/robots/robotsRetrieval';
+import { getSsot, updateRobot } from '../../../api/routes/robots/robots';
 import {
   getAllAttributes,
   updateManyAttributes,
-} from '../../../api/routes/robots/rpaAttributeRetrieval';
+} from '../../../api/routes/robots/rpaAttributes';
 import { initSessionStorage } from '../sessionStorageUtils';
 import {
   getAvailableApplications,
@@ -19,7 +16,7 @@ import {
 import {
   getAllParametersForRobot,
   updateManyParameters,
-} from '../../../api/routes/robots/rpaParameterRetrieval';
+} from '../../../api/routes/robots/rpaParameter';
 import { getParameterStorage, deleteUnusedParameterFromDB } from './parameters';
 import {
   getAttributeStorage,

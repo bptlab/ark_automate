@@ -13,7 +13,7 @@ import { initSsotSessionStorage } from '../../../../utils/sessionStorage/localSs
 import {
   changeSsotName,
   deleteRobotFromDB,
-} from '../../../../api/routes/robots/robotsRetrieval';
+} from '../../../../api/routes/robots/robots';
 import customNotification from '../../../../utils/componentsFunctionality/notificationUtils';
 
 const { Title } = Typography;

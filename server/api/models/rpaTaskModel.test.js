@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../../utils/testingUtils/testDatabaseHandler.js');
-const { testRpaTask1 } = require('../../utils/testingUtils/testData.js');
+const dbHandler = require('../../utils/testing/testDatabaseHandler.js');
+const { testRpaTask1 } = require('../../utils/testing/testData.js');
 // eslint-disable-next-line no-unused-vars
 const taskModel = require('./rpaTaskModel.js');
 

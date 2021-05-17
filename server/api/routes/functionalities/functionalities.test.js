@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../../../utils/testingUtils/testDatabaseHandler');
-const dbLoader = require('../../../utils/testingUtils/databaseLoader');
+const dbHandler = require('../../../utils/testing/testDatabaseHandler');
+const dbLoader = require('../../../utils/testing/databaseLoader');
 const rpaController = require('../../controllers/rpaFrameworkCommandsController');
-const testData = require('../../../utils/testingUtils/testData');
+const testData = require('../../../utils/testing/testData');
 
 /**
  * Connect to a new in-memory database before running any tests.

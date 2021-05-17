@@ -1,18 +1,18 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
-const dbHandler = require('../utils/testingUtils/testDatabaseHandler');
+const dbHandler = require('../utils/testing/testDatabaseHandler');
 const socketHelperFunctions = require('./socketHelperFunctions');
-const testData = require('../utils/testingUtils/testData');
+const testData = require('../utils/testing/testData');
 
 const {
   testRobotId,
   testUserId,
   testJobId,
   testRobotCode,
-} = require('../utils/testingUtils/testData');
+} = require('../utils/testing/testData');
 
-const dbLoader = require('../utils/testingUtils/databaseLoader');
+const dbLoader = require('../utils/testing/databaseLoader');
 
 /**
  * Connect to a new in-memory database before running any tests.

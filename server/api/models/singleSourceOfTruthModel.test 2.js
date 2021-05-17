@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../../utils/testing/TestDatabaseHandler.js');
+const dbHandler = require('../../utils/testing/testDatabaseHandler.js');
 const { testSsot } = require('../../utils/testing/testData.js');
 // eslint-disable-next-line no-unused-vars
 const ssotModel = require('./singleSourceOfTruthModel.js');

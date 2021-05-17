@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: navigate to client and build
+      - name: navigate to frontend and build
         run: cd ./frontend/ && npm install --save-dev better-docs jsdoc && npm run docs
 
       - name: Deploy

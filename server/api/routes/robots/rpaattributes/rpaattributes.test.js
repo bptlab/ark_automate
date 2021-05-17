@@ -2,18 +2,15 @@
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../../../../utils/testingUtils/testDatabaseHandler');
-const dbLoader = require('../../../../utils/testingUtils/databaseLoader');
+const dbHandler = require('../../../../utils/testing/testDatabaseHandler');
+const dbLoader = require('../../../../utils/testing/databaseLoader');
 const ssotAttributesController = require('../../../controllers/ssotRpaAttributes');
 
 // eslint-disable-next-line no-unused-vars
 const rpaTaskModel = require('../../../models/rpaTaskModel');
 
-const testData = require('../../../../utils/testingUtils/testData');
-const {
-  testSsot,
-  testRobotId,
-} = require('../../../../utils/testingUtils/testData');
+const testData = require('../../../../utils/testing/testData');
+const { testSsot, testRobotId } = require('../../../../utils/testing/testData');
 
 /**
  * Connect to a new in-memory database before running any tests.

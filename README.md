@@ -15,7 +15,7 @@ Please try running the latest version of:
 - Node.js and npm
 - nodemon (`npm install nodemon -g`)
 
-And then install all dependencies with `npm install` in the server and client directory.
+And then install all dependencies with `npm install` in the server and frontend directory.
 
 ### Set up Heroku
 
@@ -32,8 +32,8 @@ We use ESLint with the AirBnB Codestyle. Simply install the Plug-in ([VSCode](ht
 
 ## Run application
 
-Before running, please always make sure to have the most recent module versions installed using `npm install` in the server, as well as the client directory.
-To run a development preview of the app, navigate to the server directory and run `npm run local` to start the API server, navigate into the client folder and run `npm start` again to also start the frontend.  
+Before running, please always make sure to have the most recent module versions installed using `npm install` in the server, as well as the frontend directory.
+To run a development preview of the app, navigate to the server directory and run `npm run local` to start the API server, navigate into the frontend folder and run `npm start` again to also start the frontend.  
 Now check http://localhost:3000/ to have a look at the app.
 
 To run the local client, follow the steps in the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
