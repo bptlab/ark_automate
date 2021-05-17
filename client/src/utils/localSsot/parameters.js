@@ -119,8 +119,8 @@ const checkIfParameterObjectCorrect = (
 };
 
 /**
- * @description Gets the parameter object for the activity from the session storage and checks if the paramter object is correctly filled.
- * If no paramter object for the activity exists but an attribute object then it will create a new parameter object and add it to the session storage.
+ * @description Gets the parameter object for the activity from the session storage and checks if the parameter object is correctly filled.
+ * If no parameter object for the activity exists but an attribute object then it will create a new parameter object and add it to the session storage.
  * If no parameter object and no attributes object exists for the activity it will return undefined.
  * @param {String} robotId Id of the robot/ssot for which to retrieve the parameter object
  * @param {String} activityId Id of the activity for which to retrieve the parameter object for

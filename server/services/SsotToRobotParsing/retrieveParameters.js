@@ -83,7 +83,7 @@ const getAllParametersForJob = async (jobId) => {
 /**
  * @description For all activities in the ssot this method will retrieve the associated parameter objects
  * @param {Object} ssot The ssot for which the parameters should be retrieved
- * @param {String} jobId The job id identifiyng a job object from which we want to fetch additional paramters
+ * @param {String} jobId The job id identifiyng a job object from which we want to fetch additional parameters
  * @returns {Array} Array of parameter objects
  */
 const retrieveParametersFromSsotAndJob = async (ssot, jobId) => {

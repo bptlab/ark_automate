@@ -50,7 +50,7 @@ const RobotInteractionCockpit = (match) => {
   );
 
   /**
-   * @description Ensures that we only update the paramterList when the paramters we fetch form the DB have changed
+   * @description Ensures that we only update the parameterList when the parameters we fetch form the DB have changed
    */
   useEffect(() => {
     getActivityAndParameterInformation(robotId, setParameterList, isMounted);

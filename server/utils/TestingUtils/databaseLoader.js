@@ -35,12 +35,12 @@ const loadAttributesInDb = async () => {
 
 const loadParametersInDb = async () => {
   const RpaParam = mongoose.model('parameter');
-  const rpaParamter = new RpaParam(testData.testParameter1);
-  await rpaParamter.save();
-  const rpaParamter2 = new RpaParam(testData.testParameter2);
-  await rpaParamter2.save();
-  const rpaParamter3 = new RpaParam(testData.testParameter3);
-  await rpaParamter3.save();
+  const rpaParameter = new RpaParam(testData.testParameter1);
+  await rpaParameter.save();
+  const rpaParameter2 = new RpaParam(testData.testParameter2);
+  await rpaParameter2.save();
+  const rpaParameter3 = new RpaParam(testData.testParameter3);
+  await rpaParameter3.save();
 };
 
 const loadTasksInDb = async () => {
