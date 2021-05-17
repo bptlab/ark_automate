@@ -30,7 +30,7 @@ describe('Checking robot parameters for Executability', () => {
     expect(response).toBe(false);
   });
 
-  it('correctly recognizes a robot as executable if required parameter is empty but is specified later by user input', () => {
+  it('correctly recognizes a robot as executable if required paramter is empty but is specified later by user input', () => {
     const listOfParameters = [
       paramObject1,
       paramObjectWithLaterSpecifiedUserInput,

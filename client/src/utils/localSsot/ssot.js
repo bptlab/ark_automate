@@ -16,7 +16,7 @@ import {
 import {
   getAllParametersForRobot,
   updateManyParameters,
-} from '../../api/parameterRetrieval';
+} from '../../api/variableRetrieval';
 import { getParameterStorage, deleteUnusedParameterFromDB } from './parameters';
 import {
   getAttributeStorage,

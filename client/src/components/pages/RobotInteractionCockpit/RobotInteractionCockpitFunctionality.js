@@ -1,4 +1,4 @@
-import { getAllParametersForRobot } from '../../../api/parameterRetrieval';
+import { getAllParametersForRobot } from '../../../api/variableRetrieval';
 
 /**
  * @description For each activity of the current robot get the id, the name and all the parameters that require a user input

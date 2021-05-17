@@ -6,12 +6,12 @@ import corporateDesign from '../../../../layout/corporateDesign';
 
 const { Text } = Typography;
 /**
- * @description Renders a parameter input field for a given parameter
+ * @description Renders a parameter input field for a given variable
  * @category Client
  * @component
  */
 const RobotInteractionInputParameter = ({
-  parameterName,
+  variableName,
   // eslint-disable-next-line no-unused-vars
   dataType,
   infoText,
@@ -19,9 +19,9 @@ const RobotInteractionInputParameter = ({
   parameterId,
 }) => (
   <>
-    <Text strong>{parameterName}</Text>
+    <Text strong>{variableName}</Text>
     <Input
-      placeholder={parameterName}
+      placeholder={variableName}
       defaultValue=''
       onChange={(event) =>
         updateParameterValue(parameterId, event.target.value)
@@ -38,7 +38,7 @@ const RobotInteractionInputParameter = ({
 );
 
 RobotInteractionInputParameter.propTypes = {
-  parameterName: PropTypes.string.isRequired,
+  variableName: PropTypes.string.isRequired,
   dataType: PropTypes.string.isRequired,
   infoText: PropTypes.string.isRequired,
   updateParameterValue: PropTypes.func.isRequired,

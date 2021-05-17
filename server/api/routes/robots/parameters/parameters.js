@@ -1,10 +1,10 @@
 const express = require('express');
-const parameterController = require('../../../controllers/ssotParameterController');
+const variableController = require('../../../controllers/ssotVariableController');
 
 const router = express.Router();
 
-router.put('/', parameterController.updateMany);
-router.delete('/:robotId', parameterController.deleteForActivities);
-router.get('/:robotId', parameterController.retrieveParametersForRobot);
+router.put('/', variableController.updateMany);
+router.delete('/:robotId', variableController.deleteForActivities);
+router.get('/:robotId', variableController.retrieveParametersForRobot);
 
 module.exports = router;
