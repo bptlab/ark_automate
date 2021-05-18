@@ -20,15 +20,15 @@ const isAnRpaInstruction = (currentElement) =>
   currentElement.type === ACTIVITY_IDENTIFIER;
 
 /**
- * @description Will create a prefix to catch the output variable of an activity, if one is present
+ * @description Will create a prefix to catch the output value of an activity, if one is present
  * @param {Object} paramObject The parameter object to check and loop through
- * @returns {String} String specifying the output variables name
+ * @returns {String} String specifying the output value name
  */
 const setOutputVar = (paramObject) => {
   let newCodeLine = FOURSPACE;
 
-  if (paramObject.outputVariable) {
-    newCodeLine += `\${${paramObject.outputVariable}} = `;
+  if (paramObject.outputValue) {
+    newCodeLine += `\${${paramObject.outputValue}} = `;
   }
   return newCodeLine;
 };

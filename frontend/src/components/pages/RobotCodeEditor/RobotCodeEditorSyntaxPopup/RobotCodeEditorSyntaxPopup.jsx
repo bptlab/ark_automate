@@ -18,7 +18,7 @@ const RobotFileSyntaxModal = (props) => {
     },
     {
       key: '2',
-      name: 'Empty Variable Field',
+      name: 'Empty Parameter Field',
       syntax: '%%parameterName%%',
       description:
         'Highlights a field which has not been configured yet in the ssot',
@@ -32,10 +32,10 @@ const RobotFileSyntaxModal = (props) => {
     },
     {
       key: '4',
-      name: 'Variable',
-      syntax: '$(variableName)',
+      name: 'Parameter',
+      syntax: '$(parameterName)',
       description:
-        'Used to pass in a variable, which could be the output of a previous activity',
+        'Used to pass in a parameter, which could be the output of a previous activity',
     },
   ];
 

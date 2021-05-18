@@ -103,9 +103,9 @@ const getApplicationArray = (robotCodeSettingsSection) => {
 };
 
 /**
- * @description retrieves the outputVariable name from the current code line
+ * @description retrieves the outputValue name from the current code line
  * @param {String} currentLine current line of RPAf code
- * @returns outputVariable as string
+ * @returns outputValue as string
  */
 const getOutputName = (currentLine) => {
   const indexOfEqualsSign = currentLine.indexOf('=');
@@ -149,12 +149,9 @@ const getRpaParameters = (currentLine, splitPlaceholder) => {
  * @description deletes everything before the first occurence of '=' and then trims all emptyspace until the rpa task name to get the expected format
  * @param {String} currentLine current line of RPAf code
  * @param {String} splitPlaceholder placeholder to split the string
- * @returns the current line without the outputVariableName prefix as string
+ * @returns the current line without the outputValueName prefix as string
  */
-const currentLineWithoutOutputVariableName = (
-  completeLine,
-  splitPlaceholder
-) => {
+const currentLineWithoutOutputValueName = (completeLine, splitPlaceholder) => {
   const indexOfEqualsSign = completeLine.indexOf('=');
   let currentLine = completeLine.slice(indexOfEqualsSign + 1);
   if (currentLine.startsWith(splitPlaceholder)) {
@@ -228,7 +225,7 @@ const getInstructionBlocksFromTaskSection = (
 ) => {
   let errorWasThrown;
   const instructionBlocks = [];
-  const regexForOutputVariable = /\${(.)+} =/;
+  const regexForOutputValue = /\${(.)+} =/;
   const splitPlaceholder = '§&§';
 
   robotCodeTaskSection.slice(1).forEach((line) => {
@@ -236,8 +233,7 @@ const getInstructionBlocksFromTaskSection = (
     let currentLine = line;
     const currentLineIncludesSplitPlaceholder =
       currentLine.includes(splitPlaceholder);
-    const currentLineDefinesOutputValue =
-      regexForOutputVariable.test(currentLine);
+    const currentLineDefinesOutputValue = regexForOutputValue.test(currentLine);
     const currentLineStartsWithFourspace = currentLine.startsWith(FOURSPACE);
 
     if (!currentLineStartsWithFourspace) {
@@ -261,7 +257,7 @@ const getInstructionBlocksFromTaskSection = (
       instructionBlocks[instructionBlocks.length - 1].outputName =
         outputValueName;
 
-      currentLine = currentLineWithoutOutputVariableName(
+      currentLine = currentLineWithoutOutputValueName(
         currentLine,
         splitPlaceholder
       );
@@ -378,7 +374,7 @@ const buildSingleParameterObject = (
   )[0];
 
   const parameterArray = combinationObject.inputVars.map(
-    (singleInputVariable, index) => {
+    (singleParameter, index) => {
       const currentParameterIsEmpty =
         singleParamArray[index].startsWith('%%') &&
         singleParamArray[index].endsWith('%%');
@@ -388,7 +384,7 @@ const buildSingleParameterObject = (
       const currentParameterTakesOutputValue =
         singleParamArray[index].startsWith('${') &&
         singleParamArray[index].endsWith('}');
-      const singleParameterObject = { ...singleInputVariable };
+      const singleParameterObject = { ...singleParameter };
 
       singleParameterObject.requireUserInput =
         currentParameterRequiresUserInput;
@@ -412,7 +408,7 @@ const buildSingleParameterObject = (
     activityId,
     rpaParameters: parameterArray,
     robotId,
-    outputVariable: singleElementFromTasksSection.outputName,
+    outputValue: singleElementFromTasksSection.outputName,
   };
 };
 

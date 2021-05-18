@@ -17,7 +17,7 @@ import {
   applicationChangedHandler,
   taskChangedHandler,
   inputParameterChangeHandler,
-  outputVarNameChangeHandler,
+  outputValueNameChangeHandler,
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
   downloadRobotFile,
@@ -113,13 +113,13 @@ describe('Sidebar Functionality: Small Utilities', () => {
     expect(setElementStateCallCounter).toEqual(1);
   });
 
-  it('handles output variable name change', async () => {
+  it('handle output value name change', async () => {
     setOutputValueName.mockImplementation((activityId, newValue) => {
       expect(activityId).toEqual(constants.MOCK_ACTIVITY_ID);
       expect(newValue).toEqual(constants.MOCK_NEW_VALUE);
     });
 
-    outputVarNameChangeHandler(
+    outputValueNameChangeHandler(
       constants.MOCK_ACTIVITY_ID,
       constants.MOCK_NEW_VALUE
     );
@@ -179,11 +179,11 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
           currentElement: MOCK_CURRENT_ELEMENT,
         });
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
     };
 
@@ -203,11 +203,11 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
           currentElement: constants.MOCK_CURRENT_ELEMENT,
         });
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setDisableTaskSelection: (disabled) => {
         expect(disabled).toBeTruthy();
@@ -246,11 +246,11 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       setSelectedApplication: (value) => {
         expect(value).toEqual(constants.MOCK_APPLICATION);
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setTasksForSelectedApplication: (availableTasks) => {
         expect(availableTasks).toEqual(['TestTask']);
@@ -299,11 +299,11 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       setSelectedApplication: (value) => {
         expect(value).toEqual(constants.MOCK_APPLICATION);
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setTasksForSelectedApplication: (availableTasks) => {
         expect(availableTasks).toEqual(['TestTask']);
@@ -349,18 +349,18 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
 
 describe('Sidebar Functionality: Task Change', () => {
   it('handles task change WITH parameter update', async () => {
-    let setOutputVariableNameCallCounter = 0;
-    let setvariableListCallCounter = 0;
+    let setOutputValueNameCallCounter = 0;
+    let setParameterListCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
-      setOutputVariableName: (newName) => {
-        expect(newName === undefined || newName === 'OutputVariableName').toBe(
+      setOutputValueName: (newName) => {
+        expect(newName === undefined || newName === 'setOutputValueName').toBe(
           true
         );
-        setOutputVariableNameCallCounter += 1;
+        setOutputValueNameCallCounter += 1;
       },
-      setvariableList: (parametersInOrder) => {
+      setParameterList: (parametersInOrder) => {
         expect(parametersInOrder).toEqual(constants.MOCK_INPUTS_RIGHT_ORDER);
-        setvariableListCallCounter += 1;
+        setParameterListCallCounter += 1;
       },
     };
 
@@ -391,8 +391,8 @@ describe('Sidebar Functionality: Task Change', () => {
 
     expect(setRpaTask).toHaveBeenCalledTimes(1);
     expect(getParameterObject).toHaveBeenCalledTimes(1);
-    expect(setOutputVariableNameCallCounter).toEqual(2);
-    expect(setvariableListCallCounter).toEqual(1);
+    expect(setOutputValueNameCallCounter).toEqual(2);
+    expect(setParameterListCallCounter).toEqual(1);
   });
 
   it('handles task change WITHOUT parameter update', async () => {
@@ -430,11 +430,11 @@ describe('Sidebar Functionality: Application Change', () => {
       setSelectedApplication: (value) => {
         expect(value).toEqual(constants.MOCK_VALUE);
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setTasksForSelectedApplication: (availableTasks) => {
         expect(availableTasks).toEqual(['TestTask']);
@@ -487,11 +487,11 @@ describe('Sidebar Functionality: Application Change', () => {
       setSelectedApplication: (value) => {
         expect(value).toEqual(constants.MOCK_VALUE);
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setTasksForSelectedApplication: (availableTasks) => {
         expect(availableTasks).toEqual(['lookupRecipe']);
