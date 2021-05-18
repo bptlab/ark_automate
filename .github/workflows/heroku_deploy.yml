@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main
+      - workflow_testing_lukas
   workflow_dispatch:
 name: Heroku Deployment
 jobs:

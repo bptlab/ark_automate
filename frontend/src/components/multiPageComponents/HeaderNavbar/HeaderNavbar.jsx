@@ -59,7 +59,7 @@ const HeaderNavbar = (props) => {
           <>
             {!onOverview && (
               <Menu.Item key={bpmnModelerPageKey}>
-                Modeler
+                Modeler :D
                 <Link to={bpmnModelerLink} />
               </Menu.Item>
             )}
