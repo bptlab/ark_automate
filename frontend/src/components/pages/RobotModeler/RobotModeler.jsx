@@ -99,7 +99,13 @@ const Modeler = (props) => {
 };
 
 Modeler.propTypes = {
-  match: PropTypes.objectOf(PropTypes.object).isRequired,
+  match: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool,
+      PropTypes.objectOf(PropTypes.string),
+    ])
+  ).isRequired,
 };
 
 export default Modeler;
