@@ -27,7 +27,7 @@ Observation: All frontends that represent "executable program code" can be repre
 
 The SSoT itself will be stored on the server-side of the product. It will support multiple use cases shown in the following image:
 ![SSoT in product](https://i.imgur.com/jViSHTQ.png)
-With a change of one of the interfaces on the client-side (e.g. type in a new name in the side panel) the new data will be sent to the SSoT via HTTP and the SSoT on the server side will be updated. Once the SSoT gets updated all the other interfaces update accordingly as they are dependent on the SSoT data.
+With a change of one of the interfaces on the frontend-side (e.g. type in a new name in the side panel) the new data will be sent to the SSoT via HTTP and the SSoT on the server side will be updated. Once the SSoT gets updated all the other interfaces update accordingly as they are dependent on the SSoT data.
 
 ### We have agreed on the following
 

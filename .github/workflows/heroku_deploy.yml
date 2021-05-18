@@ -11,17 +11,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: build client; do dir magic
+      - name: build frontend; do dir magic
         run: |
-          cd client/ && npm install && CI=false npm run build
+          cd frontend/ && npm install && CI=false npm run build
           cd ..
-          mv ./client/build ./
-          rm -r client
+          mv ./frontend/build ./
+          rm -r frontend
           mv ./server/* ./
       - uses: akhileshns/heroku-deploy@v3.11.10
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "ark-automate"
+          heroku_app_name: 'ark-automate'
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           justlogin: true
       - run: heroku git:remote -a ark-automate

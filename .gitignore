@@ -1,5 +1,5 @@
-client/node_modules/
-client/coverage
+frontend/node_modules/
+frontend/coverage
 server/node_modules/
 .idea/
 .env

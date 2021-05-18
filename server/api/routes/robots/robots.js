@@ -1,6 +1,6 @@
 const express = require('express');
-const rpaattributesRouter = require('./rpaattributes/rpaattributes');
-const parametersRouter = require('./parameters/parameters');
+const rpaattributesRouter = require('./rpaAttributes/rpaAttributes');
+const parametersRouter = require('./rpaParameters/rpaParameters');
 const parsingController = require('../../controllers/ssotParsingController');
 const retrievalController = require('../../controllers/ssotRetrievalController');
 
