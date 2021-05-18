@@ -40,7 +40,7 @@ import { upsert } from '../../../../../utils/sessionStorage/localSsotController/
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';
 
 describe('Robot Metadata Utilities Tests', () => {
-  it('download robot file', async () => {
+  it('downloads the robot file', async () => {
     sessionStorage.setItem('robotName', constants.MOCK_ROBOT_NAME);
 
     getParsedRobotFile.mockImplementation((robotId) => {
@@ -59,7 +59,7 @@ describe('Robot Metadata Utilities Tests', () => {
     await downloadRobotFile(constants.MOCK_ROBOT_ID);
   });
 
-  it('save to cloud', async () => {
+  it('saves to cloud', async () => {
     upsert.mockImplementation(() => {
       expect(sessionStorage.getItem('ssotLocal')).toEqual(
         JSON.stringify(constants.MOCK_PARSER_RESULT)
