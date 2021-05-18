@@ -1,6 +1,6 @@
 {
   "opts": {
-    "template": "../client/node_modules/better-docs",
+    "template": "../frontend/node_modules/better-docs",
     "destination": "./../documentationWebsite"
   },
   "tags": {
@@ -9,12 +9,12 @@
   "plugins": ["node_modules/better-docs/category"],
   "source": {
     "include": [
-      "./../client/src",
+      "./../frontend/src",
       "./../server/controllers",
       "./../server/services",
       "./../server/utils"
     ],
-    "exclude": ["./../client/node_modules", "./../server/node_modules"],
+    "exclude": ["./../frontend/node_modules", "./../server/node_modules"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
   }
