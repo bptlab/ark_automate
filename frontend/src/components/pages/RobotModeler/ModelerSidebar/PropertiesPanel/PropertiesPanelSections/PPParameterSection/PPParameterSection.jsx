@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Space } from 'antd';
@@ -21,18 +22,17 @@ const PPParameterSection = ({
 
     <Space direction='vertical' style={{ width: '100%' }}>
       {variableList.map((singleInput) => (
-        <>
-          <PPParameterInput
-            onValueChange={onValueChange}
-            variableName={singleInput.name}
-            isRequired={singleInput.isRequired}
-            dataType={singleInput.type}
-            value={singleInput.value}
-            infoText={singleInput.infoText}
-            robotId={robotId}
-            selectedActivity={selectedActivity}
-          />
-        </>
+        <PPParameterInput
+          key={singleInput._id}
+          onValueChange={onValueChange}
+          variableName={singleInput.name}
+          isRequired={singleInput.isRequired}
+          dataType={singleInput.type}
+          value={singleInput.value}
+          infoText={singleInput.infoText}
+          robotId={robotId}
+          selectedActivity={selectedActivity}
+        />
       ))}
     </Space>
   </>
