@@ -128,7 +128,11 @@ PPParameterInput.propTypes = {
   value: PropTypes.string.isRequired,
   robotId: PropTypes.string.isRequired,
   selectedActivity: PropTypes.string.isRequired,
-  infoText: PropTypes.string.isRequired,
+  infoText: PropTypes.string,
+};
+
+PPParameterInput.defaultProps = {
+  infoText: undefined,
 };
 
 export default PPParameterInput;

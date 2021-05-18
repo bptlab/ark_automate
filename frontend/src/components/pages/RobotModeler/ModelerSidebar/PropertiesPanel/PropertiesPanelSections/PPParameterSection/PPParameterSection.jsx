@@ -21,9 +21,10 @@ const PPParameterSection = ({
     <Text className='label-on-dark-background'>Parameter:</Text>
 
     <Space direction='vertical' style={{ width: '100%' }}>
-      {variableList.map((singleInput) => (
+      {variableList.map((singleInput, index) => (
         <PPParameterInput
-          key={singleInput._id}
+          // eslint-disable-next-line react/no-array-index-key
+          key={index}
           onValueChange={onValueChange}
           variableName={singleInput.name}
           isRequired={singleInput.isRequired}
