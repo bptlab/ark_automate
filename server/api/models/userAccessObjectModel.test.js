@@ -1,10 +1,8 @@
 /* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../../utils/TestingUtils/TestDatabaseHandler.js');
-const {
-  testUserAccessObject,
-} = require('../../utils/TestingUtils/testData.js');
+const dbHandler = require('../../utils/testing/testDatabaseHandler.js');
+const { testUserAccessObject } = require('../../utils/testing/testData.js');
 // eslint-disable-next-line no-unused-vars
 const userAccessObjectModel = require('./userAccessObjectModel.js');
 
