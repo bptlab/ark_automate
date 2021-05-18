@@ -19,7 +19,7 @@ const Home = () => {
       <Space
         direction='vertical'
         size='100%'
-        style={{ width: '100%', pading: '0rem' }}
+        style={{ width: '100%', padding: '0rem' }}
       >
         <Title
           style={{ textAlign: 'center', color: corporateDesign.colorPrimary }}
