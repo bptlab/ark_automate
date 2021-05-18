@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
-import logoCTA from '../../../resources/images/logo_cta.png';
+// import logoCTA from '../../../resources/images/logo_cta.png';
 
 const { Header } = Layout;
 
@@ -47,7 +47,7 @@ const HeaderNavbar = (props) => {
         <Link to='/'>
           <img
             style={{ margin: '0 1rem 0 -1rem', height: '3rem' }}
-            src={logoCTA}
+            src={/*logoCTA*/ 'logo_cta.png'}
             alt='ark_automate Icon'
           />
         </Link>
