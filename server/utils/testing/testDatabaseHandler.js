@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
+/**
+ * @category Server
+ * @module
+ */
 const mongooseOpts = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

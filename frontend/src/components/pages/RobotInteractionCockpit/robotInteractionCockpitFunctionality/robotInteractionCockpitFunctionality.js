@@ -1,10 +1,10 @@
+import { getAllParametersForRobot } from '../../../../api/routes/robots/rpaParameter';
+import { getAllAttributes } from '../../../../api/routes/robots/rpaAttributes';
+
 /**
  * @category Frontend
  * @module
  */
-
-import { getAllParametersForRobot } from '../../../../api/routes/robots/rpaParameter';
-import { getAllAttributes } from '../../../../api/routes/robots/rpaAttributes';
 
 /**
  * @description Will return a boolean regarding the correct configuration of the given parameterObejcts belonging to a robot.

@@ -9,6 +9,11 @@ import {
 import corporateDesign from '../../layout/corporateDesign';
 
 /**
+ * @category Frontend
+ * @module
+ */
+
+/**
  * @description Will first consider if a special icon is requested and otherwise return the corresponding icon for the notification type.
  * @param {String} type One from 'Success', 'Warning' or 'Alert' - defines type (and with it the color scheme) for the notification Box
  * @param {String} icon The icon that will be displayed in the notification. (Must be imported and handled in notificationUtils accordingly!)
