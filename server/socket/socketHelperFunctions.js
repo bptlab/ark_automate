@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 require('express');
 const mongoose = require('mongoose');
-const ssotToRobotParser = require('../services/SsotToRobotParsing/SsotToRobotParser.js');
+const ssotToRobotParser = require('../utils/ssotToRobotParsing/ssotToRobotParser.js');
 const ssotModels = require('../api/models/singleSourceOfTruthModel.js');
 const userAccessObject = require('../api/models/userAccessObjectModel.js');
 const jobsModel = require('../api/models/robotJobModel.js');
