@@ -4,14 +4,15 @@
  */
 
 /**
- * @description triggers parsing of the SSoT to .robot file and returns .robot file code
- */
+ * @description Triggers parsing of the Ssot to .robot file
+ * @returns returns .robot file code
+ *  */
 const getParsedRobotFile = async (robotId) =>
   fetch(`/robots/${robotId}/robotCode`);
 
 /**
  * @description Fetch the ssot correlating to the specified Id
- * @param { String } robotId - String including the Id of the robot to be retrieved
+ * @param { String } robotId - Id of the robot that will be retrieved
  */
 const getSsot = async (robotId) => {
   const requestString = `/robots/${robotId}`;
@@ -20,8 +21,8 @@ const getSsot = async (robotId) => {
 };
 
 /**
- * @description This function renames the robot in the ssot
- * @param { String } robotId - String including the robotId
+ * @description Rename the robot in the ssot
+ * @param { String } robotId - RobotId of the robot that will be renamed
  * @param { String } newRobotName - String with the new RobotName
  */
 const changeSsotName = async (robotId, newRobotName) => {
@@ -41,8 +42,8 @@ const changeSsotName = async (robotId, newRobotName) => {
 };
 
 /**
- * @description Will send a backend call to delete a robot
- * @param {String} robotId Id of the robot that is deleted
+ * @description Delete a robot by sending a call to the backend
+ * @param {String} robotId Id of the robot that will be deleted
  */
 const deleteRobotFromDB = async (robotId) => {
   const requestStringParameters = `/robots/${robotId}`;
@@ -53,8 +54,8 @@ const deleteRobotFromDB = async (robotId) => {
 
 /**
  * @description Overwrites an existing sssot in the backend with a new one
- * @param {String} robotId Id of the robot that is being overwritten
- * @param {String} ssot New ssot to be written to the database
+ * @param {String} robotId Id of the robot that will be overwritten
+ * @param {String} ssot New ssot that will be written to the database
  * @returns {Object} Updated ssot object
  */
 const updateRobot = async (robotId, ssot) => {

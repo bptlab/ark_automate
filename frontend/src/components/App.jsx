@@ -8,7 +8,7 @@ import RobotOverview from './pages/RobotOverview/RobotOverview';
 import RobotInteractionCockpit from './pages/RobotInteractionCockpit/RobotInteractionCockpit';
 
 /**
- * @description route component of the application
+ * @description Route component of the application
  * @category Frontend
  * @component
  */

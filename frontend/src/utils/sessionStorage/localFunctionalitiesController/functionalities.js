@@ -6,7 +6,7 @@
 const FUNCTIONALITIES_STORAGE_PATH = 'TaskApplicationCombinations';
 
 /**
- * @description Will get the rpa functionalities object for a specific rpa application and rpa task combination
+ * @description Retrieves the rpa functionalities object for a specific rpa application and rpa task combination
  * @param {String} application Name of the rpa application
  * @param {String} task Name of the rpa task
  */

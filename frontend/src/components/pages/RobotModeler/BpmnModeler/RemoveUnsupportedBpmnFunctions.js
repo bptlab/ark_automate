@@ -1,5 +1,9 @@
 import PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider';
 
+/**
+ * @description Removes unsopported BPMN artifacts from the modeler
+ * @category Frontend
+ */
 const removeUnsupportedBpmnFunctions = () => {
   const { getPaletteEntries } = PaletteProvider.prototype;
   // eslint-disable-next-line func-names

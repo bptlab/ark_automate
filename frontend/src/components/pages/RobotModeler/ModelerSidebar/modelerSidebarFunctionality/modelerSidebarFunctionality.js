@@ -21,11 +21,11 @@ import { upsert } from '../../../../../utils/sessionStorage/localSsotController/
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';
 
 /**
- * @description Gets called when the the button is pressed to save to the cloud.
+ * @description Called when the the button is pressed to save to the cloud.
  * This function will retrieve the xml from the parser, parse that xml to a ssot and write the
  * resulting ssot into the sessionStorage.
- * @param {Object} modeler the modeling object
- * @param {String} robotId id of the robot
+ * @param {Object} modeler The modeling object
+ * @param {String} robotId Id of the robot
  */
 const onSaveToCloud = async (modeler, robotId) => {
   const xml = await modeler.saveXML({ format: true });
@@ -36,8 +36,8 @@ const onSaveToCloud = async (modeler, robotId) => {
 };
 
 /**
- * @description Will parse the ssot which can be found in the database correlating to the specified id
- * @param {String} robotId id of the robot
+ * @description Parses the ssot which can be found in the database correlating to the specified id
+ * @param {String} robotId Id of the robot
  */
 const downloadRobotFile = async (robotId) => {
   const response = await (await getParsedRobotFile(robotId)).text();
@@ -46,10 +46,10 @@ const downloadRobotFile = async (robotId) => {
 };
 
 /**
- * @description Will update the element state upon selection od a new element.
- * @param {Object} event event containing the information about the new element selected
+ * @description Updates the element state upon selection of a new element.
+ * @param {Object} event Event containing the information about the new element selected
  * @param {Object} elementState State of the element
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component
  */
 const modelerElementChangeHandler = (event, elementState, setterObject) => {
   if (!elementState.currentElement) {
@@ -66,8 +66,8 @@ const modelerElementChangeHandler = (event, elementState, setterObject) => {
 /**
  * @description Checks if tasks for selected application are already stored in session storage.
  * Otherwise, fetch tasklist from MongoDB.
- * @param {String} application Application for which to get the tasks for.
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @param {String} application Application for the tasks will be retrieved
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component
  */
 const getTasksForApplication = async (application, setterObject) => {
   const currentSavedTasksObject = JSON.parse(
@@ -92,10 +92,10 @@ const getTasksForApplication = async (application, setterObject) => {
 };
 
 /**
- * @description Will check for the given activity, if it has been configured with an application and/or task.
+ * @description Checks if a given activity has been configured with an application and/or task.
  * This can be used to trigger the disablement of the task dropdown.
- * @param {String} activityId Id of the activity to check for
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @param {String} activityId Id of the activity that will be checked
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component
  * @returns {Boolean} Boolean if there is an object found and an application has been previously configured
  */
 const checkForApplicationTask = (activityId, setterObject) => {
@@ -114,11 +114,11 @@ const checkForApplicationTask = (activityId, setterObject) => {
 };
 
 /**
- * @description Gets called when a new application was selected in the dropwdown in the sidebar.
- * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
- * @param {String} activityId id of the activity for which the change is supposed to happen
- * @param {String} robotId id of the robot to update
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @description Updates the state of the component and retrieves the tasks of the application for the TaskDropdown and clears the TaskDropdown.
+ * Called when a new application was selected in the dropwdown in the sidebar.
+ * @param {String} activityId Id of the activity for which will be changed
+ * @param {String} robotId Id of the that will be updated
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component
  */
 const updateParamSection = (activityId, robotId, setterObject) => {
   setterObject.setOutputVariableName(undefined);
@@ -134,11 +134,11 @@ const updateParamSection = (activityId, robotId, setterObject) => {
 };
 
 /**
- * @description Gets called upon a change in the modeler, will update the state with attributes matching the new selection
- * @param {Object} event event telling the newly happened change
- * @param {Object} elementState state of the selected element
- * @param {String} robotId id of the robot which was opened
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @description Updates the state with attributes matching the new selection. Called upon a change in the modeler. 
+ * @param {Object} event Event describing the newly happened change
+ * @param {Object} elementState State of the selected element
+ * @param {String} robotId Id of the robot which was opened
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component
  */
 const modelerSelectionChangeHandler = (
   event,
@@ -175,11 +175,11 @@ const modelerSelectionChangeHandler = (
 };
 
 /**
- * @description Gets called when the name of the selected element got updated in the sidebar. Updates the state of the component.
- * @param {Object} event changed value in input field
- * @param {Object} modeler the modeling object
- * @param {Object} elementState state of the selected element
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @description Updates the state of the component. Called when the name of the selected element got updated in the sidebar. 
+ * @param {Object} event Changed value in input field
+ * @param {Object} modeler The modeling object
+ * @param {Object} elementState State of the selected element
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component
  */
 const nameChangedHandler = (event, modeler, elementState, setterObject) => {
   const { currentElement } = elementState;
@@ -193,12 +193,12 @@ const nameChangedHandler = (event, modeler, elementState, setterObject) => {
 };
 
 /**
- * @description Gets called when a new application was selected in the dropwdown in the sidebar.
- * Updates the state of the component and gets the tasks of the application for the TaskDropdown and clears the TaskDropdown.
- * @param {Object} value new value of the ApplicationDropdown
- * @param {String} robotId id of the robot
- * @param {Object} elementState state of the selected element
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @description Updates the state of the component and retrieves the tasks of the application for the TaskDropdown and clears the TaskDropdown.
+ * Called when a new application was selected in the dropwdown in the sidebar.
+ * @param {Object} value New value of the ApplicationDropdown
+ * @param {String} robotId Id of the robot
+ * @param {Object} elementState State of the selected element
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component
  */
 const applicationChangedHandler = (
   value,
@@ -220,13 +220,13 @@ const applicationChangedHandler = (
 };
 
 /**
- * @description Gets called when a new task was selected in the dropwdown in the sidebar. Updates the state of the component
- * and gets the parameters of the task and updates the XML RPA properties (adds the application and the task).
- * @param {Object} value new value of the TaskDropdown
- * @param {String} activityId id of the activity selected
- * @param {String} robotId id of the robot
- * @param {String} selectedApplication application selected
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @description Updates the state of the component and gets the parameters of the task and updates the XML RPA properties (adds the application and the task).
+ * Called when a new task was selected in the dropwdown in the sidebar. 
+ * @param {Object} value New value of the TaskDropdown
+ * @param {String} activityId Id of the activity selected
+ * @param {String} robotId Id of the robot
+ * @param {String} selectedApplication Application selected
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component
  */
 const taskChangedHandler = (
   value,
@@ -240,20 +240,18 @@ const taskChangedHandler = (
 };
 
 /**
- * @description Gets called when the value in a single input field for the parameters has been changed and updates
- * the values in the ssot
- * @param {String} activityId id of the activity selected
- * @param {Object} value new value of input field
+ * @description Updates the values in the ssot. Called when the value in a single input field for the parameters has been changed 
+ * @param {String} activityId Id of the activity selected
+ * @param {Object} value New value of input field
  */
 const inputParameterChangeHandler = (activityId, value) => {
   setSingleParameter(activityId, value);
 };
 
 /**
- * @description Gets called when the name of the output variable has been changed and updates
- * the output variables name in the ssot
- * @param {String} activityId id of the activity selected
- * @param {Object} newValue new value of the output variables name
+ * @description Updates the output variables name in the ssot. Called when the name of the output variable has been changed
+ * @param {String} activityId Id of the activity selected
+ * @param {Object} newValue New value of the output variables name
  */
 const outputVarNameChangeHandler = (activityId, newValue) => {
   setOutputValueName(activityId, newValue);

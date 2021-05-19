@@ -11,7 +11,7 @@ import PPRpaSection from './PropertiesPanelSections/PPRpaSection/PPRpaSection';
 import PPOutputValueSection from './PropertiesPanelSections/PPOutputValueSection/PPOutputValueSection';
 
 /**
- * @description Shows PropertiesPanel for one selected BPMN-Element.
+ * @description Displays the PropertiesPanel for one selected BPMN-Element.
  * @category Frontend
  * @component
  */

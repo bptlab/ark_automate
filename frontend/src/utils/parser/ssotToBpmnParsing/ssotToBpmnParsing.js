@@ -9,8 +9,8 @@ const DEFAULT_SPACING = '150,0';
 const DEFAULT_STARTEVENT_POSITION = '200,330';
 
 /**
- * @description Will search through the ssot and return the only element without a predecessor
- * @param {Object} ssot The ssot to process
+ * @description Searches through the ssot and return the only element without a predecessor
+ * @param {Object} ssot The ssot that will be processed
  */
 const findStartElement = (ssot) =>
   ssot.elements.find(
@@ -18,8 +18,8 @@ const findStartElement = (ssot) =>
   );
 
 /**
- * @description Will create an order within the elements based on their positioning in the flow
- * @param {Object} ssot The ssot to process
+ * @description Creates an order within the elements based on their positioning in the flow
+ * @param {Object} ssot The ssot that will be processed
  * @returns {Array} The elements of the ssot in the correct order in which they appear in the flow
  */
 const buildCorrectOrder = (ssot) => {
@@ -36,8 +36,8 @@ const buildCorrectOrder = (ssot) => {
 };
 
 /**
- * @description The bpmn js cli extension will just create elements, but not ensure their Id to match the one in the ssot.
- * Because of that this workaround is needed, which takes in the created element and updates its id to the one saved in the ssot
+ * @description Workaround which takes in the created element and updates its id to the one saved in the ssot. 
+ * The bpmn js cli extension will just create elements, but not ensure their Id to match the one in the ssot therefore this workaround is needed. 
  * @param {*} modeling The modeling extension
  * @param {Object} element The first element (start element) to process
  * @returns {String} The now set id of the shape
@@ -52,7 +52,7 @@ const updateIdForElement = (modeling, cli, element, cliResult) => {
 };
 
 /**
- * @description Will create the first element in the BPMN diagram as a start event
+ * @description Creates the first element in the BPMN diagram as a start event
  * @param {*} cli The modeling cli extension
  * @param {*} modeling The modeling extension
  * @param {Object} element The first element (start element) to process
@@ -87,7 +87,7 @@ const drawElement = (cli, modeling, element, previousElement) => {
 };
 
 /**
- * @description Will check if the default start event is still present and will remove if so
+ * @description Checks if the default start event is still present and will remove if so
  * @param {*} cli The modeling cli extension
  */
 const removeDefaultStarter = (cli) => {
@@ -96,7 +96,7 @@ const removeDefaultStarter = (cli) => {
 };
 
 /**
- * @description Will create the first element in the BPMN diagram as a start event
+ * @description Creates the first element in the BPMN diagram as a start event
  * @param {*} cli The modeling cli extension
  * @param {*} modeling The modeling extension
  * @param {Object} element The first element (start element) to process
@@ -116,7 +116,7 @@ const drawStartElement = (cli, modeling, element) => {
 };
 
 /**
- * @description Will create the BPMN XML from the provided ssot, as well as displaying the diagram on the modeling component
+ * @description Creates the BPMN XML from the provided ssot, as well as displaying the diagram on the modeling component
  * @param {*} modeler The bpmn modeler
  * @param {Object} ssot The ssot to parse
  * @returns {String} The parsed XML BPMN diagram as a String

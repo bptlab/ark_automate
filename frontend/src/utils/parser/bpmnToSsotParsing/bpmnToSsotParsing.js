@@ -35,8 +35,8 @@ const isElementTracked = (elementsArray, id) => {
 
 /**
  *
- * @param {Array} bpmnShapes all shapes of the BPMN diagram
- * @param {Array} localElementsArray current version of the localElementsArray with all elements
+ * @param {Array} bpmnShapes All shapes of the BPMN diagram
+ * @param {Array} localElementsArray Current version of the localElementsArray with all elements
  * @returns {Array}  Array of elements with their id, successors, predecessors and name
  */
 const returnElementsArrayWithNameLabel = (bpmnShapes, localElementsArray) => {

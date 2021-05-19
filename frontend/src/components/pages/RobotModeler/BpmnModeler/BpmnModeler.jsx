@@ -13,7 +13,7 @@ import 'bpmn-font/dist/css/bpmn-embedded.css';
 const { Content } = Layout;
 
 /**
- * @description This component renders the modeling interface as well as the sidebar.
+ * @description This component renders the BPMN modeling interface as well as the sidebar.
  * @category Frontend
  * @component
  */
@@ -21,7 +21,7 @@ const BpmnModeler = (props) => {
   let newModeler;
 
   /**
-   * @description while the components were mounted, the BPMN-Modeler get's initialized
+   * @description While the components were mounted, the BPMN-Modeler is initialized
    */
   useEffect(() => {
     newModeler = new CamundaBpmnModeler({

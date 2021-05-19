@@ -28,7 +28,7 @@ const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
 
 /**
- * @description Gets the robotId of the currently opened robot from the session storage
+ * @description Retrieves the robotId of the currently opened robot from the session storage
  * @returns Currently saved robotId
  */
 const getRobotId = () => JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
@@ -43,7 +43,7 @@ const setRobotId = (robotId) => {
 
 /**
  * @description Initializes the ssot in the session storage
- * @param {String} robotId Id of the robot for which we want to initialize the ssot in the session storage
+ * @param {String} robotId Id of the robot for which the ssot in the session storage will be initialized
  */
 const initSsotSessionStorage = (robotId) => {
   getSsot(robotId)
