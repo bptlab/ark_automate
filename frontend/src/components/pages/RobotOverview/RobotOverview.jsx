@@ -89,7 +89,6 @@ const RobotOverview = () => {
     createNewRobot(userId, robotName)
       .then((response) => response.json())
       .then((newRobot) => {
-        console.log(newRobot);
         const newRobotList = [newRobot, ...robotList];
         setRobotList([]);
         setRobotList(newRobotList);
@@ -111,7 +110,6 @@ const RobotOverview = () => {
       .filter((val) =>
         val.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
       );
-    console.log(filteredBotList);
 
     return (
       <>

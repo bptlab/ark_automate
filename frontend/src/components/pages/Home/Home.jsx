@@ -18,7 +18,7 @@ const Home = () => {
     <div className={styles.wrapper}>
       <Space
         direction='vertical'
-        size='100%'
+        size='small'
         style={{ width: '100%', padding: '0rem' }}
       >
         <Title
