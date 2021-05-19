@@ -81,7 +81,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
  *     get:
  *       tags:
  *         - RPA-Functionalities
- *       summary: Get all available Task and Application combinations with the input parameters and possible output values
+ *       summary: Retrieve all available Task and Application combinations with the input parameters and possible output values
  *       operationId: getFunctionalities
  *       responses:
  *         200:

@@ -17,7 +17,7 @@ const userAccessModels = require('../models/userAccessObjectModel.js');
  *     get:
  *       tags:
  *         - Robots
- *       summary: Get a robot with a specific id
+ *       summary: Retrieve a robot with a specific id
  *       operationId: getSpecificRobot
  *       responses:
  *         200:
@@ -52,7 +52,7 @@ exports.getSingleSourceOfTruth = async (req, res) => {
  *     get:
  *       tags:
  *         - Users
- *       summary: Get all robots for a specific user
+ *       summary: Retrieve all robots for a specific user
  *       operationId: getRobotsForUser
  *       responses:
  *         200:
@@ -319,7 +319,7 @@ exports.createNewRobot = async (req, res) => {
  *   put:
  *     tags:
  *       - Robots
- *     summary: Overwrite the existing robot with an updated one
+ *     summary: Overwrite an existing robot with an updated one
  *     operationId: overwriteRobot
  *     requestBody:
  *       content:

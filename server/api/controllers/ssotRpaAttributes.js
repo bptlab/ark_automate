@@ -8,7 +8,7 @@ const ssotModels = require('../models/singleSourceOfTruthModel.js');
  *     put:
  *       tags:
  *         - Robots
- *       summary: Overwrite existing rpa attribute objects with updated one's
+ *       summary: Overwrite existing rpa attribute objects with updated ones
  *       operationId: overwriteAttributes
  *       requestBody:
  *         content:
@@ -73,7 +73,7 @@ exports.updateMany = async (req, res) => {
  *     get:
  *       tags:
  *         - Robots
- *       summary: Get all rpa attribute objects for a specific robot
+ *       summary: Retrieve all rpa attribute objects for a specific robot
  *       operationId: getAttributesForRobot
  *       responses:
  *         200:
