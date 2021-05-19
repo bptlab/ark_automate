@@ -91,8 +91,10 @@ const RobotInteractionExecutionSection = (props) => {
             Robot Run Logs
           </Title>
           {executionLogs.robot_run &&
-            executionLogs.robot_run.activities.map((log) => (
+            executionLogs.robot_run.activities.map((log, index) => (
               <RobotLogEntryCard
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
                 log={log}
                 displayStatusIcon={displayStatusIcon}
               />

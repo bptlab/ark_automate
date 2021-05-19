@@ -1,6 +1,8 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Space } from 'antd';
+import { Card, Typography, Space } from 'antd';
 import RobotInteractionInputParameter from './subComponents/RobotInteractionParameterInput';
 
 const { Title } = Typography;
@@ -15,25 +17,25 @@ const RobotInteractionInputSection = ({
   updateParameterValue,
 }) => (
   <Space size='small' direction='vertical' style={{ width: '100%' }}>
-    {parameterList.map((activityInformation) => {
+    {parameterList.map((activityInformation, index) => {
       if (activityInformation.activityParameter.length > 0) {
         return (
-          <>
+          <Card key={index}>
             <Title style={{ marginBottom: '0px' }} level={4}>
               Activity: {activityInformation.activityName}
             </Title>
             {activityInformation.activityParameter.map((params) => (
               <RobotInteractionInputParameter
+                key={params._id}
                 variableName={params.name}
                 isRequired={params.isRequired}
                 dataType={params.type}
                 infoText={params.infoText}
                 updateParameterValue={updateParameterValue}
-                // eslint-disable-next-line no-underscore-dangle
                 parameterId={params._id}
               />
             ))}
-          </>
+          </Card>
         );
       }
       return <div />;
