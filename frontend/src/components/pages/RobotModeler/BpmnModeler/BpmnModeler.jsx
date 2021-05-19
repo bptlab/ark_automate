@@ -45,13 +45,15 @@ const BpmnModeler = (props) => {
     props.onModelerUpdate(newModeler);
 
     const openBpmnDiagram = (xml) => {
-      newModeler.importXML(xml, (error) => {
-        if (error) {
-          console.error('fail import xml');
-        }
-        const canvas = newModeler.get('canvas');
-        canvas.zoom('fit-viewport');
-      });
+      newModeler
+        .importXML(xml)
+        .then(() => {
+          const canvas = newModeler.get('canvas');
+          canvas.zoom('fit-viewport');
+        })
+        .catch((error) => {
+          console.error('failed to import xml: ', error);
+        });
     };
     openBpmnDiagram(emptyBpmn);
   }, []);
