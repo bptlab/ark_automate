@@ -67,9 +67,9 @@ const testUserAccessObject2 = {
 
 const numberOfTestTasks = 5;
 const testRpaTask1 = {
-  Application: 'Browser',
-  Task: 'Click Button',
-  Code: 'Click Button',
+  application: 'Browser',
+  task: 'Click Button',
+  code: 'Click Button',
   outputValue: false,
   inputVars: [
     {
@@ -83,9 +83,9 @@ const testRpaTask1 = {
 };
 
 const testRpaTask2 = {
-  Application: 'Excel',
-  Task: 'Input Text',
-  Code: 'Input Text',
+  application: 'Excel',
+  task: 'Input Text',
+  code: 'Input Text',
   outputValue: false,
   inputVars: [
     {
@@ -106,9 +106,9 @@ const testRpaTask2 = {
 };
 
 const testRpaTask3 = {
-  Application: 'Browser',
-  Task: 'Input Password',
-  Code: 'Input Password',
+  application: 'Browser',
+  task: 'Input Password',
+  code: 'Input Password',
   outputValue: false,
   inputVars: [
     {
@@ -122,9 +122,9 @@ const testRpaTask3 = {
 };
 
 const testRpaTask4 = {
-  Application: 'Excel.Application',
-  Task: 'Open Workbook',
-  Code: 'Open Workbook',
+  application: 'Excel.Application',
+  task: 'Open Workbook',
+  code: 'Open Workbook',
   outputValue: false,
   inputVars: [
     {
@@ -138,9 +138,9 @@ const testRpaTask4 = {
 };
 
 const testRpaTask5 = {
-  Application: 'Excel.Files',
-  Task: 'Open Workbook',
-  Code: 'Open Workbook',
+  application: 'Excel.Files',
+  task: 'Open Workbook',
+  code: 'Open Workbook',
   outputValue: false,
   inputVars: [
     {

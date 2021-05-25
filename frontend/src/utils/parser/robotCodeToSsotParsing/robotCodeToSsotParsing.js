@@ -172,7 +172,7 @@ const currentLineWithoutOutputValueName = (completeLine, splitPlaceholder) => {
 const numberOfOccurrencesOfTask = (allMatchingCombinations, rpaTask) => {
   let numberOfOccurrences = 0;
   allMatchingCombinations.forEach((singleObject) => {
-    if (singleObject.Task === rpaTask) {
+    if (singleObject.task === rpaTask) {
       numberOfOccurrences += 1;
     }
   });
@@ -201,7 +201,7 @@ const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
   if (numberOfOccurrences > 1) {
     let correctExampleText = '';
     allMatchingCombinations.forEach((singleCombination) => {
-      correctExampleText += `\n${singleCombination.Application}.${rpaTask}`;
+      correctExampleText += `\n${singleCombination.application}.${rpaTask}`;
     });
     customNotification(
       'Error',
@@ -267,10 +267,10 @@ const getInstructionBlocksFromTaskSection = (
       let rpaTask = getRpaTask(currentLine, splitPlaceholder);
       const allMatchingCombinations = taskAndApplicationCombinations.filter(
         (singleCombination) => {
-          if (rpaTask === singleCombination.Task) return true;
+          if (rpaTask === singleCombination.task) return true;
           if (
-            rpaTask.endsWith(singleCombination.Task) &&
-            rpaTask.startsWith(singleCombination.Application)
+            rpaTask.endsWith(singleCombination.task) &&
+            rpaTask.startsWith(singleCombination.application)
           )
             return true;
 
@@ -287,7 +287,7 @@ const getInstructionBlocksFromTaskSection = (
         return;
       }
 
-      rpaTask = rpaTask.replace(`${matchingCombination.Application}.`, '');
+      rpaTask = rpaTask.replace(`${matchingCombination.application}.`, '');
 
       const rpaParameters = getRpaParameters(currentLine, splitPlaceholder);
 
@@ -295,7 +295,7 @@ const getInstructionBlocksFromTaskSection = (
       instructionBlocks[instructionBlocks.length - 1].paramArray =
         rpaParameters;
       instructionBlocks[instructionBlocks.length - 1].rpaApplication =
-        matchingCombination.Application;
+        matchingCombination.application;
     }
   });
   return errorWasThrown ? undefined : instructionBlocks;
@@ -369,8 +369,8 @@ const buildSingleParameterObject = (
 
   const combinationObject = taskAndApplicationCombinations.filter(
     (singleCombinationObject) =>
-      singleCombinationObject.Application === rpaApplication &&
-      singleCombinationObject.Task === rpaTask
+      singleCombinationObject.application === rpaApplication &&
+      singleCombinationObject.task === rpaTask
   )[0];
 
   const parameterArray = combinationObject.inputVars.map(
@@ -439,7 +439,7 @@ const getElementsArray = (
   );
   taskAndApplicationCombinations = taskAndApplicationCombinations.filter(
     (singleCombination) =>
-      declaredApplications.includes(singleCombination.Application)
+      declaredApplications.includes(singleCombination.application)
   );
 
   const instructionArray = getInstructionBlocksFromTaskSection(

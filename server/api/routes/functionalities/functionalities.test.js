@@ -30,10 +30,10 @@ describe('GET /functionalities/applications', () => {
 
     expect(response.statusCode).toBe(200);
     expect(data).toEqual([
-      testData.testRpaTask1.Application,
-      testData.testRpaTask2.Application,
-      testData.testRpaTask4.Application,
-      testData.testRpaTask5.Application,
+      testData.testRpaTask1.application,
+      testData.testRpaTask2.application,
+      testData.testRpaTask4.application,
+      testData.testRpaTask5.application,
     ]);
   });
 });
@@ -42,7 +42,7 @@ describe('GET /functionalities/{application}/tasks', () => {
   it('retrieves the list of all available tasks for an application correctly', async () => {
     const request = httpMocks.createRequest({
       params: {
-        application: testData.testRpaTask1.Application,
+        application: testData.testRpaTask1.application,
       },
     });
 
@@ -52,8 +52,8 @@ describe('GET /functionalities/{application}/tasks', () => {
 
     expect(response.statusCode).toBe(200);
     expect(data).toEqual([
-      testData.testRpaTask1.Task,
-      testData.testRpaTask3.Task,
+      testData.testRpaTask1.task,
+      testData.testRpaTask3.task,
     ]);
   });
 });

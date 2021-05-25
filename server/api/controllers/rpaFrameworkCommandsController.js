@@ -23,7 +23,7 @@ const rpaModels = require('../models/rpaTaskModel');
 exports.getAvailableApplications = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    const tasks = await mongoose.model('rpa-task').distinct('Application');
+    const tasks = await mongoose.model('rpa-task').distinct('application');
     res.send(tasks);
   } catch (err) {
     console.error(err);
@@ -64,7 +64,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
     if (application != null) {
       await mongoose
         .model('rpa-task')
-        .distinct('Task', { Application: application }, (err, tasks) => {
+        .distinct('task', { application }, (err, tasks) => {
           res.send(tasks);
         });
     } else {

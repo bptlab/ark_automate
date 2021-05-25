@@ -152,7 +152,7 @@ const generateCodeForRpaTasks = async (elements, parameters, attributes) => {
 
   const groupedByTask = await mongoose
     .model('rpa-task')
-    .aggregate([{ $group: { _id: '$Task', count: { $sum: 1 } } }]);
+    .aggregate([{ $group: { _id: '$task', count: { $sum: 1 } } }]);
   const listOfDuplicates = groupedByTask
     .filter((singleTask) => singleTask.count > 1)
     // eslint-disable-next-line no-underscore-dangle
