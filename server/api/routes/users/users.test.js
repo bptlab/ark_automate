@@ -56,7 +56,7 @@ describe('POST /users/robotAccess', () => {
       body: {
         userId: testUserId,
         robotId: testRobotId,
-        AccessLevel: 'ReadWrite',
+        accessLevel: 'ReadWrite',
       },
     });
     const response = httpMocks.createResponse();

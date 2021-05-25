@@ -83,7 +83,7 @@ exports.getRobotList = async (req, res) => {
       .find(
         { userId: usableUserId },
         {
-          AccessLevel: 0,
+          accessLevel: 0,
           _id: 0,
           userId: 0,
         }
@@ -290,7 +290,7 @@ exports.createNewRobot = async (req, res) => {
       .exec();
 
     const userObject = await mongoose.model('userAccessObject').create({
-      AccessLevel: 'ReadWrite',
+      accessLevel: 'ReadWrite',
       robotId: ssot.id,
       userId: usableUserId,
     });

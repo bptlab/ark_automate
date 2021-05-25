@@ -54,13 +54,13 @@ const testSsot = {
 };
 
 const testUserAccessObject = {
-  AccessLevel: '0',
+  accessLevel: '0',
   robotId: testRobotId,
   userId: testUserId,
 };
 
 const testUserAccessObject2 = {
-  AccessLevel: '0',
+  accessLevel: '0',
   robotId: '604a3ba6561e2d1fad4eda11',
   userId: user2Id,
 };

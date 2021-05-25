@@ -120,11 +120,11 @@
  *     UserAccessObjects:
  *       type: object
  *       required:
- *         - AccessLevel
+ *         - accessLevel
  *         - robotId
  *         - userId
  *       properties:
- *         AccessLevel:
+ *         accessLevel:
  *           type: string
  *           example: ReadWrite
  *         robotId:
