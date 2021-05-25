@@ -111,10 +111,10 @@ exports.updateRobotJobStatus = async (jobId, status) => {
  * @param {Array} errorLog the list of logs of the robots activites
  */
 exports.updateRobotJobErrors = async (jobId, errorLog) => {
-  const errors = errorLog.robot_run.activities
+  const errors = errorLog.robotRun.activities
     .filter((activity) => activity.status === 'FAIL')
     .map((activity) => ({
-      activity_name: activity.activity_name,
+      activityName: activity.activityName,
       tasks: activity.tasks,
       message: activity.message,
     }));

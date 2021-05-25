@@ -78,16 +78,16 @@ exports.socketManager = (io, socket) => {
 
   socket.on('updatedLiveRobotLog', ({ userId, jobId, robotLogs }) => {
     io.to(userId).emit('changedRobotStatus', 'running');
-    if (robotLogs.final_message === 'Execution completed') {
+    if (robotLogs.finalMessage === 'Execution completed') {
       socketHelperFunctions.updateRobotJobStatus(
         jobId,
-        robotLogs.robot_run.status === 'FAIL' ? 'failed' : 'successful'
+        robotLogs.robotRun.status === 'FAIL' ? 'failed' : 'successful'
       );
       io.to(userId).emit(
         'changedRobotStatus',
-        robotLogs.robot_run.status === 'FAIL' ? 'failed' : 'successful'
+        robotLogs.robotRun.status === 'FAIL' ? 'failed' : 'successful'
       );
-      if (robotLogs.robot_run.status === 'FAIL') {
+      if (robotLogs.robotRun.status === 'FAIL') {
         socketHelperFunctions.updateRobotJobErrors(jobId, robotLogs);
       }
     }

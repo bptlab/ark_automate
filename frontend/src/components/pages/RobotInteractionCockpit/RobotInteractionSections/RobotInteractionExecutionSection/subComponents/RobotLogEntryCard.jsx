@@ -11,7 +11,7 @@ const RobotLogCard = (props) => {
       style={{ margin: '10px' }}
       headStyle={{ 'font-weight': 'bold' }}
       hoverable
-      title={log.activity_name}
+      title={log.activityName}
       size='small'
       type='inner'
     >

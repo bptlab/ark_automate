@@ -13,7 +13,7 @@ const tasksStatusSchema = new Schema({
 });
 
 const activityErrorSchema = new Schema({
-  activity_name: { type: String, required: [true, 'Activity name required'] },
+  activityName: { type: String, required: [true, 'Activity name required'] },
   tasks: {
     type: [tasksStatusSchema],
     required: [true, 'At least on task required'],

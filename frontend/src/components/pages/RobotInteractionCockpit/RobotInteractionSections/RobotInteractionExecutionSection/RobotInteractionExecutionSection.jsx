@@ -90,8 +90,8 @@ const RobotInteractionExecutionSection = (props) => {
           <Title style={{ marginBottom: '0px', marginLeft: '10px' }} level={5}>
             Robot Run Logs
           </Title>
-          {executionLogs.robot_run &&
-            executionLogs.robot_run.activities.map((log) => (
+          {executionLogs.robotRun &&
+            executionLogs.robotRun.activities.map((log) => (
               <RobotLogEntryCard
                 log={log}
                 displayStatusIcon={displayStatusIcon}
