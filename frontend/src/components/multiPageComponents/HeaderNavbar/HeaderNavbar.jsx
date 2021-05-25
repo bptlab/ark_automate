@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
-import logoCTA from '../../../resources/images/logo_cta.png';
+import logoCTA from '../../../resources/images/logoCta.png';
 
 const { Header } = Layout;
 
