@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const socketHelperFunctions = require('./socketHelperFunctions');
 
 exports.socketManager = (io, socket) => {
