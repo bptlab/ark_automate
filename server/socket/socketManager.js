@@ -49,8 +49,6 @@ exports.socketManager = (io, socket) => {
               }
             });
         }
-
-        // eslint-disable-next-line no-else-return
       } else {
         socket.emit('errorUserRoomConnection', 'Invalid userId: ', userId);
       }

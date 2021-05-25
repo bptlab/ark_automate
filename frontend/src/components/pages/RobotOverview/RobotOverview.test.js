@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /* eslint-disable func-names */
 /* eslint-disable object-shorthand */
 /* eslint-disable no-undef */
@@ -32,11 +33,6 @@ const MOCK_ROBOT_LIST = [
   },
 ];
 
-const MOCK_ROBOT_INFO = {
-  robotName: NEW_ROBOT_NAME,
-  robotId: '12345678901234567890123c',
-};
-
 async function mockFetch(url) {
   switch (url) {
     case `/users/${USER_ID}/robots`: {
@@ -58,7 +54,6 @@ beforeEach(() => window.fetch.mockImplementation(mockFetch));
 describe('Testing functionality behind button to trigger function call for new but creation', () => {
   it('check if attempt to fetch occured twice', async () => {
     act(() => {
-      // eslint-disable-next-line react/jsx-filename-extension
       render(
         <BrowserRouter>
           <RobotOverview />

@@ -21,8 +21,7 @@ const activityErrorSchema = new Schema({
   message: { type: String, required: [true, 'Error messsage required'] },
 });
 
-// eslint-disable-next-line camelcase
-const Job_Schema = new Schema({
+const jobSchema = new Schema({
   user_id: {
     type: mongoose.Types.ObjectId,
     required: [true, 'UserId required'],
@@ -36,5 +35,5 @@ const Job_Schema = new Schema({
   loggedErrors: [activityErrorSchema],
 });
 
-const Job = mongoose.model('job', Job_Schema);
+const Job = mongoose.model('job', jobSchema);
 module.exports = { Job };
