@@ -17,7 +17,10 @@ import {
 } from '../../../../../utils/sessionStorage/localSsotController/parameters';
 import { getParsedRobotFile } from '../../../../../api/routes/robots/robots';
 import downloadString from './downloadStringAsFile';
-import { upsert } from '../../../../../utils/sessionStorage/localSsotController/ssot';
+import {
+  getRobotName,
+  upsert,
+} from '../../../../../utils/sessionStorage/localSsotController/ssot';
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';
 
 /**
@@ -27,9 +30,9 @@ import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/b
  * @param {Object} modeler the modeling object
  * @param {String} robotId id of the robot
  */
-const onSaveToCloud = async (modeler, robotId) => {
+const onSaveToCloud = async (modeler) => {
   const xml = await modeler.saveXML({ format: true });
-  const result = await parseBpmnToSsot(xml, robotId);
+  const result = await parseBpmnToSsot(xml);
   const ssot = JSON.stringify(result);
   sessionStorage.setItem('ssotLocal', ssot);
   upsert();
@@ -41,7 +44,7 @@ const onSaveToCloud = async (modeler, robotId) => {
  */
 const downloadRobotFile = async (robotId) => {
   const response = await (await getParsedRobotFile(robotId)).text();
-  const fileName = `${sessionStorage.getItem('robotName')}.robot`;
+  const fileName = `${getRobotName()}.robot`;
   downloadString(response, 'text/robot', fileName);
 };
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import logoCTA from '../../../resources/images/logo_cta.png';
+import { getRobotId } from '../../../utils/sessionStorage/localSsotController/ssot';
 
 const { Header } = Layout;
 
@@ -33,8 +34,7 @@ const HeaderNavbar = (props) => {
     selectedKey === bpmnModelerPageKey ||
     selectedKey === robotCodeEditorPageKey
   ) {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    bpmnModelerLink += `/${robotId}`;
+    bpmnModelerLink += `/${getRobotId()}`;
   }
 
   return (

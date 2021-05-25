@@ -1,4 +1,8 @@
 import customNotification from '../../componentsFunctionality/notificationUtils';
+import {
+  getRobotId,
+  getRobotName,
+} from '../../sessionStorage/localSsotController/ssot';
 
 const { parseString } = require('xmljs2');
 
@@ -179,8 +183,9 @@ const getStartEventId = (bpmnJson) => {
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
  * @returns {string} XML that has to be put in single source of truth file
  */
-const parseBpmnToSsot = async (bpmnXml, robotId) => {
-  const robotName = sessionStorage.getItem('robotName');
+const parseBpmnToSsot = async (bpmnXml) => {
+  const robotName = getRobotName();
+  const robotId = getRobotId();
   const bpmnJson = await parseString(bpmnXml.xml);
   const startEventId = getStartEventId(bpmnJson);
 

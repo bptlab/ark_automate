@@ -55,7 +55,7 @@ async function mockFetch(url) {
 beforeAll(() => jest.spyOn(window, 'fetch'));
 beforeEach(() => window.fetch.mockImplementation(mockFetch));
 
-describe('Testing functionality behind button to trigger function call for new but creation', () => {
+describe('Testing functionality behind button to trigger function call for new robot creation', () => {
   it('checks if attempt to fetch occured twice', async () => {
     act(() => {
       // eslint-disable-next-line react/jsx-filename-extension
@@ -69,6 +69,6 @@ describe('Testing functionality behind button to trigger function call for new b
     act(() => {
       userEvent.click(screen.getByText('Create new Robot'));
     });
-    expect(window.fetch).toHaveBeenCalledTimes(2);
+    expect(window.fetch).toHaveBeenCalledTimes(3);
   });
 });

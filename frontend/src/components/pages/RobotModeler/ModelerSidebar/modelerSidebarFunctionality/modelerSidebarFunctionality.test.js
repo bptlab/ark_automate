@@ -4,13 +4,12 @@
 
 jest.mock('../../../../../api/routes/robots/robots');
 jest.mock('./downloadStringAsFile');
-jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
 jest.mock('../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing');
+jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
 
 jest.mock('../../../../../api/routes/functionalities/functionalities');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/parameters');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/attributes');
-jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
 
 import {
   nameChangedHandler,
@@ -36,12 +35,23 @@ import { fetchTasksFromDB } from '../../../../../api/routes/functionalities/func
 import constants from './modelerSidebarFunctionalityTestingUtils';
 import { getParsedRobotFile } from '../../../../../api/routes/robots/robots';
 import downloadString from './downloadStringAsFile';
-import { upsert } from '../../../../../utils/sessionStorage/localSsotController/ssot';
+import {
+  getRobotName,
+  upsert,
+} from '../../../../../utils/sessionStorage/localSsotController/ssot';
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';
+import { initSessionStorage } from '../../../../../utils/sessionStorage/sessionStorageUtils';
 
 describe('Robot Metadata Utilities Tests', () => {
   it('downloads the robot file', async () => {
-    sessionStorage.setItem('robotName', constants.MOCK_ROBOT_NAME);
+    initSessionStorage(
+      'robotMetadata',
+      JSON.stringify({ robotName: constants.MOCK_ROBOT_NAME })
+    );
+
+    getRobotName.mockImplementation(
+      () => JSON.parse(sessionStorage.getItem('robotMetadata')).robotName
+    );
 
     getParsedRobotFile.mockImplementation((robotId) => {
       expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
@@ -66,9 +76,8 @@ describe('Robot Metadata Utilities Tests', () => {
       );
     });
 
-    parseBpmnToSsot.mockImplementation(async (xml, robotId) => {
+    parseBpmnToSsot.mockImplementation(async (xml) => {
       expect(xml).toEqual(constants.MOCK_XML);
-      expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
       return constants.MOCK_PARSER_RESULT;
     });
 
@@ -353,7 +362,7 @@ describe('Sidebar Functionality: Task Change', () => {
     let setParameterListCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
       setOutputValueName: (newName) => {
-        expect(newName === undefined || newName === 'setOutputValueName').toBe(
+        expect(newName === undefined || newName === 'OutputValueName').toBe(
           true
         );
         setOutputValueNameCallCounter += 1;

@@ -3,6 +3,11 @@
  * @module
  */
 
+import {
+  getRobotId,
+  getRobotName,
+} from '../../sessionStorage/localSsotController/ssot';
+
 const {
   default: customNotification,
 } = require('../../componentsFunctionality/notificationUtils');
@@ -538,8 +543,8 @@ const getLineNumberForSelector = (robotCodeAsArray, selector) => {
  * @returns Single source of truth as a JavaSctipt-object or undefined if an error occures
  */
 const parseRobotCodeToSsot = (robotCode) => {
-  const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-  const robotName = sessionStorage.getItem('robotName');
+  const robotName = getRobotName();
+  const robotId = getRobotId();
   const robotCodeAsArray = getRobotCodeAsArray(robotCode);
 
   const lineNumberSettingsSelector = getLineNumberForSelector(

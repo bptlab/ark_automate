@@ -6,7 +6,7 @@ import ModelerSidebar from './ModelerSidebar/ModelerSidebar';
 import { getSsot } from '../../../api/routes/robots/robots';
 import { getAllParametersForRobot } from '../../../api/routes/robots/rpaParameter';
 import { getAllAttributes } from '../../../api/routes/robots/rpaAttributes';
-import { setRobotId } from '../../../utils/sessionStorage/localSsotController/ssot';
+import { setRobotMetadata } from '../../../utils/sessionStorage/localSsotController/ssot';
 import { initSessionStorage } from '../../../utils/sessionStorage/sessionStorageUtils';
 
 import 'bpmn-js/dist/assets/diagram-js.css';
@@ -17,8 +17,9 @@ import 'bpmn-font/dist/css/bpmn-embedded.css';
  * @category Frontend
  * @component
  */
-const Modeler = (match) => {
+const RobotModeler = (match) => {
   const { robotId } = match.match.params;
+  setRobotMetadata(undefined, robotId);
   const [modeler, setModeler] = useState(null);
   const [robotName, setRobotName] = useState();
 
@@ -30,13 +31,16 @@ const Modeler = (match) => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
-    setRobotId(robotId);
     initSessionStorage('idCounter', JSON.stringify('541'));
+    const robotMetadata = {
+      robotId,
+    };
+    sessionStorage.setItem('robotMetadata', JSON.stringify(robotMetadata));
     getSsot(robotId)
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('ssotLocal', JSON.stringify(data));
-        sessionStorage.setItem('robotName', data.robotName);
+        setRobotMetadata(data.robotName, robotId);
         setRobotName(data.robotName);
       })
       .catch((error) => {
@@ -80,4 +84,4 @@ const Modeler = (match) => {
   );
 };
 
-export default Modeler;
+export default RobotModeler;
