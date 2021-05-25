@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const parser = require('../ssotToRobotParser');
 const testSsot = require('./SsotForTesting.json');
 const dbHandler = require('../../testing/testDatabaseHandler');

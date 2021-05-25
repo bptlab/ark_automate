@@ -1,6 +1,5 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/first */
-/* eslint-disable no-undef */
 
 jest.mock('../../../../../api/routes/robots/robots');
 jest.mock('./downloadStringAsFile');

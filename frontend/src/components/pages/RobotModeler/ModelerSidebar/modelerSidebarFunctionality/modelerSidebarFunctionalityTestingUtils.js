@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const MOCK_ROBOT_ID = '0123456789abc0815';
 const MOCK_CURRENT_ELEMENT_ID = '123450815';
 const MOCK_ROBOT_NAME = 'testRobotFromTest';

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { parseBpmnToSsot } from './bpmnToSsotParsing';
 
 const BPMN_XML = {

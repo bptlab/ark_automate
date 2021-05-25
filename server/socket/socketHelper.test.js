@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const dbHandler = require('../utils/testing/testDatabaseHandler');
