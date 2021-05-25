@@ -10,7 +10,6 @@ import RobotOverview from './RobotOverview';
 import '@testing-library/jest-dom';
 
 const USER_ID = '80625d115100a2ee8d8e695b';
-const NEW_ROBOT_NAME = 'New Robot';
 
 window.matchMedia =
   window.matchMedia ||
