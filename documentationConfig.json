@@ -10,8 +10,8 @@
   "source": {
     "include": [
       "./../frontend/src",
-      "./../server/controllers",
-      "./../server/services",
+      "./../server/api/",
+      "./../server/socket/",
       "./../server/utils"
     ],
     "exclude": ["./../frontend/node_modules", "./../server/node_modules"],
