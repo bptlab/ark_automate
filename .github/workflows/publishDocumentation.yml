@@ -3,7 +3,7 @@ name: Publish Documentation to GitHub pages
 on:
   push:
     branches:
-      - main
+      - 281_documentation
 
 jobs:
   deploy:
