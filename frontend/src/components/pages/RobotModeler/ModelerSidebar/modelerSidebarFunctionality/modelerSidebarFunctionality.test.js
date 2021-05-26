@@ -31,7 +31,6 @@ import {
   setOutputValueName,
   getParameterObject,
 } from '../../../../../utils/sessionStorage/localSsotController/parameters';
-import { fetchTasksFromDB } from '../../../../../api/routes/functionalities/functionalities';
 import constants from './modelerSidebarFunctionalityTestingUtils';
 import { getParsedRobotFile } from '../../../../../api/routes/robots/robots';
 import downloadString from './downloadStringAsFile';
