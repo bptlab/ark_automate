@@ -30,7 +30,7 @@ describe('user access objects can be created', () => {
 
 describe('user access objects have validation for missing parameters', () => {
   const job = new UserAccesObject({});
-  it('should be invalid if RobotId is empty', async () => {
+  it('should be invalid if robotId is empty', async () => {
     job.save(
       (err) =>
         expect(err.errors.robotId).to.exist &&
@@ -38,7 +38,7 @@ describe('user access objects have validation for missing parameters', () => {
     );
   });
 
-  it('should be invalid if UserId is empty', async () => {
+  it('should be invalid if userId is empty', async () => {
     job.save(
       (err) =>
         expect(err.errors.userId).to.exist &&

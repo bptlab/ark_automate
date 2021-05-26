@@ -81,7 +81,7 @@
  *           $ref: '#/components/schemas/ActivityIds'
  *         robotId:
  *           $ref: '#/components/schemas/RobotIds'
- *         outputVariable:
+ *         outputValue:
  *           type: string
  *           example: Activity_0n140xq_output
  *         rpaParameters:

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../../../../utils/testing/testDatabaseHandler');
 const dbLoader = require('../../../../utils/testing/databaseLoader');
-const ssotVariableController = require('../../../controllers/ssotVariableController');
+const ssotParameterController = require('../../../controllers/ssotParameterController');
 
 // eslint-disable-next-line no-unused-vars
 const rpaTaskModel = require('../../../models/rpaTaskModel');
@@ -45,7 +45,7 @@ describe('PUT /robots/parameters', () => {
     });
     const response = httpMocks.createResponse();
 
-    await ssotVariableController.updateMany(request, response);
+    await ssotParameterController.updateMany(request, response);
     expect(response.statusCode).toBe(200);
     const data = await response._getData();
     expect(data.modifiedCount).toBe(1);
@@ -74,7 +74,7 @@ describe('GET /robots/parameters/{robotId}', () => {
     });
     const response = httpMocks.createResponse();
 
-    await ssotVariableController.retrieveParametersForRobot(request, response);
+    await ssotParameterController.retrieveParametersForRobot(request, response);
     expect(response.statusCode).toBe(200);
     const data = await response._getData();
     expect(data.length).toBe(3);
@@ -108,7 +108,7 @@ describe('DELETE /robots/parameters/{robotId}', () => {
     });
     const response = httpMocks.createResponse();
 
-    await ssotVariableController.deleteForActivities(request, response);
+    await ssotParameterController.deleteForActivities(request, response);
 
     const foundParameters = await mongoose.model('parameter').find().exec();
     expect(foundParameters.length).toBe(1);

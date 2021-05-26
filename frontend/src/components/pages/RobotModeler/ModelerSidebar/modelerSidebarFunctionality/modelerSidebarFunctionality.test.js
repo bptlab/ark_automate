@@ -16,7 +16,7 @@ import {
   applicationChangedHandler,
   taskChangedHandler,
   inputParameterChangeHandler,
-  outputVarNameChangeHandler,
+  outputValueNameChangeHandler,
   modelerSelectionChangeHandler,
   modelerElementChangeHandler,
   downloadRobotFile,
@@ -39,7 +39,7 @@ import { upsert } from '../../../../../utils/sessionStorage/localSsotController/
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';
 
 describe('Robot Metadata Utilities Tests', () => {
-  it('download robot file', async () => {
+  it('downloads the robot file', async () => {
     sessionStorage.setItem('robotName', constants.MOCK_ROBOT_NAME);
 
     getParsedRobotFile.mockImplementation((robotId) => {
@@ -58,7 +58,7 @@ describe('Robot Metadata Utilities Tests', () => {
     await downloadRobotFile(constants.MOCK_ROBOT_ID);
   });
 
-  it('save to cloud', async () => {
+  it('saves to cloud', async () => {
     upsert.mockImplementation(() => {
       expect(sessionStorage.getItem('ssotLocal')).toEqual(
         JSON.stringify(constants.MOCK_PARSER_RESULT)
@@ -76,7 +76,7 @@ describe('Robot Metadata Utilities Tests', () => {
 });
 
 describe('Sidebar Functionality: Small Utilities', () => {
-  it('handle modeler element changed with no new selection', async () => {
+  it('handles modeler element changed with no new selection', async () => {
     let setElementStateCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
@@ -92,7 +92,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
     expect(setElementStateCallCounter).toEqual(0);
   });
 
-  it('handle modeler element changed with new selection', async () => {
+  it('handles modeler element changed with new selection', async () => {
     let setElementStateCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
@@ -112,19 +112,19 @@ describe('Sidebar Functionality: Small Utilities', () => {
     expect(setElementStateCallCounter).toEqual(1);
   });
 
-  it('handle output variable name change', async () => {
+  it('handle output value name change', async () => {
     setOutputValueName.mockImplementation((activityId, newValue) => {
       expect(activityId).toEqual(constants.MOCK_ACTIVITY_ID);
       expect(newValue).toEqual(constants.MOCK_NEW_VALUE);
     });
 
-    outputVarNameChangeHandler(
+    outputValueNameChangeHandler(
       constants.MOCK_ACTIVITY_ID,
       constants.MOCK_NEW_VALUE
     );
   });
 
-  it('handle input parameter change', async () => {
+  it('handles input parameter change', async () => {
     setSingleParameter.mockImplementation((activityId, value) => {
       expect(activityId).toEqual(constants.MOCK_ACTIVITY_ID);
       expect(value).toEqual(constants.MOCK_VALUE);
@@ -136,7 +136,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
     );
   });
 
-  it('handle modeler name change', async () => {
+  it('handles modeler name change', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -156,7 +156,7 @@ describe('Sidebar Functionality: Small Utilities', () => {
 });
 
 describe('Sidebar Functionality: Modeler Selection Change', () => {
-  it('handle modeler selection change; element is not a task', async () => {
+  it('handles modeler selection change; element is not a task', async () => {
     const MOCK_CURRENT_ELEMENT = {
       id: constants.MOCK_CURRENT_ELEMENT_ID,
       businessObject: { name: 'oldTestName' },
@@ -178,11 +178,11 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
           currentElement: MOCK_CURRENT_ELEMENT,
         });
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
     };
 
@@ -194,7 +194,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
     );
   });
 
-  it('handle modeler selection change; element is a task and no matching attributes found; no attribute obj match found', async () => {
+  it('handles modeler selection change; element is a task and no matching attributes found; no attribute obj match found', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -202,11 +202,11 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
           currentElement: constants.MOCK_CURRENT_ELEMENT,
         });
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setDisableTaskSelection: (disabled) => {
         expect(disabled).toBeTruthy();
@@ -234,7 +234,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
     );
   });
 
-  it('handle modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application already in sessionstorage', async () => {
+  it('handles modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application already in sessionstorage', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -245,11 +245,11 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       setSelectedApplication: (value) => {
         expect(value).toEqual(constants.MOCK_APPLICATION);
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setTasksForSelectedApplication: (availableTasks) => {
         expect(availableTasks).toEqual(['TestTask']);
@@ -287,7 +287,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
     );
   });
 
-  it('handle modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application not yet in sessionstorage', async () => {
+  it('handles modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application not yet in sessionstorage', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -298,11 +298,11 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       setSelectedApplication: (value) => {
         expect(value).toEqual(constants.MOCK_APPLICATION);
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setTasksForSelectedApplication: (availableTasks) => {
         expect(availableTasks).toEqual(['TestTask']);
@@ -347,19 +347,19 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
 });
 
 describe('Sidebar Functionality: Task Change', () => {
-  it('handle task change WITH parameter update', async () => {
-    let setOutputVariableNameCallCounter = 0;
-    let setvariableListCallCounter = 0;
+  it('handles task change WITH parameter update', async () => {
+    let setOutputValueNameCallCounter = 0;
+    let setParameterListCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
-      setOutputVariableName: (newName) => {
-        expect(newName === undefined || newName === 'OutputVariableName').toBe(
+      setOutputValueName: (newName) => {
+        expect(newName === undefined || newName === 'OutputValueName').toBe(
           true
         );
-        setOutputVariableNameCallCounter += 1;
+        setOutputValueNameCallCounter += 1;
       },
-      setvariableList: (parametersInOrder) => {
+      setParameterList: (parametersInOrder) => {
         expect(parametersInOrder).toEqual(constants.MOCK_INPUTS_RIGHT_ORDER);
-        setvariableListCallCounter += 1;
+        setParameterListCallCounter += 1;
       },
     };
 
@@ -390,11 +390,11 @@ describe('Sidebar Functionality: Task Change', () => {
 
     expect(setRpaTask).toHaveBeenCalledTimes(1);
     expect(getParameterObject).toHaveBeenCalledTimes(1);
-    expect(setOutputVariableNameCallCounter).toEqual(2);
-    expect(setvariableListCallCounter).toEqual(1);
+    expect(setOutputValueNameCallCounter).toEqual(2);
+    expect(setParameterListCallCounter).toEqual(1);
   });
 
-  it('handle task change WITHOUT parameter update', async () => {
+  it('handles task change WITHOUT parameter update', async () => {
     setRpaTask.mockImplementation(
       (robotId, activityId, selectedApplication, value) => {
         expect(value).toBeUndefined();
@@ -418,7 +418,7 @@ describe('Sidebar Functionality: Task Change', () => {
 });
 
 describe('Sidebar Functionality: Application Change', () => {
-  it('handle application change WITH cache existing', async () => {
+  it('handles application change WITH cache existing', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -429,11 +429,11 @@ describe('Sidebar Functionality: Application Change', () => {
       setSelectedApplication: (value) => {
         expect(value).toEqual(constants.MOCK_VALUE);
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setTasksForSelectedApplication: (availableTasks) => {
         expect(availableTasks).toEqual(['TestTask']);
@@ -477,11 +477,11 @@ describe('Sidebar Functionality: Application Change', () => {
       setSelectedApplication: (value) => {
         expect(value).toEqual(constants.MOCK_VALUE);
       },
-      setOutputVariableName: (newName) => {
+      setOutputValueName: (newName) => {
         expect(newName).toBeUndefined();
       },
-      setvariableList: (newVariableList) => {
-        expect(newVariableList).toEqual([]);
+      setParameterList: (newParameterList) => {
+        expect(newParameterList).toEqual([]);
       },
       setTasksForSelectedApplication: (availableTasks) => {
         expect(availableTasks).toEqual(['lookupRecipe']);

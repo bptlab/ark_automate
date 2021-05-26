@@ -50,7 +50,7 @@ beforeAll(() => jest.spyOn(window, 'fetch'));
 beforeEach(() => window.fetch.mockImplementation(mockFetch));
 
 describe('Testing functionality behind button to trigger function call for new but creation', () => {
-  it('check if attempt to fetch occured twice', async () => {
+  it('checks if attempt to fetch occured twice', async () => {
     act(() => {
       render(
         <BrowserRouter>
@@ -62,6 +62,6 @@ describe('Testing functionality behind button to trigger function call for new b
     act(() => {
       userEvent.click(screen.getByText('Create new Robot'));
     });
-    expect(window.fetch).toHaveBeenCalledTimes(2);
+    expect(window.fetch).toHaveBeenCalledTimes(3);
   });
 });

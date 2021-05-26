@@ -29,7 +29,7 @@ Let's focus on the **src/** folder. On the highest level the relevant file is th
   Next to the App.js there is a folder in the `components/` folder that contains all the pages of the application. In addition, the `multiPageComponents/` folder contains all components that are used by several pages like the navigation bar that gets imported from each page.  
   In the pages folder, a subfolder is created for each page. the following folder structure is done logically hierarchically according to the order of imports. Also some functionalities of React components are outsourced to keep the pure `.jsx` files as small as possible.
 - **layout/**: Contains our corporate design and customized theme.
-- **resources/**: Contains images, fonts and other static files.
+- **resources/**: Contains static files like our `empty bpmn`.
 - **utils/**: Contains the following subfolders:
   - **parser/**: Contains our three parsers, which are stored in the frontend. Each parser has its own subfolder that also contains its tests
   - **sessionStorage/**: Contains all the helper files we need to interact with the session storage

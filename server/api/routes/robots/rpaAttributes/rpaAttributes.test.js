@@ -69,7 +69,7 @@ describe('PUT /robots/rpaattributes', () => {
 });
 
 describe('GET /robots/rpaattributes/{robotId}', () => {
-  it('successfully retreives all Attributes for a robot', async () => {
+  it('successfully retreives all attributes for a robot', async () => {
     await dbLoader.loadAttributesInDb();
 
     const request = httpMocks.createRequest({

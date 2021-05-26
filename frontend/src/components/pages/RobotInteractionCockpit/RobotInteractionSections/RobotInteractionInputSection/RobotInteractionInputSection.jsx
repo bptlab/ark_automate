@@ -27,7 +27,7 @@ const RobotInteractionInputSection = ({
             {activityInformation.activityParameter.map((params) => (
               <RobotInteractionInputParameter
                 key={params._id}
-                variableName={params.name}
+                parameterName={params.name}
                 isRequired={params.isRequired}
                 dataType={params.type}
                 infoText={params.infoText}
