@@ -23,7 +23,7 @@ const configuredRobotParamsCorrectly = (parameterObjects) => {
         parameter.value === ''
       ) {
         console.error(
-          'Required parameter not specified in paramter',
+          'Required parameter not specified in parameter',
           parameter
         );
         executability = false;

@@ -16,17 +16,21 @@ const initSessionStorage = (itemToCheckFor, valueToInitTo) => {
 
 const initAvailableApplicationsSessionStorage = () => {
   initSessionStorage('availableApplications', JSON.stringify([]));
-  let applicationList = sessionStorage.getItem('availableApplications');
-  applicationList = JSON.parse(applicationList);
-  if (applicationList && applicationList.length < 1)
-    getAvailableApplications()
-      .then((response) => response.json())
-      .then((data) => {
-        sessionStorage.setItem('availableApplications', JSON.stringify(data));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const taskAndApplicationCombinations = JSON.parse(
+    sessionStorage.getItem('taskApplicationCombinations')
+  );
+  const allApplications = taskAndApplicationCombinations.map(
+    (singleCombination) => singleCombination.Application
+  );
+  const applicationsWithoutDuplicates = allApplications.filter(
+    (singleApplication, index, self) =>
+      self.indexOf(singleApplication) === index
+  );
+
+  sessionStorage.setItem(
+    'availableApplications',
+    JSON.stringify(applicationsWithoutDuplicates)
+  );
 };
 
 export { initAvailableApplicationsSessionStorage, initSessionStorage };

@@ -47,6 +47,14 @@ We agreed on having a **Pull Request freeze on 14:00** the day before the sprint
 ### Action Points for this Sprint
 
 During our last retrospective we agreed on tackling the following action points:
+* We listen attentively in the Daily Standup and do not occupy ourselves elsewhere.
+* We have agreed on uniform abbreviations. HPI's public relations is abbreviated as `ÖA` and the Bachelorpodium is abbreviated as `BPod`
+* We independently and attentively check the PRs we are assigned on the day before the review. This way we avoid frequent requests for the current status of the reviews.
+* We review pull requests more conscientiously in the future. This has been left a bit behind.
+* We agreed to define the core time of the bachelor project in our last sprint as the most important element. Likewise, everyone independently reviews their hours worked at the end of each day.
+* The sprint backlog should be divided into two categories in this sprint. Issues of the first category should first be completed before the issues of the second priority group are processed.
+
+### Old Action Points
 * Twice a week the team will have a common coffee break to talk about topics far away from work. This coffee break will take place on Mondays and Wednesdays from 16:00-16:30.
 * The review will also be scheduled for 10:00 a.m. for future sprints. The Scrum Master thinks about an alternative form for the Daily before.
 * The deadline for setting a PR until 14:00 should remain as a guideline. The release (merge to the main) and the deployment will always be executed on Tuesdays until EOB (18:30-19:00 at the latest).
@@ -54,10 +62,6 @@ During our last retrospective we agreed on tackling the following action points:
 * In the next sprint, a session will be held to address the question of how and whether we will continue to work on the software after the end of the project.
 * Calls in the meeting channel should be named more meaningfully. Likewise, before a person joins, they should be asked if it is appropriate.
 * The scrum master will take care of the coordination of all further presentations. For this purpose, he will consult the project supervisor. 
-
-
-### Old Action Points
-* We want to introduce a longer team coffee break on Wednesdays afternoons, every two weeks. The feelgood manager takes care of this.
 * The Scrum master wants to interrogate when and how much work is still expected on the bachelors project in June so that we can plan the writing of our bachelors thesis.
 * Calls between team members will be held in a "Teams-Meeting" in our Meeting Channel, so that other team members can feel free to join.
 * We want to make the communication between team members and stakeholders more transparent. Therefore, we will from now on post important information from stakeholders in our teams and inform other team members about it in the next daily.

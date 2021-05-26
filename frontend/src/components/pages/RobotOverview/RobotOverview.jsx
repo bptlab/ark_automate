@@ -9,11 +9,15 @@ import {
   newClientJoined,
 } from '../../../api/socketHandler/socketListeners';
 import CreateRobotContainer from './RobotContainer/CreateRobotContainer';
-import { initSessionStorage } from '../../../utils/sessionStorage/sessionStorageUtils';
+import {
+  initSessionStorage,
+  initAvailableApplicationsSessionStorage,
+} from '../../../utils/sessionStorage/sessionStorageUtils';
 import {
   fetchSsotsForUser,
   createNewRobot,
 } from '../../../api/routes/users/users';
+import { getAllRpaFunctionalities } from '../../../api/routes/functionalities/functionalities';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -48,8 +52,18 @@ const RobotOverview = () => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
-    initSessionStorage('CurrentUserId', '80625d115100a2ee8d8e695b');
+    initSessionStorage('currentUserId', '80625d115100a2ee8d8e695b');
     retrieveBotList(userId);
+    getAllRpaFunctionalities()
+      .then((response) => response.json())
+      .then((data) => {
+        initSessionStorage('taskApplicationCombinations', JSON.stringify([]));
+        sessionStorage.setItem(
+          'taskApplicationCombinations',
+          JSON.stringify(data)
+        );
+        initAvailableApplicationsSessionStorage();
+      });
   }, []);
 
   /**
@@ -67,7 +81,7 @@ const RobotOverview = () => {
    * @param {Integer} value The value of the number input field used for setting the user id
    */
   const changeUserId = (value) => {
-    sessionStorage.setItem('CurrentUserId', value);
+    sessionStorage.setItem('currentUserId', value);
     retrieveBotList(value);
     setUserId(value);
   };
@@ -104,20 +118,20 @@ const RobotOverview = () => {
    * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
    */
   const createRobotBoxes = (currentSearchValue) => {
-    const filteredBotList = Object.values(robotList)
-      .filter((val) => val.robotName !== undefined)
-      .filter((val) =>
-        val.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
+    const filteredRobotList = Object.values(robotList)
+      .filter((robot) => robot.robotName !== undefined)
+      .filter((robot) =>
+        robot.robotName.toUpperCase().includes(currentSearchValue.toUpperCase())
       );
 
     return (
       <>
-        {filteredBotList.map((val) => (
+        {filteredRobotList.map((robot) => (
           <RobotContainer
             userId={userId}
             // eslint-disable-next-line no-underscore-dangle
-            robotId={val._id}
-            robotName={val.robotName}
+            robotId={robot._id}
+            robotName={robot.robotName}
             refreshOverview={() => retrieveBotList(userId)}
           />
         ))}

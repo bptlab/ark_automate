@@ -35,7 +35,7 @@ const retrieveParameters = async (ssot) => {
       {
         activityId: 1,
         rpaParameters: 1,
-        outputVariable: 1,
+        outputValue: 1,
       }
     )
     .exec();

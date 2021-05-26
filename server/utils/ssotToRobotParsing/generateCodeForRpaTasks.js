@@ -24,11 +24,11 @@ const isAnRpaInstruction = (currentElement) =>
  * @param {Object} paramObject The parameter object that will be checked and looped through
  * @returns {String} String specifying the output variables name
  */
-const setOutputVar = (paramObject) => {
+const setOutputValue = (paramObject) => {
   let newCodeLine = FOURSPACE;
 
-  if (paramObject.outputVariable) {
-    newCodeLine += `\${${paramObject.outputVariable}} = `;
+  if (paramObject.outputValue) {
+    newCodeLine += `\${${paramObject.outputValue}} = `;
   }
   return newCodeLine;
 };
@@ -105,7 +105,7 @@ const writeCodeForElement = (
         (parameter) => parameter.activityId === id
       );
       if (currentParameterObject) {
-        newCodeLine += setOutputVar(currentParameterObject);
+        newCodeLine += setOutputValue(currentParameterObject);
       }
       if (duplicateTasks.includes(currentAttributeObject.rpaTask)) {
         newCodeLine += `RPA.${currentAttributeObject.rpaApplication}.${currentAttributeObject.rpaTask}`;
