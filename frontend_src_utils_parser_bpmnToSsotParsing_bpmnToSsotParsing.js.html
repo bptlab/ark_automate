@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+  <title> frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,87 +75,250 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
+                    <p>Source</p>
+                    <h1>frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</h1>
                 </header>
                 
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>Ark Automate</h1>
-<p><a href="https://github.com/bptlab/ark_automate"><img src="https://img.shields.io/github/stars/bptlab/ark_automate" alt="GitHub stars"></a>
-<a href="https://github.com/bptlab/ark_automate/issues"><img src="https://img.shields.io/github/issues/bptlab/ark_automate" alt="GitHub open issues"></a>
-<a href="https://github.com/bptlab/ark_automate/issues"><img src="https://img.shields.io/github/issues-closed/bptlab/ark_automate" alt="GitHub open pull requests"></a>
-<a href="https://github.com/bptlab/ark_automate/issues"><img src="https://img.shields.io/github/issues-pr/bptlab/ark_automate" alt="GitHub open pull requests"></a>
-<a href="https://heroku-badge.herokuapp.com/App.js"><img src="https://heroku-badge.herokuapp.com/?app=ark-automate&amp;root=App.js" alt="heroku"></a></p>
-<p>Ark-Automate is a platform that allows office users and software developers to automate business or everyday processes by simply sketching the steps of their process. By using simple flowcharts or powerful BPMN in their process outlines, users can create small software solutions using RPA that finish their tasks much faster and more reliably.</p>
-<h2>Installation &amp; Setup</h2>
-<h3>Repository Setup</h3>
-<p>Please install:</p>
-<ol>
-<li><a href="https://nodejs.org/en/">Node.js</a> (at least v10.19) using the <a href="https://nodejs.org/en/download/">installer</a></li>
-<li><a href="https://www.npmjs.com/get-npm">npm</a> (at least v6.14) which is normally installed with Node.js</li>
-<li><a href="https://www.npmjs.com/package/nodemon">nodemon</a>(at least v2) using <code>npm install nodemon -g</code></li>
-</ol>
-<p>Then to complete the repository setup:</p>
-<ol>
-<li>Clone this repository using <code>git clone https://github.com/bptlab/ark_automate.git</code></li>
-<li>Change into the repository folder using <code>cd ark_automate</code></li>
-<li>Install all dependencies by running <code>npm install</code> in the server and frontend directory. You can easily do this by running <code> cd server/ &amp;&amp; npm install &amp;&amp; cd .. &amp;&amp; cd frontend/ &amp;&amp; npm install &amp;&amp; cd ..</code> in the projects root directory</li>
-</ol>
-<h3>Set up Heroku</h3>
-<p>For this step, an invitation to our Heroku project is necessary. Please create yourself a Heroku account, which you link to your Github profile. Then write a short mail to our team <a href="mailto:bpmw2020@gmail.com">mailing list</a> to be added to the project.</p>
-<ol>
-<li>Run in the server directory <code>npm install -g heroku</code></li>
-<li>Login to Heroku by running <code>heroku login</code> and than login to your heroku account</li>
-<li>Create a new .env file in the server directory</li>
-<li>Add the MongoDb URI to your .env file by running the following command in the server directory <code>heroku config:get MONGODB_URI -s -a ark-automate &gt;&gt; .env</code></li>
-</ol>
-<h3>Setup development tools</h3>
-<p>Tools being used in this project are <a href="https://eslint.org/">EsLint</a> and <a href="https://prettier.io/">Prettier</a>. For information on how to configure them see our <a href="https://github.com/bptlab/ark_automate/wiki/Coding-standards#tools">coding standards</a></p>
-<h2>Run application</h2>
-<p>Before running, please always make sure to have the most recent module versions installed using <code>npm install</code> in the server, as well as the frontend directory.
-To run a development preview of the app, navigate to the server directory and run <code>npm run local</code> to start the API server, navigate into the frontend folder and run <code>npm start</code> again to also start the frontend.
-Now check http://localhost:3000/ to have a look at the app.</p>
-<p>To run the local client, follow the steps in the <a href="https://github.com/bptlab/ark_automate_local#readme">Readme of the local client</a>.</p>
-<h2>Contribute</h2>
-<p>Contribution and feedback are encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our <a href=".github/CONTRIBUTING.md">Contribution Guidelines</a>. By participating in this project, you agree to abide by its <a href=".github/CODE_OF_CONDUCT.md">Code of Conduct</a> at all times.</p>
-<h2>Contributors</h2>
-<p>The main contributors to the project are the four members of the <a href="https://hpi.de/fileadmin/user_upload/hpi/dokumente/studiendokumente/bachelor/bachelorprojekte/2020_21/FG_Weske_RPA_meets_BPM.pdf">2020/21 Bachelor Project</a> of Professor Weske's <a href="https://bpt.hpi.uni-potsdam.de">BPT Chair</a> at the <a href="https://hpi.de">Hasso Plattner Institute</a>:</p>
-<ul>
-<li><a href="https://github.com/lukashueller">Lukas Hüller</a></li>
-<li><a href="https://github.com/kej-jay">Kay Erik Jenß</a></li>
-<li><a href="https://github.com/SanJSp">Sandro Speh</a></li>
-<li><a href="https://github.com/WolfgangDaniel">Daniel Woelki</a></li>
-</ul>
-<p>These four participants will push the project forward as part of their bachelor's degree until the summer of 2021.
-At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community.</p>
-<h2>Project documentation</h2>
-<p>Our <a href="https://github.com/bptlab/ark_automate/wiki/Architecture-in-2021">architecture</a>, as well as our current <a href="https://github.com/bptlab/ark_automate/wiki/Vision-for-2021">vision of the project</a> can be found in our <a href="https://github.com/bptlab/ark_automate/wiki">wiki</a>.
-Please also see the <a href="https://bptlab.github.io/ark_automate/">code documentation</a> on its own website including examples.</p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>import customNotification from '../../componentsFunctionality/notificationUtils';
+
+const { parseString } = require('xmljs2');
+
+/**
+ * @category Frontend
+ * @module
+ */
+
+const ssotBaseObjects = require('../ssotBaseObjects');
+
+const ssotBaseElement = ssotBaseObjects.baseElement;
+
+/**
+ * @description Creates a base element of the single source of truth
+ * @returns {object}  Base element of the single source of truth
+ */
+const createBaseElement = (id) => {
+  // creates deep copy of baseElement
+  const baseElement = JSON.parse(JSON.stringify(ssotBaseElement));
+  baseElement.id = id;
+  return baseElement;
+};
+
+/**
+ * @description Checks if the given id can be found in the given Array of element objects
+ * @returns {boolean}  Boolean if element is tracked in Array
+ */
+const isElementTracked = (elementsArray, id) => {
+  if (elementsArray.find((element) => element.id === id)) {
+    return true;
+  }
+  return false;
+};
+
+/**
+ *
+ * @param {Array} bpmnShapes All shapes of the BPMN diagram
+ * @param {Array} localElementsArray Current version of the localElementsArray with all elements
+ * @returns {Array}  Array of elements with their id, successors, predecessors and name
+ */
+const returnElementsArrayWithNameLabel = (bpmnShapes, localElementsArray) => {
+  const updatedLocalElementsArray = [];
+
+  localElementsArray.forEach((element) => {
+    const matchingElement = bpmnShapes.find(
+      (shape) => element.id === shape.$.id
+    );
+    const newElement = element;
+    newElement.name = matchingElement.$.name;
+    updatedLocalElementsArray.push(newElement);
+  });
+
+  return updatedLocalElementsArray;
+};
+
+/**
+ * @description Creates the array full of elements by iterating over the
+ * referenced ids in the flow and adding new elements (incl. name) if they have not been added yet
+ * @returns {Array}  Array of elements with their id, successors, predecessors and name
+ */
+const findElements = (flows, bpmnShapes) => {
+  if (typeof flows === 'undefined') {
+    return [];
+  }
+
+  const localElementsArray = [];
+
+  flows.forEach((flow) => {
+    const flowSource = flow.$.sourceRef;
+    const flowTarget = flow.$.targetRef;
+
+    if (!isElementTracked(localElementsArray, flowSource)) {
+      const newElement = createBaseElement(flowSource);
+      newElement.successorIds.push(flowTarget);
+      localElementsArray.push(newElement);
+    } else {
+      const sourceElement = localElementsArray.find(
+        (element) => element.id === flowSource
+      );
+      sourceElement.successorIds.push(flowTarget);
+    }
+
+    if (!isElementTracked(localElementsArray, flowTarget)) {
+      const newElement = createBaseElement(flowTarget);
+      newElement.predecessorIds.push(flowSource);
+      localElementsArray.push(newElement);
+    } else {
+      const targetElement = localElementsArray.find(
+        (element) => element.id === flowSource
+      );
+      targetElement.predecessorIds.push(flowSource);
+    }
+  });
+  return returnElementsArrayWithNameLabel(bpmnShapes, localElementsArray);
+};
+
+/**
+ * @description Enriches elements in the elementsArray that should be of type instruction
+ * @returns {Array}  Array of elements for single source of truth
+ */
+const enrichInstructionElements = (elementsArray, bpmnActivities) => {
+  if (typeof bpmnActivities === 'undefined') {
+    return [];
+  }
+
+  bpmnActivities.forEach((activity) => {
+    const instructionElement = elementsArray.find(
+      (element) => element.id === activity.$.id
+    );
+    if (instructionElement) {
+      instructionElement.type = 'INSTRUCTION';
+      instructionElement.outputValue = '';
+    }
+
+    if (activity.$['arkRPA:application']) {
+      instructionElement.rpaApplication = activity.$['arkRPA:application'];
+      instructionElement.rpaTask = activity.$['arkRPA:task'];
+
+      const parameterArray = [];
+      const parameterObj = JSON.parse(activity.$['arkRPA:inputVars']);
+      Object.keys(parameterObj).forEach((key) => {
+        const inputVar = {};
+        inputVar.name = key;
+        inputVar.value = parameterObj[key];
+        inputVar.requireUserInput = true;
+        parameterArray.push(inputVar);
+      });
+      instructionElement.rpaParameters = parameterArray;
+    }
+  });
+  return elementsArray;
+};
+
+/**
+ * @description Enriches elements in the elementsArray that should be of type marker
+ * @returns {Array}  Array of elements for single source of truth
+ */
+const enrichMarkerElements = (elementsArray) => {
+  const eventRegularExpression = /^Event_.*$/;
+  elementsArray.forEach((element) => {
+    if (eventRegularExpression.test(element.id)) {
+      element.type = 'MARKER';
+    }
+  });
+  return elementsArray;
+};
+
+const getStartEventId = (bpmnJson) => {
+  let startEvents;
+  const startEventIds = [];
+
+  startEvents =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
+  if (typeof startEvents === 'undefined') startEvents = [];
+
+  startEvents.forEach((singleStartEvent) => {
+    startEventIds.push(singleStartEvent.$.id);
+  });
+
+  if (startEventIds.length === 0) {
+    customNotification(
+      'Error',
+      'There is no startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.'
+    );
+    return undefined;
+  }
+  if (startEventIds.length > 1) {
+    customNotification(
+      'Error',
+      'There is more then one startEvent in your diagram! \nThis is not Ark-Automate Ssot compliant.'
+    );
+    return undefined;
+  }
+  return startEventIds;
+};
+
+/**
+ * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
+ * @returns {string} XML that has to be put in single source of truth file
+ */
+const parseBpmnToSsot = async (bpmnXml, robotId) => {
+  const robotName = sessionStorage.getItem('robotName');
+  const bpmnJson = await parseString(bpmnXml.xml);
+  const startEventId = getStartEventId(bpmnJson);
+
+  if (typeof startEventId === 'undefined') return undefined;
+
+  // Build basic ssot-frame
+  const ssot = {
+    _id: robotId,
+    starterId: startEventId[0],
+    robotName,
+  };
+
+  let flows =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:sequenceFlow'];
+  if (typeof flows === 'undefined') flows = [];
+
+  let bpmnActivities =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:task'];
+  if (typeof bpmnActivities === 'undefined') bpmnActivities = [];
+
+  const bpmnStartEvent =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent'];
+  const bpmnEndEvent =
+    bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent'];
+  const bpmnShapes = bpmnJson['bpmn2:definitions']['bpmn2:process'][0][
+    'bpmn2:task'
+  ]
+    .concat(
+      bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:startEvent']
+    )
+    .concat(
+      bpmnJson['bpmn2:definitions']['bpmn2:process'][0]['bpmn2:endEvent']
+    );
+
+  let elementsArray = findElements(flows, bpmnShapes);
+  elementsArray = enrichInstructionElements(elementsArray, bpmnActivities);
+  elementsArray = enrichMarkerElements(
+    elementsArray,
+    bpmnStartEvent,
+    bpmnEndEvent
+  );
+
+  ssot.elements = elementsArray;
+  return ssot;
+};
+
+// eslint-disable-next-line import/prefer-default-export
+export { parseBpmnToSsot };
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

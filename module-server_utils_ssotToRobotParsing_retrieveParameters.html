@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> server/utils/ssotToRobotParsing/retrieveParameters</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"></div><div class="category"><h2>Frontend</h2><h3>Modules</h3><ul><li><a href="frontend_src_utils_componentsFunctionality_notificationUtils.module_jsx.html">jsx</a></li><li><a href="module-frontend_src_api_routes_functionalities_functionalities.html">frontend/src/api/routes/functionalities/functionalities</a></li><li><a href="module-frontend_src_api_routes_robots_robots.html">frontend/src/api/routes/robots/robots</a></li><li><a href="module-frontend_src_api_routes_robots_rpaAttributes.html">frontend/src/api/routes/robots/rpaAttributes</a></li><li><a href="module-frontend_src_api_routes_robots_rpaParameter.html">frontend/src/api/routes/robots/rpaParameter</a></li><li><a href="module-frontend_src_api_routes_users_users.html">frontend/src/api/routes/users/users</a></li><li><a href="module-frontend_src_api_socketHandler_socketEmitter.html">frontend/src/api/socketHandler/socketEmitter</a></li><li><a href="module-frontend_src_api_socketHandler_socketListeners.html">frontend/src/api/socketHandler/socketListeners</a></li><li><a href="module-frontend_src_components_pages_RobotInteractionCockpit_robotInteractionCockpitFunctionality_robotInteractionCockpitFunctionality.html">frontend/src/components/pages/RobotInteractionCockpit/robotInteractionCockpitFunctionality/robotInteractionCockpitFunctionality</a></li><li><a href="module-frontend_src_components_pages_RobotModeler_ModelerSidebar_modelerSidebarFunctionality_downloadStringAsFile.html">frontend/src/components/pages/RobotModeler/ModelerSidebar/modelerSidebarFunctionality/downloadStringAsFile</a></li><li><a href="module-frontend_src_components_pages_RobotModeler_ModelerSidebar_modelerSidebarFunctionality_modelerSidebarFunctionality.html">frontend/src/components/pages/RobotModeler/ModelerSidebar/modelerSidebarFunctionality/modelerSidebarFunctionality</a></li><li><a href="module-frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing</a></li><li><a href="module-frontend_src_utils_parser_robotCodeToSsotParsing_robotCodeToSsotParsing.html">frontend/src/utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing</a></li><li><a href="module-frontend_src_utils_parser_ssotToBpmnParsing_ssotToBpmnParsing.html">frontend/src/utils/parser/ssotToBpmnParsing/ssotToBpmnParsing</a></li><li><a href="module-frontend_src_utils_sessionStorage_localFunctionalitiesController_functionalities.html">frontend/src/utils/sessionStorage/localFunctionalitiesController/functionalities</a></li><li><a href="module-frontend_src_utils_sessionStorage_localSsotController_attributes.html">frontend/src/utils/sessionStorage/localSsotController/attributes</a></li><li><a href="module-frontend_src_utils_sessionStorage_localSsotController_parameters.html">frontend/src/utils/sessionStorage/localSsotController/parameters</a></li><li><a href="module-frontend_src_utils_sessionStorage_localSsotController_ssot.html">frontend/src/utils/sessionStorage/localSsotController/ssot</a></li><li><a href="module-frontend_src_utils_sessionStorage_sessionStorageUtils.html">frontend/src/utils/sessionStorage/sessionStorageUtils</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#BpmnModeler">BpmnModeler</a></li><li><a href="global.html#CreateRobotContainer">CreateRobotContainer</a></li><li><a href="global.html#Error">Error</a></li><li><a href="global.html#HeaderNavbar">HeaderNavbar</a></li><li><a href="global.html#Home">Home</a></li><li><a href="global.html#Modeler">Modeler</a></li><li><a href="global.html#ModelerSidebar">ModelerSidebar</a></li><li><a href="global.html#PPApplicationDropdown">PPApplicationDropdown</a></li><li><a href="global.html#PPIdSection">PPIdSection</a></li><li><a href="global.html#PPNameSection">PPNameSection</a></li><li><a href="global.html#PPOutputValueSection">PPOutputValueSection</a></li><li><a href="global.html#PPParameterInput">PPParameterInput</a></li><li><a href="global.html#PPParameterSection">PPParameterSection</a></li><li><a href="global.html#PPRpaSection">PPRpaSection</a></li><li><a href="global.html#PPTaskDropdown">PPTaskDropdown</a></li><li><a href="global.html#PPTitleSection">PPTitleSection</a></li><li><a href="global.html#PropertiesPanel">PropertiesPanel</a></li><li><a href="global.html#removeUnsupportedBpmnFunctions">removeUnsupportedBpmnFunctions</a></li><li><a href="global.html#RobotContainer">RobotContainer</a></li><li><a href="global.html#RobotFile">RobotFile</a></li><li><a href="global.html#RobotFileSyntaxModal">RobotFileSyntaxModal</a></li><li><a href="global.html#RobotInteractionCockpit">RobotInteractionCockpit</a></li><li><a href="global.html#RobotInteractionExecutionSection">RobotInteractionExecutionSection</a></li><li><a href="global.html#RobotInteractionInputParameter">RobotInteractionInputParameter</a></li><li><a href="global.html#RobotInteractionInputSection">RobotInteractionInputSection</a></li><li><a href="global.html#RobotLogCard">RobotLogCard</a></li><li><a href="global.html#RobotOverview">RobotOverview</a></li></ul></div><div class="category"><h2>Server</h2><h3>Modules</h3><ul><li><a href="module-server_utils_ssotToRobotParsing_generateCodeBase.html">server/utils/ssotToRobotParsing/generateCodeBase</a></li><li><a href="module-server_utils_ssotToRobotParsing_generateCodeForRpaTasks.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks</a></li><li><a href="module-server_utils_ssotToRobotParsing_retrieveParameters.html">server/utils/ssotToRobotParsing/retrieveParameters</a></li><li><a href="module-server_utils_ssotToRobotParsing_ssotToRobotParser.html">server/utils/ssotToRobotParsing/ssotToRobotParser</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Module</p>
+                    <h1>server/utils/ssotToRobotParsing/retrieveParameters</h1>
+                </header>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getAllParametersForJob">
+        <a class="href-link" href="#~getAllParametersForJob">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getAllParametersForJob<span class="signature">(jobId)</span><span class="type-signature"> &rarr; {Array}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Retrieves all parameters for a specific job
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>jobId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The id of the job</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html" class="button">View Source</a>
+            <span>
+                <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html">server/utils/ssotToRobotParsing/retrieveParameters.js</a>, <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html#line78">line 78</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Array of parameter objects</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Array</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~retrieveParameters">
+        <a class="href-link" href="#~retrieveParameters">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                retrieveParameters<span class="signature">(ssot)</span><span class="type-signature"> &rarr; {Array}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Will retrieve the associated parameter objects for all activities in the ssot
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>ssot</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The ssot for which the parameters will be retrieved</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html" class="button">View Source</a>
+            <span>
+                <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html">server/utils/ssotToRobotParsing/retrieveParameters.js</a>, <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html#line17">line 17</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Array of parameter objects</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Array</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~retrieveParametersFromSsotAndJob">
+        <a class="href-link" href="#~retrieveParametersFromSsotAndJob">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                retrieveParametersFromSsotAndJob<span class="signature">(ssot, jobId)</span><span class="type-signature"> &rarr; {Array}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Retrieves the associated parameter objects for all activities in the ssot
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>ssot</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The ssot for which the parameters will be retrieved</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>jobId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The job id identifiyng a job object from which the additional paramters will be fetched</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html" class="button">View Source</a>
+            <span>
+                <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html">server/utils/ssotToRobotParsing/retrieveParameters.js</a>, <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html#line91">line 91</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Array of parameter objects</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Array</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~updateParameterObjects">
+        <a class="href-link" href="#~updateParameterObjects">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                updateParameterObjects<span class="signature">(parameterObjects, newParameters)</span><span class="type-signature"> &rarr; {Array}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Updates Parameter Objects with new parameters
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>parameterObjects</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The selection of parameter objects that will possibly be updated</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>newParameters</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">New parameters in the form {id, value} that will be used to update the parameter objects</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html" class="button">View Source</a>
+            <span>
+                <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html">server/utils/ssotToRobotParsing/retrieveParameters.js</a>, <a href="server_utils_ssotToRobotParsing_retrieveParameters.js.html#line52">line 52</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>Array of updated parameter objects</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Array</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>
