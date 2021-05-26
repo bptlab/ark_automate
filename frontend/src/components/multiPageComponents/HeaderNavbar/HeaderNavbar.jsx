@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
-import logoCTA from '../../../resources/images/logo_cta.png';
 import { getRobotId } from '../../../utils/sessionStorage/localSsotController/ssot';
+import styles from './HeaderNavbar.module.css';
 
 const { Header } = Layout;
 
@@ -14,6 +14,7 @@ const { Header } = Layout;
  */
 const HeaderNavbar = (props) => {
   const { selectedKey } = props;
+  const iconKey = 0;
   const robotOverviewPageKey = 1;
   const bpmnModelerPageKey = 2;
   const robotCodeEditorPageKey = 3;
@@ -38,19 +39,22 @@ const HeaderNavbar = (props) => {
   }
 
   return (
-    <Header>
+    <Header className={styles.header}>
       <Menu
         theme='dark'
         mode='horizontal'
         defaultSelectedKeys={[selectedKey.toString()]}
       >
-        <Link to='/'>
-          <img
-            style={{ margin: '0 1rem 0 -1rem', height: '3rem' }}
-            src={logoCTA}
-            alt='ark_automate Icon'
-          />
-        </Link>
+        <Menu.Item className={styles.modifiedMenuItem} key={iconKey}>
+          <Link to='/'>
+            <img
+              style={{ height: '3rem' }}
+              src='/logo/logo_cta.png'
+              alt='ark_automate Icon'
+            />
+          </Link>
+        </Menu.Item>
+
         <Menu.Item key={robotOverviewPageKey}>
           Overview
           <Link to='/robot_overview' />

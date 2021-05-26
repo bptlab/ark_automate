@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import { Layout, Input, Space, Row, Select } from 'antd';
 import HeaderNavbar from '../../multiPageComponents/HeaderNavbar/HeaderNavbar';
@@ -129,6 +130,7 @@ const RobotOverview = () => {
       <>
         {filteredRobotList.map((robot) => (
           <RobotContainer
+            key={robot._id}
             userId={userId}
             // eslint-disable-next-line no-underscore-dangle
             robotId={robot._id}

@@ -65,6 +65,10 @@ const PropertiesPanel = ({
   </div>
 );
 
+PropertiesPanel.defaultProps = {
+  outputValueName: undefined,
+};
+
 PropertiesPanel.propTypes = {
   element: PropTypes.objectOf(PropTypes.shape).isRequired,
   nameChanged: PropTypes.func.isRequired,
@@ -75,7 +79,7 @@ PropertiesPanel.propTypes = {
   disableTaskSelection: PropTypes.bool.isRequired,
   parameterList: PropTypes.arrayOf(PropTypes.shape).isRequired,
   parameterSelectionUpdated: PropTypes.func.isRequired,
-  outputValueName: PropTypes.string.isRequired,
+  outputValueName: PropTypes.string,
   outputNameUpdated: PropTypes.func.isRequired,
   robotId: PropTypes.string.isRequired,
 };

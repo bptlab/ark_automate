@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import customNotification from '../../componentsFunctionality/notificationUtils';
 import {
   getRobotId,

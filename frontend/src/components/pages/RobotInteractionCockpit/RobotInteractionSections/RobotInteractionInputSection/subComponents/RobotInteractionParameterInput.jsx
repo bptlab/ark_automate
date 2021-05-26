@@ -40,9 +40,13 @@ const RobotInteractionInputParameter = ({
 RobotInteractionInputParameter.propTypes = {
   parameterName: PropTypes.string.isRequired,
   dataType: PropTypes.string.isRequired,
-  infoText: PropTypes.string.isRequired,
+  infoText: PropTypes.string,
   updateParameterValue: PropTypes.func.isRequired,
   parameterId: PropTypes.string.isRequired,
+};
+
+RobotInteractionInputParameter.defaultProps = {
+  infoText: undefined,
 };
 
 export default RobotInteractionInputParameter;

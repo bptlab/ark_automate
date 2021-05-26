@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
+import PropTypes from 'prop-types';
 import BpmnModeler from './BpmnModeler/BpmnModeler';
 import HeaderNavbar from '../../multiPageComponents/HeaderNavbar/HeaderNavbar';
 import ModelerSidebar from './ModelerSidebar/ModelerSidebar';
@@ -16,8 +17,10 @@ import 'bpmn-font/dist/css/bpmn-embedded.css';
  * @category Frontend
  * @component
  */
-const RobotModeler = (match) => {
-  const { robotId } = match.match.params;
+const RobotModeler = (props) => {
+  const { match } = props;
+  const { params } = match;
+  const { robotId } = params;
   const [modeler, setModeler] = useState(null);
   const [robotName, setRobotName] = useState();
 
@@ -74,6 +77,16 @@ const RobotModeler = (match) => {
       </Layout>
     </>
   );
+};
+
+RobotModeler.propTypes = {
+  match: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool,
+      PropTypes.objectOf(PropTypes.string),
+    ])
+  ).isRequired,
 };
 
 export default RobotModeler;

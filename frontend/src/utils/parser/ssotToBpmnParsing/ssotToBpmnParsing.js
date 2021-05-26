@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 /**
  * @category Frontend
  * @module
