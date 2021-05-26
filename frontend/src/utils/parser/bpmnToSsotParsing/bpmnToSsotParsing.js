@@ -111,7 +111,7 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
     );
     if (instructionElement) {
       instructionElement.type = 'INSTRUCTION';
-      instructionElement.outputVariable = '';
+      instructionElement.outputValue = '';
     }
 
     if (activity.$['arkRPA:application']) {

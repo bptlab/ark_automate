@@ -24,7 +24,7 @@ const MOCK_PARAMETER_OBJECT = {
       value: 'true',
     },
   ],
-  outputVariable: 'OutputVariableName',
+  outputValue: 'OutputValueName',
 };
 const MOCK_INPUTS_RIGHT_ORDER = [
   {
