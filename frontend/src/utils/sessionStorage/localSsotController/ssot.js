@@ -69,7 +69,7 @@ const initSsotSessionStorage = (robotId) => {
     .then((response) => response.json())
     .then((data) => {
       sessionStorage.setItem(
-        'TaskApplicationCombinations',
+        'taskApplicationCombinations',
         JSON.stringify(data)
       );
     })

@@ -22,7 +22,7 @@ sessionStorage.setItem(
   '["Excel.Application","Excel.Files","HTTP","Testing"]'
 );
 sessionStorage.setItem(
-  'TaskApplicationCombinations',
+  'taskApplicationCombinations',
   JSON.stringify(taskAndApplicationCombinations)
 );
 

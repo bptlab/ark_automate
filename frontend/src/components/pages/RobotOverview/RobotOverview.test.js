@@ -69,6 +69,6 @@ describe('Testing functionality behind button to trigger function call for new b
     act(() => {
       userEvent.click(screen.getByText('Create new Robot'));
     });
-    expect(window.fetch).toHaveBeenCalledTimes(2);
+    expect(window.fetch).toHaveBeenCalledTimes(3);
   });
 });
