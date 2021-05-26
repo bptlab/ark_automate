@@ -512,8 +512,9 @@ const getStarterId = (elementsArray) => {
   }
   return 'no starter id found';
 };
+
 /**
- * @description
+ * @description Retrieves the line number for a given selector
  * @param {Array} robotCodeAsArray The complete robotCode w/o new lines as array
  * @param {String} selector The selector for which the line number will be retrieved
  * @returns {number} Line number where the selector occurs
