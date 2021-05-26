@@ -47,6 +47,7 @@ const retrieveParameters = async (ssot) => {
  * @description Updates Parameter Objects with new parameters
  * @param {Array} parameterObjects The selection of parameter objects that will possibly be updated
  * @param {Array} newParameters New parameters in the form {id, value} that will be used to update the parameter objects
+ * @returns {Array} Array of updated parameter objects
  */
 const updateParameterObjects = (parameterObjects, newParameters) => {
   parameterObjects.map((parameterObject) => {
@@ -72,6 +73,7 @@ const updateParameterObjects = (parameterObjects, newParameters) => {
 /**
  * @description Retrieves all parameters for a specific job
  * @param {String} jobId The id of the job
+ * @returns {Array} Array of parameter objects
  */
 const getAllParametersForJob = async (jobId) => {
   const jobParametersObject = await mongoose
