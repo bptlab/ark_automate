@@ -10,7 +10,7 @@ const {
 const FOURSPACE = '    ';
 
 /**
- * @returns "uniqueId" which is just an increment from the counter in the local storage
+ * @returns {number} "uniqueId" which is just an increment from the counter in the local storage
  */
 const getUniqueId = () => {
   const newId = JSON.parse(sessionStorage.getItem('idCounter')) + 1;
@@ -19,19 +19,19 @@ const getUniqueId = () => {
 };
 
 /**
- * @returns unique Id; wrapped with the activity nomenclature
+ * @returns {String} Unique Id; wrapped with the activity nomenclature
  */
 const getActivityId = () => `Activity_0ay${getUniqueId()}`;
 
 /**
- * @returns unique Id; wrapped with the event nomenclature
+ * @returns {String} Unique Id; wrapped with the event nomenclature
  */
 const getEventId = () => `Event_0ay${getUniqueId()}`;
 
 /**
  * @description Splits the robot code into an array and deletes all empty lines
  * @param {String} robotCode Code from the code editor
- * @returns Robot code without empty lines as an array
+ * @returns {Array} Robot code without empty lines as an array
  */
 const getRobotCodeAsArray = (robotCode) => {
   const robotCodeAsArray = robotCode.split('\n');
@@ -47,7 +47,7 @@ const getRobotCodeAsArray = (robotCode) => {
 /**
  * @description Checks all lines of the settings section for the right syntax and returns all declared applications as an array
  * @param {Array} robotCodeSettingsSection All lines from the settings section as an array-entry (typeof string)
- * @returns Array of all declared applications or undefined if an error occures
+ * @returns {Array} All declared applications or undefined if an error occures
  */
 const getApplicationArray = (robotCodeSettingsSection) => {
   if (typeof robotCodeSettingsSection === 'undefined') return undefined;

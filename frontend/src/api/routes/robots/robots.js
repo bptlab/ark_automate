@@ -12,7 +12,8 @@ const getParsedRobotFile = async (robotId) =>
 
 /**
  * @description Fetch the ssot correlating to the specified Id
- * @param { String } robotId - Id of the robot that will be retrieved
+ * @param {String} robotId - Id of the robot that will be retrieved
+ * @returns {Object} The found ssot
  */
 const getSsot = async (robotId) => {
   const requestString = `/robots/${robotId}`;
@@ -22,8 +23,9 @@ const getSsot = async (robotId) => {
 
 /**
  * @description Rename the robot in the ssot
- * @param { String } robotId - RobotId of the robot that will be renamed
- * @param { String } newRobotName - String with the new RobotName
+ * @param {String} robotId - RobotId of the robot that will be renamed
+ * @param {String} newRobotName - String with the new RobotName
+ * @returns {Object} Object containing robotName and starterId
  */
 const changeSsotName = async (robotId, newRobotName) => {
   const payload = {
@@ -44,6 +46,7 @@ const changeSsotName = async (robotId, newRobotName) => {
 /**
  * @description Delete a robot by sending a call to the backend
  * @param {String} robotId Id of the robot that will be deleted
+ * @returns {Object} Mongoose query describing execution of call
  */
 const deleteRobotFromDB = async (robotId) => {
   const requestStringParameters = `/robots/${robotId}`;

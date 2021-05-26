@@ -95,6 +95,7 @@ const initSsotSessionStorage = (robotId) => {
     getAvailableApplications()
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         sessionStorage.setItem('availableApplications', JSON.stringify(data));
       })
       .catch((error) => {

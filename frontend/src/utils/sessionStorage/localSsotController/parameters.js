@@ -86,7 +86,7 @@ const getParameterObjectForActivity = (activityId) => {
  * @description Checks if the parameter object is filled correctly
  * @param {String} parameterObject The parameter object for which to check if it is filled correctly
  * @param {String} rpaFunctionalitiesObject The rpa functionalities object (rpa-task) needed to check for correctness
- * @returns {Boolean}
+ * @returns {Boolean} Indicates if parameter object is filled correctly
  */
 const checkIfParameterObjectCorrect = (
   parameterObject,

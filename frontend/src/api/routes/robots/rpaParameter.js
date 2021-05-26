@@ -6,6 +6,7 @@
 /**
  * @description Fetch all parameter objects for a specifc robot
  * @param { String } robotId Id of the robot to get all the parameters for
+ * @returns {Array} All objects that have been found for the robot
  */
 const getAllParametersForRobot = async (robotId) => {
   const requestString = `/robots/parameters/${robotId}`;
@@ -35,6 +36,7 @@ const updateManyParameters = async (parameterObjectsList) => {
  * @description Delete parameters for the given activities by sending a call to the backend
  * @param {String} robotId Id of the robot that will be used
  * @param {String} unusedActivityListString Stringified List of activityIds
+ * @returns {Object} Mongoose query describing execution of call
  */
 const deleteParametersForActivities = (robotId, activityIdList) => {
   const requestStringParameters = `/robots/parameters/${robotId}`;

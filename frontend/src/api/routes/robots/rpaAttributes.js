@@ -35,6 +35,7 @@ const updateManyAttributes = async (attributeObjectList) => {
  * @description Delete attributes for the given activities by sending a call to the backend
  * @param {String} robotId Id of the robot that is being used
  * @param {String} unusedActivityListString Stringified List of activityIds
+ * @returns {Object} Mongoose query describing execution of call
  */
 const deleteAttributesForActivities = (robotId, activityIdList) => {
   const requestStringParameters = `/robots/parameters/${robotId}`;

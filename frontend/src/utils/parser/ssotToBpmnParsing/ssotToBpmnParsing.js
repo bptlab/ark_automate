@@ -11,6 +11,7 @@ const DEFAULT_STARTEVENT_POSITION = '200,330';
 /**
  * @description Searches through the ssot and return the only element without a predecessor
  * @param {Object} ssot The ssot that will be processed
+ * @returns {Object} startElement from the ssot
  */
 const findStartElement = (ssot) =>
   ssot.elements.find(
@@ -36,8 +37,8 @@ const buildCorrectOrder = (ssot) => {
 };
 
 /**
- * @description Workaround which takes in the created element and updates its id to the one saved in the ssot. 
- * The bpmn js cli extension will just create elements, but not ensure their Id to match the one in the ssot therefore this workaround is needed. 
+ * @description Workaround which takes in the created element and updates its id to the one saved in the ssot.
+ * The bpmn js cli extension will just create elements, but not ensure their Id to match the one in the ssot therefore this workaround is needed.
  * @param {*} modeling The modeling extension
  * @param {Object} element The first element (start element) to process
  * @returns {String} The now set id of the shape
