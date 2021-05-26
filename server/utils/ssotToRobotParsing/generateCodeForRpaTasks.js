@@ -20,15 +20,15 @@ const isAnRpaInstruction = (currentElement) =>
   currentElement.type === ACTIVITY_IDENTIFIER;
 
 /**
- * @description Will create a prefix to catch the output variable of an activity, if one is present
+ * @description Will create a prefix to catch the output value of an activity, if one is present
  * @param {Object} paramObject The parameter object to check and loop through
- * @returns {String} String specifying the output variables name
+ * @returns {String} String specifying the output value name
  */
-const setOutputVar = (paramObject) => {
+const setOutputValue = (paramObject) => {
   let newCodeLine = FOURSPACE;
 
-  if (paramObject.outputVariable) {
-    newCodeLine += `\${${paramObject.outputVariable}} = `;
+  if (paramObject.outputValue) {
+    newCodeLine += `\${${paramObject.outputValue}} = `;
   }
   return newCodeLine;
 };
@@ -105,7 +105,7 @@ const writeCodeForElement = (
         (parameter) => parameter.activityId === id
       );
       if (currentParameterObject) {
-        newCodeLine += setOutputVar(currentParameterObject);
+        newCodeLine += setOutputValue(currentParameterObject);
       }
       if (duplicateTasks.includes(currentAttributeObject.rpaTask)) {
         newCodeLine += `RPA.${currentAttributeObject.rpaApplication}.${currentAttributeObject.rpaTask}`;

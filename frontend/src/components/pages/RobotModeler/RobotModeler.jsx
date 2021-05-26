@@ -6,12 +6,8 @@ import ModelerSidebar from './ModelerSidebar/ModelerSidebar';
 import { getSsot } from '../../../api/routes/robots/robots';
 import { getAllParametersForRobot } from '../../../api/routes/robots/rpaParameter';
 import { getAllAttributes } from '../../../api/routes/robots/rpaAttributes';
-import { getAllRpaFunctionalities } from '../../../api/routes/functionalities/functionalities';
 import { setRobotId } from '../../../utils/sessionStorage/localSsotController/ssot';
-import {
-  initAvailableApplicationsSessionStorage,
-  initSessionStorage,
-} from '../../../utils/sessionStorage/sessionStorageUtils';
+import { initSessionStorage } from '../../../utils/sessionStorage/sessionStorageUtils';
 
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
@@ -54,16 +50,6 @@ const Modeler = (match) => {
         sessionStorage.setItem('attributeLocalStorage', JSON.stringify(data));
       });
 
-    getAllRpaFunctionalities(robotId)
-      .then((response) => response.json())
-      .then((data) => {
-        initSessionStorage('TaskApplicationCombinations', JSON.stringify([]));
-        sessionStorage.setItem(
-          'TaskApplicationCombinations',
-          JSON.stringify(data)
-        );
-      });
-
     getAllParametersForRobot(robotId)
       .then((response) => response.json())
       .then((data) => {
@@ -71,7 +57,6 @@ const Modeler = (match) => {
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
       });
     initSessionStorage('taskToApplicationCache', JSON.stringify({}));
-    initAvailableApplicationsSessionStorage();
   }, []);
 
   return (
