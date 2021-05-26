@@ -353,7 +353,7 @@ describe('Sidebar Functionality: Task Change', () => {
     let setParameterListCallCounter = 0;
     const MOCK_SETTER_OBJECT = {
       setOutputValueName: (newName) => {
-        expect(newName === undefined || newName === 'setOutputValueName').toBe(
+        expect(newName === undefined || newName === 'OutputValueName').toBe(
           true
         );
         setOutputValueNameCallCounter += 1;
