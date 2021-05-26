@@ -105,7 +105,7 @@ const getApplicationArray = (robotCodeSettingsSection) => {
 /**
  * @description Retrieves the outputVariable name from the current code line
  * @param {String} currentLine Current line of RPAf code
- * @returns OutputVariable as string
+ * @returns {String} Name of the outputVariable
  */
 const getOutputName = (currentLine) => {
   const indexOfEqualsSign = currentLine.indexOf('=');
@@ -121,7 +121,7 @@ const getOutputName = (currentLine) => {
  * the indexOfFirstSplitPlaceholder returns -1 and therefore the function returns the whole line
  * @param {String} currentLine Current line of RPAf code
  * @param {String} splitPlaceholder Placeholder to split the string
- * @returns RpaTask as string
+ * @returns {String} RpaTask for the given code line
  */
 const getRpaTask = (currentLine, splitPlaceholder) => {
   const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
@@ -135,7 +135,7 @@ const getRpaTask = (currentLine, splitPlaceholder) => {
  * @param {String} currentLine Current line of RPAf code
  * @param {String} splitPlaceholder Placeholder to split the string
  * @param {String} instructionBlocks Current intruction block to get the rpaTask
- * @returns RpaParameters as array
+ * @returns {Array} List of parameters for the current code line
  */
 const getRpaParameters = (currentLine, splitPlaceholder) => {
   const indexOfFirstSplitPlaceholder = currentLine.indexOf(splitPlaceholder);
@@ -149,7 +149,7 @@ const getRpaParameters = (currentLine, splitPlaceholder) => {
  * @description Deletes everything before the first occurence of '=' and then trims all emptyspace until the rpa task name to get the expected format
  * @param {String} currentLine Current line of RPAf code
  * @param {String} splitPlaceholder Placeholder to split the string
- * @returns The current line without the outputVariableName prefix as string
+ * @returns {String} The current line without the outputVariableName prefix
  */
 const currentLineWithoutOutputVariableName = (
   completeLine,
@@ -170,7 +170,7 @@ const currentLineWithoutOutputVariableName = (
  * of all Task/Application combinations for the current robot code
  * @param {Array} allMatchingCombinations All combinations from database that match the rpaTask
  * @param {*} rpaTask RpaTask from current robotCode line
- * @returns Number of occurrences of the rpaTask in allMatchingCombinations
+ * @returns {Number} Number of occurrences of the rpaTask in allMatchingCombinations
  */
 const numberOfOccurrencesOfTask = (allMatchingCombinations, rpaTask) => {
   let numberOfOccurrences = 0;
@@ -186,7 +186,7 @@ const numberOfOccurrencesOfTask = (allMatchingCombinations, rpaTask) => {
  * @description Returns the matching task object for the rpaTask or throws a notification
  * @param {String} rpaTask RpaTask from current robotCode line
  * @param {Array} allMatchingCombinations All combinations from database that match the rpaTask
- * @returns The matching task object for the rpaTask or undefined if an error occurs
+ * @returns {Object} The matching task object for the rpaTask or undefined if an error occurs
  */
 const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
   const numberOfOccurrences = numberOfOccurrencesOfTask(
@@ -219,7 +219,7 @@ const returnMatchingCombination = (rpaTask, allMatchingCombinations) => {
  * @description "Preprocesses" the code in a usable data format
  * @param {Array} robotCodeTaskSection Robot code w/o empty lines as an array of Strings
  * @param {Array} taskAndApplicationCombinations All declared tasks and applications from database
- * @returns Array of Objects with the following schema:
+ * @returns {Array} Array of instructionBlocks with the following schema:
  *      instructionBlocks = [rpaApplication:String, rpaTask:String, name:String, paramArray:Array]
  */
 const getInstructionBlocksFromTaskSection = (
@@ -307,7 +307,7 @@ const getInstructionBlocksFromTaskSection = (
 
 /**
  * @description Builds a dummy startMarker element and returns them
- * @returns Dummy startMarker as JSON => currently MARKERS aren't defined
+ * @returns {Object} Dummy startMarker as JSON => currently MARKERS aren't defined
  * in our RPAf-Syntax and therefore there aren't implemented
  */
 const buildStartMarker = () => ({
@@ -321,7 +321,7 @@ const buildStartMarker = () => ({
 /**
  * @description Builds a dummy endMarker element and returns them
  * @param {Object} predecessor As an Object to get the predecessorId
- * @returns Dummy endMarker as JSON => currently MARKERS aren't defined
+ * @returns {Object} Dummy endMarker as JSON => currently MARKERS aren't defined
  * in our RPAf-Syntax and therefore there aren't implemented
  */
 const buildEndMarker = (predecessor) => ({
@@ -337,7 +337,7 @@ const buildEndMarker = (predecessor) => ({
  * @param {Object} currentElement Current instruction element
  * @param {Object} singleElementFromTasksSection The parsed Object from the RPAf Code
  * @param {String} robotId The id of the current robot / ssot
- * @returns AttributeObject for a single attribute
+ * @returns {Object} AttributeObject for a single attribute
  */
 const buildSingleAttributeObject = (
   currentElement,
@@ -503,7 +503,7 @@ const getElementsArray = (
 /**
  * @description Retrieves the starterId of the robot from the elements array
  * @param {Array} elementsArray Array of all elements of the robot
- * @returns {String} StarterId
+ * @returns {String} Id of the element that has no predecessors and is therefore the start element of the robot
  */
 const getStarterId = (elementsArray) => {
   const starterElements = elementsArray.filter(
@@ -538,7 +538,7 @@ const getLineNumberForSelector = (robotCodeAsArray, selector) => {
 
 /**
  * @description Parses the RPA-Framework code from the code editor to the single source of truth
- * @param {String} robotCode From the code-editor
+ * @param {String} robotCode Code from the code-editor
  * @returns Single source of truth as a JavaSctipt-object or undefined if an error occures
  */
 const parseRobotCodeToSsot = (robotCode) => {

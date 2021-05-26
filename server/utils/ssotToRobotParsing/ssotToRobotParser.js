@@ -62,7 +62,7 @@ const parseSsotById = async (robotId) => {
 /**
  * @description Parses the Ssot provided by its id to an executable .robot file
  * @param {String} robotId The id of the ssot which will be parsed
- *  @param {String} jobId The id of the current robotJob that will be executed
+ * @param {String} jobId The id of the current robotJob that will be executed
  * @returns {string} Code that has to be put in .robot file
  */
 const parseCodeForJob = async (robotId, jobId) => {
