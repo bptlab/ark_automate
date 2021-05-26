@@ -1,4 +1,3 @@
-import { getAvailableApplications } from '../../api/routes/functionalities/functionalities';
 /**
  * @category Frontend
  * @module
