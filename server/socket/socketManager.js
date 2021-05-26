@@ -24,9 +24,9 @@ exports.socketManager = (io, socket) => {
             .then((jobList) => {
               if (jobList.length > 0) {
                 jobList.forEach((job) => {
-                  const { id, robot_id } = job;
+                  const { id, robotId } = job;
                   socketHelperFunctions
-                    .getRobotCodeForJob(robot_id, id)
+                    .getRobotCodeForJob(robotId, id)
                     .then((robotCode) => {
                       if (robotCode) {
                         socketHelperFunctions.updateRobotJobStatus(

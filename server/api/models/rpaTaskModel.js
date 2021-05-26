@@ -16,7 +16,7 @@ const rpaTaskSchema = new Schema({
   code: { type: String, required: [true, 'Code required'] },
   outputValue: Boolean,
   inputVars: [rpaParameterSchema],
-  Output: rpaParameterSchema,
+  output: rpaParameterSchema,
 });
 
 mongoose.model('rpa-task', rpaTaskSchema);
