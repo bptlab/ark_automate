@@ -60,7 +60,6 @@ const RobotModeler = (match) => {
         initSessionStorage('parameterLocalStorage', JSON.stringify([]));
         sessionStorage.setItem('parameterLocalStorage', JSON.stringify(data));
       });
-    initSessionStorage('taskToApplicationCache', JSON.stringify({}));
   }, []);
 
   return (

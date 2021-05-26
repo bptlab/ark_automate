@@ -5,7 +5,6 @@
  * @module
  */
 
-import { fetchTasksFromDB } from '../../../../../api/routes/functionalities/functionalities';
 import {
   setRpaTask,
   setRpaApplication,
@@ -67,31 +66,24 @@ const modelerElementChangeHandler = (event, elementState, setterObject) => {
 };
 
 /**
- * @description Checks if tasks for selected application are already stored in session storage.
- * Otherwise, fetch tasklist from MongoDB.
+ * @description Sets all tasks for currently selected application from session storage
  * @param {String} application Application for which to get the tasks for.
- * @param {Object} setterObject object containing the functions for setting the state in the React component
+ * @param {Object[]} taskApplicationCombinations Array of task and application combination objects.
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component.
  */
-const getTasksForApplication = async (application, setterObject) => {
-  const currentSavedTasksObject = JSON.parse(
-    sessionStorage.getItem('taskToApplicationCache')
+const getTasksForApplication = (
+  application,
+  taskApplicationCombinations,
+  setterObject
+) => {
+  const allMatchingApplicationCombinations = taskApplicationCombinations.filter(
+    (singleCombination) => singleCombination.Application === application
   );
-
-  if (application in currentSavedTasksObject) {
-    setterObject.setTasksForSelectedApplication(
-      currentSavedTasksObject[application]
-    );
-    setterObject.setDisableTaskSelection(false);
-  } else {
-    const data = await (await fetchTasksFromDB(application)).json();
-    currentSavedTasksObject[application] = data;
-    sessionStorage.setItem(
-      'taskToApplicationCache',
-      JSON.stringify(currentSavedTasksObject)
-    );
-    setterObject.setTasksForSelectedApplication(data);
-    setterObject.setDisableTaskSelection(false);
-  }
+  const allTasksForApplication = allMatchingApplicationCombinations.map(
+    (singleCombination) => singleCombination.Task
+  );
+  setterObject.setTasksForSelectedApplication(allTasksForApplication);
+  setterObject.setDisableTaskSelection(false);
 };
 
 /**
@@ -105,13 +97,20 @@ const checkForApplicationTask = (activityId, setterObject) => {
   const currentAttributes = JSON.parse(
     sessionStorage.getItem('attributeLocalStorage')
   );
+  const taskApplicationCombinations = JSON.parse(
+    sessionStorage.getItem('taskApplicationCombinations')
+  );
   const matchingActivity = currentAttributes.find(
     (element) => element.activityId === activityId
   );
 
   if (matchingActivity) {
     setterObject.setSelectedApplication(matchingActivity.rpaApplication);
-    getTasksForApplication(matchingActivity.rpaApplication, setterObject);
+    getTasksForApplication(
+      matchingActivity.rpaApplication,
+      taskApplicationCombinations,
+      setterObject
+    );
   }
   return !!matchingActivity && !!matchingActivity.rpaApplication;
 };
@@ -213,10 +212,13 @@ const applicationChangedHandler = (
     selectedElements: elementState.selectedElements,
     currentElement: elementState.currentElement,
   });
+  const taskApplicationCombinations = JSON.parse(
+    sessionStorage.getItem('taskApplicationCombinations')
+  );
 
   setterObject.setSelectedApplication(value);
   setRpaApplication(robotId, elementState.currentElement.id, value);
-  getTasksForApplication(value, setterObject);
+  getTasksForApplication(value, taskApplicationCombinations, setterObject);
 
   setterObject.setOutputValueName(undefined);
   setterObject.setParameterList([]);

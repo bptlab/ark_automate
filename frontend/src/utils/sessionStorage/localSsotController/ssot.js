@@ -98,7 +98,6 @@ const initSsotSessionStorage = (robotId) => {
       console.error(error);
     });
 
-  initSessionStorage('taskToApplicationCache', JSON.stringify({}));
   initSessionStorage('availableApplications', JSON.stringify([]));
   const applicationList = JSON.parse(
     sessionStorage.getItem('availableApplications')
