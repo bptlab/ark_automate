@@ -3,7 +3,7 @@
  * @module
  */
 
-const FUNCTIONALITIES_STORAGE_PATH = 'TaskApplicationCombinations';
+const FUNCTIONALITIES_STORAGE_PATH = 'taskApplicationCombinations';
 
 /**
  * @description Will get the rpa functionalities object for a specific rpa application and rpa task combination

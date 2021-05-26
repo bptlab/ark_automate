@@ -435,7 +435,7 @@ const getElementsArray = (
     return undefined;
 
   let taskAndApplicationCombinations = JSON.parse(
-    sessionStorage.getItem('TaskApplicationCombinations')
+    sessionStorage.getItem('taskApplicationCombinations')
   );
   taskAndApplicationCombinations = taskAndApplicationCombinations.filter(
     (singleCombination) =>
