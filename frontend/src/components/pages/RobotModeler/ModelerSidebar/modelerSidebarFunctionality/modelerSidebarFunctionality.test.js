@@ -466,7 +466,7 @@ describe('Sidebar Functionality: Application Change', () => {
     expect(setRpaApplication).toHaveBeenCalledTimes(1);
   });
 
-  it('handle application change WITHOUT cache existing', async () => {
+  it('handles application change WITHOUT cache existing', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
