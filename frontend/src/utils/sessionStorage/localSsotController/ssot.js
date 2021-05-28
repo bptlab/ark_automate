@@ -29,14 +29,14 @@ const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
 
 /**
  * @description Gets the robotId of the currently opened robot from the session storage
- * @returns Currently saved robotId
+ * @returns {String} Currently saved robotId
  */
 const getRobotId = () =>
   JSON.parse(sessionStorage.getItem(ROBOT_METADATA_PATH)).robotId;
 
 /**
- * @description Gets the robotName of the currently opened robot from the session storage
- * @returns Currently saved robotName
+ * @description Retrieves the robotName of the currently opened robot from the session storage
+ * @returns {String} Currently saved robotName
  */
 const getRobotName = () =>
   JSON.parse(sessionStorage.getItem(ROBOT_METADATA_PATH)).robotName;

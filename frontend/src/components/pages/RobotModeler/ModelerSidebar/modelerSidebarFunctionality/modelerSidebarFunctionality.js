@@ -27,7 +27,6 @@ import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/b
  * This function will retrieve the xml from the parser, parse that xml to a ssot and write the
  * resulting ssot into the sessionStorage.
  * @param {Object} modeler the modeling object
- * @param {String} robotId id of the robot
  */
 const onSaveToCloud = async (modeler) => {
   const xml = await modeler.saveXML({ format: true });
@@ -68,7 +67,7 @@ const modelerElementChangeHandler = (event, elementState, setterObject) => {
 /**
  * @description Sets all tasks for currently selected application from session storage
  * @param {String} application Application for which to get the tasks for.
- * @param {Object[]} taskApplicationCombinations Array of task and application combination objects.
+ * @param {Array} taskApplicationCombinations Array of task and application combination objects.
  * @param {Object} setterObject Object containing the functions for setting the state in the React component.
  */
 const getTasksForApplication = (
