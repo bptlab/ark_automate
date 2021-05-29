@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const socketHelperFunctions = require('./socketHelperFunctions');
 
 exports.socketManager = (io, socket) => {
@@ -48,8 +49,6 @@ exports.socketManager = (io, socket) => {
               }
             });
         }
-
-        // eslint-disable-next-line no-else-return
       } else {
         socket.emit('errorUserRoomConnection', 'Invalid userId: ', userId);
       }

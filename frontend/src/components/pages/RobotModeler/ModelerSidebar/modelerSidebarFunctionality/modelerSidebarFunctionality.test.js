@@ -1,6 +1,5 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/first */
-/* eslint-disable no-undef */
 
 jest.mock('../../../../../api/routes/robots/robots');
 jest.mock('./downloadStringAsFile');
@@ -468,15 +467,6 @@ describe('Sidebar Functionality: Application Change', () => {
   });
 
   it('handles application change WITHOUT cache existing', async () => {
-    const MOCK_VALUE = 'cookbookApplication';
-    const MOCK_ROBOT_ID = '0123456789-4711';
-    const MOCK_CURRENT_ELEMENT_ID = '123450815';
-    const MOCK_CURRENT_ELEMENT = { id: constants.MOCK_CURRENT_ELEMENT_ID };
-    const MOCK_SELECTED_ELEMENTS = [constants.MOCK_CURRENT_ELEMENT];
-    const MOCK_ELEMENT_STATE = {
-      selectedElements: constants.MOCK_SELECTED_ELEMENTS,
-      currentElement: constants.MOCK_CURRENT_ELEMENT,
-    };
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
