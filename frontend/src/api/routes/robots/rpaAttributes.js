@@ -20,7 +20,6 @@ const getAllAttributes = async (robotId) => {
  */
 const updateManyAttributes = async (attributeObjectList) => {
   const requestStringAttributes = `/robots/rpaattributes`;
-  // eslint-disable-next-line no-unused-vars
   const response = await fetch(requestStringAttributes, {
     body: JSON.stringify({ attributeObjectList }),
     method: 'PUT',
@@ -37,7 +36,7 @@ const updateManyAttributes = async (attributeObjectList) => {
  * @param {String} unusedActivityListString Stringified List of Activity Ids
  */
 const deleteAttributesForActivities = (robotId, activityIdList) => {
-  const requestStringParameters = `/robots/parameters/${robotId}`;
+  const requestStringParameters = `/robots/rpaattributes/${robotId}`;
   fetch(requestStringParameters, {
     method: 'DELETE',
     body: JSON.stringify({ activityIdList }),

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
 const dbHandler = require('../../utils/testing/testDatabaseHandler.js');

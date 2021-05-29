@@ -1,8 +1,8 @@
+/* eslint-disable func-names */
 import PaletteProvider from 'bpmn-js/lib/features/palette/PaletteProvider';
 
 const removeUnsupportedBpmnFunctions = () => {
   const { getPaletteEntries } = PaletteProvider.prototype;
-  // eslint-disable-next-line func-names
   PaletteProvider.prototype.getPaletteEntries = function () {
     const entries = getPaletteEntries.apply(this);
     delete entries['create.intermediate-event'];
@@ -21,7 +21,6 @@ const removeUnsupportedBpmnFunctions = () => {
 
     // eslint-disable-next-line class-methods-use-this
     getContextPadEntries() {
-      // eslint-disable-next-line func-names
       return function (entries) {
         const customizesEntries = entries;
         delete customizesEntries['append.text-annotation'];
