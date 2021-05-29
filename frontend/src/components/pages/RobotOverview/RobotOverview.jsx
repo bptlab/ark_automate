@@ -54,6 +54,7 @@ const RobotOverview = () => {
    */
   useEffect(() => {
     initSessionStorage('currentUserId', '80625d115100a2ee8d8e695b');
+    initSessionStorage('robotMetadata', JSON.stringify({}));
     retrieveBotList(userId);
     getAllRpaFunctionalities()
       .then((response) => response.json())
