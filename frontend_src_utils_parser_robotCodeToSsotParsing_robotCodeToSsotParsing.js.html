@@ -623,7 +623,7 @@ const getLineNumberForSelector = (robotCodeAsArray, selector) => {
 /**
  * @description Parses the RPA-Framework code from the code editor to the single source of truth
  * @param {String} robotCode Code from the code-editor
- * @returns Single source of truth as a JavaSctipt-object or undefined if an error occures
+ * @returns {Object} Single source of truth as a JavaSctipt-object or undefined if an error occures
  */
 const parseRobotCodeToSsot = (robotCode) => {
   const robotId = JSON.parse(sessionStorage.getItem('robotId'));

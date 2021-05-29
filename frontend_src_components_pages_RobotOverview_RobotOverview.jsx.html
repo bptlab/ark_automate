@@ -201,8 +201,8 @@ const RobotOverview = () => {
 
   /**
    * @description Creates all boxes for the robots from the database
-   * @returns All Boxes that match the current searchValue as React component
    * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
+   * @returns {React.ReactElement} All Boxes that match the current searchValue as React component
    */
   const createRobotBoxes = (currentSearchValue) => {
     const filteredRobotList = Object.values(robotList)
