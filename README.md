@@ -37,6 +37,12 @@ To run a development preview of the app, navigate to the server directory and ru
 Now check http://localhost:3000/ to have a look at the app.
 
 To run the local client, follow the steps in the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
+## Product Demo
+Part 1:
+https://user-images.githubusercontent.com/42138601/120075611-51877980-c0a2-11eb-9789-9e68daf4e1a3.mp4
+
+Part2:
+https://user-images.githubusercontent.com/42138601/120075616-59dfb480-c0a2-11eb-846b-f0635133bab4.mp4
 
 ## Contribute
 
