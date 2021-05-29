@@ -25,13 +25,13 @@ The workflows will checkout the repository, initialize node on version 14, and r
 
 Files:
 
-- linter client.yml (Lint Client Code Base)
-- linter server.yml (Lint Server Code Base)
+- linterFrontend.yml (Lint Frontend Code Base)
+- linterServer.yml (Lint Server Code Base)
 
 Runs on:
 
-- all pushes except to the `Main` branch
-- all PRs except to the `Main` branch
+- all pushes except to the `main` branch
+- all PRs except to the `main` branch
 
 ## Code Documentation
 
@@ -44,7 +44,7 @@ Files:
 
 Runs on:
 
-- pushes to the `Main` branch
+- pushes to the `main` branch
 
 ## Repository Wiki Sync
 
@@ -66,9 +66,9 @@ Finally, the deployment is being completed by commiting the changes and pushing 
 
 Files:
 
-- heroku_deploy.yml (Heroku Deployment)
+- herokuDeploy.yml (Heroku Deployment)
 
 Runs on:
 
-- pushes to the `Main` branch
+- pushes to the `main` branch
 - on workflow dispatch event (manual trigger)
