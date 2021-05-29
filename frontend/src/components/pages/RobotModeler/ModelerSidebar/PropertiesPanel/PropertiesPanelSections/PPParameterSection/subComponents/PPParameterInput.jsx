@@ -79,7 +79,7 @@ const PPParameterInput = ({
 
   /**
    * @description returns the Unlock-Icon
-   * @returns the corresponding icon
+   * @returns {React.ReactElement} the corresponding icon
    */
   const returnLockIcon = (inputParameterName) => (
     <UnlockOutlined
