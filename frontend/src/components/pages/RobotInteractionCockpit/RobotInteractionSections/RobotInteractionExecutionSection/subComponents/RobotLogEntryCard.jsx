@@ -9,7 +9,7 @@ const RobotLogCard = (props) => {
   return (
     <Card
       style={{ margin: '10px' }}
-      headStyle={{ 'font-weight': 'bold' }}
+      headStyle={{ fontWeight: 'bold' }}
       hoverable
       title={log.activityName}
       size='small'
@@ -19,8 +19,9 @@ const RobotLogCard = (props) => {
         <Col xs={24} md={16}>
           {log.message && <p>Error Message: {log.message}</p>}
           {log.tasks &&
-            log.tasks.map((task) => (
-              <Card size='small'>
+            log.tasks.map((task, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Card key={index} size='small'>
                 <Row>
                   <Col xs={24} lg={24} xl={16}>
                     <p>Task: {task.task_name}</p>
@@ -43,5 +44,6 @@ export default RobotLogCard;
 
 RobotLogCard.propTypes = {
   displayStatusIcon: PropTypes.func.isRequired,
-  log: PropTypes.arrayOf(Object).isRequired,
+  log: PropTypes.oneOfType([PropTypes.arrayOf(Object), PropTypes.any])
+    .isRequired,
 };

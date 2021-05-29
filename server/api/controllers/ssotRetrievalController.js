@@ -296,8 +296,8 @@ exports.createNewRobot = async (req, res) => {
     });
 
     const returnObj = {
+      _id: ssot.id,
       robotName: nameWithEmptyspace,
-      robotId: ssot.id,
     };
 
     res.send(returnObj);
