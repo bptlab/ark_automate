@@ -26,7 +26,8 @@ const parseSsotToRobotCode = async (ssot) => {
   result.parsedCode += await generateCodeForRpaTasks(
     ssot.elements,
     parameters,
-    result.attributeObjects
+    result.attributeObjects,
+    'frontend'
   );
   return result.parsedCode;
 };
@@ -44,7 +45,8 @@ const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
   result.parsedCode += await generateCodeForRpaTasks(
     ssot.elements,
     parameters,
-    result.attributeObjects
+    result.attributeObjects,
+    'local client'
   );
   return result.parsedCode;
 };
