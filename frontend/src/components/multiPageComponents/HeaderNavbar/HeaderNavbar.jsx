@@ -49,7 +49,7 @@ const HeaderNavbar = (props) => {
           <Link to='/'>
             <img
               style={{ height: '3rem' }}
-              src='/logo/logo_cta.png'
+              src='/logo/logoCta.png'
               alt='ark_automate Icon'
             />
           </Link>
