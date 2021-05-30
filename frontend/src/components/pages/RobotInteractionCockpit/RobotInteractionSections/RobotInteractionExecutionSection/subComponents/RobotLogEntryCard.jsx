@@ -24,7 +24,7 @@ const RobotLogCard = (props) => {
               <Card key={index} size='small'>
                 <Row>
                   <Col xs={24} lg={24} xl={16}>
-                    <p>Task: {task.task_name}</p>
+                    <p>Task: {task.taskName}</p>
                   </Col>
                   <Col xs={24} lg={24} xl={8}>
                     <p>Status: {task.status}</p>

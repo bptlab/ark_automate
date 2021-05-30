@@ -400,7 +400,7 @@ exports.deleteRobot = async (req, res) => {
       .deleteMany({ robotId: usableRobotId })
       .exec();
 
-    await mongoose.model('job').deleteMany({ robot_id: usableRobotId }).exec();
+    await mongoose.model('job').deleteMany({ robotId: usableRobotId }).exec();
 
     res.send(response);
   } catch (err) {

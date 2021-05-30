@@ -282,7 +282,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
     );
 
     const taskApplicationCombinations = [
-      { Application: 'cookbookApplication', Task: 'TestTask' },
+      { application: 'cookbookApplication', task: 'TestTask' },
     ];
     sessionStorage.setItem(
       'taskApplicationCombinations',

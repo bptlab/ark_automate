@@ -156,8 +156,8 @@ const testRpaTask5 = {
 const testJob = {
   _id: testJobId,
   __v: 0,
-  user_id: testUserId,
-  robot_id: testRobotId,
+  userId: testUserId,
+  robotId: testRobotId,
   status: 'waiting',
   parameters: [
     {

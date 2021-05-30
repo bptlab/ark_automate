@@ -75,8 +75,8 @@ exports.getAllUserIds = async () => {
  */
 exports.createJob = async (userId, robotId, status, parameters) => {
   const job = new jobsModel.Job({
-    user_id: userId,
-    robot_id: robotId,
+    userId,
+    robotId,
     status,
     parameters,
   });
@@ -133,7 +133,7 @@ exports.updateRobotJobErrors = async (jobId, errorLog) => {
  */
 exports.getAllWaitingJobsForUser = async (userId) => {
   const jobList = await jobsModel.Job.find(
-    { user_id: userId, status: 'waiting' },
+    { userId, status: 'waiting' },
     (err) => {
       if (err) {
         console.error(err);

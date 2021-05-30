@@ -76,10 +76,10 @@ const getTasksForApplication = (
   setterObject
 ) => {
   const allMatchingApplicationCombinations = taskApplicationCombinations.filter(
-    (singleCombination) => singleCombination.Application === application
+    (singleCombination) => singleCombination.application === application
   );
   const allTasksForApplication = allMatchingApplicationCombinations.map(
-    (singleCombination) => singleCombination.Task
+    (singleCombination) => singleCombination.task
   );
   setterObject.setTasksForSelectedApplication(allTasksForApplication);
   setterObject.setDisableTaskSelection(false);

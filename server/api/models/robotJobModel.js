@@ -22,11 +22,11 @@ const activityErrorSchema = new Schema({
 });
 
 const jobSchema = new Schema({
-  user_id: {
+  userId: {
     type: mongoose.Types.ObjectId,
     required: [true, 'UserId required'],
   },
-  robot_id: {
+  robotId: {
     type: mongoose.Types.ObjectId,
     required: [true, 'RobotId required'],
   },
