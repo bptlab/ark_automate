@@ -6,9 +6,9 @@ const correctTaskSection =
 const taskAndApplicationCombinations = [
   {
     _id: '6061d5627dee5516b3824ade',
-    Application: 'Excel.Application',
-    Task: 'Open Application',
-    Code: 'Open Application',
+    application: 'Excel.Application',
+    task: 'Open Application',
+    code: 'Open Application',
     outputValue: false,
     inputVars: [
       {
@@ -29,9 +29,9 @@ const taskAndApplicationCombinations = [
   },
   {
     _id: '6085975cae268e739f0f3b95',
-    Application: 'Testing',
-    Task: 'TaskWithOutput',
-    Code: 'TaskWithOutput',
+    application: 'Testing',
+    task: 'TaskWithOutput',
+    code: 'TaskWithOutput',
     outputValue: true,
     inputVars: [
       {
@@ -46,9 +46,9 @@ const taskAndApplicationCombinations = [
   },
   {
     _id: '6062e52f241bffc33838f279',
-    Application: 'HTTP',
-    Task: 'Get Request',
-    Code: 'Get Request',
+    application: 'HTTP',
+    task: 'Get Request',
+    code: 'Get Request',
     outputValue: false,
     inputVars: [
       {

@@ -13,7 +13,7 @@ const tasksStatusSchema = new Schema({
 });
 
 const activityErrorSchema = new Schema({
-  activity_name: { type: String, required: [true, 'Activity name required'] },
+  activityName: { type: String, required: [true, 'Activity name required'] },
   tasks: {
     type: [tasksStatusSchema],
     required: [true, 'At least on task required'],
@@ -22,11 +22,11 @@ const activityErrorSchema = new Schema({
 });
 
 const jobSchema = new Schema({
-  user_id: {
+  userId: {
     type: mongoose.Types.ObjectId,
     required: [true, 'UserId required'],
   },
-  robot_id: {
+  robotId: {
     type: mongoose.Types.ObjectId,
     required: [true, 'RobotId required'],
   },

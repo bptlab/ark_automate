@@ -39,15 +39,15 @@ describe('jobs have validation for missing parameters', () => {
   });
   it('should be invalid if userId is empty', async () => {
     job.save((err) => {
-      expect(err.errors.user_id).to.exist;
-      expect(err.errors.user_id.message).equal('UserId required');
+      expect(err.errors.userId).to.exist;
+      expect(err.errors.userId.message).equal('UserId required');
     });
   });
 
   it('should be invalid if robotId is empty', async () => {
     job.save((err) => {
-      expect(err.errors.robot_id).to.exist;
-      expect(err.errors.robot_id.message).equal('RobotId required');
+      expect(err.errors.robotId).to.exist;
+      expect(err.errors.robotId.message).equal('RobotId required');
     });
   });
 
