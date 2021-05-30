@@ -4,8 +4,8 @@ import { Layout } from 'antd';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import PropTypes from 'prop-types';
 import CliModule from 'bpmn-js-cli';
-import removeUnsupportedBpmnFunctions from './RemoveUnsupportedBpmnFunctions';
-import { emptyBpmn } from '../../../../resources/modeler/empty.bpmn';
+import removeUnsupportedBpmnFunctions from './removeUnsupportedBpmnFunctions';
+import { emptyBpmn } from '../../../../resources/modeler/emptyBpmn';
 import styles from './BpmnModeler.module.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-font/dist/css/bpmn-embedded.css';
@@ -45,13 +45,15 @@ const BpmnModeler = (props) => {
     props.onModelerUpdate(newModeler);
 
     const openBpmnDiagram = (xml) => {
-      newModeler.importXML(xml, (error) => {
-        if (error) {
-          console.error('fail import xml');
-        }
-        const canvas = newModeler.get('canvas');
-        canvas.zoom('fit-viewport');
-      });
+      newModeler
+        .importXML(xml)
+        .then(() => {
+          const canvas = newModeler.get('canvas');
+          canvas.zoom('fit-viewport');
+        })
+        .catch((error) => {
+          console.error('failed to import xml: ', error);
+        });
     };
     openBpmnDiagram(emptyBpmn);
   }, []);

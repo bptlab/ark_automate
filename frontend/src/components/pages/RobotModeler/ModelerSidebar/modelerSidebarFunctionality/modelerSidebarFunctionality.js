@@ -5,7 +5,6 @@
  * @module
  */
 
-import { fetchTasksFromDB } from '../../../../../api/routes/functionalities/functionalities';
 import {
   setRpaTask,
   setRpaApplication,
@@ -17,7 +16,10 @@ import {
 } from '../../../../../utils/sessionStorage/localSsotController/parameters';
 import { getParsedRobotFile } from '../../../../../api/routes/robots/robots';
 import downloadString from './downloadStringAsFile';
-import { upsert } from '../../../../../utils/sessionStorage/localSsotController/ssot';
+import {
+  getRobotName,
+  upsert,
+} from '../../../../../utils/sessionStorage/localSsotController/ssot';
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';
 
 /**
@@ -25,11 +27,10 @@ import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/b
  * This function will retrieve the xml from the parser, parse that xml to a ssot and write the
  * resulting ssot into the sessionStorage.
  * @param {Object} modeler The modeling object
- * @param {String} robotId Id of the robot
  */
-const onSaveToCloud = async (modeler, robotId) => {
+const onSaveToCloud = async (modeler) => {
   const xml = await modeler.saveXML({ format: true });
-  const result = await parseBpmnToSsot(xml, robotId);
+  const result = await parseBpmnToSsot(xml);
   const ssot = JSON.stringify(result);
   sessionStorage.setItem('ssotLocal', ssot);
   upsert();
@@ -41,7 +42,7 @@ const onSaveToCloud = async (modeler, robotId) => {
  */
 const downloadRobotFile = async (robotId) => {
   const response = await (await getParsedRobotFile(robotId)).text();
-  const fileName = `${sessionStorage.getItem('robotName')}.robot`;
+  const fileName = `${getRobotName()}.robot`;
   downloadString(response, 'text/robot', fileName);
 };
 
@@ -64,31 +65,24 @@ const modelerElementChangeHandler = (event, elementState, setterObject) => {
 };
 
 /**
- * @description Checks if tasks for selected application are already stored in session storage.
- * Otherwise, fetch tasklist from MongoDB.
- * @param {String} application Application for the tasks will be retrieved
- * @param {Object} setterObject Object containing the functions for setting the state in the React component
+ * @description Sets all tasks for currently selected application from session storage
+ * @param {String} application Application for which to get the tasks for.
+ * @param {Array} taskApplicationCombinations Array of task and application combination objects.
+ * @param {Object} setterObject Object containing the functions for setting the state in the React component.
  */
-const getTasksForApplication = async (application, setterObject) => {
-  const currentSavedTasksObject = JSON.parse(
-    sessionStorage.getItem('taskToApplicationCache')
+const getTasksForApplication = (
+  application,
+  taskApplicationCombinations,
+  setterObject
+) => {
+  const allMatchingApplicationCombinations = taskApplicationCombinations.filter(
+    (singleCombination) => singleCombination.application === application
   );
-
-  if (application in currentSavedTasksObject) {
-    setterObject.setTasksForSelectedApplication(
-      currentSavedTasksObject[application]
-    );
-    setterObject.setDisableTaskSelection(false);
-  } else {
-    const data = await (await fetchTasksFromDB(application)).json();
-    currentSavedTasksObject[application] = data;
-    sessionStorage.setItem(
-      'taskToApplicationCache',
-      JSON.stringify(currentSavedTasksObject)
-    );
-    setterObject.setTasksForSelectedApplication(data);
-    setterObject.setDisableTaskSelection(false);
-  }
+  const allTasksForApplication = allMatchingApplicationCombinations.map(
+    (singleCombination) => singleCombination.task
+  );
+  setterObject.setTasksForSelectedApplication(allTasksForApplication);
+  setterObject.setDisableTaskSelection(false);
 };
 
 /**
@@ -102,13 +96,20 @@ const checkForApplicationTask = (activityId, setterObject) => {
   const currentAttributes = JSON.parse(
     sessionStorage.getItem('attributeLocalStorage')
   );
+  const taskApplicationCombinations = JSON.parse(
+    sessionStorage.getItem('taskApplicationCombinations')
+  );
   const matchingActivity = currentAttributes.find(
     (element) => element.activityId === activityId
   );
 
   if (matchingActivity) {
     setterObject.setSelectedApplication(matchingActivity.rpaApplication);
-    getTasksForApplication(matchingActivity.rpaApplication, setterObject);
+    getTasksForApplication(
+      matchingActivity.rpaApplication,
+      taskApplicationCombinations,
+      setterObject
+    );
   }
   return !!matchingActivity && !!matchingActivity.rpaApplication;
 };
@@ -210,10 +211,13 @@ const applicationChangedHandler = (
     selectedElements: elementState.selectedElements,
     currentElement: elementState.currentElement,
   });
+  const taskApplicationCombinations = JSON.parse(
+    sessionStorage.getItem('taskApplicationCombinations')
+  );
 
   setterObject.setSelectedApplication(value);
   setRpaApplication(robotId, elementState.currentElement.id, value);
-  getTasksForApplication(value, setterObject);
+  getTasksForApplication(value, taskApplicationCombinations, setterObject);
 
   setterObject.setOutputValueName(undefined);
   setterObject.setParameterList([]);

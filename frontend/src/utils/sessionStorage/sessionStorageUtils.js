@@ -19,7 +19,7 @@ const initAvailableApplicationsSessionStorage = () => {
     sessionStorage.getItem('taskApplicationCombinations')
   );
   const allApplications = taskAndApplicationCombinations.map(
-    (singleCombination) => singleCombination.Application
+    (singleCombination) => singleCombination.application
   );
   const applicationsWithoutDuplicates = allApplications.filter(
     (singleApplication, index, self) =>

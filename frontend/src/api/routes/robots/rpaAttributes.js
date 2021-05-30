@@ -20,7 +20,6 @@ const getAllAttributes = async (robotId) => {
  */
 const updateManyAttributes = async (attributeObjectList) => {
   const requestStringAttributes = `/robots/rpaattributes`;
-  // eslint-disable-next-line no-unused-vars
   const response = await fetch(requestStringAttributes, {
     body: JSON.stringify({ attributeObjectList }),
     method: 'PUT',
@@ -38,7 +37,7 @@ const updateManyAttributes = async (attributeObjectList) => {
  * @returns {Object} Mongoose query describing execution of call
  */
 const deleteAttributesForActivities = (robotId, activityIdList) => {
-  const requestStringParameters = `/robots/parameters/${robotId}`;
+  const requestStringParameters = `/robots/rpaattributes/${robotId}`;
   fetch(requestStringParameters, {
     method: 'DELETE',
     body: JSON.stringify({ activityIdList }),

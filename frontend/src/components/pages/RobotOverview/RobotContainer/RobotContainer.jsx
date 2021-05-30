@@ -9,7 +9,6 @@ import {
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './RobotContainer.module.css';
-import { initSsotSessionStorage } from '../../../../utils/sessionStorage/localSsotController/ssot';
 import {
   changeSsotName,
   deleteRobotFromDB,
@@ -29,13 +28,6 @@ const RobotContainer = (props) => {
   const [popConfirmVisible, setPopConfirmVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [hoveredUpon, setHoveredUpon] = useState(false);
-
-  /**
-   * @description Sends a job to the server to execute a specfic robot for a specific user
-   */
-  const initLocalSsot = () => {
-    initSsotSessionStorage(robotId);
-  };
 
   /**
    * @description Updates the name of the robot in the backend and in the robot container
@@ -65,6 +57,17 @@ const RobotContainer = (props) => {
     });
   };
 
+  /**
+   * @description Sets the robotName and robotId to local storage
+   */
+  const setRobotMetadata = () => {
+    const robotMetadata = {
+      robotId,
+      robotName,
+    };
+    sessionStorage.setItem('robotMetadata', JSON.stringify(robotMetadata));
+  };
+
   return (
     <Col
       xs={24}
@@ -86,15 +89,12 @@ const RobotContainer = (props) => {
                 }}
               >
                 <Tooltip title='Execute Robot'>
-                  <PlayCircleOutlined
-                    onClick={initLocalSsot}
-                    className={styles.clickableIcon}
-                  />
+                  <PlayCircleOutlined className={styles.clickableIcon} />
                 </Tooltip>
               </Link>
             </Col>
             <Col type='flex' span={8}>
-              <Link to={`/modeler/${robotId}`}>
+              <Link onclick={setRobotMetadata()} to={`/modeler/${robotId}`}>
                 <Tooltip title='Edit Robot'>
                   <EditOutlined className={styles.clickableIcon} />
                 </Tooltip>

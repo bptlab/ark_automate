@@ -1,12 +1,11 @@
+/* eslint-disable no-unused-vars */
 /**
  * @category Server
  * @module
  */
 const mongoose = require('mongoose');
 const { ACTIVITY_IDENTIFIER } = require('./robotCodeConstants');
-// eslint-disable-next-line no-unused-vars
 const ssotModels = require('../../api/models/singleSourceOfTruthModel.js');
-// eslint-disable-next-line no-unused-vars
 const jobsModel = require('../../api/models/robotJobModel.js');
 
 /**

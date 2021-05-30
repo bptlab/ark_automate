@@ -23,7 +23,7 @@ import {
   deleteUnusedAttributesFromDB,
 } from './attributes';
 
-const ROBOT_ID_PATH = 'robotId';
+const ROBOT_METADATA_PATH = 'robotMetadata';
 const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
 
@@ -31,14 +31,26 @@ const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
  * @description Retrieves the robotId of the currently opened robot from the session storage
  * @returns {String} Currently saved robotId
  */
-const getRobotId = () => JSON.parse(sessionStorage.getItem(ROBOT_ID_PATH));
+const getRobotId = () =>
+  JSON.parse(sessionStorage.getItem(ROBOT_METADATA_PATH)).robotId;
 
 /**
- * @description Writes the robotId of the currently opened robot into the session storage
+ * @description Retrieves the robotName of the currently opened robot from the session storage
+ * @returns {String} Currently saved robotName
+ */
+const getRobotName = () =>
+  JSON.parse(sessionStorage.getItem(ROBOT_METADATA_PATH)).robotName;
+
+/**
+ * @description Writes the robotId and the robotName of the currently opened robot into the session storage
+ * @param {String} robotName The robotName ot the currently opened robot
  * @param {String} robotId The robotId ot the currently opened robot
  */
-const setRobotId = (robotId) => {
-  sessionStorage.setItem(ROBOT_ID_PATH, JSON.stringify(robotId));
+const setRobotMetadata = (robotName, robotId) => {
+  const robotMetadata = JSON.parse(sessionStorage.getItem(ROBOT_METADATA_PATH));
+  if (typeof robotName !== 'undefined') robotMetadata.robotName = robotName;
+  if (typeof robotId !== 'undefined') robotMetadata.robotId = robotId;
+  sessionStorage.setItem(ROBOT_METADATA_PATH, JSON.stringify(robotMetadata));
 };
 
 /**
@@ -50,7 +62,7 @@ const initSsotSessionStorage = (robotId) => {
     .then((response) => response.json())
     .then((data) => {
       sessionStorage.setItem('ssotLocal', JSON.stringify(data));
-      sessionStorage.setItem('robotName', data.robotName);
+      setRobotMetadata(data.robotName, robotId);
     })
     .catch((error) => {
       console.error(error);
@@ -86,7 +98,6 @@ const initSsotSessionStorage = (robotId) => {
       console.error(error);
     });
 
-  initSessionStorage('taskToApplicationCache', JSON.stringify({}));
   initSessionStorage('availableApplications', JSON.stringify([]));
   const applicationList = JSON.parse(
     sessionStorage.getItem('availableApplications')
@@ -141,4 +152,10 @@ const upsert = async () => {
   );
 };
 
-export { setRobotId, initSsotSessionStorage, upsert };
+export {
+  setRobotMetadata,
+  getRobotName,
+  getRobotId,
+  initSsotSessionStorage,
+  upsert,
+};

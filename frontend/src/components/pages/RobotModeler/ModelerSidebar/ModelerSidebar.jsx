@@ -16,6 +16,7 @@ import {
   downloadRobotFile,
   onSaveToCloud,
 } from './modelerSidebarFunctionality/modelerSidebarFunctionality';
+import { getRobotName } from '../../../../utils/sessionStorage/localSsotController/ssot';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -73,7 +74,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     <Sider className={styles.sider}>
       <Space direction='vertical' size='small' style={{ width: '100%' }}>
         <Title level={3} className={styles.title}>
-          {sessionStorage.getItem('robotName')}
+          {getRobotName()}
         </Title>
         {elementState.selectedElements.length === 1 && (
           <PropertiesPanel

@@ -16,7 +16,7 @@ const getRpaFunctionalitiesObject = (application, task) => {
     sessionStorage.getItem(FUNCTIONALITIES_STORAGE_PATH)
   );
   return rpaFunctionalities.find(
-    (element) => element.Application === application && element.Task === task
+    (element) => element.application === application && element.task === task
   );
 };
 

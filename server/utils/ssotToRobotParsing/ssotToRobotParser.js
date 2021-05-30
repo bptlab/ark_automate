@@ -20,7 +20,6 @@ const { generateCodeForRpaTasks } = require('./generateCodeForRpaTasks');
  * @returns {string} Code that has to be put in .robot file
  */
 const parseSsotToRobotCode = async (ssot) => {
-  // eslint-disable-next-line prefer-const
   const result = await generateCodeBase(ssot);
   const parameters = await retrieveParameters(ssot);
   result.parsedCode += await generateCodeForRpaTasks(
@@ -38,7 +37,6 @@ const parseSsotToRobotCode = async (ssot) => {
  * @returns {string} Code that has to be put in .robot file
  */
 const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
-  // eslint-disable-next-line prefer-const
   const result = await generateCodeBase(ssot);
   const parameters = await retrieveParametersFromSsotAndJob(ssot, jobId);
   result.parsedCode += await generateCodeForRpaTasks(

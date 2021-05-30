@@ -18,8 +18,8 @@ const Home = () => {
     <div className={styles.wrapper}>
       <Space
         direction='vertical'
-        size='100%'
-        style={{ width: '100%', pading: '0rem' }}
+        size='small'
+        style={{ width: '100%', padding: '0rem' }}
       >
         <Title
           style={{ textAlign: 'center', color: corporateDesign.colorPrimary }}

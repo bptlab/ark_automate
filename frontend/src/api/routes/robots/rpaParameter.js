@@ -21,7 +21,6 @@ const getAllParametersForRobot = async (robotId) => {
  */
 const updateManyParameters = async (parameterObjectsList) => {
   const requestStringParameters = `/robots/parameters`;
-  // eslint-disable-next-line no-unused-vars
   const response = await fetch(requestStringParameters, {
     body: JSON.stringify({ parameterObjectsList }),
     method: 'PUT',

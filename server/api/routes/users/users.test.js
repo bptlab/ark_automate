@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
@@ -56,7 +55,7 @@ describe('POST /users/robotAccess', () => {
       body: {
         userId: testUserId,
         robotId: testRobotId,
-        AccessLevel: 'ReadWrite',
+        accessLevel: 'ReadWrite',
       },
     });
     const response = httpMocks.createResponse();
@@ -100,7 +99,7 @@ describe('POST /users/{userId}/robots', () => {
     expect(response.statusCode).toBe(200);
 
     const data = await response._getData();
-    const newRobotId = data.robotId;
+    const newRobotId = data._id;
 
     // verify if really in DB
     const request2 = httpMocks.createRequest({

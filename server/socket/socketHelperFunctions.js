@@ -75,8 +75,8 @@ exports.getAllUserIds = async () => {
  */
 exports.createJob = async (userId, robotId, status, parameters) => {
   const job = new jobsModel.Job({
-    user_id: userId,
-    robot_id: robotId,
+    userId,
+    robotId,
     status,
     parameters,
   });
@@ -85,10 +85,8 @@ exports.createJob = async (userId, robotId, status, parameters) => {
     const { _id: objId } = jobObj;
     return objId;
   } catch (err) {
-    if (err) {
-      console.error(err);
-      return undefined;
-    }
+    console.error(err);
+    return undefined;
   }
 };
 
@@ -111,10 +109,10 @@ exports.updateRobotJobStatus = async (jobId, status) => {
  * @param {Array} errorLog The list of logs of the robots activites
  */
 exports.updateRobotJobErrors = async (jobId, errorLog) => {
-  const errors = errorLog.robot_run.activities
+  const errors = errorLog.robotRun.activities
     .filter((activity) => activity.status === 'FAIL')
     .map((activity) => ({
-      activity_name: activity.activity_name,
+      activityName: activity.activityName,
       tasks: activity.tasks,
       message: activity.message,
     }));
@@ -135,7 +133,7 @@ exports.updateRobotJobErrors = async (jobId, errorLog) => {
  */
 exports.getAllWaitingJobsForUser = async (userId) => {
   const jobList = await jobsModel.Job.find(
-    { user_id: userId, status: 'waiting' },
+    { userId, status: 'waiting' },
     (err) => {
       if (err) {
         console.error(err);

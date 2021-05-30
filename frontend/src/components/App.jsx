@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Modeler from './pages/RobotModeler/RobotModeler';
+import RobotModeler from './pages/RobotModeler/RobotModeler';
 import Home from './pages/Home/Home';
 import Error from './pages/Error/Error';
 import RobotFile from './pages/RobotCodeEditor/RobotCodeEditor';
@@ -17,7 +17,7 @@ const App = () => (
     <div>
       <Switch>
         <Route path='/' component={Home} exact />
-        <Route path='/modeler/:robotId' component={Modeler} />
+        <Route path='/modeler/:robotId' component={RobotModeler} />
         <Route path='/robotcode_editor' component={RobotFile} />
         <Route path='/robot_overview' component={RobotOverview} />
         <Route
