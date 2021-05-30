@@ -16,8 +16,8 @@ const fetchSsotsForUser = async (userId) => {
 
 /**
  * @description Create a new robot with the specified name for the specified user
- * @param {String} userId - The user for which the robot will be created
- * @param {String} robotName - The Name of the new robot
+ * @param {String} userId - User for which the robot will be created
+ * @param {String} robotName - Name of the new robot
  * @returns {Object} Object containing robotId and robotName
  */
 const createNewRobot = async (userId, robotName) => {

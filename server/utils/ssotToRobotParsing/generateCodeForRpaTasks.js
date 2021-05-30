@@ -21,7 +21,7 @@ const isAnRpaInstruction = (currentElement) =>
 
 /**
  * @description Creates a prefix to catch the output variable of an activity, if one is present
- * @param {Object} paramObject The parameter object that will be checked and looped through
+ * @param {Object} paramObject Parameter object that will be checked and looped through
  * @returns {String} String specifying the output variables name
  */
 const setOutputValue = (paramObject) => {
@@ -35,7 +35,7 @@ const setOutputValue = (paramObject) => {
 
 /**
  * @description Appends all provided parameters to a string which can be used to generate the RPAf file
- * @param {Object} parameterObject The parameter object that will be checked and looped through
+ * @param {Object} parameterObject Parameter object that will be checked and looped through
  * @returns {String} String specifying the input parameters with the needed spacing in between
  */
 const appendRpaInputParameter = (parameterObject) => {
@@ -81,7 +81,7 @@ const successorTasksExist = (currentElement) =>
  * @param {Array} elements All the elements from the ssot
  * @param {Array} parameters All parameter objects of the robot
  * @param {Array} attributes All attribute objects of the robot
- * @param {String} codeToAppend The current code that will be extended
+ * @param {String} codeToAppend Current code that will be extended
  * @returns {string} Generated .robot code for the tasks section
  */
 const writeCodeForElement = (

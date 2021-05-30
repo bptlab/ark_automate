@@ -11,7 +11,7 @@ const DEFAULT_STARTEVENT_POSITION = '200,330';
 
 /**
  * @description Searches through the ssot and return the only element without a predecessor
- * @param {Object} ssot The ssot that will be processed
+ * @param {Object} ssot Ssot that will be processed
  * @returns {Object} startElement from the ssot
  */
 const findStartElement = (ssot) =>
@@ -21,8 +21,8 @@ const findStartElement = (ssot) =>
 
 /**
  * @description Creates an order within the elements based on their positioning in the flow
- * @param {Object} ssot The ssot that will be processed
- * @returns {Array} The elements of the ssot in the correct order in which they appear in the flow
+ * @param {Object} ssot Ssot that will be processed
+ * @returns {Array} Elements of the ssot in the correct order in which they appear in the flow
  */
 const buildCorrectOrder = (ssot) => {
   const startElement = findStartElement(ssot);
@@ -40,9 +40,9 @@ const buildCorrectOrder = (ssot) => {
 /**
  * @description Workaround which takes in the created element and updates its id to the one saved in the ssot.
  * The bpmn js cli extension will just create elements, but not ensure their Id to match the one in the ssot therefore this workaround is needed.
- * @param {*} modeling The modeling extension
- * @param {Object} element The first element (start element) to process
- * @returns {String} The now set id of the shape
+ * @param {*} modeling Modeling extension
+ * @param {Object} element First element (start element) to process
+ * @returns {String} Now set id of the shape
  */
 const updateIdForElement = (modeling, cli, element, cliResult) => {
   const bpmnObject = cli.element(cliResult);
@@ -55,11 +55,11 @@ const updateIdForElement = (modeling, cli, element, cliResult) => {
 
 /**
  * @description Creates the first element in the BPMN diagram as a start event
- * @param {*} cli The modeling cli extension
- * @param {*} modeling The modeling extension
- * @param {Object} element The first element (start element) to process
- * @param {String} previousElement The id of the previous element
- * @returns {String} The id of the element created in the diagram
+ * @param {*} cli Modeling cli extension
+ * @param {*} modeling Modeling extension
+ * @param {Object} element First element (start element) to process
+ * @param {String} previousElement Id of the previous element
+ * @returns {String} Id of the element created in the diagram
  */
 const drawElement = (cli, modeling, element, previousElement) => {
   let createdElement;
@@ -90,7 +90,7 @@ const drawElement = (cli, modeling, element, previousElement) => {
 
 /**
  * @description Checks if the default start event is still present and will remove if so
- * @param {*} cli The modeling cli extension
+ * @param {*} cli Modeling cli extension
  */
 const removeDefaultStarter = (cli) => {
   if (cli.elements().includes(DEFAULT_STARTER))
@@ -99,10 +99,10 @@ const removeDefaultStarter = (cli) => {
 
 /**
  * @description Creates the first element in the BPMN diagram as a start event
- * @param {*} cli The modeling cli extension
- * @param {*} modeling The modeling extension
- * @param {Object} element The first element (start element) to process
- * @returns {String} The id of the element created in the diagram
+ * @param {*} cli Modeling cli extension
+ * @param {*} modeling Modeling extension
+ * @param {Object} element First element (start element) to process
+ * @returns {String} Id of the element created in the diagram
  */
 const drawStartElement = (cli, modeling, element) => {
   removeDefaultStarter(cli);
@@ -119,9 +119,9 @@ const drawStartElement = (cli, modeling, element) => {
 
 /**
  * @description Creates the BPMN XML from the provided ssot, as well as displaying the diagram on the modeling component
- * @param {*} modeler The bpmn modeler
- * @param {Object} ssot The ssot to parse
- * @returns {String} The parsed XML BPMN diagram as a String
+ * @param {*} modeler Bpmn modeler
+ * @param {Object} ssot Ssot to parse
+ * @returns {String} Parsed XML BPMN diagram as a String
  */
 const parseSsotToBpmn = (modeler, ssot) => {
   const sortedElements = buildCorrectOrder(ssot);

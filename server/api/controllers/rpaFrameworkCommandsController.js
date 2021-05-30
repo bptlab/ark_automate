@@ -36,7 +36,7 @@ exports.getAvailableApplications = async (req, res) => {
  *     parameters:
  *       - name: application
  *         in: path
- *         description: The name of an application
+ *         description: Name of an application
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/Applications'

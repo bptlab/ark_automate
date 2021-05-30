@@ -51,7 +51,7 @@ const generateCodeForLibraryImports = (elements) => {
 
 /**
  * @description Retrieve the associated parameter objects for all activities in the ssot
- * @param {Object} ssot The ssot for which the parameters will be retrieved
+ * @param {Object} ssot Ssot for which the parameters will be retrieved
  * @returns {Array} Array of attribute objects
  */
 const retrieveAttributes = async (ssot) => {
@@ -78,7 +78,7 @@ const retrieveAttributes = async (ssot) => {
 
 /**
  * @description Generates that basic code that every robot has
- * @param {Object} ssot The ssot that will be handled
+ * @param {Object} ssot Ssot that will be handled
  * @returns {string} Basic code for the .robot file
  */
 const generateCodeBase = async (ssot) => {

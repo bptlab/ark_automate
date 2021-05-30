@@ -26,7 +26,7 @@ import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/b
  * @description Called when the the button is pressed to save to the cloud.
  * This function will retrieve the xml from the parser, parse that xml to a ssot and write the
  * resulting ssot into the sessionStorage.
- * @param {Object} modeler The modeling object
+ * @param {Object} modeler Modeling object
  */
 const onSaveToCloud = async (modeler) => {
   const xml = await modeler.saveXML({ format: true });
@@ -178,7 +178,7 @@ const modelerSelectionChangeHandler = (
 /**
  * @description Updates the state of the component. Called when the name of the selected element got updated in the sidebar. 
  * @param {Object} event Changed value in input field
- * @param {Object} modeler The modeling object
+ * @param {Object} modeler Modeling object
  * @param {Object} elementState State of the selected element
  * @param {Object} setterObject Object containing the functions for setting the state in the React component
  */

@@ -16,7 +16,7 @@ const { generateCodeForRpaTasks } = require('./generateCodeForRpaTasks');
 
 /**
  * @description Parses the given SSoT to an executable .robot file
- * @param {Object} ssot The SSoT
+ * @param {Object} ssot SSoT
  * @returns {string} Code that has to be put in .robot file
  */
 const parseSsotToRobotCode = async (ssot) => {
@@ -32,8 +32,8 @@ const parseSsotToRobotCode = async (ssot) => {
 
 /**
  * @description Parses the given SSoT and parameters of the robot job to an executable .robot file
- * @param {Object} ssot The Ssot
- * @param {Object} jobId The id of the job
+ * @param {Object} ssot Ssot
+ * @param {Object} jobId Id of the job
  * @returns {string} Code that has to be put in .robot file
  */
 const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
@@ -49,7 +49,7 @@ const parseSsotAndJobToRobotCode = async (ssot, jobId) => {
 
 /**
  * @description Parses the Ssot provided by its id to an executable .robot file
- * @param {String} robotId The id of the ssot which will be parsed
+ * @param {String} robotId Id of the ssot which will be parsed
  * @returns {string} Code that has to be put in .robot file
  */
 const parseSsotById = async (robotId) => {
@@ -59,8 +59,8 @@ const parseSsotById = async (robotId) => {
 
 /**
  * @description Parses the Ssot provided by its id to an executable .robot file
- * @param {String} robotId The id of the ssot which will be parsed
- * @param {String} jobId The id of the current robotJob that will be executed
+ * @param {String} robotId Id of the ssot which will be parsed
+ * @param {String} jobId Id of the current robotJob that will be executed
  * @returns {string} Code that has to be put in .robot file
  */
 const parseCodeForJob = async (robotId, jobId) => {

@@ -10,7 +10,7 @@ const userAccessModels = require('../models/userAccessObjectModel.js');
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'
@@ -45,7 +45,7 @@ exports.getSingleSourceOfTruth = async (req, res) => {
  *     parameters:
  *       - name: userId
  *         in: path
- *         description: The id of a user
+ *         description: Id of a user
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/ObjectIds'
@@ -126,7 +126,7 @@ exports.getRobotList = async (req, res) => {
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'
@@ -220,7 +220,7 @@ exports.shareRobotWithUser = async (req, res) => {
  *     parameters:
  *       - name: userId
  *         in: path
- *         description: The id of a user
+ *         description: Id of a user
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/ObjectIds'
@@ -312,7 +312,7 @@ exports.createNewRobot = async (req, res) => {
  *   parameters:
  *     - name: robotId
  *       in: path
- *       description: The id of a robot
+ *       description: Id of a robot
  *       required: true
  *       schema:
  *         $ref: '#/components/schemas/RobotIds'
@@ -361,7 +361,7 @@ exports.overwriteRobot = async (req, res) => {
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'

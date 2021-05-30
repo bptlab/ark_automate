@@ -43,8 +43,8 @@ const getRobotName = () =>
 
 /**
  * @description Writes the robotId and the robotName of the currently opened robot into the session storage
- * @param {String} robotName The robotName ot the currently opened robot
- * @param {String} robotId The robotId ot the currently opened robot
+ * @param {String} robotName RobotName ot the currently opened robot
+ * @param {String} robotId RobotId ot the currently opened robot
  */
 const setRobotMetadata = (robotName, robotId) => {
   const robotMetadata = JSON.parse(sessionStorage.getItem(ROBOT_METADATA_PATH));
@@ -106,7 +106,6 @@ const initSsotSessionStorage = (robotId) => {
     getAvailableApplications()
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         sessionStorage.setItem('availableApplications', JSON.stringify(data));
       })
       .catch((error) => {

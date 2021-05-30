@@ -66,7 +66,7 @@ exports.updateMany = async (req, res) => {
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'
@@ -102,7 +102,7 @@ exports.retrieveAttributesForRobot = async (req, res) => {
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'

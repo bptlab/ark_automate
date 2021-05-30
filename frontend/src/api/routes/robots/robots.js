@@ -5,7 +5,7 @@
 
 /**
  * @description Triggers parsing of the Ssot to .robot file
- * @returns {String} returns .robot file code
+ * @returns {String} .robot file code
  */
 const getParsedRobotFile = async (robotId) =>
   fetch(`/robots/${robotId}/robotCode`);
@@ -13,7 +13,7 @@ const getParsedRobotFile = async (robotId) =>
 /**
  * @description Fetch the ssot correlating to the specified Id
  * @param {String} robotId - Id of the robot that will be retrieved
- * @returns {Object} The found ssot
+ * @returns {Object} Found ssot
  */
 const getSsot = async (robotId) => {
   const requestString = `/robots/${robotId}`;
