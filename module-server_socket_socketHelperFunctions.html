@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> server/utils/ssotToRobotParsing/generateCodeBase</title>
+  <title> server/socket/socketHelperFunctions</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -74,7 +74,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Module</p>
-                    <h1>server/utils/ssotToRobotParsing/generateCodeBase</h1>
+                    <h1>server/socket/socketHelperFunctions</h1>
                 </header>
                 
 
@@ -121,16 +121,16 @@
 
 
     
-    <h4 class="name" id="~collectApplications">
-        <a class="href-link" href="#~collectApplications">#</a>
+    <h4 class="name" id=".createJob">
+        <a class="href-link" href="#.createJob">#</a>
         
             
-                <span class='tag'>inner</span>
+                <span class='tag'>static</span>
             
         
         <span class="code-name">
             
-                collectApplications<span class="signature">(elements)</span><span class="type-signature"> &rarr; {Array}</span>
+                createJob<span class="signature">(userId, robotId, status, parameters)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -139,7 +139,7 @@
     
     
     <div class="description">
-        Collects the applications used by the robot
+        Creates a Job in the database for a robot execution of a specific user
     </div>
     
 
@@ -177,7 +177,82 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>elements</code></td>
+      <td class="name"><code>userId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Id of the user that wants to execute a robot</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>robotId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Id of the robot tha will be executed</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>status</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Current status of the job (either waiting, executing, successful or failed)</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>parameters</code></td>
   
 
   <td class="type">
@@ -193,7 +268,7 @@
 
   
 
-  <td class="description last">All the elements from the SSoT</td>
+  <td class="description last">Different parameters the user defined before executing the robot</td>
 </tr>
 
 
@@ -239,9 +314,9 @@
 
     
         <p class="tag-source">
-            <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html" class="button">View Source</a>
+            <a href="server_socket_socketHelperFunctions.js.html" class="button">View Source</a>
             <span>
-                <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html">server/utils/ssotToRobotParsing/generateCodeBase.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html#line20">line 20</a>
+                <a href="server_socket_socketHelperFunctions.js.html">server/socket/socketHelperFunctions.js</a>, <a href="server_socket_socketHelperFunctions.js.html#line81">line 81</a>
             </span>
         </p>
     
@@ -263,31 +338,6 @@
 
 
 
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>All unique Applications that occur in the ssot</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">Array</span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
 
 
 
@@ -298,18 +348,16 @@
 
 
     
-    <h4 class="name" id="~generateCodeBase">
-        <a class="href-link" href="#~generateCodeBase">#</a>
+    <h4 class="name" id=".getAllUserIds">
+        <a class="href-link" href="#.getAllUserIds">#</a>
         
             
-                <span class='tag'>async</span>
-            
-                <span class='tag'>inner</span>
+                <span class='tag'>static</span>
             
         
         <span class="code-name">
             
-                generateCodeBase<span class="signature">(ssot)</span><span class="type-signature"> &rarr; {string}</span>
+                getAllUserIds<span class="signature">(robotId)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -318,7 +366,7 @@
     
     
     <div class="description">
-        Generates that basic code that every robot has
+        Fetches the ssot from the database and parses the ssot to robot code
     </div>
     
 
@@ -356,13 +404,13 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>ssot</code></td>
+      <td class="name"><code>robotId</code></td>
   
 
   <td class="type">
   
       
-<span class="param-type">Object</span>
+<span class="param-type">String</span>
 
 
   
@@ -372,7 +420,7 @@
 
   
 
-  <td class="description last">Ssot that will be handled</td>
+  <td class="description last">Id of the robot which will be parsed to robot code</td>
 </tr>
 
 
@@ -418,9 +466,9 @@
 
     
         <p class="tag-source">
-            <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html" class="button">View Source</a>
+            <a href="server_socket_socketHelperFunctions.js.html" class="button">View Source</a>
             <span>
-                <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html">server/utils/ssotToRobotParsing/generateCodeBase.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html#line84">line 84</a>
+                <a href="server_socket_socketHelperFunctions.js.html">server/socket/socketHelperFunctions.js</a>, <a href="server_socket_socketHelperFunctions.js.html#line61">line 61</a>
             </span>
         </p>
     
@@ -443,31 +491,6 @@
 
 
 
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Basic code for the .robot file</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">string</span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
 
 
 
@@ -477,16 +500,16 @@
 
 
     
-    <h4 class="name" id="~generateCodeForLibraryImports">
-        <a class="href-link" href="#~generateCodeForLibraryImports">#</a>
+    <h4 class="name" id=".getAllWaitingJobsForUser">
+        <a class="href-link" href="#.getAllWaitingJobsForUser">#</a>
         
             
-                <span class='tag'>inner</span>
+                <span class='tag'>static</span>
             
         
         <span class="code-name">
             
-                generateCodeForLibraryImports<span class="signature">(elements)</span><span class="type-signature"> &rarr; {string}</span>
+                getAllWaitingJobsForUser<span class="signature">(userId)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -495,7 +518,7 @@
     
     
     <div class="description">
-        Generates the Library Import Code of the .robot file
+        Finds all jobs with status waiting in the database for a specific user
     </div>
     
 
@@ -533,7 +556,665 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>elements</code></td>
+      <td class="name"><code>userId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Id of the user for which all waiting jobs will be retrieved</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="server_socket_socketHelperFunctions.js.html" class="button">View Source</a>
+            <span>
+                <a href="server_socket_socketHelperFunctions.js.html">server/socket/socketHelperFunctions.js</a>, <a href="server_socket_socketHelperFunctions.js.html#line139">line 139</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".getRobotCode">
+        <a class="href-link" href="#.getRobotCode">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                getRobotCode<span class="signature">(robotId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Fetches the ssot of a given robot from the database and parses the ssot to robot code
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>robotId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Id of the robot that the robot code will be fetched for</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="server_socket_socketHelperFunctions.js.html" class="button">View Source</a>
+            <span>
+                <a href="server_socket_socketHelperFunctions.js.html">server/socket/socketHelperFunctions.js</a>, <a href="server_socket_socketHelperFunctions.js.html#line34">line 34</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".getRobotCodeForJob">
+        <a class="href-link" href="#.getRobotCodeForJob">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                getRobotCodeForJob<span class="signature">(robotId, jobId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Fetches the ssot of a given robot from the database and parses the ssot to robot code
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>robotId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Id of the robot that the robot code will be fetched for</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>jobId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Id of the current job</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="server_socket_socketHelperFunctions.js.html" class="button">View Source</a>
+            <span>
+                <a href="server_socket_socketHelperFunctions.js.html">server/socket/socketHelperFunctions.js</a>, <a href="server_socket_socketHelperFunctions.js.html#line21">line 21</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".getRobotJobParameters">
+        <a class="href-link" href="#.getRobotJobParameters">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                getRobotJobParameters<span class="signature">(jobId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Finds a specific robot job and retrieves the parameter array
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>jobId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Id of the robot for which all parameters will be retrieved</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="server_socket_socketHelperFunctions.js.html" class="button">View Source</a>
+            <span>
+                <a href="server_socket_socketHelperFunctions.js.html">server/socket/socketHelperFunctions.js</a>, <a href="server_socket_socketHelperFunctions.js.html#line47">line 47</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".updateRobotJobErrors">
+        <a class="href-link" href="#.updateRobotJobErrors">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                updateRobotJobErrors<span class="signature">(jobId, errorLog)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        Updates the given Job when the run has failed with the list of failing activities
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>jobId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Id of the job that will be updated</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>errorLog</code></td>
   
 
   <td class="type">
@@ -549,7 +1230,7 @@
 
   
 
-  <td class="description last">All the elements from the SSoT</td>
+  <td class="description last">List of logs of the robots activites</td>
 </tr>
 
 
@@ -595,9 +1276,9 @@
 
     
         <p class="tag-source">
-            <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html" class="button">View Source</a>
+            <a href="server_socket_socketHelperFunctions.js.html" class="button">View Source</a>
             <span>
-                <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html">server/utils/ssotToRobotParsing/generateCodeBase.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html#line40">line 40</a>
+                <a href="server_socket_socketHelperFunctions.js.html">server/socket/socketHelperFunctions.js</a>, <a href="server_socket_socketHelperFunctions.js.html#line116">line 116</a>
             </span>
         </p>
     
@@ -620,31 +1301,6 @@
 
 
 
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Library Import Code that has to be put in .robot file</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">string</span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
-
 
 
 
@@ -654,18 +1310,16 @@
 
 
     
-    <h4 class="name" id="~retrieveAttributes">
-        <a class="href-link" href="#~retrieveAttributes">#</a>
+    <h4 class="name" id=".updateRobotJobStatus">
+        <a class="href-link" href="#.updateRobotJobStatus">#</a>
         
             
-                <span class='tag'>async</span>
-            
-                <span class='tag'>inner</span>
+                <span class='tag'>static</span>
             
         
         <span class="code-name">
             
-                retrieveAttributes<span class="signature">(ssot)</span><span class="type-signature"> &rarr; {Array}</span>
+                updateRobotJobStatus<span class="signature">(jobId, status)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -674,7 +1328,7 @@
     
     
     <div class="description">
-        Retrieve the associated parameter objects for all activities in the ssot
+        Finds a specific job in the database and updates the status of the Job
     </div>
     
 
@@ -712,13 +1366,13 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>ssot</code></td>
+      <td class="name"><code>jobId</code></td>
   
 
   <td class="type">
   
       
-<span class="param-type">Object</span>
+<span class="param-type">String</span>
 
 
   
@@ -728,7 +1382,32 @@
 
   
 
-  <td class="description last">Ssot for which the parameters will be retrieved</td>
+  <td class="description last">Id of the job that will be updated</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>status</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Current status of the job (either waiting, executing, success or failed)</td>
 </tr>
 
 
@@ -774,9 +1453,9 @@
 
     
         <p class="tag-source">
-            <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html" class="button">View Source</a>
+            <a href="server_socket_socketHelperFunctions.js.html" class="button">View Source</a>
             <span>
-                <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html">server/utils/ssotToRobotParsing/generateCodeBase.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeBase.js.html#line57">line 57</a>
+                <a href="server_socket_socketHelperFunctions.js.html">server/socket/socketHelperFunctions.js</a>, <a href="server_socket_socketHelperFunctions.js.html#line103">line 103</a>
             </span>
         </p>
     
@@ -798,31 +1477,6 @@
 
 
 
-
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
-
-<div class="columns">
-    
-    <div class='param-desc column is-7'>Array of attribute objects</div>
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
-        
-<span class="param-type">Array</span>
-
-
-    </div>
-    
-</div>
-
-                
-        </div>
-    </div>
 
 
 
