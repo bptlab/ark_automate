@@ -40,9 +40,9 @@ exports.clearDatabase = async () => {
 
   // fix according to https://docs.w3cub.com/eslint/rules/no-await-in-loop.html
   const result = [];
-  for (const key in collections) {
+  Object.keys(collections).forEach((key) => {
     const collection = collections[key];
     result.push(collection.deleteMany());
-  }
+  });
   return Promise.all(result);
 };

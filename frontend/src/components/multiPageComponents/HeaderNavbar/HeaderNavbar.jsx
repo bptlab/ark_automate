@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
+import { getRobotId } from '../../../utils/sessionStorage/localSsotController/ssot';
 import styles from './HeaderNavbar.module.css';
 
 const { Header } = Layout;
@@ -34,8 +35,7 @@ const HeaderNavbar = (props) => {
     selectedKey === bpmnModelerPageKey ||
     selectedKey === robotCodeEditorPageKey
   ) {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    bpmnModelerLink += `/${robotId}`;
+    bpmnModelerLink += `/${getRobotId()}`;
   }
 
   return (

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const httpMocks = require('node-mocks-http');
 const dbHandler = require('../../../utils/testing/testDatabaseHandler');

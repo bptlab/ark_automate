@@ -1,16 +1,14 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/first */
-/* eslint-disable no-undef */
 
 jest.mock('../../../../../api/routes/robots/robots');
 jest.mock('./downloadStringAsFile');
-jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
 jest.mock('../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing');
+jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
 
 jest.mock('../../../../../api/routes/functionalities/functionalities');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/parameters');
 jest.mock('../../../../../utils/sessionStorage/localSsotController/attributes');
-jest.mock('../../../../../utils/sessionStorage/localSsotController/ssot');
 
 import {
   nameChangedHandler,
@@ -32,16 +30,26 @@ import {
   setOutputValueName,
   getParameterObject,
 } from '../../../../../utils/sessionStorage/localSsotController/parameters';
-import { fetchTasksFromDB } from '../../../../../api/routes/functionalities/functionalities';
 import constants from './modelerSidebarFunctionalityTestingUtils';
 import { getParsedRobotFile } from '../../../../../api/routes/robots/robots';
 import downloadString from './downloadStringAsFile';
-import { upsert } from '../../../../../utils/sessionStorage/localSsotController/ssot';
+import {
+  getRobotName,
+  upsert,
+} from '../../../../../utils/sessionStorage/localSsotController/ssot';
 import { parseBpmnToSsot } from '../../../../../utils/parser/bpmnToSsotParsing/bpmnToSsotParsing';
+import { initSessionStorage } from '../../../../../utils/sessionStorage/sessionStorageUtils';
 
 describe('Robot Metadata Utilities Tests', () => {
   it('downloads the robot file', async () => {
-    sessionStorage.setItem('robotName', constants.MOCK_ROBOT_NAME);
+    initSessionStorage(
+      'robotMetadata',
+      JSON.stringify({ robotName: constants.MOCK_ROBOT_NAME })
+    );
+
+    getRobotName.mockImplementation(
+      () => JSON.parse(sessionStorage.getItem('robotMetadata')).robotName
+    );
 
     getParsedRobotFile.mockImplementation((robotId) => {
       expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
@@ -66,9 +74,8 @@ describe('Robot Metadata Utilities Tests', () => {
       );
     });
 
-    parseBpmnToSsot.mockImplementation(async (xml, robotId) => {
+    parseBpmnToSsot.mockImplementation(async (xml) => {
       expect(xml).toEqual(constants.MOCK_XML);
-      expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
       return constants.MOCK_PARSER_RESULT;
     });
 
@@ -235,7 +242,7 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
     );
   });
 
-  it('handles modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application already in sessionstorage', async () => {
+  it('handles modeler selection change; element is a task and no matching attributes found; with attribute obj match found', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -274,68 +281,12 @@ describe('Sidebar Functionality: Modeler Selection Change', () => {
       JSON.stringify(MOCK_TASK_TO_APPLICATION)
     );
 
-    const taskToApplication = { cookbookApplication: ['TestTask'] };
-    sessionStorage.setItem(
-      'taskToApplicationCache',
-      JSON.stringify(taskToApplication)
-    );
-
-    modelerSelectionChangeHandler(
-      constants.MOCK_EVENT,
-      constants.MOCK_ELEMENT_STATE,
-      constants.MOCK_ROBOT_ID,
-      MOCK_SETTER_OBJECT
-    );
-  });
-
-  it('handles modeler selection change; element is a task and no matching attributes found; with attribute obj match found; application not yet in sessionstorage', async () => {
-    const MOCK_SETTER_OBJECT = {
-      setElementState: (stateObject) => {
-        expect(stateObject).toEqual({
-          selectedElements: constants.MOCK_SELECTED_ELEMENTS,
-          currentElement: constants.MOCK_CURRENT_ELEMENT,
-        });
-      },
-      setSelectedApplication: (value) => {
-        expect(value).toEqual(constants.MOCK_APPLICATION);
-      },
-      setOutputValueName: (newName) => {
-        expect(newName).toBeUndefined();
-      },
-      setParameterList: (newParameterList) => {
-        expect(newParameterList).toEqual([]);
-      },
-      setTasksForSelectedApplication: (availableTasks) => {
-        expect(availableTasks).toEqual(['TestTask']);
-      },
-      setDisableTaskSelection: (disabled) => {
-        expect(disabled).toBeFalsy();
-      },
-    };
-
-    const MOCK_TASK_TO_APPLICATION = [
-      {
-        activityId: constants.MOCK_CURRENT_ELEMENT_ID,
-        robotId: constants.MOCK_ROBOT_ID,
-        rpaApplication: constants.MOCK_APPLICATION,
-        rpaTask: 'Open Application',
-      },
+    const taskApplicationCombinations = [
+      { Application: 'cookbookApplication', Task: 'TestTask' },
     ];
-
-    fetchTasksFromDB.mockImplementation(async (application) => {
-      expect(application).toEqual(constants.MOCK_VALUE);
-      return { json: () => ['TestTask'] };
-    });
-
     sessionStorage.setItem(
-      'attributeLocalStorage',
-      JSON.stringify(MOCK_TASK_TO_APPLICATION)
-    );
-
-    const taskToApplication = { recipeApplication: ['TestTask'] };
-    sessionStorage.setItem(
-      'taskToApplicationCache',
-      JSON.stringify(taskToApplication)
+      'taskApplicationCombinations',
+      JSON.stringify(taskApplicationCombinations)
     );
 
     modelerSelectionChangeHandler(
@@ -419,7 +370,7 @@ describe('Sidebar Functionality: Task Change', () => {
 });
 
 describe('Sidebar Functionality: Application Change', () => {
-  it('handles application change WITH cache existing', async () => {
+  it('handles application change', async () => {
     const MOCK_SETTER_OBJECT = {
       setElementState: (stateObject) => {
         expect(stateObject).toEqual({
@@ -444,10 +395,12 @@ describe('Sidebar Functionality: Application Change', () => {
       },
     };
 
-    const taskToApplication = { cookbookApplication: ['TestTask'] };
+    const taskApplicationCombinations = [
+      { Application: 'cookbookApplication', Task: 'TestTask' },
+    ];
     sessionStorage.setItem(
-      'taskToApplicationCache',
-      JSON.stringify(taskToApplication)
+      'taskApplicationCombinations',
+      JSON.stringify(taskApplicationCombinations)
     );
 
     setRpaApplication.mockImplementation(
@@ -465,68 +418,5 @@ describe('Sidebar Functionality: Application Change', () => {
       MOCK_SETTER_OBJECT
     );
     expect(setRpaApplication).toHaveBeenCalledTimes(1);
-  });
-
-  it('handles application change WITHOUT cache existing', async () => {
-    const MOCK_VALUE = 'cookbookApplication';
-    const MOCK_ROBOT_ID = '0123456789-4711';
-    const MOCK_CURRENT_ELEMENT_ID = '123450815';
-    const MOCK_CURRENT_ELEMENT = { id: constants.MOCK_CURRENT_ELEMENT_ID };
-    const MOCK_SELECTED_ELEMENTS = [constants.MOCK_CURRENT_ELEMENT];
-    const MOCK_ELEMENT_STATE = {
-      selectedElements: constants.MOCK_SELECTED_ELEMENTS,
-      currentElement: constants.MOCK_CURRENT_ELEMENT,
-    };
-    const MOCK_SETTER_OBJECT = {
-      setElementState: (stateObject) => {
-        expect(stateObject).toEqual({
-          selectedElements: constants.MOCK_SELECTED_ELEMENTS,
-          currentElement: constants.MOCK_CURRENT_ELEMENT,
-        });
-      },
-      setSelectedApplication: (value) => {
-        expect(value).toEqual(constants.MOCK_VALUE);
-      },
-      setOutputValueName: (newName) => {
-        expect(newName).toBeUndefined();
-      },
-      setParameterList: (newParameterList) => {
-        expect(newParameterList).toEqual([]);
-      },
-      setTasksForSelectedApplication: (availableTasks) => {
-        expect(availableTasks).toEqual(['lookupRecipe']);
-      },
-      setDisableTaskSelection: (disabled) => {
-        expect(disabled).toBeFalsy();
-      },
-    };
-
-    const taskToApplication = { recipeApplication: ['TestTask'] };
-    sessionStorage.setItem(
-      'taskToApplicationCache',
-      JSON.stringify(taskToApplication)
-    );
-
-    setRpaApplication.mockImplementation(
-      (robotId, selectedElementId, value) => {
-        expect(value).toEqual(constants.MOCK_VALUE);
-        expect(robotId).toEqual(constants.MOCK_ROBOT_ID);
-        expect(selectedElementId).toEqual(constants.MOCK_CURRENT_ELEMENT_ID);
-      }
-    );
-
-    fetchTasksFromDB.mockImplementation(async (application) => {
-      expect(application).toEqual(constants.MOCK_VALUE);
-      return { json: () => ['lookupRecipe'] };
-    });
-
-    applicationChangedHandler(
-      constants.MOCK_VALUE,
-      constants.MOCK_ROBOT_ID,
-      constants.MOCK_ELEMENT_STATE,
-      MOCK_SETTER_OBJECT
-    );
-    expect(setRpaApplication).toHaveBeenCalledTimes(1);
-    expect(fetchTasksFromDB).toHaveBeenCalledTimes(1);
   });
 });

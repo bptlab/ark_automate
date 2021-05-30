@@ -5,7 +5,10 @@ import Editor from 'react-simple-code-editor';
 import HeaderNavbar from '../../multiPageComponents/HeaderNavbar/HeaderNavbar';
 import { getParsedRobotFile } from '../../../api/routes/robots/robots';
 import { parseRobotCodeToSsot } from '../../../utils/parser/robotCodeToSsotParsing/robotCodeToSsotParsing';
-import { upsert } from '../../../utils/sessionStorage/localSsotController/ssot';
+import {
+  getRobotId,
+  upsert,
+} from '../../../utils/sessionStorage/localSsotController/ssot';
 import 'prismjs/components/prism-robotframework';
 import 'prismjs/themes/prism.css';
 import styles from './RobotCodeEditor.module.css';
@@ -36,7 +39,7 @@ const RobotFile = () => {
    * @description Equivalent to ComponentDidMount in class based components
    */
   useEffect(() => {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
+    const robotId = getRobotId();
     getParsedRobotFile(robotId)
       .then((response) => response.text())
       .then((robotCode) => {

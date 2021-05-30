@@ -85,10 +85,8 @@ exports.createJob = async (userId, robotId, status, parameters) => {
     const { _id: objId } = jobObj;
     return objId;
   } catch (err) {
-    if (err) {
-      console.error(err);
-      return undefined;
-    }
+    console.error(err);
+    return undefined;
   }
 };
 

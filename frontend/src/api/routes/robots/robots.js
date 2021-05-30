@@ -59,7 +59,6 @@ const deleteRobotFromDB = async (robotId) => {
  */
 const updateRobot = async (robotId, ssot) => {
   const requestStringSsot = `/robots/${robotId}`;
-  // eslint-disable-next-line no-unused-vars
   const response = await fetch(requestStringSsot, {
     body: ssot,
     method: 'PUT',

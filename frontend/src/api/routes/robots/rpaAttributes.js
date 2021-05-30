@@ -20,7 +20,6 @@ const getAllAttributes = async (robotId) => {
  */
 const updateManyAttributes = async (attributeObjectList) => {
   const requestStringAttributes = `/robots/rpaattributes`;
-  // eslint-disable-next-line no-unused-vars
   const response = await fetch(requestStringAttributes, {
     body: JSON.stringify({ attributeObjectList }),
     method: 'PUT',
