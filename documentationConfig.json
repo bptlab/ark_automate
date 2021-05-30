@@ -11,8 +11,8 @@
     "include": [
       "./../frontend/src",
       "./../server/utils/ssotToRobotParsing",
-      "./../server/socket/socketHelperFunctions",
-      "./../server/utils/testing/testDatabaseHandler"
+      "./../server/socket/socketHelperFunctions.js",
+      "./../server/utils/testing/testDatabaseHandler.js"
     ],
     "exclude": ["./../frontend/node_modules", "./../server/node_modules"],
     "includePattern": ".+\\.js(doc|x)?$",
