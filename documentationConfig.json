@@ -8,7 +8,12 @@
   },
   "plugins": ["node_modules/better-docs/category"],
   "source": {
-    "include": ["./../frontend/src", "./../server/utils/ssotToRobotParsing"],
+    "include": [
+      "./../frontend/src",
+      "./../server/utils/ssotToRobotParsing",
+      "./../server/socket/socketHelperFunctions",
+      "./../server/utils/testing/testDatabaseHandler"
+    ],
     "exclude": ["./../frontend/node_modules", "./../server/node_modules"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
