@@ -2,6 +2,11 @@ import React from 'react';
 import { Card, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
+/**
+ * @description Renders the status of an individual robot log
+ * @category Frontend
+ * @component
+ */
 const RobotLogCard = (props) => {
   const { log } = props;
   const { displayStatusIcon } = props;

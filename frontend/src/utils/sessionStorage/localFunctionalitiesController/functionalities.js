@@ -6,9 +6,10 @@
 const FUNCTIONALITIES_STORAGE_PATH = 'taskApplicationCombinations';
 
 /**
- * @description Will get the rpa functionalities object for a specific rpa application and rpa task combination
+ * @description Retrieves the rpa functionalities object for a specific rpa application and rpa task combination
  * @param {String} application Name of the rpa application
  * @param {String} task Name of the rpa task
+ * @returns {Object} Rpa functionalities object
  */
 const getRpaFunctionalitiesObject = (application, task) => {
   const rpaFunctionalities = JSON.parse(

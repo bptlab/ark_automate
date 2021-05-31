@@ -8,7 +8,7 @@ import RobotInteractionInputParameter from './subComponents/RobotInteractionPara
 const { Title } = Typography;
 
 /**
- * @description Renders all necessary input fields for inserting the missing parameters before execution
+ * @description Renders all necessary input fields for inserting the missing parameters before executing a robot
  * @category Frontend
  * @component
  */

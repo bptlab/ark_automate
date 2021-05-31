@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
+/**
+ * @category Server
+ * @module
+ */
 const mongooseOpts = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -14,7 +18,7 @@ const mongod = new MongoMemoryServer({
 });
 
 /**
- * Connect to the in-memory database.
+ * @description Connects to the in-memory database.
  */
 exports.connect = async () => {
   const uri = await mongod.getUri();
@@ -23,7 +27,7 @@ exports.connect = async () => {
 };
 
 /**
- * Drop database, close the connection and stop mongod.
+ * @description Drops the database, closes the connection and stops mongod.
  */
 exports.closeDatabase = async () => {
   await mongoose.connection.dropDatabase();
@@ -33,7 +37,7 @@ exports.closeDatabase = async () => {
 };
 
 /**
- * Remove all the data for all db collections.
+ * @description Removes all the data for all db collections.
  */
 exports.clearDatabase = async () => {
   const { collections } = mongoose.connection;

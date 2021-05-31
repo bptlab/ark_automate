@@ -11,10 +11,10 @@ const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
 /**
  * @description Creates a parameter object in the parameter session storage
  * @param {Array} localParameterStorage An Array containing the current parameter objects
- * @param {string} robotId The id of the selected robot
- * @param {string} activityId The id of the selected activity
- * @param {String} application The name of the rpa application the activity has selected
- * @param {String} task The name of the rpa task the activity has selected
+ * @param {string} robotId Id of the selected robot
+ * @param {string} activityId Id of the selected activity
+ * @param {String} application Name of the rpa application the activity has selected
+ * @param {String} task Name of the rpa task the activity has selected
  * @returns {Object} Newly created parameter object
  */
 const createParameterObject = (
@@ -62,16 +62,16 @@ const createParameterObject = (
 };
 
 /**
- * @description Gets the parameter object session storage
+ * @description Retrieves the parameter object session storage
  * @returns {Array} Parameter session storage
  */
 const getParameterStorage = () =>
   JSON.parse(sessionStorage.getItem(PARAMETER_STORAGE_PATH));
 
 /**
- * @description Gets the parameter object for an activity from the session storage
+ * @description Retrieves the parameter object for an activity from the session storage
  * @param {String} activityId Id of the activity for which to get the parameter object for
- * @returns {Object} The parameter object for the activity
+ * @returns {Object} Parameter object for the activity
  */
 const getParameterObjectForActivity = (activityId) => {
   const localParameterStorage = JSON.parse(
@@ -83,10 +83,10 @@ const getParameterObjectForActivity = (activityId) => {
 };
 
 /**
- * @description Will check if the parameter object is filled correctly
- * @param {String} parameterObject The parameter object for which to check if it is filled correctly
- * @param {String} rpaFunctionalitiesObject The rpa functionalities object (rpa-task) needed to check for correctness
- * @returns {Boolean}
+ * @description Checks if the parameter object is filled correctly
+ * @param {String} parameterObject Parameter object for which to check if it is filled correctly
+ * @param {String} rpaFunctionalitiesObject Rpa functionalities object (rpa-task) needed to check for correctness
+ * @returns {Boolean} Indicates if parameter object is filled correctly
  */
 const checkIfParameterObjectCorrect = (
   parameterObject,
@@ -119,12 +119,12 @@ const checkIfParameterObjectCorrect = (
 };
 
 /**
- * @description Gets the parameter object for the activity from the session storage and checks if the parameter object is correctly filled.
- * If no parameter object for the activity exists but an attribute object then it will create a new parameter object and add it to the session storage.
+ * @description Retrieves the parameter object for the activity from the session storage and checks if the paramter object is correctly filled.
+ * If no paramter object for the activity exists but an attribute object then it will create a new parameter object and add it to the session storage.
  * If no parameter object and no attributes object exists for the activity it will return undefined.
- * @param {String} robotId Id of the robot/ssot for which to retrieve the parameter object
- * @param {String} activityId Id of the activity for which to retrieve the parameter object for
- * @returns {Object} The parameter object for the activity
+ * @param {String} robotId Id of the robot/ssot for which the parameter object will be retrieved
+ * @param {String} activityId Id of the activity for which the parameter object will be retrieved
+ * @returns {Object} Parameter object for the activity
  */
 const getParameterObject = (robotId, activityId) => {
   let localParameterStorage = getParameterStorage();
@@ -165,8 +165,8 @@ const getParameterObject = (robotId, activityId) => {
 /**
  * @description Sets a single parameter value in the session storage
  * @param {String} activityId Id of the activity for which to change the parameter value for
- * @param {Object} value The value object returned by the dropdown selection cotaining the new parameter value
- * @param {String} parameterName The name of the parameter to be changed
+ * @param {Object} value Value object returned by the dropdown selection cotaining the new parameter value
+ * @param {String} parameterName Name of the parameter that will be changed
  */
 const setSingleParameter = (activityId, value, parameterName) => {
   const localParameterStorage = getParameterStorage();
@@ -201,9 +201,9 @@ const setSingleParameter = (activityId, value, parameterName) => {
 /**
  * @description Sets a property of a single parameter object in the session storage
  * @param {String} activityId Id of the activity for which to change a parameter property for
- * @param {String} parameterName Name of the parameter we want to change a property for
- * @param {String} property Name of the property we want to change
- * @param {Object} value The value object returned by the dropdown selection
+ * @param {String} parameterName Name of the parameter of which a property will be changed
+ * @param {String} property Name of the property that will be changed
+ * @param {Object} value Value object returned by the dropdown selection
  * @returns {Object} Updated parameter object
  */
 const setPropertyForParameter = (
@@ -236,12 +236,12 @@ const setPropertyForParameter = (
 };
 
 /**
- * @description Retrieves the parameter session storage and returns the current value of the property we want to check
+ * @description Retrieves the parameter session storage and returns the current value of the property that will be checked
  * @param {string} robotId Id of the selected robot
  * @param {string} activityId Id of the selected activity
- * @param {string} parameterName The name of the parameter for which we want to get an update on the status of a property
- * @param {string} property The property of the parameters we want to get the current value of
- * @returns {String} The value of the property of the parameter or undefined if the activity has no parameter objects
+ * @param {string} parameterName Name of the parameter for which to get an update on the status of a property
+ * @param {string} property Property of the parameters to get the current value of
+ * @returns {String} Value of the property of the parameter or undefined if the activity has no parameter objects
  */
 const parameterPropertyStatus = (
   robotId,
@@ -263,9 +263,9 @@ const parameterPropertyStatus = (
 };
 
 /**
- * @description Sets the new value as the name of the output value in the session storage
- * @param {String} activityId Id of the activity for which to change the value of the output value for
- * @param {String} value The new value for the name of the output value
+ * @description Sets the new value as the name of the output variable in the session storage
+ * @param {String} activityId Id of the activity for which the value of the output variable will be changed
+ * @param {String} value New value for the name of the output variable
  */
 const setOutputValueName = (activityId, value) => {
   const localParameterStorage = getParameterStorage();
@@ -289,8 +289,8 @@ const setOutputValueName = (activityId, value) => {
 /**
  * @description If there is more than one unused parameter object, delete it in the database
  * @param {Array} parameters List of all parameters saved in the session storage
- * @param {Array} usedElementIds The activityIds that are still being used
- * @param {String} robotId The Id of the robot
+ * @param {Array} usedElementIds ActivityIds that are still being used
+ * @param {String} robotId Id of the robot
  */
 const deleteUnusedParameterFromDB = (parameters, usedElementIds, robotId) => {
   const unusedParameters = parameters.filter(

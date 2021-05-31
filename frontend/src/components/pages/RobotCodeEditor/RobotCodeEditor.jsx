@@ -48,9 +48,8 @@ const RobotFile = () => {
   }, []);
 
   /**
-   * @description Gets called when the the button is pressed to save to the cloud.
-   * This function will retrieve the code from the editor, parse it to a ssot and write the
-   * resulting ssot into the sessionStorage.
+   * @description Will retrieve the code from the editor, parse it to a ssot and write the
+   * resulting ssot into the sessionStorage. Gets called when the the button is pressed to save to the cloud.
    */
   const onSaveToCloud = () => {
     const ssot = parseRobotCodeToSsot(code);

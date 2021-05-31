@@ -58,7 +58,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   }, []);
 
   /**
-   * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
+   * @description Called whenever the modeler changes. Either a new element was selected or an element changed or both.
    */
   useEffect(() => {
     modeler.on('selection.changed', (event) => {

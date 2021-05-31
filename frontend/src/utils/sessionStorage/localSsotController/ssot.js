@@ -28,7 +28,7 @@ const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 const PARAMETER_STORAGE_PATH = 'parameterLocalStorage';
 
 /**
- * @description Gets the robotId of the currently opened robot from the session storage
+ * @description Retrieves the robotId of the currently opened robot from the session storage
  * @returns {String} Currently saved robotId
  */
 const getRobotId = () =>
@@ -43,8 +43,8 @@ const getRobotName = () =>
 
 /**
  * @description Writes the robotId and the robotName of the currently opened robot into the session storage
- * @param {String} robotName The robotName ot the currently opened robot
- * @param {String} robotId The robotId ot the currently opened robot
+ * @param {String} robotName RobotName ot the currently opened robot
+ * @param {String} robotId RobotId ot the currently opened robot
  */
 const setRobotMetadata = (robotName, robotId) => {
   const robotMetadata = JSON.parse(sessionStorage.getItem(ROBOT_METADATA_PATH));
@@ -55,7 +55,7 @@ const setRobotMetadata = (robotName, robotId) => {
 
 /**
  * @description Initializes the ssot in the session storage
- * @param {String} robotId Id of the robot for which we want to initialize the ssot in the session storage
+ * @param {String} robotId Id of the robot for which the ssot in the session storage will be initialized
  */
 const initSsotSessionStorage = (robotId) => {
   getSsot(robotId)

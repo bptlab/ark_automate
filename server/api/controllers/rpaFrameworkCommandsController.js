@@ -36,7 +36,7 @@ exports.getAvailableApplications = async (req, res) => {
  *     parameters:
  *       - name: application
  *         in: path
- *         description: The name of an application
+ *         description: Name of an application
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/Applications'
@@ -81,7 +81,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
  *     get:
  *       tags:
  *         - RPA-Functionalities
- *       summary: Get all available Task and Application combinations with the input parameters and possible output values
+ *       summary: Retrieve all available Task and Application combinations with the input parameters and possible output values
  *       operationId: getFunctionalities
  *       responses:
  *         200:

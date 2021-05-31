@@ -12,7 +12,7 @@ import styles from '../../RobotInteractionCockpit.module.css';
 
 const { Title } = Typography;
 /**
- * @description Renders the robot logs and robot status while execution
+ * @description Renders the robot logs and robot status while executing
  * @category Frontend
  * @component
  */
