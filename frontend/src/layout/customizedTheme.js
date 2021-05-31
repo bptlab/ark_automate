@@ -1,7 +1,6 @@
 const corporateDesign = require('./corporateDesign');
 
 const customizedTheme = {
-  // general
   '@primary-color': corporateDesign.colorPrimary,
   '@link-color': corporateDesign.colorBackgroundCta,
   '@success-color': corporateDesign.colorBackgroundCta,
@@ -11,27 +10,17 @@ const customizedTheme = {
   '@layout-body-background': corporateDesign.colorBackground,
   '@border-radius-base': '5px',
   '@label-color': corporateDesign.colorPrimaryInvertedText,
-
-  // text
   '@heading-color': corporateDesign.colorBackgroundText,
   '@text-color': corporateDesign.colorBackgroundText,
   '@text-color-dark': corporateDesign.colorPrimaryInvertedText,
-  // button
   '@btn-primary-bg': corporateDesign.colorBackgroundCta,
-  // input
   '@input-color': corporateDesign.colorBackgroundText,
-  // sider
   '@layout-sider-background': corporateDesign.colorPrimaryInverted2,
-  // component
   '@component-background': corporateDesign.colorBackground2,
-  // footer
   '@layout-footer-background': corporateDesign.colorPrimaryInverted,
-  // dropdown
   '@dropdown-menu-bg': corporateDesign.colorPrimaryInverted2,
   '@select-item-selected-color': corporateDesign.colorBackgroundText,
-  // header
   '@layout-header-background': corporateDesign.colorPrimaryInverted,
-  // fonts
   '@font-family': 'Lato, sans-serif',
 };
 
