@@ -4,7 +4,7 @@
  */
 
 /**
- * @description Triggers parsing of the Ssot to .robot file
+ * @description Triggers parsing of the ssot to .robot file
  * @returns {String} .robot file code
  */
 const getParsedRobotFile = async (robotId) =>
@@ -12,7 +12,7 @@ const getParsedRobotFile = async (robotId) =>
 
 /**
  * @description Fetch the ssot correlating to the specified Id
- * @param {String} robotId - Id of the robot that will be retrieved
+ * @param {String} robotId Id of the robot that will be retrieved
  * @returns {Object} Found ssot
  */
 const getSsot = async (robotId) => {
@@ -23,8 +23,8 @@ const getSsot = async (robotId) => {
 
 /**
  * @description Rename the robot in the ssot
- * @param {String} robotId - RobotId of the robot that will be renamed
- * @param {String} newRobotName - String with the new RobotName
+ * @param {String} robotId  RobotId of the robot that will be renamed
+ * @param {String} newRobotName String with the new RobotName
  * @returns {Object} Object containing robotName and starterId
  */
 const changeSsotName = async (robotId, newRobotName) => {

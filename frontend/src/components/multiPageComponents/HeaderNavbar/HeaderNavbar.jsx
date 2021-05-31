@@ -9,7 +9,7 @@ const { Header } = Layout;
 
 /**
  * @component
- * @description Renders the header navbar for all pages and initially selects the passed key-element.
+ * @description Renders the header navbar for all pages and initially selects the passed key element.
  * @category Frontend
  * @example return <HeaderNavbar selectedKey={2} />
  */
@@ -58,7 +58,7 @@ const HeaderNavbar = (props) => {
 
         <Menu.Item key={robotOverviewPageKey}>
           Overview
-          <Link to='/robot_overview' />
+          <Link to='/robotOverview' />
         </Menu.Item>
         {!onRobotInteraction && (
           <>
@@ -71,7 +71,7 @@ const HeaderNavbar = (props) => {
             {!onOverview && (
               <Menu.Item key={robotCodeEditorPageKey}>
                 Robot Code
-                <Link to='/robotcode_editor' />
+                <Link to='/robotcodeEditor' />
               </Menu.Item>
             )}
           </>

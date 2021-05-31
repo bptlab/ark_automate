@@ -34,7 +34,6 @@ if (!isDev && cluster.isMaster) {
 } else {
   const app = express();
 
-  // Setup socket.io connection
   const { createServer } = http;
   const { Server } = socketio;
   const httpServer = createServer(app);
@@ -58,7 +57,6 @@ if (!isDev && cluster.isMaster) {
     useUnifiedTopology: true,
   });
 
-  // Priority serve any static files.
   app.use(express.static(path.resolve(__dirname, 'build')));
   app.use(express.json());
 

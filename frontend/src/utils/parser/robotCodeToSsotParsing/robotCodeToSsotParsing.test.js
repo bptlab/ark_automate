@@ -11,7 +11,14 @@ jest.mock('../../componentsFunctionality/notificationUtils');
 
 import customNotification from '../../componentsFunctionality/notificationUtils';
 
-const parser = require('./robotCodeToSsotParsing');
+import {
+  parseRobotCodeToSsot,
+  getLineNumberForSelector,
+  getRobotCodeAsArray,
+  getApplicationArray,
+  getElementsArray,
+  getInstructionBlocksFromTaskSection,
+} from './robotCodeToSsotParsing';
 
 const ROBOT_ID = '54ab2d30eb3cc402041ac60f';
 
@@ -31,34 +38,29 @@ sessionStorage.setItem(
 );
 
 const correctRobotCode = `${correctSettingsSection}\n\n${correctTaskSection}`;
-const robotCodeAsArray = parser.getRobotCodeAsArray(correctRobotCode);
-const settingsSectionAsArray = parser.getRobotCodeAsArray(
-  correctSettingsSection
-);
-const taskSectionAsArray = parser.getRobotCodeAsArray(correctTaskSection);
-const declaredApplications = parser.getApplicationArray(settingsSectionAsArray);
+const robotCodeAsArray = getRobotCodeAsArray(correctRobotCode);
+const settingsSectionAsArray = getRobotCodeAsArray(correctSettingsSection);
+const taskSectionAsArray = getRobotCodeAsArray(correctTaskSection);
+const declaredApplications = getApplicationArray(settingsSectionAsArray);
 
 describe('RobotCode to SSOT Parsing Tests', () => {
   it('contains the correct robotMetadata', () => {
     sessionStorage.setItem('idCounter', '5416');
-    const ssot = parser.parseRobotCodeToSsot(correctRobotCode);
+    const ssot = parseRobotCodeToSsot(correctRobotCode);
     expect(ssot).toHaveProperty('robotName', 'AwesomeTestRobot');
     expect(ssot).toHaveProperty('_id', '12345678');
     expect(ssot).toHaveProperty('starterId', 'Event_0ay5417');
   });
 
   it('finds the settings selector correctly', () => {
-    const settingsSectionAsArrayForTest = parser.getRobotCodeAsArray(
+    const settingsSectionAsArrayForTest = getRobotCodeAsArray(
       `RandomOffsetLine\n${correctSettingsSection}`
     );
     expect(
-      parser.getLineNumberForSelector(
-        settingsSectionAsArray,
-        '*** Settings ***'
-      )
+      getLineNumberForSelector(settingsSectionAsArray, '*** Settings ***')
     ).toBe(0);
     expect(
-      parser.getLineNumberForSelector(
+      getLineNumberForSelector(
         settingsSectionAsArrayForTest,
         '*** Settings ***'
       )
@@ -67,16 +69,16 @@ describe('RobotCode to SSOT Parsing Tests', () => {
   it("throws an error, if settings selector wasn't found", () => {
     const robotCodeWithOutSettingsSelector = robotCodeAsArray.slice(1);
     expect(
-      parser.getLineNumberForSelector(
+      getLineNumberForSelector(
         robotCodeWithOutSettingsSelector,
         '*** Settings ***'
       )
     ).toBe(undefined);
   });
   it('finds the tasks selector correctly', () =>
-    expect(
-      parser.getLineNumberForSelector(robotCodeAsArray, '*** Tasks ***')
-    ).toEqual(3));
+    expect(getLineNumberForSelector(robotCodeAsArray, '*** Tasks ***')).toEqual(
+      3
+    ));
 
   it('finds all applications', () =>
     expect(['Testing', 'Excel.Application']).toEqual(
@@ -85,7 +87,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
 
   it('has a correct elementsArray', () => {
     sessionStorage.setItem('idCounter', '5416');
-    const elementsArray = parser.getElementsArray(
+    const elementsArray = getElementsArray(
       taskSectionAsArray,
       declaredApplications,
       ROBOT_ID
@@ -94,7 +96,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
   });
 
   it('generates correct instruction blocks', () => {
-    const instructionBlocks = parser.getInstructionBlocksFromTaskSection(
+    const instructionBlocks = getInstructionBlocksFromTaskSection(
       taskSectionAsArray,
       taskAndApplicationCombinations
     );
@@ -112,7 +114,7 @@ describe('Error handling while parsing', () => {
     });
 
     const robotCodeWithOutSettingsSelector = robotCodeAsArray.slice(1);
-    parser.getLineNumberForSelector(
+    getLineNumberForSelector(
       robotCodeWithOutSettingsSelector,
       '*** Settings ***'
     );
@@ -131,7 +133,7 @@ describe('Error handling while parsing', () => {
     const settingsSectionWithError = settingsSectionAsArray.map((singleLine) =>
       singleLine.replace('Library', 'Lib')
     );
-    parser.getApplicationArray(settingsSectionWithError);
+    getApplicationArray(settingsSectionWithError);
   });
 
   it('handles "RPA."-Alias errors', async () => {
@@ -147,7 +149,7 @@ describe('Error handling while parsing', () => {
     const settingsSectionWithError = settingsSectionAsArray.map((singleLine) =>
       singleLine.replace('RPA.', 'Rpa.')
     );
-    parser.getApplicationArray(settingsSectionWithError);
+    getApplicationArray(settingsSectionWithError);
   });
 
   it('handles "RPA-Application is not defined" errors', async () => {
@@ -163,6 +165,6 @@ describe('Error handling while parsing', () => {
     const settingsSectionWithError = settingsSectionAsArray.map((singleLine) =>
       singleLine.replace('Excel.Application', 'Word.Application')
     );
-    parser.getApplicationArray(settingsSectionWithError);
+    getApplicationArray(settingsSectionWithError);
   });
 });

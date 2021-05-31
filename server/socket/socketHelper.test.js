@@ -73,7 +73,6 @@ describe('job creation', () => {
     expect(jobId).not.toBeUndefined();
     expect(jobId).not.toBeNull();
 
-    // verify if really in DB
     const foundJob = await mongoose.model('job').findById(jobId);
     expect(JSON.stringify(foundJob.id)).toEqual(JSON.stringify(jobId));
   });
@@ -88,7 +87,6 @@ describe('updating of job', () => {
       'updatedStatus'
     );
 
-    // verify if really in DB
     const foundJob = await mongoose.model('job').findById(testData.testJob._id);
     expect(foundJob).not.toBeNull();
     expect(foundJob).not.toBeUndefined();

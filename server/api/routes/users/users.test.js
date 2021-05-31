@@ -43,8 +43,6 @@ describe('GET /users/{userId}/robots', () => {
     await ssotRetrievalController.getRobotList(request, response);
     const data = await response._getData();
     expect(response.statusCode).toBe(200);
-    // Catches error "Received: serializes to the same string"
-    // Solution found here https://github.com/facebook/jest/issues/8475#issuecomment-537830532
     expect(JSON.stringify(data[0]._id)).toEqual(JSON.stringify(testRobotId));
   });
 });
@@ -67,7 +65,6 @@ describe('POST /users/robotAccess', () => {
     expect(JSON.stringify(data.userId)).toEqual(JSON.stringify(testUserId));
     expect(JSON.stringify(data.robotId)).toEqual(JSON.stringify(testRobotId));
 
-    // verify if really in DB
     const userAccessObject = await mongoose
       .model('userAccessObject')
       .find({
@@ -101,7 +98,6 @@ describe('POST /users/{userId}/robots', () => {
     const data = await response._getData();
     const newRobotId = data._id;
 
-    // verify if really in DB
     const request2 = httpMocks.createRequest({
       params: {
         userId: testUserId,

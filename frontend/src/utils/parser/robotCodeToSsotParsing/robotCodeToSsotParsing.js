@@ -8,9 +8,7 @@ import {
   getRobotName,
 } from '../../sessionStorage/localSsotController/ssot';
 
-const {
-  default: customNotification,
-} = require('../../componentsFunctionality/notificationUtils');
+import customNotification from '../../componentsFunctionality/notificationUtils';
 
 const FOURSPACE = '    ';
 
@@ -404,7 +402,6 @@ const buildSingleParameterObject = (
       } else {
         singleParameterObject.value = singleParamArray[index];
       }
-
       return singleParameterObject;
     }
   );
@@ -419,8 +416,8 @@ const buildSingleParameterObject = (
 
 /**
  * @description Build the elementsArray of the ssot
- * @param {Array} robotCodeTaskSection Robot code w/o empty lines as an array of Strings
- * @param {Array} declaredApplications All declared Aplications from ***settings*** section as Strings
+ * @param {Array} robotCodeTaskSection Robot code w/o empty lines as an array of strings
+ * @param {Array} declaredApplications All declared applications from ***settings*** section as strings
  * @param {String} robotId Id of the current robot / ssot
  * @returns {Array} elementsArray with all needed properties
  */

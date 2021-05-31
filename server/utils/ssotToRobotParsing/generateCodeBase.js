@@ -86,7 +86,6 @@ const generateCodeBase = async (ssot) => {
   parsedCode += `*** Settings ***${LINEBREAK}`;
   const attributeObjects = await retrieveAttributes(ssot);
   parsedCode += generateCodeForLibraryImports(attributeObjects);
-  // ideally we use the keyword statement for each task, currently not working out of the box
   parsedCode += `${LINEBREAK}*** Tasks ***${LINEBREAK}`;
   return { parsedCode, attributeObjects };
 };

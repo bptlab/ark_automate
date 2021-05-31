@@ -11,11 +11,6 @@ const testData = require('../../../utils/testing/testData');
 beforeAll(async () => dbHandler.connect());
 
 /**
- * Clear all test data after every test. Not needed here because no test writes data
- */
-// afterEach(async () =>  dbHandler.clearDatabase());
-
-/**
  * Remove and close the db and server.
  */
 afterAll(async () => dbHandler.closeDatabase());
