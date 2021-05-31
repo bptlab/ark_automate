@@ -1,6 +1,6 @@
-# Welcome to the Ark_automate wiki!
+# Welcome to the Ark Automate wiki!
 
-Ark_automate is an open-source RPA tool that uses several modeling languages to create bots.
+Ark Automate is an open-source RPA tool that uses several modeling languages to create bots.
 
 In our Wiki you can find the following:
 
