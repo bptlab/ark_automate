@@ -43,6 +43,8 @@ describe('GET /users/{userId}/robots', () => {
     await ssotRetrievalController.getRobotList(request, response);
     const data = await response._getData();
     expect(response.statusCode).toBe(200);
+    // Catches error "Received: serializes to the same string"
+    // Solution found here https://github.com/facebook/jest/issues/8475#issuecomment-537830532
     expect(JSON.stringify(data[0]._id)).toEqual(JSON.stringify(testRobotId));
   });
 });
