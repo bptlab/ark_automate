@@ -10,9 +10,9 @@
   "source": {
     "include": [
       "./../frontend/src",
-      "./../server/controllers",
-      "./../server/services",
-      "./../server/utils"
+      "./../server/utils/ssotToRobotParsing",
+      "./../server/socket/socketHelperFunctions.js",
+      "./../server/utils/testing/testDatabaseHandler.js"
     ],
     "exclude": ["./../frontend/node_modules", "./../server/node_modules"],
     "includePattern": ".+\\.js(doc|x)?$",

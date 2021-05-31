@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
+import { getRobotId } from '../../../utils/sessionStorage/localSsotController/ssot';
 import styles from './HeaderNavbar.module.css';
 
 const { Header } = Layout;
@@ -9,6 +10,7 @@ const { Header } = Layout;
 /**
  * @component
  * @description Renders the header navbar for all pages and initially selects the passed key-element.
+ * @category Frontend
  * @example return <HeaderNavbar selectedKey={2} />
  */
 const HeaderNavbar = (props) => {
@@ -34,8 +36,7 @@ const HeaderNavbar = (props) => {
     selectedKey === bpmnModelerPageKey ||
     selectedKey === robotCodeEditorPageKey
   ) {
-    const robotId = JSON.parse(sessionStorage.getItem('robotId'));
-    bpmnModelerLink += `/${robotId}`;
+    bpmnModelerLink += `/${getRobotId()}`;
   }
 
   return (
@@ -49,7 +50,7 @@ const HeaderNavbar = (props) => {
           <Link to='/'>
             <img
               style={{ height: '3rem' }}
-              src='/logo/logo_cta.png'
+              src='/logo/logoCta.png'
               alt='ark_automate Icon'
             />
           </Link>

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const dbHandler = require('../utils/testing/testDatabaseHandler');
@@ -106,12 +105,12 @@ describe('updating of job', () => {
 
     const foundJob = await mongoose.model('job').findById(testData.testJob._id);
     expect(foundJob.loggedErrors.length).toEqual(2);
-    expect(foundJob.loggedErrors[0].activity_name).toBe('Browser3');
+    expect(foundJob.loggedErrors[0].activityName).toBe('Browser3');
     expect(foundJob.loggedErrors[0].tasks.length).toBe(2);
     expect(foundJob.loggedErrors[0].message).toBe(
       "No keyword with name 'Open Chro Browser' found. Did you mean:\n    RPA.Browser.Selenium.Open Chrome Browser"
     );
-    expect(foundJob.loggedErrors[1].activity_name).toBe('Save file');
+    expect(foundJob.loggedErrors[1].activityName).toBe('Save file');
     expect(foundJob.loggedErrors[1].message).toBe('Test Failing Message');
   });
 });

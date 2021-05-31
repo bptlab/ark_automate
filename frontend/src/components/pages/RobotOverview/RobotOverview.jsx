@@ -35,7 +35,7 @@ const RobotOverview = () => {
 
   /**
    * @description Fetches Bots for the specified user and will trigger a rerender so that it will be displayed
-   * @param {String} userIdToFetch The userId to fetch Bots for
+   * @param {String} userIdToFetch userId for which the bots will be fetched
    */
   const retrieveBotList = (userIdToFetch) => {
     fetchSsotsForUser(userIdToFetch)
@@ -54,6 +54,7 @@ const RobotOverview = () => {
    */
   useEffect(() => {
     initSessionStorage('currentUserId', '80625d115100a2ee8d8e695b');
+    initSessionStorage('robotMetadata', JSON.stringify({}));
     retrieveBotList(userId);
     getAllRpaFunctionalities()
       .then((response) => response.json())
@@ -79,7 +80,7 @@ const RobotOverview = () => {
 
   /**
    * @description Updates the current user id in the session storage and sets the state variable userId to the new value
-   * @param {Integer} value the value of the number input field used for setting the user id
+   * @param {Integer} value Value of the number input field used for setting the user id
    */
   const changeUserId = (value) => {
     sessionStorage.setItem('currentUserId', value);
@@ -115,8 +116,8 @@ const RobotOverview = () => {
 
   /**
    * @description Creates all boxes for the robots from the database
-   * @returns All Boxes that match the current searchValue as React component
    * @param {String} currentSearchValue Currently stored value of the search bar, by which the boxes to be displayed are selected
+   * @returns {React.ReactElement} All Boxes that match the current searchValue as React component
    */
   const createRobotBoxes = (currentSearchValue) => {
     const filteredRobotList = Object.values(robotList)

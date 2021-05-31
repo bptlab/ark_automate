@@ -15,8 +15,12 @@ const parser = require('./robotCodeToSsotParsing');
 
 const ROBOT_ID = '54ab2d30eb3cc402041ac60f';
 
-sessionStorage.setItem('robotName', 'AwesomeTestRobot');
-sessionStorage.setItem('robotId', '12345678');
+const robotMetadata = {
+  robotName: 'AwesomeTestRobot',
+  robotId: '12345678',
+};
+
+sessionStorage.setItem('robotMetadata', JSON.stringify(robotMetadata));
 sessionStorage.setItem(
   'availableApplications',
   '["Excel.Application","Excel.Files","HTTP","Testing"]'
@@ -39,7 +43,7 @@ describe('RobotCode to SSOT Parsing Tests', () => {
     sessionStorage.setItem('idCounter', '5416');
     const ssot = parser.parseRobotCodeToSsot(correctRobotCode);
     expect(ssot).toHaveProperty('robotName', 'AwesomeTestRobot');
-    expect(ssot).toHaveProperty('_id', 12345678);
+    expect(ssot).toHaveProperty('_id', '12345678');
     expect(ssot).toHaveProperty('starterId', 'Event_0ay5417');
   });
 

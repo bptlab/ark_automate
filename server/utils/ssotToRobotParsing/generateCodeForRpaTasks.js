@@ -13,16 +13,16 @@ const rpaModels = require('../../api/models/rpaTaskModel');
 
 /**
  * @description Checks whether the given element is of type instruction and contains rpa attributes
- * @param {Object} currentElement Element to check
+ * @param {Object} currentElement Element that will be checked
  * @returns {Boolean} Value specifies if object is of type instruction and contains rpa attributes
  */
 const isAnRpaInstruction = (currentElement) =>
   currentElement.type === ACTIVITY_IDENTIFIER;
 
 /**
- * @description Will create a prefix to catch the output value of an activity, if one is present
- * @param {Object} paramObject The parameter object to check and loop through
- * @returns {String} String specifying the output value name
+ * @description Creates a prefix to catch the output variable of an activity, if one is present
+ * @param {Object} paramObject Parameter object that will be checked and looped through
+ * @returns {String} String specifying the output variables name
  */
 const setOutputValue = (paramObject) => {
   let newCodeLine = FOURSPACE;
@@ -77,12 +77,12 @@ const successorTasksExist = (currentElement) =>
   currentElement.successorIds[0] !== '';
 
 /**
- * @description Receives an array of all elements and generates the .robot code for the elements recursively.
- * @param {String} id Id of the element we are looking for
+ * @description Generates the .robot code for the elements in the array of all elements recursively
+ * @param {String} id Id of the element that the code will be generated for
  * @param {Array} elements All the elements from the ssot
  * @param {Array} parameters All parameter objects of the robot
  * @param {Array} attributes All attribute objects of the robot
- * @param {String} codeToAppend The current code we want to extend
+ * @param {String} codeToAppend Current code that will be extended
  * @param {String} parsingMode Indicates if the parser is used for the frontend or the local client
  * @returns {string} Generated .robot code for the tasks section
  */
@@ -166,7 +166,7 @@ const generateCodeForRpaTasks = async (
 
   const groupedByTask = await mongoose
     .model('rpa-task')
-    .aggregate([{ $group: { _id: '$Task', count: { $sum: 1 } } }]);
+    .aggregate([{ $group: { _id: '$task', count: { $sum: 1 } } }]);
   const listOfDuplicates = groupedByTask
     .filter((singleTask) => singleTask.count > 1)
     // eslint-disable-next-line no-underscore-dangle

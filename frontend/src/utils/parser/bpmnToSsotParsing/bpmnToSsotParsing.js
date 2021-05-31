@@ -1,5 +1,9 @@
 /* eslint-disable no-param-reassign */
 import customNotification from '../../componentsFunctionality/notificationUtils';
+import {
+  getRobotId,
+  getRobotName,
+} from '../../sessionStorage/localSsotController/ssot';
 
 const { parseString } = require('xmljs2');
 
@@ -36,8 +40,8 @@ const isElementTracked = (elementsArray, id) => {
 
 /**
  *
- * @param {Array} bpmnShapes all shapes of the BPMN diagram
- * @param {Array} localElementsArray current version of the localElementsArray with all elements
+ * @param {Array} bpmnShapes All shapes of the BPMN diagram
+ * @param {Array} localElementsArray Current version of the localElementsArray with all elements
  * @returns {Array}  Array of elements with their id, successors, predecessors and name
  */
 const returnElementsArrayWithNameLabel = (bpmnShapes, localElementsArray) => {
@@ -180,8 +184,9 @@ const getStartEventId = (bpmnJson) => {
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
  * @returns {string} XML that has to be put in single source of truth file
  */
-const parseBpmnToSsot = async (bpmnXml, robotId) => {
-  const robotName = sessionStorage.getItem('robotName');
+const parseBpmnToSsot = async (bpmnXml) => {
+  const robotName = getRobotName();
+  const robotId = getRobotId();
   const bpmnJson = await parseString(bpmnXml.xml);
   const startEventId = getStartEventId(bpmnJson);
 

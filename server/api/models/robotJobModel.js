@@ -13,7 +13,7 @@ const tasksStatusSchema = new Schema({
 });
 
 const activityErrorSchema = new Schema({
-  activity_name: { type: String, required: [true, 'Activity name required'] },
+  activityName: { type: String, required: [true, 'Activity name required'] },
   tasks: {
     type: [tasksStatusSchema],
     required: [true, 'At least on task required'],
@@ -21,13 +21,12 @@ const activityErrorSchema = new Schema({
   message: { type: String, required: [true, 'Error messsage required'] },
 });
 
-// eslint-disable-next-line camelcase
-const Job_Schema = new Schema({
-  user_id: {
+const jobSchema = new Schema({
+  userId: {
     type: mongoose.Types.ObjectId,
     required: [true, 'UserId required'],
   },
-  robot_id: {
+  robotId: {
     type: mongoose.Types.ObjectId,
     required: [true, 'RobotId required'],
   },
@@ -36,5 +35,5 @@ const Job_Schema = new Schema({
   loggedErrors: [activityErrorSchema],
 });
 
-const Job = mongoose.model('job', Job_Schema);
+const Job = mongoose.model('job', jobSchema);
 module.exports = { Job };

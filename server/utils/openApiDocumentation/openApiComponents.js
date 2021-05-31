@@ -10,17 +10,17 @@
  *       type: object
  *       required:
  *         - _id
- *         - Application
- *         - Task
- *         - Code
+ *         - application
+ *         - task
+ *         - code
  *       properties:
  *         _id:
  *           $ref: '#/components/schemas/ObjectIds'
- *         Application:
+ *         application:
  *           $ref: '#/components/schemas/Applications'
- *         Task:
+ *         task:
  *           $ref: '#/components/schemas/Tasks'
- *         Code:
+ *         code:
  *           $ref: '#/components/schemas/Tasks'
  *         ouputValue:
  *           type: boolean
@@ -120,11 +120,11 @@
  *     UserAccessObjects:
  *       type: object
  *       required:
- *         - AccessLevel
+ *         - accessLevel
  *         - robotId
  *         - userId
  *       properties:
- *         AccessLevel:
+ *         accessLevel:
  *           type: string
  *           example: ReadWrite
  *         robotId:

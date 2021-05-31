@@ -7,16 +7,16 @@ import { deleteAttributesForActivities } from '../../../api/routes/robots/rpaAtt
 const ATTRIBUTE_STORAGE_PATH = 'attributeLocalStorage';
 
 /**
- * @description Will get the attribute object array from the session storage
- * @returns {Array} parameter local storage
+ * @description Retrieves the attribute object array from the session storage
+ * @returns {Array} Parameter from local storage
  */
 const getAttributeStorage = () =>
   JSON.parse(sessionStorage.getItem(ATTRIBUTE_STORAGE_PATH));
 
 /**
- * @description Will get the attribute object for an activiy from session storage
- * @param {String} activityId Id of the activity for which to get the attribute object
- * @returns The attribute object for the selected activity or undefined if not available
+ * @description Retrieves the attribute object for an activiy from session storage
+ * @param {String} activityId Id of the activity for which the attribute object will be retrieved
+ * @returns {Object} Attribute object for the selected activity or undefined if not available
  */
 const getAttributeObjectForActivity = (activityId) => {
   const localAttributeStorage = JSON.parse(
@@ -28,9 +28,9 @@ const getAttributeObjectForActivity = (activityId) => {
 };
 
 /**
- * @description This function gets the selected rpa task for the selected activity from session storage
+ * @description Retrieves the selected rpa task for the selected activity from session storage
  * @param {String} activityId Id of the currently selected activity
- * @returns The selected rpa task for the selected activity from session storage or undefined if not available
+ * @returns {String} Selected rpa task for the selected activity from session storage or undefined if not available
  */
 const getRpaTask = (activityId) => {
   const matchingEntry = getAttributeObjectForActivity(activityId);
@@ -114,9 +114,9 @@ const setRpaApplication = (robotId, activityId, newApplication) => {
 };
 
 /**
- * @description Gets the rpa application for the selected activity from session storage
+ * @description Retrieves the rpa application for the selected activity from the session storage
  * @param {String} activityId Id of the currently selected activity
- * @returns The selected rpa application for the selected activity or undefined
+ * @returns {String} Selected rpa application for the selected activity or undefined
  */
 const getRpaApplication = (activityId) => {
   const matchingEntry = getAttributeObjectForActivity(activityId);
@@ -128,10 +128,10 @@ const getRpaApplication = (activityId) => {
 };
 
 /**
- * @description If there is more than one unused attribute object, delete it in the database
+ * @description Cheks if there is more than one unused attribute object, if so delete it in the database
  * @param {Array} attributes List of all attributes saved in the session storage
- * @param {Array} usedElementIds The activityIds that are still being used
- * @param {String} robotId The Id of the robot
+ * @param {Array} usedElementIds ActivityIds that are still being used
+ * @param {String} robotId Id of the robot
  */
 const deleteUnusedAttributesFromDB = (attributes, usedElementIds, robotId) => {
   const unusedAttributes = attributes.filter(

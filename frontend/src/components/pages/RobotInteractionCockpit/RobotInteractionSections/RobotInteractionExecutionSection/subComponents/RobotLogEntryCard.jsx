@@ -2,6 +2,11 @@ import React from 'react';
 import { Card, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
+/**
+ * @description Renders the status of an individual robot log
+ * @category Frontend
+ * @component
+ */
 const RobotLogCard = (props) => {
   const { log } = props;
   const { displayStatusIcon } = props;
@@ -11,7 +16,7 @@ const RobotLogCard = (props) => {
       style={{ margin: '10px' }}
       headStyle={{ fontWeight: 'bold' }}
       hoverable
-      title={log.activity_name}
+      title={log.activityName}
       size='small'
       type='inner'
     >
@@ -24,7 +29,7 @@ const RobotLogCard = (props) => {
               <Card key={index} size='small'>
                 <Row>
                   <Col xs={24} lg={24} xl={16}>
-                    <p>Task: {task.task_name}</p>
+                    <p>Task: {task.taskName}</p>
                   </Col>
                   <Col xs={24} lg={24} xl={8}>
                     <p>Status: {task.status}</p>

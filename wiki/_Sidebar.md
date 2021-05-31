@@ -13,6 +13,7 @@ Back to the [Wiki home](https://github.com/bptlab/ark_automate/wiki)
     - [Our single source of truth](https://github.com/bptlab/ark_automate/wiki/Documentation-single-source-of-truth)
     - [Corporate identity of Ark_automate](https://github.com/bptlab/ark_automate/wiki/Documentation-Corporate-Identity)
     - [Team work](https://github.com/bptlab/ark_automate/wiki/Team-Scrum-process)
+    - [Github Workflows](https://github.com/bptlab/ark_automate/wiki/Github-Workflows)
 
 - Concepts
     - [Planned user interaction](https://github.com/bptlab/ark_automate/wiki/concept-Starting-and-orchestrating-Bots) in the summer of 2021

@@ -4,7 +4,7 @@ import { Space, Typography } from 'antd';
 const { Text } = Typography;
 
 /**
- * @description Renders the task-dropdown based on passed list of task.
+ * @description Renders the task-dropdown based on the passed list of tasks.
  * @category Frontend
  * @component
  */

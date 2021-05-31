@@ -16,6 +16,7 @@ import {
   downloadRobotFile,
   onSaveToCloud,
 } from './modelerSidebarFunctionality/modelerSidebarFunctionality';
+import { getRobotName } from '../../../../utils/sessionStorage/localSsotController/ssot';
 
 const { Title } = Typography;
 const { Sider } = Layout;
@@ -57,7 +58,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
   }, []);
 
   /**
-   * @description Get's called whenever the modeler changed. Either a new element was selected or an element changed or both.
+   * @description Called whenever the modeler changes. Either a new element was selected or an element changed or both.
    */
   useEffect(() => {
     modeler.on('selection.changed', (event) => {
@@ -73,7 +74,7 @@ const ModelerSidebar = ({ modeler, robotId }) => {
     <Sider className={styles.sider}>
       <Space direction='vertical' size='small' style={{ width: '100%' }}>
         <Title level={3} className={styles.title}>
-          {sessionStorage.getItem('robotName')}
+          {getRobotName()}
         </Title>
         {elementState.selectedElements.length === 1 && (
           <PropertiesPanel

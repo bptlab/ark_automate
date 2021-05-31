@@ -12,7 +12,7 @@ import styles from '../../RobotInteractionCockpit.module.css';
 
 const { Title } = Typography;
 /**
- * @description Renders the robot logs and robot status while execution
+ * @description Renders the robot logs and robot status while executing
  * @category Frontend
  * @component
  */
@@ -90,8 +90,8 @@ const RobotInteractionExecutionSection = (props) => {
           <Title style={{ marginBottom: '0px', marginLeft: '10px' }} level={5}>
             Robot Run Logs
           </Title>
-          {executionLogs.robot_run &&
-            executionLogs.robot_run.activities.map((log, index) => (
+          {executionLogs.robotRun &&
+            executionLogs.robotRun.activities.map((log, index) => (
               <RobotLogEntryCard
                 // eslint-disable-next-line react/no-array-index-key
                 key={index}

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
@@ -56,7 +55,7 @@ describe('POST /users/robotAccess', () => {
       body: {
         userId: testUserId,
         robotId: testRobotId,
-        AccessLevel: 'ReadWrite',
+        accessLevel: 'ReadWrite',
       },
     });
     const response = httpMocks.createResponse();

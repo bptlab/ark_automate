@@ -19,7 +19,7 @@ const { Step } = Steps;
 const { Title } = Typography;
 
 /**
- * @description Page, where you can interact with a robot and for example enter input
+ * @description View where you can interact with a robot and enter parameters
  * @category Frontend
  * @component
  */
@@ -75,9 +75,9 @@ const RobotInteractionCockpit = (match) => {
   };
 
   /**
-   * @description Will update the value of a parameter in the component state
+   * @description Updates the value of a parameter in the component state
    * @param {string} parameterId Id of the parameter which value will be changed
-   * @param {string} value new value of the parameter
+   * @param {string} value New value of the parameter
    */
   const updateParameterValue = (parameterId, value) => {
     const currentParameters = [...parameters];

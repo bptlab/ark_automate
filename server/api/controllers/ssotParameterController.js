@@ -10,7 +10,7 @@ const rpaModels = require('../models/rpaTaskModel');
  *     put:
  *       tags:
  *         - Robots
- *       summary: Overwrite existing parameter objects with updated one's
+ *       summary: Overwrite existing parameter objects with updated ones
  *       operationId: overwriteParameters
  *       requestBody:
  *         content:
@@ -68,14 +68,14 @@ exports.updateMany = async (req, res) => {
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'
  *     get:
  *       tags:
  *         - Robots
- *       summary: Get all parameter objects for a specific robot
+ *       summary: Retrieve all parameter objects for a specific robot
  *       operationId: getParametersForRobot
  *       responses:
  *         200:
@@ -106,7 +106,7 @@ exports.retrieveParametersForRobot = async (req, res) => {
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'

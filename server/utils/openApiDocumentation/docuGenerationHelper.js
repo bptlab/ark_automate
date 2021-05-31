@@ -7,6 +7,10 @@ const swaggerDefinition = {
     version: '1.0.0',
     description:
       '_This document describes the REST API of Ark Automate._<br>Ark Automate is a platform that allows office users and software developers to automate business or everyday processes by simply sketching the steps of their process. By using simple flowcharts or powerful BPMN in their process outlines, users can create small software solutions using RPA that finish their tasks much faster and more reliably.',
+    license: {
+      name: 'LICENSE (MIT)',
+      url: 'https://github.com/bptlab/ark_automate/blob/main/LICENSE.md',
+    },
   },
   servers: [
     {
