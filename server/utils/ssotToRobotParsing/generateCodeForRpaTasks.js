@@ -34,11 +34,12 @@ const setOutputValue = (paramObject) => {
 };
 
 /**
- * @description Appends all provided parameters to a string which can be used to generate the RPAf file
- * @param {Object} parameterObject Parameter object that will be checked and looped through
+ * @description Will append all provided parameters to a string which can be used to generate the RPAf file
+ * @param {Object} parameterObject The parameter object to check and loop through
+ * @param {String} parsingMode Indicates if the parser is used for the frontend or the local client
  * @returns {String} String specifying the input parameters with the needed spacing in between
  */
-const appendRpaInputParameter = (parameterObject) => {
+const appendRpaInputParameter = (parameterObject, parsingMode) => {
   let newCodeLine = '';
 
   const sortedInputs = parameterObject.rpaParameters.sort(
@@ -50,7 +51,7 @@ const appendRpaInputParameter = (parameterObject) => {
       newCodeLine += `!!${parameter.name}!!`;
       return;
     }
-    if (parameter.value === '') {
+    if (parameter.value === '' && parsingMode === 'frontend') {
       newCodeLine += `%%${parameter.name}%%`;
       return;
     }
@@ -82,6 +83,7 @@ const successorTasksExist = (currentElement) =>
  * @param {Array} parameters All parameter objects of the robot
  * @param {Array} attributes All attribute objects of the robot
  * @param {String} codeToAppend Current code that will be extended
+ * @param {String} parsingMode Indicates if the parser is used for the frontend or the local client
  * @returns {string} Generated .robot code for the tasks section
  */
 const writeCodeForElement = (
@@ -90,7 +92,8 @@ const writeCodeForElement = (
   parameters,
   attributes,
   codeToAppend,
-  duplicateTasks
+  duplicateTasks,
+  parsingMode
 ) => {
   const currentElement = elements.find((element) => element.id === id);
   let combinedCode = codeToAppend;
@@ -113,7 +116,10 @@ const writeCodeForElement = (
         newCodeLine += currentAttributeObject.rpaTask;
       }
       if (currentParameterObject) {
-        newCodeLine += appendRpaInputParameter(currentParameterObject);
+        newCodeLine += appendRpaInputParameter(
+          currentParameterObject,
+          parsingMode
+        );
       }
 
       newCodeLine += LINEBREAK;
@@ -130,7 +136,8 @@ const writeCodeForElement = (
         parameters,
         attributes,
         combinedCode,
-        duplicateTasks
+        duplicateTasks,
+        parsingMode
       );
     });
   }
@@ -140,12 +147,19 @@ const writeCodeForElement = (
 };
 
 /**
- * @description Generates the .robot code for all RPA Tasks
- * @param {Array} elements All the elements from the SSoT
- * @param {Object} metaData MetaData of the robot
+ * @description Receives an array of all elements and generates the .robot code for all RPA Tasks
+ * @param {Array} elements All the elements from the ssot
+ * @param {Array} parameters Parameter objects of the robot
+ * @param {Array} attributes Attribute objects of the robot
+ * @param {String} parsingMode Indicates if the parser is used for the frontend or the local client
  * @returns {string} Generated .robot code for the tasks section
  */
-const generateCodeForRpaTasks = async (elements, parameters, attributes) => {
+const generateCodeForRpaTasks = async (
+  elements,
+  parameters,
+  attributes,
+  parsingMode
+) => {
   const startElement = elements.find(
     (element) => element.predecessorIds.length === 0
   );
@@ -157,14 +171,14 @@ const generateCodeForRpaTasks = async (elements, parameters, attributes) => {
     .filter((singleTask) => singleTask.count > 1)
     // eslint-disable-next-line no-underscore-dangle
     .map((singleDuplicateTask) => singleDuplicateTask._id);
-
   const codeForRpaTasks = writeCodeForElement(
     startElement.id,
     elements,
     parameters,
     attributes,
     '',
-    listOfDuplicates
+    listOfDuplicates,
+    parsingMode
   );
 
   return codeForRpaTasks;
