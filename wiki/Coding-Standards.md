@@ -67,12 +67,15 @@ Another Code Formatting Tool being used is [Prettier](https://prettier.io/). Her
 - "Single Source of Truth" is abbreviated with `Ssot` or `ssot` (don't use `SSoT` or `SSOT`)
 - use `Robot` in all cases instead of `Bot`
 - use `Application` in all cases instead of `App` (in context of supported RPA Applications)
+- use **hyphens** for CSS-classes and CSS-ids consistently
+  For example, don't call the class `buttonBackground` and instead call it `button-background`.
 
 ### General Code-Style
 - Do not use double empty lines
 - Space after openning bracket and before closing bracket (Goal: `import { Space } from AntD`)
 - Always use single-quotation marks
 - We use only arrow functions. Please do not use the `function` keyword.
+- Try to use only relative units (vw,vh,rem,%) to size elements with css and **not** absolut units (px)
 
 ### Documentation
 Please do not use inline comments to explain the idea behind a variable or a function. Only use those for sources where you found a special solution or workaround or for especially complex code snippets. Further comments regarding the documentation with JSDoc are also ok/appreciated.
