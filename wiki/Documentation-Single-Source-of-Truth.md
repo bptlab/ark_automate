@@ -77,7 +77,8 @@ No intermediate events are currently supported.
 
 ### Overview SSOT hierarchy
 
-![](https://i.imgur.com/7yOqDZv.png)
+![image](https://user-images.githubusercontent.com/36270527/120194098-705e4b00-c21d-11eb-9301-937447369e93.png)
+
 
 ### Component: HEADER
 
