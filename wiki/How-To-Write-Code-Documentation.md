@@ -10,7 +10,6 @@ It should be noted here, that although components are supported as a separate ta
 ### React Components
 
 As mentioned above, React components are supported through a plugin and are currently then still listed under the Classes section.
-Because of that tag all methods in the same file are
 For components please try to use the following style (taken from the [plugins repo](https://github.com/SoftwareBrothers/better-docs#preview)):
 
 ```
