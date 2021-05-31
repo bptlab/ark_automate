@@ -13,9 +13,9 @@
 If you are interested in our 5-year vision, please contact us to get access to the file.
 Our vision with architecture and limits is stored on [HackMD](https://hackmd.io/@toUukITjSM6oWi52UMDSkA/Bk4kOnoqw).
 
-# Architecture for 2021
+# Current Architecture
 
-![2021 Architecture](https://user-images.githubusercontent.com/36270527/120189142-4144db00-c217-11eb-921e-1f9954666944.png)
+![Current Architecture](https://user-images.githubusercontent.com/36270527/120189142-4144db00-c217-11eb-921e-1f9954666944.png)
 
 
 The **main architectural benefit** will be the modularity and interchangeability of the single components within the system.
