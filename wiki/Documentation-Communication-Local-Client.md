@@ -1,4 +1,4 @@
-# How the approach with socket.io was implemented our platform
+# How the approach with socket.io was implemented on our platform
 
 **Desktop app:**
 Here we implemented a CLI that reads the userId the user enters, saves the userId and uses the userId as an authentication for the communication with the web app server. Once started, the desktop app connects with the server by using a socket connection. A socket connection is this bidirectional connection that exist between every client and server. Moreover we use the userId the user entered and ask the server if this socket connection can join the room userId (we have one room for every userId). Once the socket connection was added to the userId room we wait for robots to be executed. Because we are in the userId room we receive robot execution jobs of web frontends that are connected to the same room.
