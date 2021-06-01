@@ -18,7 +18,7 @@ const App = () => (
       <Switch>
         <Route path='/' component={Home} exact />
         <Route path='/modeler/:robotId' component={RobotModeler} />
-        <Route path='/robotcodeEditor' component={RobotFile} />
+        <Route path='/robotCodeEditor' component={RobotFile} />
         <Route path='/robotOverview' component={RobotOverview} />
         <Route
           path='/interactionCockpit/:robotId'
