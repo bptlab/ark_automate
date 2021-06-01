@@ -114,7 +114,7 @@ User information about a robot (creator, released for etc.) is stored in an addi
 }
 ```
 
-**parameter object extending the INSTRUCTION:**
+**Parameter Object Extending the INSTRUCTION Element**
 
 ```json
 {

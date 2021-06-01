@@ -5,8 +5,8 @@ Ark Automate is an open-source RPA tool that uses several modeling languages to 
 In our Wiki you can find the following:
 
 - our [vision](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate) for this project including a pitch, the architecture and the user interaction
-- documentation regarding [the structure](https://github.com/bptlab/ark_automate/wiki/Documentation-Folder-Structure) of this project
 - our [code documentation](https://bptlab.github.io/ark_automate/) hostet on GitHub Pages grouped by modules and classes
+- documentation regarding [the structure](https://github.com/bptlab/ark_automate/wiki/Documentation-Folder-Structure) of this project
 - documentation regarding [our single source of truth](https://github.com/bptlab/ark_automate/wiki/Documentation-Single-Source-of-Truth)
 - documentation the [corporate identity of Ark Automate](https://github.com/bptlab/ark_automate/wiki/Documentation-Corporate-Identity)
 
