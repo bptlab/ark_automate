@@ -1,4 +1,4 @@
-Back to the [Wiki home](https://github.com/bptlab/ark_automate/wiki)
+Back to the [Wiki Home](https://github.com/bptlab/ark_automate/wiki)
 
 - **About Ark Automate**
 
