@@ -1,19 +1,15 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');
-const dbLoader = require('../../../utils/TestingUtils/databaseLoader');
+const dbHandler = require('../../../utils/testing/testDatabaseHandler');
+const dbLoader = require('../../../utils/testing/databaseLoader');
 const ssotRetrievalController = require('../../controllers/ssotRetrievalController');
 const ssotParsingController = require('../../controllers/ssotParsingController');
 
 // eslint-disable-next-line no-unused-vars
 const rpaTaskModel = require('../../models/rpaTaskModel');
 
-const {
-  testSsot,
-  testRobotId,
-} = require('../../../utils/TestingUtils/testData');
+const { testSsot, testRobotId } = require('../../../utils/testing/testData');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -71,7 +67,6 @@ describe('PATCH /robots/{robotId}/robotName', () => {
       JSON.stringify('newTestRobot')
     );
 
-    // verify if really in DB
     const ssot = await mongoose.model('SSoT').findById(testRobotId).exec();
     expect(JSON.stringify(ssot.robotName)).toEqual(
       JSON.stringify('newTestRobot')
@@ -132,7 +127,6 @@ describe('PUT /robots/{robotId}', () => {
     const data = await response._getData();
     expect(data.elements.length).toBe(1);
 
-    // verify if really in DB
     const newSsot = await mongoose.model('SSoT').findById(testRobotId).exec();
     expect(JSON.stringify(data)).toEqual(JSON.stringify(newSsot));
   });
@@ -154,7 +148,6 @@ describe('DELETE /robots/{robotId}', () => {
     await ssotRetrievalController.deleteRobot(request, response);
     expect(response.statusCode).toBe(200);
 
-    // verify if really deleted
     const usableTestRobotId = mongoose.Types.ObjectId(testRobotId);
     const foundSsots = await mongoose.model('SSoT').find().exec();
     expect(foundSsots.length).toBe(0);
@@ -189,7 +182,6 @@ describe('DELETE /robots/{robotId}', () => {
     await ssotRetrievalController.deleteRobot(request, response);
     expect(response.statusCode).toBe(200);
 
-    // verify if really deleted
     const foundUserAccessObjects = await mongoose
       .model('userAccessObject')
       .find()
@@ -228,7 +220,6 @@ describe('DELETE /robots/{robotId}', () => {
     await ssotRetrievalController.deleteRobot(request, response);
     expect(response.statusCode).toBe(200);
 
-    // verify if really deleted
     const foundAttributes = await mongoose.model('rpaAttributes').find().exec();
     expect(foundAttributes.length).toBe(0);
     expect(foundAttributes.length).not.toBe(loadedAttributes.length);
@@ -253,7 +244,6 @@ describe('DELETE /robots/{robotId}', () => {
     await ssotRetrievalController.deleteRobot(request, response);
     expect(response.statusCode).toBe(200);
 
-    // verify if really deleted
     const foundParameters = await mongoose.model('parameter').find().exec();
     expect(foundParameters.length).toBe(0);
     expect(foundParameters.length).not.toBe(loadedParameters.length);
@@ -278,7 +268,6 @@ describe('DELETE /robots/{robotId}', () => {
     await ssotRetrievalController.deleteRobot(request, response);
     expect(response.statusCode).toBe(200);
 
-    // verify if really deleted
     const foundJobs = await mongoose.model('job').find().exec();
     expect(foundJobs.length).toBe(0);
     expect(foundJobs.length).not.toBe(loadedJobs.length);
@@ -304,7 +293,6 @@ describe('DELETE /robots/{robotId}', () => {
     await ssotRetrievalController.deleteRobot(request, response);
     expect(response.statusCode).toBe(200);
 
-    // verify if really deleted
     const usableTestRobotId = mongoose.Types.ObjectId(testRobotId);
     const foundSsotById = await mongoose
       .model('SSoT')

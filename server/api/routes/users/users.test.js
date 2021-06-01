@@ -1,9 +1,8 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const httpMocks = require('node-mocks-http');
-const dbHandler = require('../../../utils/TestingUtils/TestDatabaseHandler');
-const dbLoader = require('../../../utils/TestingUtils/databaseLoader');
+const dbHandler = require('../../../utils/testing/testDatabaseHandler');
+const dbLoader = require('../../../utils/testing/databaseLoader');
 const ssotRetrievalController = require('../../controllers/ssotRetrievalController');
 
 // eslint-disable-next-line no-unused-vars
@@ -13,7 +12,7 @@ const {
   testSsot,
   testRobotId,
   testUserId,
-} = require('../../../utils/TestingUtils/testData');
+} = require('../../../utils/testing/testData');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -56,7 +55,7 @@ describe('POST /users/robotAccess', () => {
       body: {
         userId: testUserId,
         robotId: testRobotId,
-        AccessLevel: 'ReadWrite',
+        accessLevel: 'ReadWrite',
       },
     });
     const response = httpMocks.createResponse();
@@ -68,7 +67,6 @@ describe('POST /users/robotAccess', () => {
     expect(JSON.stringify(data.userId)).toEqual(JSON.stringify(testUserId));
     expect(JSON.stringify(data.robotId)).toEqual(JSON.stringify(testRobotId));
 
-    // verify if really in DB
     const userAccessObject = await mongoose
       .model('userAccessObject')
       .find({
@@ -100,9 +98,8 @@ describe('POST /users/{userId}/robots', () => {
     expect(response.statusCode).toBe(200);
 
     const data = await response._getData();
-    const newRobotId = data.robotId;
+    const newRobotId = data._id;
 
-    // verify if really in DB
     const request2 = httpMocks.createRequest({
       params: {
         userId: testUserId,

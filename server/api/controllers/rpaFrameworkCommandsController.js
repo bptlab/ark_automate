@@ -23,7 +23,7 @@ const rpaModels = require('../models/rpaTaskModel');
 exports.getAvailableApplications = async (req, res) => {
   try {
     res.set('Content-Type', 'application/json');
-    const tasks = await mongoose.model('rpa-task').distinct('Application');
+    const tasks = await mongoose.model('rpa-task').distinct('application');
     res.send(tasks);
   } catch (err) {
     console.error(err);
@@ -36,7 +36,7 @@ exports.getAvailableApplications = async (req, res) => {
  *     parameters:
  *       - name: application
  *         in: path
- *         description: The name of an application
+ *         description: Name of an application
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/Applications'
@@ -64,7 +64,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
     if (application != null) {
       await mongoose
         .model('rpa-task')
-        .distinct('Task', { Application: application }, (err, tasks) => {
+        .distinct('task', { application }, (err, tasks) => {
           res.send(tasks);
         });
     } else {
@@ -81,7 +81,7 @@ exports.getAvailableTasksForApplications = async (req, res) => {
  *     get:
  *       tags:
  *         - RPA-Functionalities
- *       summary: Get all available Task and Application combinations with the input parameters and possible output values
+ *       summary: Retrieve all available Task and Application combinations with the input parameters and possible output values
  *       operationId: getFunctionalities
  *       responses:
  *         200:

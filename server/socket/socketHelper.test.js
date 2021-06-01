@@ -1,18 +1,17 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
-const dbHandler = require('../utils/TestingUtils/TestDatabaseHandler');
+const dbHandler = require('../utils/testing/testDatabaseHandler');
 const socketHelperFunctions = require('./socketHelperFunctions');
-const testData = require('../utils/TestingUtils/testData');
+const testData = require('../utils/testing/testData');
 
 const {
   testRobotId,
   testUserId,
   testJobId,
   testRobotCode,
-} = require('../utils/TestingUtils/testData');
+} = require('../utils/testing/testData');
 
-const dbLoader = require('../utils/TestingUtils/databaseLoader');
+const dbLoader = require('../utils/testing/databaseLoader');
 
 /**
  * Connect to a new in-memory database before running any tests.
@@ -30,7 +29,7 @@ afterEach(async () => dbHandler.clearDatabase());
 afterAll(async () => dbHandler.closeDatabase());
 
 describe('robot code retrieval', () => {
-  it('sucessfully retreives the roboto code', async () => {
+  it('sucessfully retreives the robot code', async () => {
     await dbLoader.loadSsotInDb();
     await dbLoader.loadAttributesInDb();
     await dbLoader.loadParametersInDb();
@@ -74,7 +73,6 @@ describe('job creation', () => {
     expect(jobId).not.toBeUndefined();
     expect(jobId).not.toBeNull();
 
-    // verify if really in DB
     const foundJob = await mongoose.model('job').findById(jobId);
     expect(JSON.stringify(foundJob.id)).toEqual(JSON.stringify(jobId));
   });
@@ -89,7 +87,6 @@ describe('updating of job', () => {
       'updatedStatus'
     );
 
-    // verify if really in DB
     const foundJob = await mongoose.model('job').findById(testData.testJob._id);
     expect(foundJob).not.toBeNull();
     expect(foundJob).not.toBeUndefined();
@@ -106,12 +103,12 @@ describe('updating of job', () => {
 
     const foundJob = await mongoose.model('job').findById(testData.testJob._id);
     expect(foundJob.loggedErrors.length).toEqual(2);
-    expect(foundJob.loggedErrors[0].activity_name).toBe('Browser3');
+    expect(foundJob.loggedErrors[0].activityName).toBe('Browser3');
     expect(foundJob.loggedErrors[0].tasks.length).toBe(2);
     expect(foundJob.loggedErrors[0].message).toBe(
       "No keyword with name 'Open Chro Browser' found. Did you mean:\n    RPA.Browser.Selenium.Open Chrome Browser"
     );
-    expect(foundJob.loggedErrors[1].activity_name).toBe('Save file');
+    expect(foundJob.loggedErrors[1].activityName).toBe('Save file');
     expect(foundJob.loggedErrors[1].message).toBe('Test Failing Message');
   });
 });

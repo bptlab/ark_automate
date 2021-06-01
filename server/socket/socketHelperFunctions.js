@@ -1,17 +1,23 @@
 /* eslint-disable no-unused-vars */
 require('express');
 const mongoose = require('mongoose');
-const ssotToRobotParser = require('../services/SsotToRobotParsing/SsotToRobotParser.js');
+const ssotToRobotParser = require('../utils/ssotToRobotParsing/ssotToRobotParser.js');
 const ssotModels = require('../api/models/singleSourceOfTruthModel.js');
 const userAccessObject = require('../api/models/userAccessObjectModel.js');
 const jobsModel = require('../api/models/robotJobModel.js');
+
+/**
+ * @category Server
+ * @module
+ */
 
 mongoose.set('useFindAndModify', false);
 
 /**
  * @description Fetches the ssot of a given robot from the database and parses the ssot to robot code
- * @param {String} robotId the id of the robot we want the robot code for
- * @param {String} jobId the id of the current job
+ * @param {String} robotId Id of the robot that the robot code will be fetched for
+ * @param {String} jobId Id of the current job
+ * @returns {String} Code of the robot
  */
 exports.getRobotCodeForJob = async (robotId, jobId) => {
   try {
@@ -24,7 +30,8 @@ exports.getRobotCodeForJob = async (robotId, jobId) => {
 
 /**
  * @description Fetches the ssot of a given robot from the database and parses the ssot to robot code
- * @param {String} robotId the id of the robot we want the robot code for
+ * @param {String} robotId Id of the robot that the robot code will be fetched for
+ * @returns {String} Code of the robot
  */
 exports.getRobotCode = async (robotId) => {
   try {
@@ -37,7 +44,8 @@ exports.getRobotCode = async (robotId) => {
 
 /**
  * @description Finds a specific robot job and retrieves the parameter array
- * @param {String} jobId the id of the robot job that we want to get all the parameters from
+ * @param {String} jobId Id of the robot for which all parameters will be retrieved
+ * @returns {Array} All parameter objects of the robot
  */
 exports.getRobotJobParameters = async (jobId) => {
   const robotJobParameters = await mongoose
@@ -50,8 +58,8 @@ exports.getRobotJobParameters = async (jobId) => {
 };
 
 /**
- * @description Fetches the ssot from the database and parses the ssot to robot code
- * @param {String} robotId the id of the robot we want the robot code for
+ * @description Fetches the user ids of all the users
+ * @returns {Array} All user ids
  */
 exports.getAllUserIds = async () => {
   try {
@@ -68,15 +76,16 @@ exports.getAllUserIds = async () => {
 
 /**
  * @description Creates a Job in the database for a robot execution of a specific user
- * @param {String} userId the id of the user that wants to execute a robot
- * @param {String} robotId the id of the robot to be executed
- * @param {String} status the current status of the job (either waiting, executing, successful or failed)
- * @param {Array} parameters different parameters the user defined before executing the robot
+ * @param {String} userId Id of the user that wants to execute a robot
+ * @param {String} robotId Id of the robot tha will be executed
+ * @param {String} status Current status of the job (either waiting, executing, successful or failed)
+ * @param {Array} parameters Different parameters the user defined before executing the robot
+ * @returns {String} ObjectId of the new job object
  */
 exports.createJob = async (userId, robotId, status, parameters) => {
   const job = new jobsModel.Job({
-    user_id: userId,
-    robot_id: robotId,
+    userId,
+    robotId,
     status,
     parameters,
   });
@@ -85,17 +94,15 @@ exports.createJob = async (userId, robotId, status, parameters) => {
     const { _id: objId } = jobObj;
     return objId;
   } catch (err) {
-    if (err) {
-      console.error(err);
-      return undefined;
-    }
+    console.error(err);
+    return undefined;
   }
 };
 
 /**
  * @description Finds a specific job in the database and updates the status of the Job
- * @param {String} jobId the id of the job that we want to update
- * @param {String} status the current status of the job (either waiting, executing, success or failed)
+ * @param {String} jobId Id of the job that will be updated
+ * @param {String} status Current status of the job (either waiting, executing, success or failed)
  */
 exports.updateRobotJobStatus = async (jobId, status) => {
   await jobsModel.Job.findByIdAndUpdate(jobId, { status }, (err) => {
@@ -107,14 +114,14 @@ exports.updateRobotJobStatus = async (jobId, status) => {
 
 /**
  * @description Updates the given Job when the run has failed with the list of failing activities
- * @param {String} jobId the id of the job that we want to update
- * @param {Array} errorLog the list of logs of the robots activites
+ * @param {String} jobId Id of the job that will be updated
+ * @param {Array} errorLog List of logs of the robots activites
  */
 exports.updateRobotJobErrors = async (jobId, errorLog) => {
-  const errors = errorLog.robot_run.activities
+  const errors = errorLog.robotRun.activities
     .filter((activity) => activity.status === 'FAIL')
     .map((activity) => ({
-      activity_name: activity.activity_name,
+      activityName: activity.activityName,
       tasks: activity.tasks,
       message: activity.message,
     }));
@@ -131,11 +138,11 @@ exports.updateRobotJobErrors = async (jobId, errorLog) => {
 
 /**
  * @description Finds all jobs with status waiting in the database for a specific user
- * @param {String} userId the id of the user we want all waiting jobs for
+ * @param {String} userId Id of the user for which all waiting jobs will be retrieved
  */
 exports.getAllWaitingJobsForUser = async (userId) => {
   const jobList = await jobsModel.Job.find(
-    { user_id: userId, status: 'waiting' },
+    { userId, status: 'waiting' },
     (err) => {
       if (err) {
         console.error(err);

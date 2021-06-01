@@ -1,23 +1,19 @@
-Back to the [Wiki home](https://github.com/bptlab/ark_automate/wiki)
+Back to the [Wiki Home](https://github.com/bptlab/ark_automate/wiki)
 
-  - About Ark_automate
-    - [Pitch](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Pitch)
-    - [Vision](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate)
-    - [Features to be implemented](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Until-summer-2021-we-want-to-implement-a-first-working-web-app-for-our-use-case) until the summer of 2021
-    - [Architecture](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Architecture)
+- **About Ark Automate**
 
-- Documentation
-    - [The repo structure](https://github.com/bptlab/ark_automate/wiki/Documentation-Folder-structure)
-    - [Coding Standards](https://github.com/bptlab/ark_automate/wiki/Coding-standards)
-    - [Code documentation](https://bptlab.github.io/ark_automate/)
-    - [Our single source of truth](https://github.com/bptlab/ark_automate/wiki/Documentation-single-source-of-truth)
-    - [Corporate identity of Ark_automate](https://github.com/bptlab/ark_automate/wiki/Documentation-Corporate-Identity)
-    - [Team work](https://github.com/bptlab/ark_automate/wiki/Team-Scrum-process)
+  - [Pitch](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#Pitch)
+  - [Architecture](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#current-architecture)
+  - [Interaction with our Software](https://github.com/bptlab/ark_automate/wiki/Vision-for-Ark-automate#using-ark-automate) until the summer of 2021
 
-- Concepts
-    - [Planned user interaction](https://github.com/bptlab/ark_automate/wiki/concept-Starting-and-orchestrating-Bots) in the summer of 2021
-
-- Guides
-    - [Code documentation](https://github.com/bptlab/ark_automate/wiki/How-to-write-code-documentation)
-    - [Tests](https://github.com/bptlab/ark_automate/wiki/How-to-write-tests)
-    - [Style our components using css](https://github.com/bptlab/ark_automate/wiki/How-to-style-using-css)
+- **Documentation**
+  - [Repository Structure](https://github.com/bptlab/ark_automate/wiki/Documentation-Folder-structure)
+  - [Code Documentation](https://bptlab.github.io/ark_automate/)
+  - [Github Workflows](https://github.com/bptlab/ark_automate/wiki/Github-Workflows)
+  - [Coding Standards](https://github.com/bptlab/ark_automate/wiki/Coding-standards)
+  - [How To Style Components](https://github.com/bptlab/ark_automate/wiki/How-To-Use-CSS)
+  - [Corporate Identity](https://github.com/bptlab/ark_automate/wiki/Documentation-Corporate-Identity)
+  - [Concept Behind the Single Source of Truth](https://github.com/bptlab/ark_automate/wiki/Documentation-single-source-of-truth)
+  - [Database Communication](https://github.com/bptlab/ark_automate/wiki/Database-and-Communication)
+  - [Communication with Local Client](https://github.com/bptlab/ark_automate/wiki/Documentation-Communication-Local-Client)
+  - [Testing Conventions](https://github.com/bptlab/ark_automate/wiki/Testing-Conventions)

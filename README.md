@@ -1,4 +1,4 @@
-# ark_automate
+# Ark Automate
 
 [![GitHub stars](https://img.shields.io/github/stars/bptlab/ark_automate)](https://github.com/bptlab/ark_automate)
 [![GitHub open issues](https://img.shields.io/github/issues/bptlab/ark_automate)](https://github.com/bptlab/ark_automate/issues)
@@ -10,12 +10,19 @@ Ark-Automate is a platform that allows office users and software developers to a
 
 ## Installation & Setup
 
-Please try running the latest version of:
+### Repository Setup
 
-- Node.js and npm
-- nodemon (`npm install nodemon -g`)
+Please install:
 
-And then install all dependencies with `npm install` in the server and client directory.
+1. [Node.js](https://nodejs.org/en/) (at least v10.19) using the [installer](https://nodejs.org/en/download/)
+2. [npm](https://www.npmjs.com/get-npm) (at least v6.14) which is normally installed with Node.js
+3. [nodemon](https://www.npmjs.com/package/nodemon)(at least v2) using `npm install nodemon -g`
+
+Then to complete the repository setup:
+
+1. Clone this repository using `git clone https://github.com/bptlab/ark_automate.git`
+2. Change into the repository folder using `cd ark_automate`
+3. Install all dependencies by running `npm install` in the server and frontend directory. You can easily do this by running ` cd server/ && npm install && cd .. && cd frontend/ && npm install && cd ..` in the projects root directory
 
 ### Set up Heroku
 
@@ -26,17 +33,19 @@ For this step, an invitation to our Heroku project is necessary. Please create y
 3. Create a new .env file in the server directory
 4. Add the MongoDb URI to your .env file by running the following command in the server directory `heroku config:get MONGODB_URI -s -a ark-automate >> .env`
 
-### Setup linter
+### Setup development tools
 
-We use ESLint with the AirBnB Codestyle. Simply install the Plug-in ([VSCode](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)) for your IDE and it should recognize the config files. Otherwise follow [this guide](https://eslint.org/docs/user-guide/getting-started).
+Tools being used in this project are [EsLint](https://eslint.org/) and [Prettier](https://prettier.io/). For information on how to configure them see our [coding standards](https://github.com/bptlab/ark_automate/wiki/Coding-standards#tools)
 
 ## Run application
 
-Before running, please always make sure to have the most recent module versions installed using `npm install` in the server, as well as the client directory.
-To run a development preview of the app, navigate to the server directory and run `npm run local` to start the API server, navigate into the client folder and run `npm start` again to also start the frontend.  
+Before running, please always make sure to have the most recent module versions installed using `npm install` in the server, as well as the frontend directory.
+To run a development preview of the app, navigate to the server directory and run `npm run local` to start the API server, navigate into the frontend folder and run `npm start` again to also start the frontend.
 Now check http://localhost:3000/ to have a look at the app.
 
 To run the local client, follow the steps in the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
+## Product Demo
+[![Watch the video](https://i.imgur.com/Q9UTQSY.png)](https://www.youtube.com/watch?v=EIbrYbvtknI)
 
 ## Contribute
 
@@ -52,9 +61,9 @@ The main contributors to the project are the four members of the [2020/21 Bachel
 - [Daniel Woelki](https://github.com/WolfgangDaniel)
 
 These four participants will push the project forward as part of their bachelor's degree until the summer of 2021.  
-At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community.
+At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community. Regarding Open Source, this project underlays a MIT license which you can find [here](https://github.com/bptlab/ark_automate/blob/main/LICENSE.md) 
 
 ## Project documentation
 
 Our [architecture](https://github.com/bptlab/ark_automate/wiki/Architecture-in-2021), as well as our current [vision of the project](https://github.com/bptlab/ark_automate/wiki/Vision-for-2021) can be found in our [wiki](https://github.com/bptlab/ark_automate/wiki).
-Please also see the [code documentation website](https://bptlab.github.io/ark_automate/) for the documentation of the code including examples.
+Please also see the [code documentation](https://bptlab.github.io/ark_automate/) on its own website including examples.

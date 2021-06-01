@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const { expect } = require('chai');
-const dbHandler = require('../../utils/TestingUtils/TestDatabaseHandler.js');
-const { testRpaTask1 } = require('../../utils/TestingUtils/testData.js');
+const dbHandler = require('../../utils/testing/testDatabaseHandler.js');
+const { testRpaTask1 } = require('../../utils/testing/testData.js');
 // eslint-disable-next-line no-unused-vars
 const taskModel = require('./rpaTaskModel.js');
 
@@ -32,27 +31,27 @@ describe('tasks can be created', () => {
 
 describe('tasks have validation for missing parameters', () => {
   const task = new RpaTask({});
-  it('should be invalid if Application is empty', async () => {
+  it('should be invalid if application is empty', async () => {
     task.save(
       (err) =>
-        expect(err.errors.Application).to.exist &&
-        expect(err.errors.Application.message).equal('Application required')
+        expect(err.errors.application).to.exist &&
+        expect(err.errors.application.message).equal('Application required')
     );
   });
 
-  it('should be invalid if Task is empty', async () => {
+  it('should be invalid if task is empty', async () => {
     task.save(
       (err) =>
-        expect(err.errors.Task).to.exist &&
-        expect(err.errors.Task.message).equal('Task required')
+        expect(err.errors.task).to.exist &&
+        expect(err.errors.task.message).equal('Task required')
     );
   });
 
-  it('should be invalid if Code is empty', async () => {
+  it('should be invalid if code is empty', async () => {
     task.save(
       (err) =>
-        expect(err.errors.Code).to.exist &&
-        expect(err.errors.Code.message).equal('Code required')
+        expect(err.errors.code).to.exist &&
+        expect(err.errors.code.message).equal('Code required')
     );
   });
 });
