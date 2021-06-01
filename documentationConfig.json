@@ -1,6 +1,6 @@
 {
   "opts": {
-    "template": "../client/node_modules/better-docs",
+    "template": "../frontend/node_modules/better-docs",
     "destination": "./../documentationWebsite"
   },
   "tags": {

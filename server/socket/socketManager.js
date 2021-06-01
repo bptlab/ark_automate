@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const socketHelperFunctions = require('./socketHelperFunctions');
 
 exports.socketManager = (io, socket) => {
@@ -24,9 +25,9 @@ exports.socketManager = (io, socket) => {
             .then((jobList) => {
               if (jobList.length > 0) {
                 jobList.forEach((job) => {
-                  const { id, robot_id } = job;
+                  const { id, robotId } = job;
                   socketHelperFunctions
-                    .getRobotCodeForJob(robot_id, id)
+                    .getRobotCodeForJob(robotId, id)
                     .then((robotCode) => {
                       if (robotCode) {
                         socketHelperFunctions.updateRobotJobStatus(
@@ -48,8 +49,6 @@ exports.socketManager = (io, socket) => {
               }
             });
         }
-
-        // eslint-disable-next-line no-else-return
       } else {
         socket.emit('errorUserRoomConnection', 'Invalid userId: ', userId);
       }
@@ -78,16 +77,16 @@ exports.socketManager = (io, socket) => {
 
   socket.on('updatedLiveRobotLog', ({ userId, jobId, robotLogs }) => {
     io.to(userId).emit('changedRobotStatus', 'running');
-    if (robotLogs.final_message === 'Execution completed') {
+    if (robotLogs.finalMessage === 'Execution completed') {
       socketHelperFunctions.updateRobotJobStatus(
         jobId,
-        robotLogs.robot_run.status === 'FAIL' ? 'failed' : 'successful'
+        robotLogs.robotRun.status === 'FAIL' ? 'failed' : 'successful'
       );
       io.to(userId).emit(
         'changedRobotStatus',
-        robotLogs.robot_run.status === 'FAIL' ? 'failed' : 'successful'
+        robotLogs.robotRun.status === 'FAIL' ? 'failed' : 'successful'
       );
-      if (robotLogs.robot_run.status === 'FAIL') {
+      if (robotLogs.robotRun.status === 'FAIL') {
         socketHelperFunctions.updateRobotJobErrors(jobId, robotLogs);
       }
     }

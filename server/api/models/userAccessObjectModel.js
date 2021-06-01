@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userAccessSchema = new Schema({
-  AccessLevel: String,
+  accessLevel: String,
   robotId: {
     type: mongoose.Types.ObjectId,
     required: [true, 'RobotId required'],

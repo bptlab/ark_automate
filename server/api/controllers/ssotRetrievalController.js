@@ -10,14 +10,14 @@ const userAccessModels = require('../models/userAccessObjectModel.js');
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'
  *     get:
  *       tags:
  *         - Robots
- *       summary: Get a robot with a specific id
+ *       summary: Retrieve a robot with a specific id
  *       operationId: getSpecificRobot
  *       responses:
  *         200:
@@ -45,14 +45,14 @@ exports.getSingleSourceOfTruth = async (req, res) => {
  *     parameters:
  *       - name: userId
  *         in: path
- *         description: The id of a user
+ *         description: Id of a user
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/ObjectIds'
  *     get:
  *       tags:
  *         - Users
- *       summary: Get all robots for a specific user
+ *       summary: Retrieve all robots for a specific user
  *       operationId: getRobotsForUser
  *       responses:
  *         200:
@@ -83,7 +83,7 @@ exports.getRobotList = async (req, res) => {
       .find(
         { userId: usableUserId },
         {
-          AccessLevel: 0,
+          accessLevel: 0,
           _id: 0,
           userId: 0,
         }
@@ -126,7 +126,7 @@ exports.getRobotList = async (req, res) => {
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'
@@ -220,7 +220,7 @@ exports.shareRobotWithUser = async (req, res) => {
  *     parameters:
  *       - name: userId
  *         in: path
- *         description: The id of a user
+ *         description: Id of a user
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/ObjectIds'
@@ -290,14 +290,14 @@ exports.createNewRobot = async (req, res) => {
       .exec();
 
     const userObject = await mongoose.model('userAccessObject').create({
-      AccessLevel: 'ReadWrite',
+      accessLevel: 'ReadWrite',
       robotId: ssot.id,
       userId: usableUserId,
     });
 
     const returnObj = {
+      _id: ssot.id,
       robotName: nameWithEmptyspace,
-      robotId: ssot.id,
     };
 
     res.send(returnObj);
@@ -312,14 +312,14 @@ exports.createNewRobot = async (req, res) => {
  *   parameters:
  *     - name: robotId
  *       in: path
- *       description: The id of a robot
+ *       description: Id of a robot
  *       required: true
  *       schema:
  *         $ref: '#/components/schemas/RobotIds'
  *   put:
  *     tags:
  *       - Robots
- *     summary: Overwrite the existing robot with an updated one
+ *     summary: Overwrite an existing robot with an updated one
  *     operationId: overwriteRobot
  *     requestBody:
  *       content:
@@ -361,7 +361,7 @@ exports.overwriteRobot = async (req, res) => {
  *     parameters:
  *       - name: robotId
  *         in: path
- *         description: The id of a robot
+ *         description: Id of a robot
  *         required: true
  *         schema:
  *           $ref: '#/components/schemas/RobotIds'
@@ -400,7 +400,7 @@ exports.deleteRobot = async (req, res) => {
       .deleteMany({ robotId: usableRobotId })
       .exec();
 
-    await mongoose.model('job').deleteMany({ robot_id: usableRobotId }).exec();
+    await mongoose.model('job').deleteMany({ robotId: usableRobotId }).exec();
 
     res.send(response);
   } catch (err) {
