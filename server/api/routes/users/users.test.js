@@ -67,7 +67,6 @@ describe('POST /users/robotAccess', () => {
     expect(JSON.stringify(data.userId)).toEqual(JSON.stringify(testUserId));
     expect(JSON.stringify(data.robotId)).toEqual(JSON.stringify(testRobotId));
 
-    // verify if really in DB
     const userAccessObject = await mongoose
       .model('userAccessObject')
       .find({
@@ -101,7 +100,6 @@ describe('POST /users/{userId}/robots', () => {
     const data = await response._getData();
     const newRobotId = data._id;
 
-    // verify if really in DB
     const request2 = httpMocks.createRequest({
       params: {
         userId: testUserId,

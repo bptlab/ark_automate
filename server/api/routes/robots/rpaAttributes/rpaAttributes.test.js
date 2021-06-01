@@ -31,8 +31,8 @@ describe('PUT /robots/rpaattributes', () => {
   it('successfully updates all attributes for a robot', async () => {
     await dbLoader.loadAttributesInDb();
 
-    const newAppValue = 'NewTestApp';
-    const newTaskValue = 'NewTestTask';
+    const NEW_APP_VALUE = 'NewTestApp';
+    const NEW_TASK_VALUE = 'NewTestTask';
 
     const request = httpMocks.createRequest({
       method: 'POST',
@@ -41,8 +41,8 @@ describe('PUT /robots/rpaattributes', () => {
           {
             activityId: 'Activity_175v5b5',
             robotId: '606199015d691786a44a608f',
-            rpaApplication: newAppValue,
-            rpaTask: newTaskValue,
+            rpaApplication: NEW_APP_VALUE,
+            rpaTask: NEW_TASK_VALUE,
           },
         ],
       },
@@ -54,7 +54,6 @@ describe('PUT /robots/rpaattributes', () => {
     const data = await response._getData();
     expect(data.modifiedCount).toBe(1);
 
-    // verify if really in DB
     const newAttributesObject = await mongoose
       .model('rpaAttributes')
       .findOne({
@@ -63,8 +62,8 @@ describe('PUT /robots/rpaattributes', () => {
       })
       .exec();
 
-    expect(newAttributesObject.rpaApplication).toEqual(newAppValue);
-    expect(newAttributesObject.rpaTask).toEqual(newTaskValue);
+    expect(newAttributesObject.rpaApplication).toEqual(NEW_APP_VALUE);
+    expect(newAttributesObject.rpaTask).toEqual(NEW_TASK_VALUE);
   });
 });
 

@@ -128,7 +128,6 @@ const writeCodeForElement = (
   }
 
   if (successorTasksExist(currentElement)) {
-    // Xor handling is needed here in the future
     currentElement.successorIds.forEach((successorId) => {
       combinedCode = writeCodeForElement(
         successorId,

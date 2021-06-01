@@ -5,7 +5,7 @@
 
 /**
  * @description Fetch all those ssot names and ids, which are available for the current user
- * @param { String } userId - UserId for which the ssots will be fetched
+ * @param { String } userId UserId for which the ssots will be fetched
  * @returns {Array} Array of objects containing ssotId, robotName and starterId of each found robot
  */
 const fetchSsotsForUser = async (userId) => {
@@ -16,8 +16,8 @@ const fetchSsotsForUser = async (userId) => {
 
 /**
  * @description Create a new robot with the specified name for the specified user
- * @param {String} userId - User for which the robot will be created
- * @param {String} robotName - Name of the new robot
+ * @param {String} userId User for which the robot will be created
+ * @param {String} robotName Name of the new robot
  * @returns {Object} Object containing robotId and robotName
  */
 const createNewRobot = async (userId, robotName) => {
@@ -36,4 +36,4 @@ const createNewRobot = async (userId, robotName) => {
   return response;
 };
 
-export { fetchSsotsForUser, createNewRobot /* , shareRobotWithUser */ };
+export { fetchSsotsForUser, createNewRobot };

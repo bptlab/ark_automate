@@ -8,9 +8,7 @@ import {
   getRobotName,
 } from '../../sessionStorage/localSsotController/ssot';
 
-const {
-  default: customNotification,
-} = require('../../componentsFunctionality/notificationUtils');
+import customNotification from '../../componentsFunctionality/notificationUtils';
 
 const FOURSPACE = '    ';
 
@@ -63,10 +61,10 @@ const getApplicationArray = (robotCodeSettingsSection) => {
   let errorWasThrown;
 
   robotCode.forEach((line) => {
-    const regexForRpaAlias = /Library +RPA[.][a-zA-Z]+/;
+    const REGEX_FOR_RPA_ALIAS = /Library +RPA[.][a-zA-Z]+/;
 
     const elementStartsWithLibrary = line.startsWith('Library ');
-    const rpaAliasIsCorrect = regexForRpaAlias.test(line);
+    const rpaAliasIsCorrect = REGEX_FOR_RPA_ALIAS.test(line);
     const applicationIsAvailable = availableApplications.includes(
       typeof line.split('RPA.')[1] === 'undefined'
         ? ''
@@ -230,15 +228,16 @@ const getInstructionBlocksFromTaskSection = (
 ) => {
   let errorWasThrown;
   const instructionBlocks = [];
-  const regexForOutputValue = /\${(.)+} =/;
-  const splitPlaceholder = '§&§';
+  const REGEX_FOR_OUTPUT_VALUE = /\${(.)+} =/;
+  const SPLIT_PLACEHOLDER = '§&§';
 
   robotCodeTaskSection.slice(1).forEach((line) => {
     if (errorWasThrown) return;
     let currentLine = line;
     const currentLineIncludesSplitPlaceholder =
-      currentLine.includes(splitPlaceholder);
-    const currentLineDefinesOutputValue = regexForOutputValue.test(currentLine);
+      currentLine.includes(SPLIT_PLACEHOLDER);
+    const currentLineDefinesOutputValue =
+      REGEX_FOR_OUTPUT_VALUE.test(currentLine);
     const currentLineStartsWithFourspace = currentLine.startsWith(FOURSPACE);
 
     if (!currentLineStartsWithFourspace) {
@@ -255,7 +254,7 @@ const getInstructionBlocksFromTaskSection = (
       return;
     }
 
-    currentLine = currentLine.trim().replace(/( {4})/g, splitPlaceholder);
+    currentLine = currentLine.trim().replace(/( {4})/g, SPLIT_PLACEHOLDER);
 
     if (currentLineDefinesOutputValue) {
       const outputValueName = getOutputName(currentLine);
@@ -264,12 +263,12 @@ const getInstructionBlocksFromTaskSection = (
 
       currentLine = currentLineWithoutOutputValueName(
         currentLine,
-        splitPlaceholder
+        SPLIT_PLACEHOLDER
       );
     }
 
     if (!errorWasThrown) {
-      let rpaTask = getRpaTask(currentLine, splitPlaceholder);
+      let rpaTask = getRpaTask(currentLine, SPLIT_PLACEHOLDER);
       const allMatchingCombinations = taskAndApplicationCombinations.filter(
         (singleCombination) => {
           if (rpaTask === singleCombination.task) return true;
@@ -294,7 +293,7 @@ const getInstructionBlocksFromTaskSection = (
 
       rpaTask = rpaTask.replace(`${matchingCombination.application}.`, '');
 
-      const rpaParameters = getRpaParameters(currentLine, splitPlaceholder);
+      const rpaParameters = getRpaParameters(currentLine, SPLIT_PLACEHOLDER);
 
       instructionBlocks[instructionBlocks.length - 1].rpaTask = rpaTask;
       instructionBlocks[instructionBlocks.length - 1].paramArray =
@@ -404,7 +403,6 @@ const buildSingleParameterObject = (
       } else {
         singleParameterObject.value = singleParamArray[index];
       }
-
       return singleParameterObject;
     }
   );
@@ -419,8 +417,8 @@ const buildSingleParameterObject = (
 
 /**
  * @description Build the elementsArray of the ssot
- * @param {Array} robotCodeTaskSection Robot code w/o empty lines as an array of Strings
- * @param {Array} declaredApplications All declared Aplications from ***settings*** section as Strings
+ * @param {Array} robotCodeTaskSection Robot code w/o empty lines as an array of strings
+ * @param {Array} declaredApplications All declared applications from ***settings*** section as strings
  * @param {String} robotId Id of the current robot / ssot
  * @returns {Array} elementsArray with all needed properties
  */

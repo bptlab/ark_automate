@@ -50,7 +50,6 @@ describe('PUT /robots/parameters', () => {
     const data = await response._getData();
     expect(data.modifiedCount).toBe(1);
 
-    // verify if really in DB
     const newParamObject = await mongoose
       .model('parameter')
       .findOne({

@@ -158,7 +158,6 @@ const getParameterObject = (robotId, activityId) => {
       task
     );
   }
-
   return undefined;
 };
 

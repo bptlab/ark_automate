@@ -36,7 +36,7 @@ const Home = () => {
           fast, easy, automation
         </Title>
         <p>{message}</p>
-        <Link to='/robot_overview'>
+        <Link to='/robotOverview'>
           <Button style={{ margin: '0 auto', display: 'block' }} type='primary'>
             Go to my Robots
           </Button>

@@ -9,8 +9,8 @@ import { getAllAttributes } from '../../../../api/routes/robots/rpaAttributes';
 /**
  * @description Will return a boolean regarding the correct configuration of the given parameterObejcts belonging to a robot.
  * If a paramter is required and no value is passed and the value will not be specified later by the user, the paramter is not correctly configured.
- * @param {Object[]} parameterObjects Array of parameterObjects that will be checked
- * @returns {boolean} Boolean value regarding the correctness of the parameter configuration
+ * @param {Array} parameterObjects Array of parameterObjects that will be checked
+ * @returns {Boolean} Boolean value regarding the correctness of the parameter configuration
  */
 const configuredRobotParamsCorrectly = (parameterObjects) => {
   let executability = true;
@@ -36,8 +36,8 @@ const configuredRobotParamsCorrectly = (parameterObjects) => {
 /**
  * @description Will return a boolean regarding the correct configuration regarding the given attributeObjects of a robot.
  * If an attribute has no specified application or task, the attribute is not correctly configured.
- * @param {Object[]} attributeObjects Array of attributeObjects that will be checked
- * @returns {boolean} A boolean value regarding the correctness of the attribute configuration
+ * @param {Array} attributeObjects Array of attributeObjects that will be checked
+ * @returns {Boolean} A boolean value regarding the correctness of the attribute configuration
  */
 const configuredRobotActivitesCorrectly = (attributeObjects) => {
   let executability = true;
@@ -64,7 +64,7 @@ const configuredRobotActivitesCorrectly = (attributeObjects) => {
  * @description Will return a boolean regarding the correct configuration of a robot.
  * If a robot has incorrectly configured attributes or parameters, then the robot is not correctly configured.
  * @param {String} robotId RobotId of the robot that will be checked
- * @returns {boolean} Boolean value regarding the executability of the robot
+ * @returns {Boolean} Boolean value regarding the executability of the robot
  */
 const isRobotExecutable = async (robotId) => {
   const attributes = await getAllAttributes(robotId);

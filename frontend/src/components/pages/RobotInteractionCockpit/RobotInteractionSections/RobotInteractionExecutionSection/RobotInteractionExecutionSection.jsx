@@ -20,6 +20,11 @@ const RobotInteractionExecutionSection = (props) => {
   const { executionLogs } = props;
   const { robotState } = props;
 
+  /**
+   * @description Displays the suitable status icon for robot execution
+   * @param {String} status Current Status of the robot execution
+   * @returns {React.ReactElement} Returns an icon component or undefined
+   */
   const displayStatusIcon = (status) => {
     if (status === 'PASS' || status === 'successful') {
       return (

@@ -1,27 +1,24 @@
 /* eslint-disable no-param-reassign */
+import { parseString } from 'xmljs2';
 import customNotification from '../../componentsFunctionality/notificationUtils';
 import {
   getRobotId,
   getRobotName,
 } from '../../sessionStorage/localSsotController/ssot';
-
-const { parseString } = require('xmljs2');
+import ssotBaseObjects from '../ssotBaseObjects';
 
 /**
  * @category Frontend
  * @module
  */
 
-const ssotBaseObjects = require('../ssotBaseObjects');
-
 const ssotBaseElement = ssotBaseObjects.baseElement;
 
 /**
  * @description Creates a base element of the single source of truth
- * @returns {object}  Base element of the single source of truth
+ * @returns {Object}  Base element of the single source of truth
  */
 const createBaseElement = (id) => {
-  // creates deep copy of baseElement
   const baseElement = JSON.parse(JSON.stringify(ssotBaseElement));
   baseElement.id = id;
   return baseElement;
@@ -29,7 +26,7 @@ const createBaseElement = (id) => {
 
 /**
  * @description Checks if the given id can be found in the given Array of element objects
- * @returns {boolean}  Boolean if element is tracked in Array
+ * @returns {Boolean}  Boolean if element is tracked in Array
  */
 const isElementTracked = (elementsArray, id) => {
   if (elementsArray.find((element) => element.id === id)) {
@@ -39,7 +36,7 @@ const isElementTracked = (elementsArray, id) => {
 };
 
 /**
- *
+ * @description Gets all bpmn elements
  * @param {Array} bpmnShapes All shapes of the BPMN diagram
  * @param {Array} localElementsArray Current version of the localElementsArray with all elements
  * @returns {Array}  Array of elements with their id, successors, predecessors and name
@@ -62,13 +59,14 @@ const returnElementsArrayWithNameLabel = (bpmnShapes, localElementsArray) => {
 /**
  * @description Creates the array full of elements by iterating over the
  * referenced ids in the flow and adding new elements (incl. name) if they have not been added yet
+ * @param {Array} flows All flow elements of the BPMN diagram
+ * @param {Array} bpmnShapes All shapes of the BPMN diagram
  * @returns {Array}  Array of elements with their id, successors, predecessors and name
  */
 const findElements = (flows, bpmnShapes) => {
   if (typeof flows === 'undefined') {
     return [];
   }
-
   const localElementsArray = [];
 
   flows.forEach((flow) => {
@@ -102,6 +100,8 @@ const findElements = (flows, bpmnShapes) => {
 
 /**
  * @description Enriches elements in the elementsArray that should be of type instruction
+ * @param {Array} elementsArray All elements of the BPMN diagram
+ * @param {Array} bpmnActivities All activities of the BPMN diagram
  * @returns {Array}  Array of elements for single source of truth
  */
 const enrichInstructionElements = (elementsArray, bpmnActivities) => {
@@ -139,6 +139,7 @@ const enrichInstructionElements = (elementsArray, bpmnActivities) => {
 
 /**
  * @description Enriches elements in the elementsArray that should be of type marker
+ * @param {Array} elementsArray All elements of the BPMN diagram
  * @returns {Array}  Array of elements for single source of truth
  */
 const enrichMarkerElements = (elementsArray) => {
@@ -182,6 +183,7 @@ const getStartEventId = (bpmnJson) => {
 
 /**
  * @description Parses an JSON created from the xml of the bpmn model to the single source of truth
+ * @param {Object} bpmnXml The xml object of the bpmn diagram
  * @returns {string} XML that has to be put in single source of truth file
  */
 const parseBpmnToSsot = async (bpmnXml) => {
@@ -192,7 +194,6 @@ const parseBpmnToSsot = async (bpmnXml) => {
 
   if (typeof startEventId === 'undefined') return undefined;
 
-  // Build basic ssot-frame
   const ssot = {
     _id: robotId,
     starterId: startEventId[0],
