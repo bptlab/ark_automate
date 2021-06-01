@@ -8,13 +8,13 @@
   },
   "plugins": ["node_modules/better-docs/category"],
   "source": {
-    "include": ["./../client/src", "./../server/services", "./../server/utils"],
-    "exclude": [
-      "./../client/node_modules",
-      "./../server/node_modules",
-      "./../server/api/controllers",
-      "./../server/utils/openApiDocumentation"
+    "include": [
+      "./../frontend/src",
+      "./../server/utils/ssotToRobotParsing",
+      "./../server/socket/socketHelperFunctions.js",
+      "./../server/utils/testing/testDatabaseHandler.js"
     ],
+    "exclude": ["./../frontend/node_modules", "./../server/node_modules"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
   }
