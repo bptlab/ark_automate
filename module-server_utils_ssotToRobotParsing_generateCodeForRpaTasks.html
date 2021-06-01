@@ -130,7 +130,7 @@
         
         <span class="code-name">
             
-                appendRpaInputParameter<span class="signature">(parameterObject)</span><span class="type-signature"> &rarr; {String}</span>
+                appendRpaInputParameter<span class="signature">(parameterObject, parsingMode)</span><span class="type-signature"> &rarr; {String}</span>
             
         </span>
     </h4>
@@ -139,7 +139,7 @@
     
     
     <div class="description">
-        Appends all provided parameters to a string which can be used to generate the RPAf file
+        Will append all provided parameters to a string which can be used to generate the RPAf file
     </div>
     
 
@@ -193,7 +193,32 @@
 
   
 
-  <td class="description last">Parameter object that will be checked and looped through</td>
+  <td class="description last">The parameter object to check and loop through</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>parsingMode</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Indicates if the parser is used for the frontend or the local client</td>
 </tr>
 
 
@@ -241,7 +266,7 @@
         <p class="tag-source">
             <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html" class="button">View Source</a>
             <span>
-                <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html#line41">line 41</a>
+                <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html#line42">line 42</a>
             </span>
         </p>
     
@@ -309,7 +334,7 @@
         
         <span class="code-name">
             
-                generateCodeForRpaTasks<span class="signature">(elements, metaData)</span><span class="type-signature"> &rarr; {string}</span>
+                generateCodeForRpaTasks<span class="signature">(elements, parameters, attributes, parsingMode)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -318,7 +343,7 @@
     
     
     <div class="description">
-        Generates the .robot code for all RPA Tasks
+        Receives an array of all elements and generates the .robot code for all RPA Tasks
     </div>
     
 
@@ -372,7 +397,7 @@
 
   
 
-  <td class="description last">All the elements from the SSoT</td>
+  <td class="description last">All the elements from the ssot</td>
 </tr>
 
 
@@ -381,13 +406,13 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>metaData</code></td>
+      <td class="name"><code>parameters</code></td>
   
 
   <td class="type">
   
       
-<span class="param-type">Object</span>
+<span class="param-type">Array</span>
 
 
   
@@ -397,7 +422,57 @@
 
   
 
-  <td class="description last">MetaData of the robot</td>
+  <td class="description last">Parameter objects of the robot</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>attributes</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Attribute objects of the robot</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>parsingMode</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Indicates if the parser is used for the frontend or the local client</td>
 </tr>
 
 
@@ -445,7 +520,7 @@
         <p class="tag-source">
             <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html" class="button">View Source</a>
             <span>
-                <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html#line148">line 148</a>
+                <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html#line156">line 156</a>
             </span>
         </p>
     
@@ -976,7 +1051,7 @@
         <p class="tag-source">
             <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html" class="button">View Source</a>
             <span>
-                <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html#line74">line 74</a>
+                <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html#line75">line 75</a>
             </span>
         </p>
     
@@ -1042,7 +1117,7 @@
         
         <span class="code-name">
             
-                writeCodeForElement<span class="signature">(id, elements, parameters, attributes, codeToAppend)</span><span class="type-signature"> &rarr; {string}</span>
+                writeCodeForElement<span class="signature">(id, elements, parameters, attributes, codeToAppend, parsingMode)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -1210,6 +1285,31 @@
 
 
         
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>parsingMode</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">String</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">Indicates if the parser is used for the frontend or the local client</td>
+</tr>
+
+
+        
         </tbody>
     </table>
 </div>
@@ -1253,7 +1353,7 @@
         <p class="tag-source">
             <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html" class="button">View Source</a>
             <span>
-                <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html#line87">line 87</a>
+                <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html">server/utils/ssotToRobotParsing/generateCodeForRpaTasks.js</a>, <a href="server_utils_ssotToRobotParsing_generateCodeForRpaTasks.js.html#line89">line 89</a>
             </span>
         </p>
     

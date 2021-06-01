@@ -171,7 +171,7 @@ const RobotContainer = (props) => {
             &lt;Col type='flex' span={8}>
               &lt;Link
                 to={{
-                  pathname: `/interaction_cockpit/${robotId}`,
+                  pathname: `/interactionCockpit/${robotId}`,
                   state: { userId },
                 }}
               >
@@ -181,7 +181,7 @@ const RobotContainer = (props) => {
               &lt;/Link>
             &lt;/Col>
             &lt;Col type='flex' span={8}>
-              &lt;Link onclick={setRobotMetadata()} to={`/modeler/${robotId}`}>
+              &lt;Link onClick={setRobotMetadata()} to={`/modeler/${robotId}`}>
                 &lt;Tooltip title='Edit Robot'>
                   &lt;EditOutlined className={styles.clickableIcon} />
                 &lt;/Tooltip>

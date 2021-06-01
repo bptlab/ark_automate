@@ -96,32 +96,32 @@ const { Header } = Layout;
 
 /**
  * @component
- * @description Renders the header navbar for all pages and initially selects the passed key-element.
+ * @description Renders the header navbar for all pages and initially selects the passed key element.
  * @category Frontend
  * @example return &lt;HeaderNavbar selectedKey={2} />
  */
 const HeaderNavbar = (props) => {
   const { selectedKey } = props;
-  const iconKey = 0;
-  const robotOverviewPageKey = 1;
-  const bpmnModelerPageKey = 2;
-  const robotCodeEditorPageKey = 3;
-  const robotInteractionPageKey = 4;
+  const ICON_KEY = 0;
+  const ROBOT_OVERVIEW_PAGE_KEY = 1;
+  const BPMN_MODELER_PAGE_KEY = 2;
+  const ROBOT_CODE_EDITOR_PAGE_KEY = 3;
+  const ROBOT_INTERACTION_PAGE_KEY = 4;
 
   let onOverview = false;
-  if (selectedKey === robotOverviewPageKey) {
+  if (selectedKey === ROBOT_OVERVIEW_PAGE_KEY) {
     onOverview = true;
   }
 
   let onRobotInteraction = false;
-  if (selectedKey === robotInteractionPageKey) {
+  if (selectedKey === ROBOT_INTERACTION_PAGE_KEY) {
     onRobotInteraction = true;
   }
 
   let bpmnModelerLink = '/modeler';
   if (
-    selectedKey === bpmnModelerPageKey ||
-    selectedKey === robotCodeEditorPageKey
+    selectedKey === BPMN_MODELER_PAGE_KEY ||
+    selectedKey === ROBOT_CODE_EDITOR_PAGE_KEY
   ) {
     bpmnModelerLink += `/${getRobotId()}`;
   }
@@ -133,38 +133,38 @@ const HeaderNavbar = (props) => {
         mode='horizontal'
         defaultSelectedKeys={[selectedKey.toString()]}
       >
-        &lt;Menu.Item className={styles.modifiedMenuItem} key={iconKey}>
+        &lt;Menu.Item className={styles.modifiedMenuItem} key={ICON_KEY}>
           &lt;Link to='/'>
             &lt;img
               style={{ height: '3rem' }}
               src='/logo/logoCta.png'
-              alt='ark_automate Icon'
+              alt='Ark Automate Icon'
             />
           &lt;/Link>
         &lt;/Menu.Item>
 
-        &lt;Menu.Item key={robotOverviewPageKey}>
+        &lt;Menu.Item key={ROBOT_OVERVIEW_PAGE_KEY}>
           Overview
-          &lt;Link to='/robot_overview' />
+          &lt;Link to='/robotOverview' />
         &lt;/Menu.Item>
         {!onRobotInteraction &amp;&amp; (
           &lt;>
             {!onOverview &amp;&amp; (
-              &lt;Menu.Item key={bpmnModelerPageKey}>
+              &lt;Menu.Item key={BPMN_MODELER_PAGE_KEY}>
                 Modeler
                 &lt;Link to={bpmnModelerLink} />
               &lt;/Menu.Item>
             )}
             {!onOverview &amp;&amp; (
-              &lt;Menu.Item key={robotCodeEditorPageKey}>
+              &lt;Menu.Item key={ROBOT_CODE_EDITOR_PAGE_KEY}>
                 Robot Code
-                &lt;Link to='/robotcode_editor' />
+                &lt;Link to='/robotCodeEditor' />
               &lt;/Menu.Item>
             )}
           &lt;/>
         )}
         {onRobotInteraction &amp;&amp; (
-          &lt;Menu.Item key={robotInteractionPageKey}>
+          &lt;Menu.Item key={ROBOT_INTERACTION_PAGE_KEY}>
             Robot Interaction Cockpit
           &lt;/Menu.Item>
         )}

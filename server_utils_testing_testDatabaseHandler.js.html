@@ -128,8 +128,6 @@ exports.closeDatabase = async () => {
  */
 exports.clearDatabase = async () => {
   const { collections } = mongoose.connection;
-
-  // fix according to https://docs.w3cub.com/eslint/rules/no-await-in-loop.html
   const result = [];
   Object.keys(collections).forEach((key) => {
     const collection = collections[key];

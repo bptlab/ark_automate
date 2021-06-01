@@ -105,10 +105,10 @@ const App = () => (
       &lt;Switch>
         &lt;Route path='/' component={Home} exact />
         &lt;Route path='/modeler/:robotId' component={RobotModeler} />
-        &lt;Route path='/robotcode_editor' component={RobotFile} />
-        &lt;Route path='/robot_overview' component={RobotOverview} />
+        &lt;Route path='/robotCodeEditor' component={RobotFile} />
+        &lt;Route path='/robotOverview' component={RobotOverview} />
         &lt;Route
-          path='/interaction_cockpit/:robotId'
+          path='/interactionCockpit/:robotId'
           component={RobotInteractionCockpit}
         />
         &lt;Route component={Error} />

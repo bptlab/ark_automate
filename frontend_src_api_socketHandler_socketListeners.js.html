@@ -124,7 +124,7 @@ const newRobotMonitorUpdate = (logSetterMethod) => {
 
 /**
  * @description Register listener on when a new robot status has been set
- * @param {function} logSetterMethod Method reference to update the status of the log in the robotInteractionCockpit
+ * @param {function} statusSetterMethod Method reference to update the status of the log in the robotInteractionCockpit
  */
 const newRobotStatusUpdate = (statusSetterMethod) => {
   socket.on('changedRobotStatus', (status) => statusSetterMethod(status));

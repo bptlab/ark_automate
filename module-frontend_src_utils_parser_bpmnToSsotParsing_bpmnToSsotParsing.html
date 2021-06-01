@@ -130,7 +130,7 @@
         
         <span class="code-name">
             
-                createBaseElement<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span>
+                createBaseElement<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span>
             
         </span>
     </h4>
@@ -190,7 +190,7 @@
         <p class="tag-source">
             <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html" class="button">View Source</a>
             <span>
-                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line23">line 23</a>
+                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line21">line 21</a>
             </span>
         </p>
     
@@ -227,7 +227,7 @@
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
     </div>
@@ -256,7 +256,7 @@
         
         <span class="code-name">
             
-                enrichInstructionElements<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span>
+                enrichInstructionElements<span class="signature">(elementsArray, bpmnActivities)</span><span class="type-signature"> &rarr; {Array}</span>
             
         </span>
     </h4>
@@ -276,6 +276,82 @@
 
 
 
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>elementsArray</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">All elements of the BPMN diagram</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bpmnActivities</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">All activities of the BPMN diagram</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -382,7 +458,7 @@
         
         <span class="code-name">
             
-                enrichMarkerElements<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span>
+                enrichMarkerElements<span class="signature">(elementsArray)</span><span class="type-signature"> &rarr; {Array}</span>
             
         </span>
     </h4>
@@ -402,6 +478,57 @@
 
 
 
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>elementsArray</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">All elements of the BPMN diagram</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -442,7 +569,7 @@
         <p class="tag-source">
             <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html" class="button">View Source</a>
             <span>
-                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line144">line 144</a>
+                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line145">line 145</a>
             </span>
         </p>
     
@@ -508,7 +635,7 @@
         
         <span class="code-name">
             
-                findElements<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span>
+                findElements<span class="signature">(flows, bpmnShapes)</span><span class="type-signature"> &rarr; {Array}</span>
             
         </span>
     </h4>
@@ -529,6 +656,82 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
 
 
 
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>flows</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">All flow elements of the BPMN diagram</td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bpmnShapes</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">All shapes of the BPMN diagram</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -569,7 +772,7 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
         <p class="tag-source">
             <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html" class="button">View Source</a>
             <span>
-                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line67">line 67</a>
+                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line66">line 66</a>
             </span>
         </p>
     
@@ -635,7 +838,7 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
         
         <span class="code-name">
             
-                isElementTracked<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span>
+                isElementTracked<span class="signature">()</span><span class="type-signature"> &rarr; {Boolean}</span>
             
         </span>
     </h4>
@@ -695,7 +898,7 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
         <p class="tag-source">
             <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html" class="button">View Source</a>
             <span>
-                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line34">line 34</a>
+                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line31">line 31</a>
             </span>
         </p>
     
@@ -732,7 +935,7 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
-<span class="param-type">boolean</span>
+<span class="param-type">Boolean</span>
 
 
     </div>
@@ -763,7 +966,7 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
         
         <span class="code-name">
             
-                parseBpmnToSsot<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span>
+                parseBpmnToSsot<span class="signature">(bpmnXml)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -783,6 +986,57 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
 
 
 
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>bpmnXml</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last">The xml object of the bpmn diagram</td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -823,7 +1077,7 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
         <p class="tag-source">
             <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html" class="button">View Source</a>
             <span>
-                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line187">line 187</a>
+                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line189">line 189</a>
             </span>
         </p>
     
@@ -896,6 +1150,10 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
     
 
     
+    
+    <div class="description">
+        Gets all bpmn elements
+    </div>
     
 
 
@@ -1021,7 +1279,7 @@ referenced ids in the flow and adding new elements (incl. name) if they have not
         <p class="tag-source">
             <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html" class="button">View Source</a>
             <span>
-                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line47">line 47</a>
+                <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html">frontend/src/utils/parser/bpmnToSsotParsing/bpmnToSsotParsing.js</a>, <a href="frontend_src_utils_parser_bpmnToSsotParsing_bpmnToSsotParsing.js.html#line44">line 44</a>
             </span>
         </p>
     
