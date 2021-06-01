@@ -68,7 +68,7 @@ Another Code Formatting Tool being used is [Prettier](https://prettier.io/). Her
 - use `Robot` in all cases instead of `Bot`
 - use `Application` in all cases instead of `App` (in context of supported RPA Applications)
 - use **hyphens** for CSS-classes and CSS-ids consistently
-  For example, don't call the class `buttonBackground` and instead call it `button-background`.
+   - For example, don't call the class `buttonBackground` and instead call it `button-background`.
 
 ### General Code-Style
 - Do not use double empty lines
