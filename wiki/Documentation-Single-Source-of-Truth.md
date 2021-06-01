@@ -2,7 +2,7 @@
 
 ## What do we need a SSoT for?
 
-The goal of Ark_automate is to have multiple interfaces altering/showing the same robot. For each robot, there will be a properties panel to change attributes, a view of the current .robot code and possibly multiple modeling interfaces.
+The goal of Ark Automate is to have multiple interfaces altering/showing the same robot. For each robot, there will be a properties panel to change attributes, a view of the current .robot code and possibly multiple modeling interfaces.
 The user selects the modeling language he/she prefers and starts modeling the behavior of the robot (at least for now the user has to pre-select the modeling language). At the same time, the user can view/change the .robot code of the bot and/or update attributes via the property panel.
 To achieve that we need a single-source-of-truth(SSoT) for each robot. In the SSoT all necessary information is saved so that changes can be automatically applied to every interface.
 
@@ -77,7 +77,7 @@ No intermediate events are currently supported.
 
 ### Overview SSOT hierarchy
 
-![](https://i.imgur.com/7yOqDZv.png)
+![image](https://user-images.githubusercontent.com/36270527/120194098-705e4b00-c21d-11eb-9301-937447369e93.png)
 
 ### Component: HEADER
 
@@ -114,7 +114,7 @@ User information about a robot (creator, released for etc.) is stored in an addi
 }
 ```
 
-**parameter object extending the INSTRUCTION:**
+**Parameter Object Extending the INSTRUCTION Element**
 
 ```json
 {

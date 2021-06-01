@@ -18,7 +18,7 @@
 
 ![](https://via.placeholder.com/15/FF6B00/000000?text=+) color-background-cta: #FF6B00
 
-How to use this color schema:
+**How to use this color schema:**
 
 - color-primary: This is the primary color of our brand. It is used for important elements (e.g headlines)
 - color-primary-inverted: Is the main color complementing the primary color. For example, it can be used for the header/footer.
@@ -38,6 +38,6 @@ How to use this color schema:
   font-weight: 400;
 - Font-Size: 1rem
 
-## Random
+## Miscellaneous
 
 - Border-Radius: 5px

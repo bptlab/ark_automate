@@ -10,9 +10,7 @@ In the backend please use the mongoose module to make a callout to the database 
 ## Models
 
 If you are planning on creating a new document type (called model from now on), please create a javascript file in the modules directory on the server side. There you can specify the schema for objects of that type and also create the model and specify, which collection should be used if not that of the name of the model that you specify.
-This can be a bit confusing at first, but I guess you could think of it like this: The schema defines what fields are of what type. The model then assigns this a name and registers it for use. Mongoose will always try to retrieve objects from the remote db from a collection which has the same name as the one specified when creating the model, but this can be overwritten as I mentioned.
-
-For getting into mongoose I can really recommend [the official getting started](https://mongoosejs.com/docs/index.html) as well as a youtube video which can be found [here](https://www.youtube.com/watch?v=5e1NEdfs4is). It creates a first request through express and shows how mongoose can be used in that context. Also the code is linked in the description of that video if you are interested in trying it out for yourself.
+This can be a bit confusing at first, but you could think of it like this: The schema defines what fields are of what type. The model then assigns this a name and registers it for use. Mongoose will always try to retrieve objects from the remote db from a collection which has the same name as the one specified when creating the model, but this can be overwritten as mentioned.
 
 ## Testing
 

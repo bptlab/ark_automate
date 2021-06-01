@@ -51,7 +51,7 @@ const HeaderNavbar = (props) => {
             <img
               style={{ height: '3rem' }}
               src='/logo/logoCta.png'
-              alt='ark_automate Icon'
+              alt='Ark Automate Icon'
             />
           </Link>
         </Menu.Item>
