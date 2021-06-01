@@ -58,7 +58,7 @@ exports.getRobotJobParameters = async (jobId) => {
 };
 
 /**
- * @description Fetches the ssot from the database and parses the ssot to robot code
+ * @description Fetches the user ids of all the users
  * @returns {Array} All user ids
  */
 exports.getAllUserIds = async () => {
