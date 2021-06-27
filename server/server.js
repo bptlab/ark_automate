@@ -52,7 +52,7 @@ if (!isDev && cluster.isMaster) {
     console.error(`Socket server: listening on port ${Number(PORT) + 1}`);
   });
 
-  mongoose.connect(process.env.MONGODB_URI, {
+  mongoose.connect(process.env.MONGODB_URI || `mongodb://${process.env.MONGODB_HOST || 'localhost'}/ark`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });

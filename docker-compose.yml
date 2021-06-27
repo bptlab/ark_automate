@@ -1,0 +1,18 @@
+version: '3'
+services:
+  ark:
+    image: bptlab/ark-automate:version1.0
+    ports:
+      - 3000:3000
+    environment:
+      - MONGODB_HOST=mongo
+      - PORT=3000
+    depends_on:
+      - mongo
+      - ark-data
+  ark-data:
+    image: bptlab/ark-automate:init-data
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:latest
