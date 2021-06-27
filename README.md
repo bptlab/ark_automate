@@ -8,6 +8,12 @@
 
 Ark-Automate is a platform that allows office users and software developers to automate business or everyday processes by simply sketching the steps of their process. By using simple flowcharts or powerful BPMN in their process outlines, users can create small software solutions using RPA that finish their tasks much faster and more reliably.
 
+## Quick Links
+
+[Wiki](https://github.com/bptlab/ark_automate/wiki)
+[Tutorial](https://github.com/bptlab/ark_automate/wiki/tutorial)
+[Screencast](https://www.youtube.com/watch?v=EIbrYbvtknI)
+
 ## Installation & Setup
 
 ### Repository Setup
@@ -61,7 +67,7 @@ The main contributors to the project are the four members of the [2020/21 Bachel
 - [Daniel Woelki](https://github.com/WolfgangDaniel)
 
 These four participants will push the project forward as part of their bachelor's degree until the summer of 2021.  
-At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community. Regarding Open Source, this project underlays a MIT license which you can find [here](https://github.com/bptlab/ark_automate/blob/main/LICENSE.md) 
+At the same time our commitment to open source means that we are enabling -in fact encouraging- all interested parties to contribute and become part of its developer community. Regarding Open Source, this project underlays a MIT license which you can find [here](https://github.com/bptlab/ark_automate/blob/main/LICENSE.md)
 
 ## Project documentation
 
