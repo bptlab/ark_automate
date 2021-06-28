@@ -14,10 +14,19 @@ Ark-Automate is a platform that allows office users and software developers to a
 [Tutorial](https://github.com/bptlab/ark_automate/wiki/tutorial)
 [Screencast](https://www.youtube.com/watch?v=EIbrYbvtknI)
 
-## Installation & Setup
+## Installation using Docker
 
-### Repository Setup
+The easiest way to run a local instance of Ark is using the provided Docker images.
 
+1. Make sure you have Docker installed and running.
+1. Download the latest [docker-compose file](https://raw.githubusercontent.com/bptlab/ark_automate/docker-deployment/docker-compose.yml).
+1. In your console, navigate to the directory of the downloaded file and run `docker-compose up`. You can add a `-d` to run Ark in the background.
+1. Navigate to http://localhost:3000/ to access the front end.
+1. Do you already know our [tutorial](https://github.com/bptlab/ark_automate/wiki/tutorial)?
+
+## Local Setup for Development
+
+If you want to contribute to Ark, you can set up a local development environment as follows.
 Please install:
 
 1. [Node.js](https://nodejs.org/en/) (at least v10.19) using the [installer](https://nodejs.org/en/download/)
@@ -43,14 +52,16 @@ For this step, an invitation to our Heroku project is necessary. Please create y
 
 Tools being used in this project are [EsLint](https://eslint.org/) and [Prettier](https://prettier.io/). For information on how to configure them see our [coding standards](https://github.com/bptlab/ark_automate/wiki/Coding-standards#tools)
 
-## Run application
+### Run application
 
 Before running, please always make sure to have the most recent module versions installed using `npm install` in the server, as well as the frontend directory.
 To run a development preview of the app, navigate to the server directory and run `npm run local` to start the API server, navigate into the frontend folder and run `npm start` again to also start the frontend.
 Now check http://localhost:3000/ to have a look at the app.
 
 To run the local client, follow the steps in the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
+
 ## Product Demo
+
 [![Watch the video](https://i.imgur.com/Q9UTQSY.png)](https://www.youtube.com/watch?v=EIbrYbvtknI)
 
 ## Contribute
