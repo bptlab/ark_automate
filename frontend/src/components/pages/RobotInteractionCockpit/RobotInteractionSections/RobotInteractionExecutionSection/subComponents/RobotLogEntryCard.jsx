@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, Row, Col } from 'antd';
+import { Card, Row, Col, Typography } from 'antd';
 import PropTypes from 'prop-types';
-
+const { Title } = Typography;
 /**
  * @description Renders the status of an individual robot log
  * @category Frontend
@@ -16,27 +16,22 @@ const RobotLogCard = (props) => {
       style={{ margin: '10px' }}
       headStyle={{ fontWeight: 'bold' }}
       hoverable
-      title={log.activityName}
       size='small'
       type='inner'
     >
       <Row>
         <Col xs={24} md={16}>
-          {log.message && <p>Error Message: {log.message}</p>}
-          {log.tasks &&
-            log.tasks.map((task, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Card key={index} size='small'>
-                <Row>
-                  <Col xs={24} lg={24} xl={16}>
-                    <p>Task: {task.taskName}</p>
-                  </Col>
-                  <Col xs={24} lg={24} xl={8}>
-                    <p>Status: {task.status}</p>
-                  </Col>
-                </Row>
-              </Card>
-            ))}
+          {log.activityName && log.status && (
+            <Title
+              style={{
+                top: '35%',
+                position: 'absolute',
+              }}
+              level={5}
+            >
+              {log.activityName}
+            </Title>
+          )}
         </Col>
         <Col xs={24} md={8}>
           <>{displayStatusIcon(log.status)}</>
