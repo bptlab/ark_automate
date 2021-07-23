@@ -4,6 +4,7 @@ services:
     image: bptlab/ark-automate:version1.0
     ports:
       - 3000:3000
+      - 5001:3001
     environment:
       - MONGODB_HOST=mongo
       - PORT=3000
