@@ -10,8 +10,8 @@ Ark-Automate is a platform that allows office users and software developers to a
 
 ## Quick Links
 
-[Wiki](https://github.com/bptlab/ark_automate/wiki)
-[Tutorial](https://github.com/bptlab/ark_automate/wiki/tutorial)
+[Wiki](https://github.com/bptlab/ark_automate/wiki) | 
+[Tutorial](https://github.com/bptlab/ark_automate/wiki/tutorial) | 
 [Screencast](https://www.youtube.com/watch?v=EIbrYbvtknI)
 
 ## Installation using Docker
@@ -21,8 +21,23 @@ The easiest way to run a local instance of Ark is using the provided Docker imag
 1. Make sure you have Docker installed and running.
 1. Download the latest [docker-compose file](https://raw.githubusercontent.com/bptlab/ark_automate/docker-deployment/docker-compose.yml).
 1. In your console, navigate to the directory of the downloaded file and run `docker-compose up`. You can add a `-d` to run Ark in the background.
-1. Navigate to http://localhost:3000/ to access the front end.
-1. Do you already know our [tutorial](https://github.com/bptlab/ark_automate/wiki/tutorial)?
+1. [Install](https://github.com/bptlab/ark_automate_local#setup) and run the local client.
+1. Navigate to http://localhost:3000/ to access the front-end and to start modeling RPA bots!
+1. Do you already know our [tutorial](https://github.com/bptlab/ark_automate/wiki/tutorial)? It will guide you through the creation of your first RPA bot using Ark Automate!
+
+> **What is the local client for?**
+> 
+> Ark Automate consists of two main components:
+> The software responsible for managing bots, divided in a web-based front-end for modeling and starting bots, as well as a back-end.
+> The lightweight local client however runs on your computer in the background and listens for new RPA jobs to execute.
+> 
+> You can skip the step for installing the local client, however, you will then not be able to run bots.
+
+## Product Demo
+
+[![Watch the video](https://i.imgur.com/Q9UTQSY.png)](https://www.youtube.com/watch?v=EIbrYbvtknI)
+
+---
 
 ## Local Setup for Development
 
@@ -59,10 +74,6 @@ To run a development preview of the app, navigate to the server directory and ru
 Now check http://localhost:3000/ to have a look at the app.
 
 To run the local client, follow the steps in the [Readme of the local client](https://github.com/bptlab/ark_automate_local#readme).
-
-## Product Demo
-
-[![Watch the video](https://i.imgur.com/Q9UTQSY.png)](https://www.youtube.com/watch?v=EIbrYbvtknI)
 
 ## Contribute
 
