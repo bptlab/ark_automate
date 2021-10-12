@@ -4,8 +4,7 @@
 
 ## Preparation
 
-To follow this tutorial, you can either [set up a local instance](https://github.com/bptlab/ark_automate#installation-using-docker) of Ark, or use the provided test instance at https://ark[.dot]voelker[.dot]dev.
-(This instance might be reset at any time and may contain information from previous users. Also, you can only model with the test instance, but not run bots.)
+To follow this tutorial, you can [set up a local instance](https://github.com/bptlab/ark_automate#installation-using-docker) of Ark.
 
 If you use a local installation, go to http://localhost:3000/ to open the web interface of Ark.
 Also, make sure that the local client is [installed and running](https://github.com/bptlab/ark_automate_local#setup) and is successfully connected to the server (`You have connected to the user room [...]` shown in the console).
